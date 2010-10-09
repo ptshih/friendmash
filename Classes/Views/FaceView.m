@@ -77,7 +77,9 @@
       [self.delegate release];
     }
     [self animateOffScreen];
-  } else if(self.center.x <= 0.0) {
+  } else if(self.center.x <= 0.0 && self.isLeft) {
+    [self animateOffScreen];
+  } else if(self.center.x >= 1024.0 && !self.isLeft) {  
     [self animateOffScreen];
   } else {
     [self animateToCenter];
@@ -94,9 +96,9 @@
   if(diffX > 0 && self.isLeft) return NO;
   if(diffX < 0 && !self.isLeft) return NO;
   
-  NSLog(@"Last dist = %f, diffY = %f", dist, diffY);
+  NSLog(@"Last dist = %f", dist);
   
-  return (dist > FLICK_THRESHOLD_X && fabsf(diffY) < FLICK_THRESHOLD_Y); // experiment with best value
+  return dist > FLICK_THRESHOLD; // experiment with best value
 }
 
 - (void)animateOffScreen {
@@ -110,7 +112,7 @@
   // Create the path
   CGMutablePathRef thePath = CGPathCreateMutable();
   
-  CGFloat midX = self.isLeft ? -ceil(self.frame.size.width/2) : self.canvas.frame.size.width + ceil(self.frame.size.width/2);
+  CGFloat midX = self.isLeft ? -(ceil(self.frame.size.width/2)+20) : self.canvas.frame.size.width + (ceil(self.frame.size.width/2)+20);
 	CGFloat midY = self.center.y;
 	
 	// Start the path at the placard's current location
