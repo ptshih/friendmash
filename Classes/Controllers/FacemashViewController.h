@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FaceView.h"
-
+#import "FBConnect.h"
 #import "OBOAuthService.h"
 #import "OBFacebookOAuthService.h"
 
@@ -16,7 +16,8 @@
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
  */
 
-@interface FacemashViewController : UIViewController <OBOAuthServiceDelegate, FaceViewDelegate> {
+@interface FacemashViewController : UIViewController <OBClientOperationDelegate, OBOAuthServiceDelegate, FaceViewDelegate> {
+  OBOAuth2Request *_currentUserRequest;
   FaceView *_leftView;
   FaceView *_rightView;
 }

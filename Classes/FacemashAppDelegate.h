@@ -14,11 +14,13 @@
   UIWindow *window;
   UINavigationController *_navigationController;
   FacemashViewController *_facemashViewController;
+  NSMutableDictionary *_currentUserDictionary;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet FacemashViewController *facemashViewController;
+@property (nonatomic, retain) NSMutableDictionary *currentUserDictionary;
 
 @end
 

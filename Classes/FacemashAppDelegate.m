@@ -15,7 +15,7 @@
 @synthesize window;
 @synthesize navigationController = _navigationController;
 @synthesize facemashViewController = _facemashViewController;
-
+@synthesize currentUserDictionary = _currentUserDictionary;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -24,6 +24,18 @@
   _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController" bundle:nil];
   _navigationController = [[UINavigationController alloc] initWithRootViewController:self.facemashViewController];
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
+  
+  // Current User Dictionary
+//  if([[NSUserDefaults standardUserDefaults] valueForKey:@"currentUserDictionary"]) {
+//    _currentUserDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:@"currentUserDictionary"];
+//  } else {
+//    _currentUserDictionary = [[NSMutableDictionary alloc] init];
+//    [[NSUserDefaults standardUserDefaults] setObject:self.currentUserDictionary forKey:@"currentUserDictionary"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+//  }
+
+//  [[NSUserDefaults standardUserDefaults] setObject:self.currentUserDictionary forKey:@"currentUserDictionary"];
+  
   // Override point for customization after app launch. 
   [window addSubview:self.navigationController.view];
   [window makeKeyAndVisible];
@@ -66,6 +78,7 @@
 
 
 - (void)dealloc {
+  [_currentUserDictionary release];
   [_facemashViewController release];
   [_navigationController release];
   [window release];

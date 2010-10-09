@@ -8,10 +8,30 @@
 
 #import "FacemashViewController.h"
 #import "Constants.h"
+#import "OBFacemashClient.h"
+#import "CJSONDeserializer.h"
 
 @interface FacemashViewController (Private)
+/**
+ This method checks to see if an OAuth token exists for FB.
+ If a token exists, we are already bound and will load, position, and display the left/right faceViews
+ If a token does not exist, remove left/right views from superview and perform FB authorization
+ */
+- (void)checkTokenAndAuth;
+/**
+ Loads a FaceView from NIB and configures:
+ canvas - this is our current frame
+ delegate - our own view controller
+ isLeft - is this faceView left or right
+ frame - position it appropriately on the screen/canvas
+ 
+ Also calls [FaceView setDefaultPosition] this sets an iVar inside FaceView to it's current center position
+ */
 - (void)loadLeftFaceView;
 - (void)loadRightFaceView;
+/**
+ Load and Show just performs the load method and then animates an addToSubview
+ */
 - (void)loadAndShowLeftFaceView;
 - (void)loadAndShowRightFaceView;
 @end
@@ -43,16 +63,26 @@
   self.title = NSLocalizedString(@"facemash", @"facemash");
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
   
-  // Face View
-  
-  
+  // Check token and authorize
+  [self checkTokenAndAuth];
+}
+
+- (void)testRequest {
+  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+}
+
+- (void)checkTokenAndAuth {
   if([OBFacebookOAuthService isBound]) {
+    _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
     [self loadAndShowLeftFaceView];
     [self loadAndShowRightFaceView];
   } else {
+    if(_leftView) [self.leftView removeFromSuperview];
+    if(_rightView) [self.rightView removeFromSuperview];
     [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
-  }
+  } 
 }
 
 - (void)loadLeftFaceView {
@@ -117,6 +147,22 @@
 }
 
 - (void)fbLogout {
+  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+  [logoutAlert show];
+  [logoutAlert autorelease];
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      break;
+    case 1:
+      [OBFacebookOAuthService unbindWithDelegate:self];
+      break;
+    default:
+      break;
+  }
 }
 
 #pragma mark FaceViewDelegate
@@ -132,16 +178,53 @@
   [faceView removeFromSuperview];
 }
 
+#pragma mark OBClientOperationDelegate
+- (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
+}
+
+/*!
+ Called when the operation fails to send the request, with the error object returned from NSURLConnection
+ */
+- (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
+}
+
+/*!
+ Called immediately after the request is sent if it is successful, i.e. hasOKHTTPResponse returns YES.
+ */
+- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
+  if(request == _currentUserRequest) {
+    // Set the current user's info locally
+//    NSString *currentUserResponse = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
+    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:responseDict forKey:@"currentUserDictionary"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+  }
+}
+
+/*!
+ Called after the request has finished processing.  That is if the request is an OBClientRequest and a valid OBClientResponse object
+ is returned the operation automatically invokes processResponseData on the response object and upon completion calls this delegate method.
+ 
+ This is the last stage in the request / response loop after which the operation will be popped out of the NSOperationQueue and deallocated.
+ */
+- (void)obClientOperation:(OBClientOperation *)operation didFinishRequest:(NSURLRequest *)request {
+}
+
+/*!
+ Called when the request completes but hasOKHTTPResponse returns NO.
+ */
+- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
+
+}
+
 #pragma mark OBOAuthServiceDelegate
 - (void)oauthService:(Class)service didReceiveAccessToken:(OBOAuthToken *)accessToken {
   NSLog(@"Got access token:%@ with key: %@ and secret: %@", accessToken, accessToken.key, accessToken.secret);
   
   //store the token
   [OBOAuthToken persistTokens];
-  [self performSelectorOnMainThread:@selector(dismissCredentialsView) withObject:nil waitUntilDone:YES];
-  [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
-  [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
-  
+  [self checkTokenAndAuth];
 }
 
 - (void)dismissCredentialsView {
@@ -163,6 +246,10 @@
   NSString *message = NSLocalizedString(@"Error authenticating, please check your credentials and try again.", @"error bad credentials");
   UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"ok button title") otherButtonTitles:nil] autorelease];
   [alert show];
+}
+
+- (void)oauthServiceDidUnbind:(Class)service {
+  [self checkTokenAndAuth];
 }
 
 // Override to allow orientations other than the default portrait orientation.
