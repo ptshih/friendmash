@@ -12,6 +12,8 @@
 @interface FacemashViewController (Private)
 - (void)loadLeftFaceView;
 - (void)loadRightFaceView;
+- (void)loadAndShowLeftFaceView;
+- (void)loadAndShowRightFaceView;
 @end
 
 @implementation FacemashViewController
@@ -37,8 +39,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
-  [self loadLeftFaceView];
-  [self loadRightFaceView];
+  
   self.title = NSLocalizedString(@"facemash", @"facemash");
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
@@ -47,8 +48,8 @@
   
   
   if([OBFacebookOAuthService isBound]) {
-    [self.view addSubview:self.leftView];
-    [self.view addSubview:self.rightView];  
+    [self loadAndShowLeftFaceView];
+    [self loadAndShowRightFaceView];
   } else {
     [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
   }
@@ -99,6 +100,16 @@
 	[UIView commitAnimations];
 }
 
+- (void)loadAndShowLeftFaceView {
+  [self loadLeftFaceView];
+  [self showLeftFaceView];
+}
+
+- (void)loadAndShowRightFaceView {
+  [self loadRightFaceView];
+  [self showRightFaceView];
+}
+
 - (void)fbLogin {
 
 }
@@ -112,11 +123,9 @@
 }
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
   if(faceView.isLeft) {
-    [self loadLeftFaceView];
-    [self showLeftFaceView];
+    [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
   } else {
-    [self loadRightFaceView];
-    [self showRightFaceView];
+    [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
   }
   [faceView removeFromSuperview];
 }
@@ -128,6 +137,9 @@
   //store the token
   [OBOAuthToken persistTokens];
   [self performSelectorOnMainThread:@selector(dismissCredentialsView) withObject:nil waitUntilDone:YES];
+  [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
+  [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
+  
 }
 
 - (void)dismissCredentialsView {
