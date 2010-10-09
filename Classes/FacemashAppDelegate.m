@@ -23,7 +23,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController" bundle:nil];
   _navigationController = [[UINavigationController alloc] initWithRootViewController:self.facemashViewController];
-  self.navigationController.navigationBar.tintColor = RGBCOLOR(69,89,152);
+  self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
   // Override point for customization after app launch. 
   [window addSubview:self.navigationController.view];
   [window makeKeyAndVisible];
