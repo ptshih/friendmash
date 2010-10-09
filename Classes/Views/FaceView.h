@@ -34,12 +34,14 @@ typedef enum {
   CGPoint myCenter;
   CGPoint touchOrigin;
   BOOL _isLeft;
+  BOOL _isAnimating;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
 }
 
 @property (nonatomic, assign) UIView *canvas;
 @property (nonatomic, assign) BOOL isLeft;
+@property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 
 - (void)setDefaultPosition;

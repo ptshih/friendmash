@@ -21,12 +21,14 @@
 
 @synthesize canvas = _canvas;
 @synthesize isLeft = _isLeft;
+@synthesize isAnimating = _isAnimating;
 @synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame {
   if ((self = [super initWithFrame:frame])) {
     // Initialization code
     currentAnimationType = 0;
+    self.isAnimating = NO;
   }
   return self;
 }
@@ -45,12 +47,13 @@
 */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  if(self.isAnimating) return;
   [self.canvas bringSubviewToFront:self];
   touchOrigin = [[touches anyObject] locationInView:self.canvas];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-
+  if(self.isAnimating) return;
   UITouch *touch = [touches anyObject];
   CGPoint location = [touch locationInView:self.canvas];
   CGFloat diffX = touchOrigin.x - location.x;
@@ -60,22 +63,15 @@
 
   NSLog(@"touches moved to loc: %@, new center: %@",[NSValue valueWithCGPoint:location], [NSValue valueWithCGPoint:self.center]);
   touchOrigin = [touch locationInView:self.canvas];
-  return;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+  if(self.isAnimating) return;
   UITouch *touch = [touches anyObject];
   BOOL flicked = [self wasFlicked:touch];
   NSLog(@"was flicked: %d",flicked);
 //  self.center = defaultOrigin;
   if(flicked) {
-    if(self.delegate) {
-      [self.delegate retain];
-      if([self.delegate respondsToSelector:@selector(faceViewWillAnimateOffScreen:)]) {
-        [self.delegate faceViewWillAnimateOffScreen:self];
-      }
-      [self.delegate release];
-    }
     [self animateOffScreen];
   } else if(self.center.x <= 0.0 && self.isLeft) {
     [self animateOffScreen];
@@ -102,6 +98,7 @@
 }
 
 - (void)animateOffScreen {
+  self.isAnimating = YES;
   CALayer *faceLayer = self.layer;
   
   // Create a keyframe animation to follow a path back to the center
@@ -143,6 +140,7 @@
 }
 
 - (void)animateToCenter {
+  self.isAnimating = YES;
   CALayer *faceLayer = self.layer;
   
   // Create a keyframe animation to follow a path back to the center
@@ -205,6 +203,7 @@
       [self.delegate release];
     }
   }
+  self.isAnimating = NO;
 }
 
 
