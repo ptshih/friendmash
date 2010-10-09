@@ -30,6 +30,7 @@ typedef enum {
 } FaceViewAnimationType;
 
 @interface FaceView : UIView {
+  IBOutlet UIImageView *_faceImageView;
   UIView *_canvas;
   CGPoint defaultOrigin;
   CGPoint myCenter;
@@ -40,6 +41,7 @@ typedef enum {
   NSUInteger currentAnimationType;
 }
 
+@property (nonatomic, retain) UIImageView *faceImageView;
 @property (nonatomic, assign) UIView *canvas;
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) BOOL isAnimating;

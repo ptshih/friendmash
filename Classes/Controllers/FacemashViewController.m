@@ -57,6 +57,7 @@
 
 - (void)loadLeftFaceView {
   _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+  self.leftView.faceImageView.image = [UIImage imageNamed:@"mrt_profile.jpg"];
   self.leftView.canvas = self.view;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
@@ -67,6 +68,7 @@
 
 - (void)loadRightFaceView {
   _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+  self.rightView.faceImageView.image = [UIImage imageNamed:@"bieber_profile.jpg"];
   self.rightView.canvas = self.view;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;

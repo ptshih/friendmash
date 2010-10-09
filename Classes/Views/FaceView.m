@@ -19,6 +19,7 @@
 
 @implementation FaceView
 
+@synthesize faceImageView = _faceImageView;
 @synthesize canvas = _canvas;
 @synthesize isLeft = _isLeft;
 @synthesize isAnimating = _isAnimating;
@@ -212,6 +213,7 @@
 }
 
 - (void)dealloc {
+  [_faceImageView release];
   [super dealloc];
 }
 
