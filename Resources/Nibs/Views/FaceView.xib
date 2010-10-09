@@ -52,9 +52,9 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{5, 5}, {440, 440}}</string>
 								<reference key="NSSuperview" ref="515813474"/>
-								<object class="NSColor" key="IBUIBackgroundColor" id="839973906">
+								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 								</object>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -85,7 +85,10 @@
 				</object>
 				<string key="NSFrameSize">{452, 452}</string>
 				<reference key="NSSuperview"/>
-				<reference key="IBUIBackgroundColor" ref="839973906"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">3</int>
 				</object>

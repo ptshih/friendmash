@@ -36,18 +36,55 @@
   [super viewDidLoad];
   self.title = NSLocalizedString(@"facemash", @"facemash");
   
-  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Login to Facebook" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogin)];
+  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
   
   // Face View
   self.leftView.frame = CGRectMake(40, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
   self.rightView.frame = CGRectMake(532, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
-  [self.view addSubview:self.leftView];
-  [self.view addSubview:self.rightView];
-  
+
+  if([OBFacebookOAuthService isBound]) {
+    [self.view addSubview:self.leftView];
+    [self.view addSubview:self.rightView];  
+  } else {
+    [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
+  }
 }
 
 - (void)fbLogin {
- 
+
+}
+
+- (void)fbLogout {
+}
+
+#pragma mark OBOAuthServiceDelegate
+- (void)oauthService:(Class)service didReceiveAccessToken:(OBOAuthToken *)accessToken {
+  NSLog(@"Got access token:%@ with key: %@ and secret: %@", accessToken, accessToken.key, accessToken.secret);
+  
+  //store the token
+  [OBOAuthToken persistTokens];
+  [self performSelectorOnMainThread:@selector(dismissCredentialsView) withObject:nil waitUntilDone:YES];
+}
+
+- (void)dismissCredentialsView {
+  if (self.modalViewController) {
+    [self dismissModalViewControllerAnimated:YES];
+  }
+}
+
+- (void)oauthService:(Class)service didFailToAuthenticateWithError:(NSError *)error {
+  if ([[error domain] isEqualToString:OBOAuthServiceErrorDomain]) {
+    if ([error code] == OBOAuthServiceErrorInvalidCredentials) {
+      [self performSelectorOnMainThread:@selector(showBadCredentialsAlert) withObject:nil waitUntilDone:YES];
+    }
+  }
+}
+
+- (void)showBadCredentialsAlert {
+  NSString *title = [NSString stringWithFormat:NSLocalizedString(@"%@ Error", @"service error title format"), @"Facebook"];
+  NSString *message = NSLocalizedString(@"Error authenticating, please check your credentials and try again.", @"error bad credentials");
+  UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"ok button title") otherButtonTitles:nil] autorelease];
+  [alert show];
 }
 
 // Override to allow orientations other than the default portrait orientation.

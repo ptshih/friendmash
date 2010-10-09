@@ -12,6 +12,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		25BEBEB3126015F800E18F34 /* libOBCommand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEBE8C126015A400E18F34 /* libOBCommand.a */; };
+		25BEBF611260289700E18F34 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEBF601260289700E18F34 /* CoreData.framework */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
 		25E05186125FCBD000CA6AC1 /* FacemashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController.xib */; };
@@ -58,6 +59,7 @@
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OBCommand.xcodeproj; path = Classes/Vendor/OBCommand/OBCommand.xcodeproj; sourceTree = "<group>"; };
+		25BEBF601260289700E18F34 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashViewController.h; sourceTree = "<group>"; };
 		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				25BEBEB3126015F800E18F34 /* libOBCommand.a in Frameworks */,
+				25BEBF611260289700E18F34 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +210,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				25BEBF601260289700E18F34 /* CoreData.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -357,9 +361,15 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Classes/Vendor/OBCommand/Classes/**";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
 				TARGETED_DEVICE_FAMILY = 2;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -371,7 +381,9 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Classes/Vendor/OBCommand/Classes/**";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
 				TARGETED_DEVICE_FAMILY = 2;

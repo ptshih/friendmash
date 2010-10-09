@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "FaceView.h"
 
-@interface FacemashViewController : UIViewController {
+#import "OBOAuthService.h"
+#import "OBFacebookOAuthService.h"
+
+@interface FacemashViewController : UIViewController <OBOAuthServiceDelegate> {
   FaceView *_leftView;
   FaceView *_rightView;
 }
@@ -18,6 +21,7 @@
 @property (nonatomic, retain) FaceView *rightView;
 
 - (void)fbLogin;
+- (void)fbLogout;
 
 @end
 
