@@ -11,6 +11,7 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		25BEBEB3126015F800E18F34 /* libOBCommand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEBE8C126015A400E18F34 /* libOBCommand.a */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
 		25E05186125FCBD000CA6AC1 /* FacemashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController.xib */; };
@@ -19,12 +20,44 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		25BEBE8B126015A400E18F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libOBCommand.a */;
+			remoteInfo = OBCommand;
+		};
+		25BEBE8D126015A400E18F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01DA95A61238B37200339DC4 /* OBCommandTests.octest */;
+			remoteInfo = OBCommandTests;
+		};
+		25BEBE8F126015A400E18F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01BFE1DA1257D80F00F417F1 /* OBCommandAllTests.octest */;
+			remoteInfo = OBCommandAllTests;
+		};
+		25BEBEB71260160D00E18F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* OBCommand */;
+			remoteInfo = OBCommand;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* FacemashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OBCommand.xcodeproj; path = Classes/Vendor/OBCommand/OBCommand.xcodeproj; sourceTree = "<group>"; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashViewController.h; sourceTree = "<group>"; };
 		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
@@ -47,6 +80,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				25BEBEB3126015F800E18F34 /* libOBCommand.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +103,16 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* Facemash.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		25BEBE7F126015A400E18F34 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25BEBE8C126015A400E18F34 /* libOBCommand.a */,
+				25BEBE8E126015A400E18F34 /* OBCommandTests.octest */,
+				25BEBE90126015A400E18F34 /* OBCommandAllTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,6 +203,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
@@ -180,6 +225,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				25BEBEB81260160D00E18F34 /* PBXTargetDependency */,
 			);
 			name = Facemash;
 			productName = Facemash;
@@ -203,12 +249,42 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 25BEBE7F126015A400E18F34 /* Products */;
+					ProjectRef = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Facemash */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		25BEBE8C126015A400E18F34 /* libOBCommand.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOBCommand.a;
+			remoteRef = 25BEBE8B126015A400E18F34 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		25BEBE8E126015A400E18F34 /* OBCommandTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OBCommandTests.octest;
+			remoteRef = 25BEBE8D126015A400E18F34 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		25BEBE90126015A400E18F34 /* OBCommandAllTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OBCommandAllTests.octest;
+			remoteRef = 25BEBE8F126015A400E18F34 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -236,6 +312,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		25BEBEB81260160D00E18F34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OBCommand;
+			targetProxy = 25BEBEB71260160D00E18F34 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
