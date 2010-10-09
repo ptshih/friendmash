@@ -21,12 +21,14 @@
 
 @synthesize canvas = _canvas;
 @synthesize isLeft = _isLeft;
+@synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame {
-    if ((self = [super initWithFrame:frame])) {
-        // Initialization code
-    }
-    return self;
+  if ((self = [super initWithFrame:frame])) {
+    // Initialization code
+    currentAnimationType = 0;
+  }
+  return self;
 }
 
 - (void)setDefaultPosition {
@@ -67,6 +69,15 @@
   NSLog(@"was flicked: %d",flicked);
 //  self.center = defaultOrigin;
   if(flicked) {
+    if(self.delegate) {
+      [self.delegate retain];
+      if([self.delegate respondsToSelector:@selector(faceViewWillAnimateOffScreen:)]) {
+        [self.delegate faceViewWillAnimateOffScreen:self];
+      }
+      [self.delegate release];
+    }
+    [self animateOffScreen];
+  } else if(self.center.x <= 0.0) {
     [self animateOffScreen];
   } else {
     [self animateToCenter];
@@ -83,9 +94,9 @@
   if(diffX > 0 && self.isLeft) return NO;
   if(diffX < 0 && !self.isLeft) return NO;
   
-  NSLog(@"Last dist = %f", dist);
+  NSLog(@"Last dist = %f, diffY = %f", dist, diffY);
   
-  return dist > 20.0; // experiment with best value
+  return (dist > FLICK_THRESHOLD_X && fabsf(diffY) < FLICK_THRESHOLD_Y); // experiment with best value
 }
 
 - (void)animateOffScreen {
@@ -94,7 +105,7 @@
   // Create a keyframe animation to follow a path back to the center
 	CAKeyframeAnimation *moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
   moveAnimation.removedOnCompletion = NO;
-  CGFloat animationDuration = 0.2;
+  CGFloat animationDuration = 0.25;
   
   // Create the path
   CGMutablePathRef thePath = CGPathCreateMutable();
@@ -126,7 +137,7 @@
 	// Set the placard view's center and transformation to the original values in preparation for the end of the animation
 	self.center = CGPointMake(midX, midY);
 	self.transform = CGAffineTransformIdentity;
-  
+  currentAnimationType = 2;
 }
 
 - (void)animateToCenter {
@@ -135,7 +146,7 @@
   // Create a keyframe animation to follow a path back to the center
 	CAKeyframeAnimation *moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
   moveAnimation.removedOnCompletion = NO;
-  CGFloat animationDuration = 1.0;
+  CGFloat animationDuration = 0.25;
   
   // Create the path
   CGMutablePathRef thePath = CGPathCreateMutable();
@@ -144,25 +155,15 @@
 	CGFloat midY = defaultOrigin.y;
 	CGFloat originalOffsetX = self.center.x - midX;
 	CGFloat originalOffsetY = self.center.y - midY;
-	CGFloat offsetDivider = 4.0;
-  
-  BOOL stopBouncing = NO;
+	CGFloat offsetDivider = 10.0;
 	
 	// Start the path at the placard's current location
 	CGPathMoveToPoint(thePath, NULL, self.center.x, self.center.y);
-	CGPathAddLineToPoint(thePath, NULL, midX, midY);
+//	CGPathAddLineToPoint(thePath, NULL, midX, midY);
 	
 	// Add to the bounce path in decreasing excursions from the center
-	while (stopBouncing != YES) {
-		CGPathAddLineToPoint(thePath, NULL, midX + originalOffsetX/offsetDivider, midY + originalOffsetY/offsetDivider);
-		CGPathAddLineToPoint(thePath, NULL, midX, midY);
-    
-		offsetDivider += 4;
-		animationDuration += 1/offsetDivider;
-		if ((abs(originalOffsetX/offsetDivider) < 12) && (abs(originalOffsetY/offsetDivider) < 12)) {
-			stopBouncing = YES;
-		}
-	}
+  CGPathAddLineToPoint(thePath, NULL, midX - originalOffsetX/offsetDivider, midY - originalOffsetY/offsetDivider);
+  CGPathAddLineToPoint(thePath, NULL, midX, midY);
   
   moveAnimation.path = thePath;
   moveAnimation.duration = animationDuration;
@@ -184,6 +185,7 @@
 	// Set the placard view's center and transformation to the original values in preparation for the end of the animation
 	self.center = defaultOrigin;
 	self.transform = CGAffineTransformIdentity;
+  currentAnimationType = 1;
 }
 
 
@@ -192,6 +194,15 @@
 	// restore the transform and reenable user interaction
 	self.transform = CGAffineTransformIdentity;
 	self.userInteractionEnabled = YES;
+  if(currentAnimationType == FaceViewAnimationOffScreen) {
+    if(self.delegate) {
+      [self.delegate retain];
+      if([self.delegate respondsToSelector:@selector(faceViewDidAnimateOffScreen:)]) {
+        [self.delegate faceViewDidAnimateOffScreen:self];
+      }
+      [self.delegate release];
+    }
+  }
 }
 
 
@@ -200,7 +211,6 @@
 }
 
 - (void)dealloc {
-  [_canvas release];
   [super dealloc];
 }
 

@@ -9,6 +9,11 @@
 #import "FacemashViewController.h"
 #import "Constants.h"
 
+@interface FacemashViewController (Private)
+- (void)loadLeftFaceView;
+- (void)loadRightFaceView;
+@end
+
 @implementation FacemashViewController
 
 @synthesize leftView = _leftView;
@@ -18,14 +23,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
-    _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-    _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-    _leftView.canvas = self.view;
-    _rightView.canvas = self.view;
-    _leftView.isLeft = YES;
-    _rightView.isLeft = NO;
-    [self.leftView setDefaultPosition];
-    [self.rightView setDefaultPosition];
   }
   return self;
 }
@@ -40,14 +37,15 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
+  [self loadLeftFaceView];
+  [self loadRightFaceView];
   self.title = NSLocalizedString(@"facemash", @"facemash");
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
   
   // Face View
-  self.leftView.frame = CGRectMake(40, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
-  self.rightView.frame = CGRectMake(532, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
-
+  
+  
   if([OBFacebookOAuthService isBound]) {
     [self.view addSubview:self.leftView];
     [self.view addSubview:self.rightView];  
@@ -56,11 +54,71 @@
   }
 }
 
+- (void)loadLeftFaceView {
+  _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+  self.leftView.canvas = self.view;
+  self.leftView.isLeft = YES;
+  self.leftView.delegate = self;
+  self.leftView.frame = CGRectMake(40, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
+  [self.leftView setDefaultPosition];
+  
+}
+
+- (void)loadRightFaceView {
+  _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+  self.rightView.canvas = self.view;
+  self.rightView.isLeft = NO;
+  self.rightView.delegate = self;
+  self.rightView.frame = CGRectMake(532, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
+
+  [self.rightView setDefaultPosition];
+}
+
+- (void)showLeftFaceView {
+  self.leftView.alpha = 0.0;
+  [self.view addSubview:self.leftView];
+  [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
+	self.leftView.alpha = 1.0f;
+	[UIView commitAnimations];
+
+}
+
+- (void)showRightFaceView {
+  self.rightView.alpha = 0.0;
+  [self.view addSubview:self.rightView];
+  [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
+	self.rightView.alpha = 1.0f;
+	[UIView commitAnimations];
+}
+
 - (void)fbLogin {
 
 }
 
 - (void)fbLogout {
+}
+
+#pragma mark FaceViewDelegate
+- (void)faceViewWillAnimateOffScreen:(FaceView *)faceView {
+
+}
+- (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
+  if(faceView.isLeft) {
+    [self loadLeftFaceView];
+    [self showLeftFaceView];
+  } else {
+    [self loadRightFaceView];
+    [self showRightFaceView];
+  }
+  [faceView removeFromSuperview];
 }
 
 #pragma mark OBOAuthServiceDelegate

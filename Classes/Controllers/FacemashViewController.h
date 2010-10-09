@@ -12,7 +12,7 @@
 #import "OBOAuthService.h"
 #import "OBFacebookOAuthService.h"
 
-@interface FacemashViewController : UIViewController <OBOAuthServiceDelegate> {
+@interface FacemashViewController : UIViewController <OBOAuthServiceDelegate, FaceViewDelegate> {
   FaceView *_leftView;
   FaceView *_rightView;
 }

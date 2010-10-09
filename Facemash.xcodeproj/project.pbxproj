@@ -27,28 +27,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libOBCommand.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = OBCommand;
 		};
 		25BEBE8D126015A400E18F34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 01DA95A61238B37200339DC4 /* OBCommandTests.octest */;
+			remoteGlobalIDString = 01DA95A61238B37200339DC4;
 			remoteInfo = OBCommandTests;
 		};
 		25BEBE8F126015A400E18F34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 01BFE1DA1257D80F00F417F1 /* OBCommandAllTests.octest */;
+			remoteGlobalIDString = 01BFE1DA1257D80F00F417F1;
 			remoteInfo = OBCommandAllTests;
 		};
 		25BEBEB71260160D00E18F34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 25BEBE7E126015A400E18F34 /* OBCommand.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* OBCommand */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = OBCommand;
 		};
 /* End PBXContainerItemProxy section */
