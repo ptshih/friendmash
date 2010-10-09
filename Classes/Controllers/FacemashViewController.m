@@ -14,10 +14,11 @@
 @interface FacemashViewController (Private)
 /**
  This method checks to see if an OAuth token exists for FB.
- If a token exists, we are already bound and will load, position, and display the left/right faceViews
- If a token does not exist, remove left/right views from superview and perform FB authorization
+ If a token exists, we are already bound and will load, position, and display the left/right faceViews.
+ Also send a request to get an NSDictionary of the current user and store it in userDefaults.
+ If a token does not exist, remove left/right views from superview and perform FB authorization.
  */
-- (void)checkTokenAndAuth;
+- (void)checkFBAuthAndGetCurrentUser;
 /**
  Loads a FaceView from NIB and configures:
  canvas - this is our current frame
@@ -66,14 +67,14 @@
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
   
   // Check token and authorize
-  [self checkTokenAndAuth];
+  [self checkFBAuthAndGetCurrentUser];
 }
 
 - (void)testRequest {
   [OBFacebookOAuthService getCurrentUserWithDelegate:self];
 }
 
-- (void)checkTokenAndAuth {
+- (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
     [self loadAndShowLeftFaceView];
@@ -224,7 +225,7 @@
   
   //store the token
   [OBOAuthToken persistTokens];
-  [self checkTokenAndAuth];
+  [self checkFBAuthAndGetCurrentUser];
 }
 
 - (void)dismissCredentialsView {
@@ -249,7 +250,7 @@
 }
 
 - (void)oauthServiceDidUnbind:(Class)service {
-  [self checkTokenAndAuth];
+  [self checkFBAuthAndGetCurrentUser];
 }
 
 // Override to allow orientations other than the default portrait orientation.
