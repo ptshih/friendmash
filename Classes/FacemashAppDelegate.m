@@ -1,0 +1,76 @@
+//
+//  FacemashAppDelegate.m
+//  Facemash
+//
+//  Created by Peter Shih on 10/8/10.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import "FacemashAppDelegate.h"
+#import "FacemashViewController.h"
+#import "Constants.h"
+
+@implementation FacemashAppDelegate
+
+@synthesize window;
+@synthesize navigationController = _navigationController;
+@synthesize facemashViewController = _facemashViewController;
+
+
+#pragma mark -
+#pragma mark Application lifecycle
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController" bundle:nil];
+  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.facemashViewController];
+  self.navigationController.navigationBar.tintColor = RGBCOLOR(69,89,152);
+  // Override point for customization after app launch. 
+  [window addSubview:self.navigationController.view];
+  [window makeKeyAndVisible];
+
+	return YES;
+}
+
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    /*
+     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+     */
+}
+
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    /*
+     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     */
+}
+
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+    /*
+     Called when the application is about to terminate.
+     See also applicationDidEnterBackground:.
+     */
+}
+
+
+#pragma mark -
+#pragma mark Memory management
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+    /*
+     Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
+     */
+}
+
+
+- (void)dealloc {
+  [_facemashViewController release];
+  [_navigationController release];
+  [window release];
+  [super dealloc];
+}
+
+
+@end
