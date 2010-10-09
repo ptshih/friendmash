@@ -1,0 +1,3 @@
+[submodule "Classes/Vendor/OBCommand"]
+	path = Classes/Vendor/OBCommand
+	url = git@github.com:orbital/OBCommand
