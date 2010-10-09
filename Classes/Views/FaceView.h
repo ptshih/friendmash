@@ -10,7 +10,16 @@
 
 
 @interface FaceView : UIView {
-
+  UIView *_canvas;
+  CGPoint defaultOrigin;
+  CGPoint myCenter;
+  CGPoint touchOrigin;
+  BOOL _isLeft;
 }
+
+@property (nonatomic, retain) UIView *canvas;
+@property (nonatomic, assign) BOOL isLeft;
+
+- (void)setDefaultPosition;
 
 @end

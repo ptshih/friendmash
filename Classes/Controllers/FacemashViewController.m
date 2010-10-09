@@ -20,6 +20,12 @@
     // Custom initialization
     _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
     _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+    _leftView.canvas = self.view;
+    _rightView.canvas = self.view;
+    _leftView.isLeft = YES;
+    _rightView.isLeft = NO;
+    [self.leftView setDefaultPosition];
+    [self.rightView setDefaultPosition];
   }
   return self;
 }
