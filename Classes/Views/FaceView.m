@@ -73,9 +73,9 @@
 //  self.center = defaultOrigin;
   if(flicked) {
     [self animateOffScreen];
-  } else if(self.center.x <= 0.0 && self.isLeft) {
+  } else if((self.center.x - DRAG_THRESHOLD) <= 0.0 && self.isLeft) {
     [self animateOffScreen];
-  } else if(self.center.x >= 1024.0 && !self.isLeft) {  
+  } else if((self.center.x + DRAG_THRESHOLD) >= 1024.0 && !self.isLeft) {  
     [self animateOffScreen];
   } else {
     [self animateToCenter];

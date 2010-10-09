@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #define FLICK_THRESHOLD 20.0
+#define DRAG_THRESHOLD 80.0
 
 /**
  Profile Pictures are 200px wide, variable height up to 602px
