@@ -29,5 +29,10 @@
 - (void)fbLogin;
 - (void)fbLogout;
 
+// Debug methods
+- (IBAction)sendMashResults;
+- (IBAction)sendMashRequest;
+- (IBAction)sendFriendsList;
+
 @end
 

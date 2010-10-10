@@ -72,7 +72,24 @@
 
 - (void)testRequest {
 //  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
+//  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
+  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] intValue] withDelegate:self];
+}
+
+- (IBAction)sendMashResults {
+  [OBFacemashClient postMashResultsForWinnerId:1 andLoserId:2 withDelegate:self];
+}
+
+- (IBAction)sendMashRequest {
+  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] intValue] withDelegate:self];
+}
+
+- (IBAction)sendFriendsList {
+  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+  NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] intValue] withArray:friendsList withDelegate:self];
 }
 
 - (void)checkFBAuthAndGetCurrentUser {
@@ -220,7 +237,11 @@
     
     
     NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
+  } else {
+    NSString *response = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
+    NSLog(@"Facemash string response: %@",response);
   }
+
 
 }
 
