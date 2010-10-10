@@ -34,11 +34,28 @@
   return self;
 }
 
-- (void)setDefaultPosition {
+- (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId {
   myCenter = self.center;
-  defaultOrigin = self.center; 
+  defaultOrigin = self.center;
+  [self getPictureForFacebookId:facebookId];
 }
 
+- (void)getPictureForFacebookId:(NSUInteger)facebookId {
+  [OBFacebookOAuthService getPictureForUserWithID:[NSNumber numberWithInt:facebookId] withLargeSize:YES withDelegate:self];
+}
+
+#pragma mark OBClientOperationDelegate
+- (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
+}
+- (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
+}
+- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
+  self.faceImageView.image = [UIImage imageWithData:[operation responseData]];
+  [_spinner stopAnimating];
+}
+- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
+  
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

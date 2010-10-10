@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OBFacebookOAuthService.h"
+#import "OBFacemashUser.h"
 
 #define FLICK_THRESHOLD 20.0
 #define DRAG_THRESHOLD 80.0
@@ -29,8 +31,9 @@ typedef enum {
   FaceViewAnimationOffScreen = 2
 } FaceViewAnimationType;
 
-@interface FaceView : UIView {
+@interface FaceView : UIView <OBClientOperationDelegate> {
   IBOutlet UIImageView *_faceImageView;
+  IBOutlet UIActivityIndicatorView *_spinner;
   UIView *_canvas;
   CGPoint defaultOrigin;
   CGPoint myCenter;
@@ -47,6 +50,6 @@ typedef enum {
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 
-- (void)setDefaultPosition;
+- (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId;
 
 @end

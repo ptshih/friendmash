@@ -118,24 +118,33 @@
 - (void)loadLeftFaceView {
   _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
 //  self.leftView.faceImageView.image = [UIImage imageNamed:@"mrt_profile.jpg"];
-  self.leftView.faceImageView.image = [self getNewOpponent];
   self.leftView.canvas = self.view;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
   self.leftView.frame = CGRectMake(40, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
-  [self.leftView setDefaultPosition];
+  
+  // Temp random
+  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  NSInteger count = [friendsArray count];
+  float randomNum = arc4random() % count;
+  NSLog(@"rand: %g",randomNum);
+  [self.leftView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
   
 }
 
 - (void)loadRightFaceView {
   _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-  self.rightView.faceImageView.image = [self getNewOpponent];
   self.rightView.canvas = self.view;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
   self.rightView.frame = CGRectMake(532, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
 
-  [self.rightView setDefaultPosition];
+  // Temp random
+  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  NSInteger count = [friendsArray count];
+  float randomNum = arc4random() % count;
+  NSLog(@"rand: %g",randomNum);
+  [self.rightView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
 }
 
 - (void)showLeftFaceView {
