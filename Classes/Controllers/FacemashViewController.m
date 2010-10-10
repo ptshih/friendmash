@@ -71,12 +71,14 @@
 }
 
 - (void)testRequest {
-  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+//  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
 }
 
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+    _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
     [self loadAndShowLeftFaceView];
     [self loadAndShowRightFaceView];
   } else {
@@ -86,9 +88,20 @@
   } 
 }
 
+- (UIImage *)getNewOpponent {
+  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  if(!friendsArray) return [UIImage imageNamed:@"mrt_profile.jpg"];
+  NSInteger count = [friendsArray count];
+  float randomNum = arc4random() % count;
+  NSLog(@"rand: %g",randomNum);
+  NSString *graphUrl = [NSString stringWithFormat:@"https:/graph.facebook.com/%@/picture?type=large",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"]];
+  return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:graphUrl]]];
+}
+
 - (void)loadLeftFaceView {
   _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-  self.leftView.faceImageView.image = [UIImage imageNamed:@"mrt_profile.jpg"];
+//  self.leftView.faceImageView.image = [UIImage imageNamed:@"mrt_profile.jpg"];
+  self.leftView.faceImageView.image = [self getNewOpponent];
   self.leftView.canvas = self.view;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
@@ -99,7 +112,7 @@
 
 - (void)loadRightFaceView {
   _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-  self.rightView.faceImageView.image = [UIImage imageNamed:@"bieber_profile.jpg"];
+  self.rightView.faceImageView.image = [self getNewOpponent];
   self.rightView.canvas = self.view;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
@@ -199,8 +212,16 @@
     NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
     [[NSUserDefaults standardUserDefaults] setObject:responseDict forKey:@"currentUserDictionary"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+  } else if(request == _friendsRequest) {
+    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
+    NSArray *responseArray = [responseDict objectForKey:@"data"];
+    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
+    
+    NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
   }
+
 }
 
 /*!

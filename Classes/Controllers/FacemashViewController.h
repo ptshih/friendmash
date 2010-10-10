@@ -18,6 +18,7 @@
 
 @interface FacemashViewController : UIViewController <OBClientOperationDelegate, OBOAuthServiceDelegate, FaceViewDelegate> {
   OBOAuth2Request *_currentUserRequest;
+  OBOAuth2Request *_friendsRequest;
   FaceView *_leftView;
   FaceView *_rightView;
 }
