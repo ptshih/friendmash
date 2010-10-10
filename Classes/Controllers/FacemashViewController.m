@@ -125,6 +125,9 @@
   
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  if (friendsArray == nil) {
+    return;
+  }
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
@@ -141,6 +144,9 @@
 
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  if (friendsArray == nil) {
+    return;
+  }
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
