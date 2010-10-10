@@ -14,6 +14,7 @@
 - (void)animateToCenter;
 - (void)animateOffScreen;
 - (BOOL)wasFlicked:(UITouch *)touch;
+- (void)getPictureForFacebookId:(NSUInteger)facebookId;
 
 @end
 
@@ -46,15 +47,22 @@
 
 #pragma mark OBClientOperationDelegate
 - (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
+  self.isAnimating = YES;
 }
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  self.faceImageView.image = [UIImage imageWithData:[operation responseData]];
-  [_spinner stopAnimating];
+  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[operation responseData] waitUntilDone:YES];
+
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
   
+}
+
+- (void)loadNewFaceWithData:(NSData *)faceData {
+  self.faceImageView.image = [UIImage imageWithData:faceData];  
+  [_spinner stopAnimating];
+  self.isAnimating = NO;
 }
 /*
 // Only override drawRect: if you perform custom drawing.
