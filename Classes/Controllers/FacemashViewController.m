@@ -357,8 +357,8 @@
       
       if (array.array.count == 2) {
         //we're in business
-        OBFacebookUser *user1 = [context objectWithID:[array.array objectAtIndex:0]];
-        OBFacebookUser *user2 = [context objectWithID:[array.array objectAtIndex:1]];
+        OBFacebookUser *user1 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:0]];
+        OBFacebookUser *user2 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:1]];
         
         _leftUserId = [user1.facebookId intValue];
         _rightUserId = [user2.facebookId intValue];
