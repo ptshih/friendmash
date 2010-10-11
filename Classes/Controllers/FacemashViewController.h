@@ -20,6 +20,7 @@
   IBOutlet UIToolbar *_toolbar;
   OBOAuth2Request *_currentUserRequest;
   OBOAuth2Request *_friendsRequest;
+  NSMutableURLRequest *_resultsRequest;
   NSMutableURLRequest *_leftRequest;
   NSMutableURLRequest *_rightRequest;
   NSMutableURLRequest *_bothRequest;
@@ -31,6 +32,12 @@
 
 @property (nonatomic, retain) FaceView *leftView;
 @property (nonatomic, retain) FaceView *rightView;
+@property (nonatomic,retain) OBOAuth2Request *currentUserRequest;
+@property (nonatomic,retain) OBOAuth2Request *friendsRequest;
+@property (nonatomic,retain) NSMutableURLRequest *resultsRequest;
+@property (nonatomic, retain) NSMutableURLRequest *leftRequest;
+@property (nonatomic, retain) NSMutableURLRequest *rightRequest;
+@property (nonatomic, retain) NSMutableURLRequest *bothRequest;
 
 - (void)fbLogin;
 - (void)fbLogout;

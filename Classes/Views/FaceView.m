@@ -106,12 +106,16 @@
   UIImage *faceImage = [UIImage imageWithData:faceData];
   if(!faceImage) {
     NSLog(@"wtf");
+    [_spinner stopAnimating];
+    [_loadingView removeFromSuperview];
+     _imageLoaded = YES;
+    self.isAnimating = NO;
     return;
   }
   self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
   self.backgroundColor = [UIColor clearColor];
-  _imageLoaded = YES;
   [self resizeViewForFaceImage];
+   _imageLoaded = YES;
   [_spinner stopAnimating];
   [_loadingView removeFromSuperview];
   self.isAnimating = NO;

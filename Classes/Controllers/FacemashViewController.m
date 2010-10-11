@@ -42,12 +42,20 @@
  */
 - (void)loadAndShowLeftFaceView;
 - (void)loadAndShowRightFaceView;
+- (void)loadAndShowFaceViews;
+- (void)loadBothFaceViews;
 @end
 
 @implementation FacemashViewController
 
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
+@synthesize currentUserRequest = _currentUserRequest;
+@synthesize friendsRequest = _friendsRequest;
+@synthesize resultsRequest = _resultsRequest;
+@synthesize leftRequest = _leftRequest;
+@synthesize rightRequest = _rightRequest;
+@synthesize bothRequest = _bothRequest;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -108,8 +116,8 @@
 
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
-    _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-    _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
+    self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+    self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
     [self loadAndShowFaceViews];
   } else {
     if(_leftView) [self.leftView removeFromSuperview];
@@ -127,6 +135,20 @@
   return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:graphUrl]]];
 }
 
+- (void)prepareBothFaceViews {
+    [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
+    [self.rightView prepareFaceViewWithFacebookId:_rightUserId];
+}
+
+- (void)prepareLeftFaceView {
+  [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
+}
+
+- (void)prepareRightFaceView {
+
+  [self.rightView prepareFaceViewWithFacebookId:_rightUserId];
+}
+
 - (void)loadLeftFaceView {
   if(isDeviceIPad()) {
     _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0];
@@ -142,8 +164,6 @@
   } else {
     self.leftView.frame = CGRectMake(20, 6, self.leftView.frame.size.width, self.leftView.frame.size.height);
   }
-
-  _leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
   
   // Temp random
   /*
@@ -174,8 +194,6 @@
   } else {
     self.rightView.frame = CGRectMake(250, 6, self.rightView.frame.size.width, self.rightView.frame.size.height);
   }
-
-  _rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
 
   // Temp random
   /*
@@ -217,7 +235,7 @@
 }
 
 - (void)loadAndShowFaceViews {
-  if(_leftUserId == 0 || _rightUserId == 0) {
+  if(_leftUserId == 0 && _rightUserId == 0) {
     [self loadBothFaceViews];
   } else {
     [self loadAndShowLeftFaceView];
@@ -228,15 +246,21 @@
 - (void)loadAndShowLeftFaceView {
   [self loadLeftFaceView];
   [self showLeftFaceView];
+  self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
 }
 
 - (void)loadAndShowRightFaceView {
   [self loadRightFaceView];
   [self showRightFaceView];
+  self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
 }
 
 - (void)loadBothFaceViews {
-  _bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
+  [self loadLeftFaceView];
+  [self showLeftFaceView];
+  [self loadRightFaceView];
+  [self showRightFaceView];
+  self.bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
 }
 
 - (void)fbLogin {
@@ -270,8 +294,10 @@
 }
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
   if(faceView.isLeft) {
+    self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
     [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
   } else {
+    self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
     [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
   }
   [faceView removeFromSuperview];
@@ -287,11 +313,84 @@
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 
+- (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
+  if ([operation.request isEqual:self.currentUserRequest]) {
+    //this should be an object response
+    if ([response isKindOfClass:[OBClientObjectResponse class]]) {
+      OBClientObjectResponse *obj = (OBClientObjectResponse *)response;
+      
+      //get the entity id for the current user.
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:obj.entityID];
+      
+      [OBFacemashClient postUser:user withDelegate:self];
+      
+      [[NSUserDefaults standardUserDefaults] setObject:user.facebookId forKey:@"currentUserId"];
+    } else {
+      NSLog(@"Got the wrong response back for the current user request, should be an object response but was: %@", response);
+    }
+  } else if ([operation.request isEqual:self.friendsRequest]) {
+    //this operation should be a collection response
+    if ([response isKindOfClass:[OBClientCollectionResponse class]]) {
+      OBClientCollectionResponse *collection = (OBClientCollectionResponse *)response;
+      
+      //send the friends list up to the server
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      
+      NSMutableArray *friends = [NSMutableArray array];
+      for (NSManagedObjectID *objectID in collection.list) {
+        NSManagedObject *obj = [context objectWithID:objectID];
+        if (obj) {
+          [friends addObject:obj];
+        }
+      }
+      
+      //send the friends
+      NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+      [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
+    }
+  } else if ([operation.request isEqual:self.bothRequest]) {
+    if([response isKindOfClass:[OBClientArrayResponse class]]) {
+      OBClientArrayResponse *array = (OBClientArrayResponse *)response;
+      
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      
+      if (array.array.count == 2) {
+        //we're in business
+        OBFacebookUser *user1 = [context objectWithID:[array.array objectAtIndex:0]];
+        OBFacebookUser *user2 = [context objectWithID:[array.array objectAtIndex:1]];
+        
+        _leftUserId = [user1.facebookId intValue];
+        _rightUserId = [user2.facebookId intValue];
+        [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
+      }
+    }
+  } else if ([operation.request isEqual:self.leftRequest]) {
+    if([response isKindOfClass:[OBClientObjectResponse class]]) {
+      OBClientObjectResponse *object = (OBClientObjectResponse *)response;
+      //get the entity id for the current user.
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:object.entityID];
+      _leftUserId = [user.facebookId intValue];
+      [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
+    }
+  } else if ([operation.request isEqual:self.rightRequest]) {
+    if([response isKindOfClass:[OBClientObjectResponse class]]) {
+      OBClientObjectResponse *object = (OBClientObjectResponse *)response;
+      //get the entity id for the current user.
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:object.entityID];
+      _rightUserId = [user.facebookId intValue];
+      [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
+    }
+  }
+}
+
 /*!
  Called immediately after the request is sent if it is successful, i.e. hasOKHTTPResponse returns YES.
  */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  if(request == _currentUserRequest) {
+  if(request == self.currentUserRequest) {
     // Set the current user's info locally
 //    NSString *currentUserResponse = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
     NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
