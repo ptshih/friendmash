@@ -7,27 +7,30 @@
 //
 
 #import "FacemashAppDelegate.h"
-#import "FacemashViewController.h"
+#import "LauncherViewController.h"
 #import "Constants.h"
 
 @implementation FacemashAppDelegate
 
 @synthesize window;
 @synthesize navigationController = _navigationController;
-@synthesize facemashViewController = _facemashViewController;
+@synthesize launcherViewController = _launcherViewController;
 @synthesize currentUserDictionary = _currentUserDictionary;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
   if(isDeviceIPad()) {
-    _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPad" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
   } else {
-    _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
   }
 
-  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.facemashViewController];
+  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
   
   // Current User Dictionary
@@ -84,7 +87,7 @@
 
 - (void)dealloc {
   [_currentUserDictionary release];
-  [_facemashViewController release];
+  [_launcherViewController release];
   [_navigationController release];
   [window release];
   [super dealloc];

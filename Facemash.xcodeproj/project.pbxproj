@@ -40,6 +40,11 @@
 		25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */; };
 		25E05187125FCBD000CA6AC1 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */; };
 		25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */; };
+		25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E1C35D1263092D0052BE93 /* LauncherViewController.m */; };
+		25E1C36012630A9B0052BE93 /* LauncherViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */; };
+		25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */; };
+		25E1C59F126332350052BE93 /* female.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59D126332350052BE93 /* female.png */; };
+		25E1C5A0126332350052BE93 /* male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59E126332350052BE93 /* male.png */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +120,12 @@
 		25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPad.xib; sourceTree = "<group>"; };
 		25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPad.xib; sourceTree = "<group>"; };
 		25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPad.xib; sourceTree = "<group>"; };
+		25E1C35C1263092D0052BE93 /* LauncherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LauncherViewController.h; sourceTree = "<group>"; };
+		25E1C35D1263092D0052BE93 /* LauncherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LauncherViewController.m; sourceTree = "<group>"; };
+		25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPhone.xib; sourceTree = "<group>"; };
+		25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPad.xib; sourceTree = "<group>"; };
+		25E1C59D126332350052BE93 /* female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = female.png; sourceTree = "<group>"; };
+		25E1C59E126332350052BE93 /* male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = male.png; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Facemash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facemash_Prefix.pch; sourceTree = "<group>"; };
@@ -215,6 +226,8 @@
 		252E0FBF126083390008BD55 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				25E1C59D126332350052BE93 /* female.png */,
+				25E1C59E126332350052BE93 /* male.png */,
 				258632C4126090A400260ECB /* bieber_profile.jpg */,
 				258632C5126090A400260ECB /* mrt_profile.jpg */,
 				251EA3601262CB680055CFD2 /* Icon-Small.png */,
@@ -243,6 +256,8 @@
 			children = (
 				25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */,
 				25E05170125FCB7500CA6AC1 /* FacemashViewController.m */,
+				25E1C35C1263092D0052BE93 /* LauncherViewController.h */,
+				25E1C35D1263092D0052BE93 /* LauncherViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -280,6 +295,8 @@
 			children = (
 				251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */,
 				25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */,
+				25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */,
+				25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -439,6 +456,10 @@
 				251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */,
 				251EA3661262CB680055CFD2 /* Icon.png in Resources */,
 				251EA3671262CB680055CFD2 /* Icon@2x.png in Resources */,
+				25E1C36012630A9B0052BE93 /* LauncherViewController_iPhone.xib in Resources */,
+				25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */,
+				25E1C59F126332350052BE93 /* female.png in Resources */,
+				25E1C5A0126332350052BE93 /* male.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +478,7 @@
 				251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */,
 				251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */,
 				01C83D291262C0550008D4F8 /* OBControl.xcdatamodel in Sources */,
+				25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

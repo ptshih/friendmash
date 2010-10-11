@@ -9,17 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @class FacemashViewController;
+@class LauncherViewController;
 
 @interface FacemashAppDelegate : NSObject <UIApplicationDelegate> {
   UIWindow *window;
   UINavigationController *_navigationController;
-  FacemashViewController *_facemashViewController;
+  LauncherViewController *_launcherViewController;
   NSMutableDictionary *_currentUserDictionary;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) IBOutlet FacemashViewController *facemashViewController;
+@property (nonatomic, retain) IBOutlet LauncherViewController *launcherViewController;
 @property (nonatomic, retain) NSMutableDictionary *currentUserDictionary;
 
 @end

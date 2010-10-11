@@ -15,18 +15,6 @@
 @interface FacemashViewController (Private)
 
 /**
- Initiate a bind with Facebook for OAuth token
- */
-- (void)bindWithFacebook;
-
-/**
- This method checks to see if an OAuth token exists for FB.
- If a token exists, we are already bound and will load, position, and display the left/right faceViews.
- Also send a request to get an NSDictionary of the current user and store it in userDefaults.
- If a token does not exist, remove left/right views from superview and perform FB authorization.
- */
-- (void)checkFBAuthAndGetCurrentUser;
-/**
  Loads a FaceView from NIB and configures:
  canvas - this is our current frame
  delegate - our own view controller
@@ -50,8 +38,6 @@
 
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
-@synthesize currentUserRequest = _currentUserRequest;
-@synthesize friendsRequest = _friendsRequest;
 @synthesize resultsRequest = _resultsRequest;
 @synthesize leftRequest = _leftRequest;
 @synthesize rightRequest = _rightRequest;
@@ -79,13 +65,17 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"facemash", @"facemash");
+  self.navigationController.navigationBar.hidden = NO;
   _toolbar.tintColor = RGBCOLOR(59,89,152);
   
-  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
+//  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
+//  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
   
-  // Check token and authorize
-  [self bindWithFacebook];
+  [self loadAndShowFaceViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  
 }
 
 - (void)testRequest {
@@ -110,10 +100,7 @@
   [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] intValue] withArray:friendsList withDelegate:self];
 }
 
-- (void)bindWithFacebook {
-  [OBFacebookOAuthService bindWithDelegate:self andView:self.view]; 
-}
-
+/*
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
@@ -124,16 +111,17 @@
     if(_rightView) [self.rightView removeFromSuperview];
   } 
 }
+*/
 
-- (UIImage *)getNewOpponent {
-  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  if(!friendsArray) return [UIImage imageNamed:@"mrt_profile.jpg"];
-  NSInteger count = [friendsArray count];
-  float randomNum = arc4random() % count;
-  NSLog(@"rand: %g",randomNum);
-  NSString *graphUrl = [NSString stringWithFormat:@"https:/graph.facebook.com/%@/picture?type=large",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"]];
-  return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:graphUrl]]];
-}
+//- (UIImage *)getNewOpponent {
+//  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+//  if(!friendsArray) return [UIImage imageNamed:@"mrt_profile.jpg"];
+//  NSInteger count = [friendsArray count];
+//  float randomNum = arc4random() % count;
+//  NSLog(@"rand: %g",randomNum);
+//  NSString *graphUrl = [NSString stringWithFormat:@"https:/graph.facebook.com/%@/picture?type=large",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"]];
+//  return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:graphUrl]]];
+//}
 
 - (void)prepareBothFaceViews {
     [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
@@ -263,31 +251,6 @@
   self.bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
 }
 
-- (void)fbLogin {
-
-}
-
-- (void)fbLogout {
-  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
-  [logoutAlert show];
-  [logoutAlert autorelease];
-}
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      break;
-    case 1:
-      if(_leftView) [self.leftView removeFromSuperview];
-      if(_rightView) [self.rightView removeFromSuperview];
-      [OBFacebookOAuthService unbindWithDelegate:self];
-      break;
-    default:
-      break;
-  }
-}
-
 #pragma mark FaceViewDelegate
 - (void)faceViewWillAnimateOffScreen:(FaceView *)faceView {
 
@@ -314,42 +277,7 @@
 }
 
 - (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
-  if ([operation.request isEqual:self.currentUserRequest]) {
-    //this should be an object response
-    if ([response isKindOfClass:[OBClientObjectResponse class]]) {
-      OBClientObjectResponse *obj = (OBClientObjectResponse *)response;
-      
-      //get the entity id for the current user.
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:obj.entityID];
-      
-      [OBFacemashClient postUser:user withDelegate:self];
-      
-      [[NSUserDefaults standardUserDefaults] setObject:user.facebookId forKey:@"currentUserId"];
-    } else {
-      NSLog(@"Got the wrong response back for the current user request, should be an object response but was: %@", response);
-    }
-  } else if ([operation.request isEqual:self.friendsRequest]) {
-    //this operation should be a collection response
-    if ([response isKindOfClass:[OBClientCollectionResponse class]]) {
-      OBClientCollectionResponse *collection = (OBClientCollectionResponse *)response;
-      
-      //send the friends list up to the server
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      
-      NSMutableArray *friends = [NSMutableArray array];
-      for (NSManagedObjectID *objectID in collection.list) {
-        NSManagedObject *obj = [context objectWithID:objectID];
-        if (obj) {
-          [friends addObject:obj];
-        }
-      }
-      
-      //send the friends
-      NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      if(facebookId > 0) [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
-    }
-  } else if ([operation.request isEqual:self.bothRequest]) {
+  if ([operation.request isEqual:self.bothRequest]) {
     if([response isKindOfClass:[OBClientArrayResponse class]]) {
       OBClientArrayResponse *array = (OBClientArrayResponse *)response;
       
@@ -364,6 +292,7 @@
         _rightUserId = [user2.facebookId intValue];
         [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
       }
+      [context release];
     }
   } else if ([operation.request isEqual:self.leftRequest]) {
     if([response isKindOfClass:[OBClientObjectResponse class]]) {
@@ -384,6 +313,7 @@
         }
       }
       _leftUserId = [user.facebookId intValue];
+      [context release];
       [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
     }
   } else if ([operation.request isEqual:self.rightRequest]) {
@@ -405,6 +335,7 @@
         }
       }
       _rightUserId = [user.facebookId intValue];
+      [context release];
       [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
     }
   }
@@ -414,24 +345,6 @@
  Called immediately after the request is sent if it is successful, i.e. hasOKHTTPResponse returns YES.
  */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  if(request == self.currentUserRequest) {
-    // Set the current user's info locally
-//    NSString *currentUserResponse = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
-    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
-    [[NSUserDefaults standardUserDefaults] setObject:responseDict forKey:@"currentUserDictionary"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-  } else if(request == _friendsRequest) {
-    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
-    NSArray *responseArray = [responseDict objectForKey:@"data"];
-    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-//    NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
-  } else {
-    NSString *response = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
-    NSLog(@"Facemash string response: %@",response);
-  }
-
-
 }
 
 /*!
@@ -448,40 +361,6 @@
  */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
 
-}
-
-#pragma mark OBOAuthServiceDelegate
-- (void)oauthService:(Class)service didReceiveAccessToken:(OBOAuthToken *)accessToken {
-  NSLog(@"Got access token:%@ with key: %@ and secret: %@", accessToken, accessToken.key, accessToken.secret);
-  
-  //store the token
-  [OBOAuthToken persistTokens];
-  [self checkFBAuthAndGetCurrentUser];
-}
-
-- (void)dismissCredentialsView {
-  if (self.modalViewController) {
-    [self dismissModalViewControllerAnimated:YES];
-  }
-}
-
-- (void)oauthService:(Class)service didFailToAuthenticateWithError:(NSError *)error {
-  if ([[error domain] isEqualToString:OBOAuthServiceErrorDomain]) {
-    if ([error code] == OBOAuthServiceErrorInvalidCredentials) {
-      [self performSelectorOnMainThread:@selector(showBadCredentialsAlert) withObject:nil waitUntilDone:YES];
-    }
-  }
-}
-
-- (void)showBadCredentialsAlert {
-  NSString *title = [NSString stringWithFormat:NSLocalizedString(@"%@ Error", @"service error title format"), @"Facebook"];
-  NSString *message = NSLocalizedString(@"Error authenticating, please check your credentials and try again.", @"error bad credentials");
-  UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"ok button title") otherButtonTitles:nil] autorelease];
-  [alert show];
-}
-
-- (void)oauthServiceDidUnbind:(Class)service {
-  [self bindWithFacebook];
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -504,8 +383,6 @@
 
 
 - (void)dealloc {
-  [_leftView release];
-  [_rightView release];
   [super dealloc];
 }
 

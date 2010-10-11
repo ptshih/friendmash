@@ -93,7 +93,7 @@
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  NSLog(@"response: %@",[[NSString alloc] initWithData:[operation responseData] encoding:4]);
+  NSLog(@"response: %@",[[[NSString alloc] initWithData:[operation responseData] encoding:4] autorelease]);
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[operation responseData] waitUntilDone:YES];
 
 }
@@ -331,7 +331,7 @@
 }
 
 - (void)dealloc {
-  [_faceImageView release];
+  if(_faceImageView) [_faceImageView release];
   [super dealloc];
 }
 
