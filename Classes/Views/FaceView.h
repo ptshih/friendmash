@@ -34,7 +34,6 @@ typedef enum {
 @interface FaceView : UIView <OBClientOperationDelegate> {
   IBOutlet UIImageView *_faceImageView;
   IBOutlet UIActivityIndicatorView *_spinner;
-  IBOutlet UILabel *_faceName;
   IBOutlet UIView *_loadingView;
   UIView *_canvas;
   CGPoint defaultOrigin;
