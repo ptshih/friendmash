@@ -11,6 +11,9 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1991262ABF80055CFD2 /* UIImage+Resize.m */; };
+		251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */; };
+		251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */; };
 		252E0FC1126083390008BD55 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FC0126083390008BD55 /* Icon-72.png */; };
 		252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FE3126083CD0008BD55 /* Icon-Small-50.png */; };
 		258632C6126090A400260ECB /* bieber_profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 258632C4126090A400260ECB /* bieber_profile.jpg */; };
@@ -63,6 +66,12 @@
 		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		251EA1981262ABF80055CFD2 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		251EA1991262ABF80055CFD2 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		251EA19D1262AC230055CFD2 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		251EA1A01262AC380055CFD2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		252E0FC0126083390008BD55 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		252E0FE3126083CD0008BD55 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		258632C4126090A400260ECB /* bieber_profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bieber_profile.jpg; sourceTree = "<group>"; };
@@ -104,6 +113,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				251EA13D1262ABD60055CFD2 /* Vendor */,
 				25E0516E125FCB7500CA6AC1 /* Controllers */,
 				25E05171125FCB7500CA6AC1 /* Models */,
 				25E05172125FCB7500CA6AC1 /* Views */,
@@ -119,6 +129,19 @@
 				1D6058910D05DD3D006BFB54 /* Facemash.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		251EA13D1262ABD60055CFD2 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				251EA1981262ABF80055CFD2 /* UIImage+Resize.h */,
+				251EA1991262ABF80055CFD2 /* UIImage+Resize.m */,
+				251EA19D1262AC230055CFD2 /* UIImage+RoundedCorner.h */,
+				251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */,
+				251EA1A01262AC380055CFD2 /* UIImage+Alpha.h */,
+				251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */,
+			);
+			path = Vendor;
 			sourceTree = "<group>";
 		};
 		252E0FBF126083390008BD55 /* Assets */ = {
@@ -341,6 +364,9 @@
 				1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */,
 				25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */,
 				25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */,
+				251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */,
+				251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */,
+				251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

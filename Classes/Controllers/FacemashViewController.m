@@ -121,7 +121,7 @@
   self.leftView.canvas = self.view;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
-  self.leftView.frame = CGRectMake(40, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
+  self.leftView.frame = CGRectMake(48, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
   
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
@@ -140,7 +140,7 @@
   self.rightView.canvas = self.view;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
-  self.rightView.frame = CGRectMake(532, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
+  self.rightView.frame = CGRectMake(536, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
 
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];

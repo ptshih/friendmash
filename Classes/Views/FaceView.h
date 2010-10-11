@@ -40,6 +40,9 @@ typedef enum {
   CGPoint touchOrigin;
   BOOL _isLeft;
   BOOL _isAnimating;
+  BOOL _imageLoaded;
+  CGFloat _imageWidth;
+  CGFloat _imageHeight;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
 }

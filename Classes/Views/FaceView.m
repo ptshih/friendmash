@@ -7,6 +7,9 @@
 //
 
 #import "FaceView.h"
+#import "UIImage+Resize.h"
+#import "UIImage+Alpha.h"
+#import "UIImage+RoundedCorner.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface FaceView (Private)
@@ -20,6 +23,11 @@
  Resize the FaceView view/borders to fit the dimensions of the returned image
  */
 - (void)resizeViewForFaceImage;
+
+/**
+ Draw a 1px grey border with a 4px whitespace around the imageview
+ */
+- (void)drawBorderAroundImage;
 
 @end
 
@@ -35,10 +43,32 @@
   if ((self = [super initWithFrame:frame])) {
     // Initialization code
     currentAnimationType = 0;
+    _imageLoaded = NO;
     self.isAnimating = NO;
   }
   return self;
 }
+
+/*
+- (void)drawRect:(CGRect)rect {
+  if(!_imageLoaded) return;
+  return;
+  // Drawing code
+  CGContextRef c = UIGraphicsGetCurrentContext();
+  
+  CGContextSetRGBStrokeColor(c, 0.6, 0.6, 0.6, 1.0);
+  
+  CGContextBeginPath(c);
+  CGContextMoveToPoint(c, self.faceImageView.frame.origin.x - 5.0, self.faceImageView.frame.origin.y - 5.0);
+  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x + self.faceImageView.frame.size.width + 5.0, self.faceImageView.frame.origin.y - 5.0);
+  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x + self.faceImageView.frame.size.width + 5.0, self.faceImageView.frame.origin.y + self.faceImageView.frame.size.height + 5.0);
+  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x - 5.0, self.faceImageView.frame.origin.y + self.faceImageView.frame.size.height + 5.0);
+
+  CGContextClosePath(c);
+  CGContextSetLineWidth(c, 1.0); // this is set from now on until you explicitly change it
+  CGContextStrokePath(c);
+}
+ */
 
 - (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId {
   myCenter = self.center;
@@ -65,8 +95,10 @@
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
-  self.faceImageView.image = [UIImage imageWithData:faceData];
+  UIImage *faceImage = [UIImage imageWithData:faceData];
+  self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
   self.backgroundColor = [UIColor clearColor];
+  _imageLoaded = YES;
   [self resizeViewForFaceImage];
   [_spinner stopAnimating];
   self.isAnimating = NO;
@@ -78,7 +110,18 @@
   CGFloat aspectX = self.faceImageView.image.size.width / self.faceImageView.image.size.height;
   CGFloat aspectY = self.faceImageView.image.size.height / self.faceImageView.image.size.width;
 
-
+  if(imageWidth > imageHeight) {
+    
+  } else if(imageWidth < imageHeight) {
+    
+  } else {
+    _imageWidth = 430.0;
+    _imageHeight = 430.0;
+  }
+  
+  [self setNeedsDisplay];
+  
+  
 
 //  if(imageWidth > imageHeight) {
 //    CGFloat newHeight = floor(452 / aspectX) + 2;
@@ -99,6 +142,10 @@
   NSLog(@"frame width: %g, height: %g", self.frame.size.width, self.frame.size.height);
 
   // need to resize relative to aspect ratio
+  
+}
+
+- (void)drawBorderAroundImage {
   
 }
 
