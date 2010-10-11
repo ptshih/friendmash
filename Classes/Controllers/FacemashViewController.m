@@ -401,7 +401,7 @@
     NSArray *responseArray = [responseDict objectForKey:@"data"];
     [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
+//    NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
   } else {
     NSString *response = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
     NSLog(@"Facemash string response: %@",response);

@@ -169,10 +169,10 @@
   CGPoint location = [touch locationInView:self.canvas];
   CGFloat diffX = touchOrigin.x - location.x;
   CGFloat diffY = touchOrigin.y - location.y;
-  NSLog(@"diffX: %f, diffY: %f",diffX, diffY);
+//  NSLog(@"diffX: %f, diffY: %f",diffX, diffY);
   self.center = CGPointMake(self.center.x - diffX, self.center.y - diffY);
 
-  NSLog(@"touches moved to loc: %@, new center: %@",[NSValue valueWithCGPoint:location], [NSValue valueWithCGPoint:self.center]);
+//  NSLog(@"touches moved to loc: %@, new center: %@",[NSValue valueWithCGPoint:location], [NSValue valueWithCGPoint:self.center]);
   touchOrigin = [touch locationInView:self.canvas];
 }
 
