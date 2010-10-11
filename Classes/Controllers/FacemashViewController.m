@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "OBFacemashClient.h"
 #import "CJSONDeserializer.h"
+#import "OBCoreDataStack.h"
 
 @interface FacemashViewController (Private)
 /**

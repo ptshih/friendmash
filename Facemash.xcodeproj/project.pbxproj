@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01C83D1E1262C03B0008D4F8 /* OBFacebookUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D171262C03B0008D4F8 /* OBFacebookUser.json */; };
+		01C83D1F1262C03B0008D4F8 /* OBFoursquareUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */; };
+		01C83D201262C03B0008D4F8 /* OBFriend.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D191262C03B0008D4F8 /* OBFriend.json */; };
+		01C83D211262C03B0008D4F8 /* OBTwitterUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */; };
+		01C83D221262C03B0008D4F8 /* OBFacemashUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */; };
+		01C83D231262C03B0008D4F8 /* OBOAuthServiceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1C1262C03B0008D4F8 /* OBOAuthServiceConfig.json */; };
+		01C83D241262C03B0008D4F8 /* OBClient.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1D1262C03B0008D4F8 /* OBClient.json */; };
+		01C83D291262C0550008D4F8 /* OBControl.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 01C83D281262C0550008D4F8 /* OBControl.xcdatamodel */; };
 		1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* FacemashAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -61,6 +69,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01C83D171262C03B0008D4F8 /* OBFacebookUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFacebookUser.json; sourceTree = "<group>"; };
+		01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFoursquareUser.json; sourceTree = "<group>"; };
+		01C83D191262C03B0008D4F8 /* OBFriend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFriend.json; sourceTree = "<group>"; };
+		01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBTwitterUser.json; sourceTree = "<group>"; };
+		01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFacemashUser.json; sourceTree = "<group>"; };
+		01C83D1C1262C03B0008D4F8 /* OBOAuthServiceConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBOAuthServiceConfig.json; sourceTree = "<group>"; };
+		01C83D1D1262C03B0008D4F8 /* OBClient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBClient.json; sourceTree = "<group>"; };
+		01C83D281262C0550008D4F8 /* OBControl.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = OBControl.xcdatamodel; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* FacemashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
@@ -110,6 +126,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01C83D111262C02C0008D4F8 /* OBCommand */ = {
+			isa = PBXGroup;
+			children = (
+				01C83D271262C0550008D4F8 /* CoreData */,
+				01C83D151262C03B0008D4F8 /* Config */,
+			);
+			name = OBCommand;
+			sourceTree = "<group>";
+		};
+		01C83D151262C03B0008D4F8 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				01C83D161262C03B0008D4F8 /* Model */,
+				01C83D1C1262C03B0008D4F8 /* OBOAuthServiceConfig.json */,
+				01C83D1D1262C03B0008D4F8 /* OBClient.json */,
+			);
+			name = Config;
+			path = Classes/Vendor/OBCommand/Resources/Config;
+			sourceTree = "<group>";
+		};
+		01C83D161262C03B0008D4F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				01C83D171262C03B0008D4F8 /* OBFacebookUser.json */,
+				01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */,
+				01C83D191262C03B0008D4F8 /* OBFriend.json */,
+				01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */,
+				01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		01C83D271262C0550008D4F8 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				01C83D281262C0550008D4F8 /* OBControl.xcdatamodel */,
+			);
+			name = CoreData;
+			path = Classes/Vendor/OBCommand/Resources/CoreData;
+			sourceTree = "<group>";
+		};
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +300,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				01C83D111262C02C0008D4F8 /* OBCommand */,
 				252E0FBF126083390008BD55 /* Assets */,
 				25E05181125FCBD000CA6AC1 /* Nibs */,
 				8D1107310486CEB800E47090 /* Facemash-Info.plist */,
@@ -350,6 +408,13 @@
 				252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */,
 				258632C6126090A400260ECB /* bieber_profile.jpg in Resources */,
 				258632C7126090A400260ECB /* mrt_profile.jpg in Resources */,
+				01C83D1E1262C03B0008D4F8 /* OBFacebookUser.json in Resources */,
+				01C83D1F1262C03B0008D4F8 /* OBFoursquareUser.json in Resources */,
+				01C83D201262C03B0008D4F8 /* OBFriend.json in Resources */,
+				01C83D211262C03B0008D4F8 /* OBTwitterUser.json in Resources */,
+				01C83D221262C03B0008D4F8 /* OBFacemashUser.json in Resources */,
+				01C83D231262C03B0008D4F8 /* OBOAuthServiceConfig.json in Resources */,
+				01C83D241262C03B0008D4F8 /* OBClient.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +432,7 @@
 				251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */,
 				251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */,
 				251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */,
+				01C83D291262C0550008D4F8 /* OBControl.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
