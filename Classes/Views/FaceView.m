@@ -49,6 +49,10 @@
   return self;
 }
 
+- (void)awakeFromNib {
+  _loadingView.layer.cornerRadius = 5.0;
+}
+
 /*
 - (void)drawRect:(CGRect)rect {
   if(!_imageLoaded) return;
@@ -101,6 +105,7 @@
   _imageLoaded = YES;
   [self resizeViewForFaceImage];
   [_spinner stopAnimating];
+  [_loadingView removeFromSuperview];
   self.isAnimating = NO;
 }
 
