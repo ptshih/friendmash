@@ -370,7 +370,19 @@
       OBClientObjectResponse *object = (OBClientObjectResponse *)response;
       //get the entity id for the current user.
       NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:object.entityID];
+      NSError *error = nil;
+      OBFacebookUser *user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
+      if (error) {
+        NSLog(@"Error getting user with id: %@, error: %@", object.entityID, error);
+        
+        //try again
+        [context reset];
+        error = nil;
+        user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
+        if (error) {
+          NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
+        }
+      }
       _leftUserId = [user.facebookId intValue];
       [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
     }
@@ -379,7 +391,19 @@
       OBClientObjectResponse *object = (OBClientObjectResponse *)response;
       //get the entity id for the current user.
       NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:object.entityID];
+      NSError *error = nil;
+      OBFacebookUser *user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
+      if (error) {
+        NSLog(@"Error getting user with id: %@, error: %@", object.entityID, error);
+        
+        //try again
+        [context reset];
+        error = nil;
+        user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
+        if (error) {
+          NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
+        }
+      }
       _rightUserId = [user.facebookId intValue];
       [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
     }
