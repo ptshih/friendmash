@@ -34,6 +34,7 @@ typedef enum {
 @interface FaceView : UIView <OBClientOperationDelegate> {
   IBOutlet UIImageView *_faceImageView;
   IBOutlet UIActivityIndicatorView *_spinner;
+  IBOutlet UILabel *_faceName;
   UIView *_canvas;
   CGPoint defaultOrigin;
   CGPoint myCenter;
@@ -41,8 +42,6 @@ typedef enum {
   BOOL _isLeft;
   BOOL _isAnimating;
   BOOL _imageLoaded;
-  CGFloat _imageWidth;
-  CGFloat _imageHeight;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
 }

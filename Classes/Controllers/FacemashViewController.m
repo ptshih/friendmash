@@ -62,6 +62,7 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"facemash", @"facemash");
+  _toolbar.tintColor = RGBCOLOR(59,89,152);
   
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];

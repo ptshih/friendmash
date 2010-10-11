@@ -105,21 +105,12 @@
 }
 
 - (void)resizeViewForFaceImage {
-  CGFloat imageWidth = self.faceImageView.image.size.width;
-  CGFloat imageHeight = self.faceImageView.image.size.height;
-  CGFloat aspectX = self.faceImageView.image.size.width / self.faceImageView.image.size.height;
-  CGFloat aspectY = self.faceImageView.image.size.height / self.faceImageView.image.size.width;
-
-  if(imageWidth > imageHeight) {
-    
-  } else if(imageWidth < imageHeight) {
-    
-  } else {
-    _imageWidth = 430.0;
-    _imageHeight = 430.0;
-  }
+//  CGFloat imageWidth = self.faceImageView.image.size.width;
+//  CGFloat imageHeight = self.faceImageView.image.size.height;
+//  CGFloat aspectX = self.faceImageView.image.size.width / self.faceImageView.image.size.height;
+//  CGFloat aspectY = self.faceImageView.image.size.height / self.faceImageView.image.size.width;
   
-  [self setNeedsDisplay];
+//  [self setNeedsDisplay];
   
   
 

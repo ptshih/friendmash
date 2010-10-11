@@ -17,6 +17,7 @@
  */
 
 @interface FacemashViewController : UIViewController <OBClientOperationDelegate, OBOAuthServiceDelegate, FaceViewDelegate> {
+  IBOutlet UIToolbar *_toolbar;
   OBOAuth2Request *_currentUserRequest;
   OBOAuth2Request *_friendsRequest;
   FaceView *_leftView;
