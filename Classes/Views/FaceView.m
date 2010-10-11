@@ -16,6 +16,11 @@
 - (BOOL)wasFlicked:(UITouch *)touch;
 - (void)getPictureForFacebookId:(NSUInteger)facebookId;
 
+/**
+ Resize the FaceView view/borders to fit the dimensions of the returned image
+ */
+- (void)resizeViewForFaceImage;
+
 @end
 
 @implementation FaceView
@@ -60,17 +65,42 @@
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
-  self.faceImageView.image = [UIImage imageWithData:faceData];  
+  self.faceImageView.image = [UIImage imageWithData:faceData];
+  self.backgroundColor = [UIColor clearColor];
+  [self resizeViewForFaceImage];
   [_spinner stopAnimating];
   self.isAnimating = NO;
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+
+- (void)resizeViewForFaceImage {
+  CGFloat imageWidth = self.faceImageView.image.size.width;
+  CGFloat imageHeight = self.faceImageView.image.size.height;
+  CGFloat aspectX = self.faceImageView.image.size.width / self.faceImageView.image.size.height;
+  CGFloat aspectY = self.faceImageView.image.size.height / self.faceImageView.image.size.width;
+
+
+
+//  if(imageWidth > imageHeight) {
+//    CGFloat newHeight = floor(452 / aspectX) + 2;
+//    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y + ((452 - newHeight) / 4) , 452, newHeight);
+//    self.faceImageView.frame = CGRectMake(self.faceImageView.frame.origin.x, self.faceImageView.frame.origin.y, 440, floor(440 / aspectX));
+//    _borderView.frame = CGRectMake(_borderView.frame.origin.x, _borderView.frame.origin.y, 450, floor(450 / aspectX) + 1);
+//    
+//  } else if(imageWidth < imageHeight) {
+//    CGFloat newWidth = floor(452 / aspectY) + 2;
+//    self.frame = CGRectMake(self.frame.origin.x + ((452 - newWidth) / 4), self.frame.origin.y, newWidth, 452);
+//    self.faceImageView.frame = CGRectMake(self.faceImageView.frame.origin.x, self.faceImageView.frame.origin.y, floor(440 / aspectY), 440);
+//    _borderView.frame = CGRectMake(_borderView.frame.origin.x, _borderView.frame.origin.y, floor(450 / aspectY) + 1, 450);
+//  }
+
+  
+  NSLog(@"imageview width: %g, height: %g",self.faceImageView.frame.size.width, self.faceImageView.frame.size.height);
+  NSLog(@"image width: %g, height: %g",self.faceImageView.image.size.width, self.faceImageView.image.size.height);
+  NSLog(@"frame width: %g, height: %g", self.frame.size.width, self.frame.size.height);
+
+  // need to resize relative to aspect ratio
+  
 }
-*/
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
   if(self.isAnimating) return;
