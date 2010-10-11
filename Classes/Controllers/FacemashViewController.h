@@ -22,18 +22,21 @@
   NSMutableURLRequest *_leftRequest;
   NSMutableURLRequest *_rightRequest;
   NSMutableURLRequest *_bothRequest;
+  NSString *_gender;
   NSUInteger _leftUserId;
   NSUInteger _rightUserId;
+
   FaceView *_leftView;
   FaceView *_rightView;
 }
 
-@property (nonatomic, assign) FaceView *leftView;
-@property (nonatomic, assign) FaceView *rightView;
+@property (nonatomic,assign) FaceView *leftView;
+@property (nonatomic,assign) FaceView *rightView;
 @property (nonatomic,retain) NSMutableURLRequest *resultsRequest;
-@property (nonatomic, retain) NSMutableURLRequest *leftRequest;
-@property (nonatomic, retain) NSMutableURLRequest *rightRequest;
-@property (nonatomic, retain) NSMutableURLRequest *bothRequest;
+@property (nonatomic,retain) NSMutableURLRequest *leftRequest;
+@property (nonatomic,retain) NSMutableURLRequest *rightRequest;
+@property (nonatomic,retain) NSMutableURLRequest *bothRequest;
+@property (nonatomic,retain) NSString *gender;
 
 // Debug methods
 - (IBAction)sendMashResults;

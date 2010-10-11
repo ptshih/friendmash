@@ -27,8 +27,22 @@
 @property (nonatomic,retain) NSMutableURLRequest *postUserRequest;
 @property (nonatomic,retain) NSMutableURLRequest *postFriendsRequest;
 
+/**
+ Start mashing with gender = male
+ This will launch FacemashViewController and set the gender iVar to male for retrieving the first set
+ */
 - (IBAction)male;
+
+/**
+ Start mashing with gender = female
+ This will launch FacemashViewController and set the gender iVar to female for retrieving the first set
+ */
 - (IBAction)female;
+
+/**
+ Initiate logout from Facebook
+ This will punt us back to the FBLoginDialog
+ */
 - (IBAction)fbLogout;
 
 @end

@@ -27,7 +27,15 @@
  */
 - (void)checkAuthAndGetCurrentUser;
 
-- (void)launchFacemash;
+/**
+ This method creates and pushes the FacemashViewController and sets it's iVar to the designated gender
+ */
+- (void)launchFacemashWithGender:(NSString *)gender;
+
+/**
+ Shows the gender selection splash screen
+ */
+- (void)displayLauncher;
 
 @end
 
@@ -67,6 +75,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   self.navigationController.navigationBar.hidden = YES;
+  [self displayLauncher];
+}
+
+- (void)displayLauncher {
   if([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     _launcherView.hidden = NO;
     [_activityIndicator stopAnimating];
@@ -77,19 +89,20 @@
 }
 
 - (IBAction)male {
-  [self launchFacemash];
+  [self launchFacemashWithGender:@"male"];
 }
 - (IBAction)female {
-  [self launchFacemash];
+  [self launchFacemashWithGender:@"female"];
 }
 
-- (void)launchFacemash {
+- (void)launchFacemashWithGender:(NSString *)gender {
   FacemashViewController *fvc;
   if(isDeviceIPad()) {
     fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPad" bundle:nil];
   } else {
     fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
   }
+  fvc.gender = gender;
   [self.navigationController pushViewController:fvc animated:YES];
   [fvc release];
 }
@@ -102,7 +115,8 @@
 - (void)checkAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasSentFriendsList"]) {
-      [self performSelectorOnMainThread:@selector(launchFacemash) withObject:nil waitUntilDone:YES];
+//      [self performSelectorOnMainThread:@selector(launchFacemash) withObject:nil waitUntilDone:YES];
+      [self displayLauncher];
     } else {
       self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
       self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];

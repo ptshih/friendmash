@@ -42,6 +42,7 @@
 @synthesize leftRequest = _leftRequest;
 @synthesize rightRequest = _rightRequest;
 @synthesize bothRequest = _bothRequest;
+@synthesize gender = _gender;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -49,6 +50,7 @@
     // Custom initialization
     _leftUserId = 0;
     _rightUserId = 0;
+    _gender = @"male"; // male by default
   }
   return self;
 }
@@ -382,6 +384,7 @@
 
 
 - (void)dealloc {
+  [_gender release];
   [super dealloc];
 }
 

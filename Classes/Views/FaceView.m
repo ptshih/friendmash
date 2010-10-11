@@ -53,6 +53,7 @@
 
 - (void)awakeFromNib {
   _loadingView.layer.cornerRadius = 5.0;
+  self.userInteractionEnabled = NO;
 }
 
 /*
@@ -201,6 +202,9 @@
   }
 }
 
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+}
+
 - (BOOL)wasFlicked:(UITouch *)touch {
   CGPoint endPoint = [touch locationInView:self];
   CGPoint startPoint = [touch previousLocationInView:self];
@@ -325,15 +329,9 @@
   self.isAnimating = NO;
 }
 
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-  
-}
-
 - (void)dealloc {
   if(_faceImageView) [_faceImageView release];
   [super dealloc];
 }
-
 
 @end
