@@ -68,7 +68,7 @@
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
   
   // Check token and authorize
-  [self checkFBAuthAndGetCurrentUser];
+  [self bindWithFacebook];
 }
 
 - (void)testRequest {
@@ -93,6 +93,10 @@
   [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] intValue] withArray:friendsList withDelegate:self];
 }
 
+- (void)bindWithFacebook {
+  [OBFacebookOAuthService bindWithDelegate:self andView:self.view]; 
+}
+
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
@@ -102,7 +106,6 @@
   } else {
     if(_leftView) [self.leftView removeFromSuperview];
     if(_rightView) [self.rightView removeFromSuperview];
-    [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
   } 
 }
 
@@ -205,6 +208,8 @@
     case 0:
       break;
     case 1:
+      if(_leftView) [self.leftView removeFromSuperview];
+      if(_rightView) [self.rightView removeFromSuperview];
       [OBFacebookOAuthService unbindWithDelegate:self];
       break;
     default:
@@ -308,7 +313,7 @@
 }
 
 - (void)oauthServiceDidUnbind:(Class)service {
-  [self checkFBAuthAndGetCurrentUser];
+  [self bindWithFacebook];
 }
 
 // Override to allow orientations other than the default portrait orientation.
