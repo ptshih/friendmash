@@ -13,6 +13,12 @@
 #import "OBCoreDataStack.h"
 
 @interface FacemashViewController (Private)
+
+/**
+ Initiate a bind with Facebook for OAuth token
+ */
+- (void)bindWithFacebook;
+
 /**
  This method checks to see if an OAuth token exists for FB.
  If a token exists, we are already bound and will load, position, and display the left/right faceViews.
@@ -72,7 +78,7 @@
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
   
   // Check token and authorize
-  [self checkFBAuthAndGetCurrentUser];
+  [self bindWithFacebook];
 }
 
 - (void)testRequest {
@@ -97,6 +103,10 @@
   [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] intValue] withArray:friendsList withDelegate:self];
 }
 
+- (void)bindWithFacebook {
+  [OBFacebookOAuthService bindWithDelegate:self andView:self.view]; 
+}
+
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
     self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
@@ -106,7 +116,6 @@
   } else {
     if(_leftView) [self.leftView removeFromSuperview];
     if(_rightView) [self.rightView removeFromSuperview];
-    [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
   } 
 }
 
@@ -121,12 +130,21 @@
 }
 
 - (void)loadLeftFaceView {
-  _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
-//  self.leftView.faceImageView.image = [UIImage imageNamed:@"mrt_profile.jpg"];
+  if(isDeviceIPad()) {
+    _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0];
+  } else {
+    _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
+  }
+
   self.leftView.canvas = self.view;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
-  self.leftView.frame = CGRectMake(48, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
+  if(isDeviceIPad()) {
+    self.leftView.frame = CGRectMake(48, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
+  } else {
+    self.leftView.frame = CGRectMake(20, 6, self.leftView.frame.size.width, self.leftView.frame.size.height);
+  }
+
   
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
@@ -141,11 +159,21 @@
 }
 
 - (void)loadRightFaceView {
-  _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView" owner:self options:nil] objectAtIndex:0];
+  if(isDeviceIPad()) {
+    _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0];
+  } else {
+    _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
+  }
+
   self.rightView.canvas = self.view;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
-  self.rightView.frame = CGRectMake(536, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
+  if(isDeviceIPad()) {
+    self.rightView.frame = CGRectMake(536, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
+  } else {
+    self.rightView.frame = CGRectMake(250, 6, self.rightView.frame.size.width, self.rightView.frame.size.height);
+  }
+
 
   // Temp random
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
@@ -209,6 +237,8 @@
     case 0:
       break;
     case 1:
+      if(_leftView) [self.leftView removeFromSuperview];
+      if(_rightView) [self.rightView removeFromSuperview];
       [OBFacebookOAuthService unbindWithDelegate:self];
       break;
     default:
@@ -351,7 +381,7 @@
 }
 
 - (void)oauthServiceDidUnbind:(Class)service {
-  [self checkFBAuthAndGetCurrentUser];
+  [self bindWithFacebook];
 }
 
 // Override to allow orientations other than the default portrait orientation.
