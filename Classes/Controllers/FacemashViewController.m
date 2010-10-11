@@ -246,13 +246,13 @@
 - (void)loadAndShowLeftFaceView {
   [self loadLeftFaceView];
   [self showLeftFaceView];
-  self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
+  if(_rightUserId > 0) self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
 }
 
 - (void)loadAndShowRightFaceView {
   [self loadRightFaceView];
   [self showRightFaceView];
-  self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
+  if(_leftUserId > 0) self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
 }
 
 - (void)loadBothFaceViews {
@@ -294,10 +294,10 @@
 }
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
   if(faceView.isLeft) {
-    self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
+    if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
     [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
   } else {
-    self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
+    if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
     [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
   }
   [faceView removeFromSuperview];
@@ -347,7 +347,7 @@
       
       //send the friends
       NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
+      if(facebookId > 0) [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
     }
   } else if ([operation.request isEqual:self.bothRequest]) {
     if([response isKindOfClass:[OBClientArrayResponse class]]) {
