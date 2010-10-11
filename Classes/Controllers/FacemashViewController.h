@@ -20,6 +20,11 @@
   IBOutlet UIToolbar *_toolbar;
   OBOAuth2Request *_currentUserRequest;
   OBOAuth2Request *_friendsRequest;
+  NSMutableURLRequest *_leftRequest;
+  NSMutableURLRequest *_rightRequest;
+  NSMutableURLRequest *_bothRequest;
+  NSUInteger _leftUserId;
+  NSUInteger _rightUserId;
   FaceView *_leftView;
   FaceView *_rightView;
 }

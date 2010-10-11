@@ -53,6 +53,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
+    _leftUserId = 0;
+    _rightUserId = 0;
   }
   return self;
 }
@@ -108,8 +110,7 @@
   if([OBFacebookOAuthService isBound]) {
     _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
     _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
-    [self loadAndShowLeftFaceView];
-    [self loadAndShowRightFaceView];
+    [self loadAndShowFaceViews];
   } else {
     if(_leftView) [self.leftView removeFromSuperview];
     if(_rightView) [self.rightView removeFromSuperview];
@@ -142,8 +143,10 @@
     self.leftView.frame = CGRectMake(20, 6, self.leftView.frame.size.width, self.leftView.frame.size.height);
   }
 
+  _leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
   
   // Temp random
+  /*
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   if (friendsArray == nil) {
     return;
@@ -152,6 +155,7 @@
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
   [self.leftView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
+   */
   
 }
 
@@ -171,8 +175,10 @@
     self.rightView.frame = CGRectMake(250, 6, self.rightView.frame.size.width, self.rightView.frame.size.height);
   }
 
+  _rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
 
   // Temp random
+  /*
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   if (friendsArray == nil) {
     return;
@@ -180,7 +186,9 @@
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
+  
   [self.rightView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
+   */
 }
 
 - (void)showLeftFaceView {
@@ -208,6 +216,15 @@
 	[UIView commitAnimations];
 }
 
+- (void)loadAndShowFaceViews {
+  if(_leftUserId == 0 || _rightUserId == 0) {
+    [self loadBothFaceViews];
+  } else {
+    [self loadAndShowLeftFaceView];
+    [self loadAndShowRightFaceView];
+  }
+}
+
 - (void)loadAndShowLeftFaceView {
   [self loadLeftFaceView];
   [self showLeftFaceView];
@@ -216,6 +233,10 @@
 - (void)loadAndShowRightFaceView {
   [self loadRightFaceView];
   [self showRightFaceView];
+}
+
+- (void)loadBothFaceViews {
+  _bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
 }
 
 - (void)fbLogin {
@@ -281,8 +302,6 @@
     NSArray *responseArray = [responseDict objectForKey:@"data"];
     [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    
     NSLog(@"res: %@",[responseDict objectForKey:@"data"]);
   } else {
     NSString *response = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
