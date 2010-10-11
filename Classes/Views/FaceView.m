@@ -104,6 +104,10 @@
 - (void)loadNewFaceWithData:(NSData *)faceData {
 //  self.faceImageView.image = [UIImage imageWithData:faceData];
   UIImage *faceImage = [UIImage imageWithData:faceData];
+  if(!faceImage) {
+    NSLog(@"wtf");
+    return;
+  }
   self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
   self.backgroundColor = [UIColor clearColor];
   _imageLoaded = YES;

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "OBFacebookOAuthService.h"
-#import "OBFacemashUser.h"
 
 #define FLICK_THRESHOLD 20.0
 #define DRAG_THRESHOLD 80.0
