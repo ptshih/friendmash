@@ -11,7 +11,6 @@
 		01C83D1F1262C03B0008D4F8 /* OBFoursquareUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */; };
 		01C83D201262C03B0008D4F8 /* OBFriend.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D191262C03B0008D4F8 /* OBFriend.json */; };
 		01C83D211262C03B0008D4F8 /* OBTwitterUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */; };
-		01C83D221262C03B0008D4F8 /* OBFacemashUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */; };
 		01C83D231262C03B0008D4F8 /* OBOAuthServiceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1C1262C03B0008D4F8 /* OBOAuthServiceConfig.json */; };
 		01C83D241262C03B0008D4F8 /* OBClient.json in Resources */ = {isa = PBXBuildFile; fileRef = 01C83D1D1262C03B0008D4F8 /* OBClient.json */; };
 		01C83D291262C0550008D4F8 /* OBControl.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 01C83D281262C0550008D4F8 /* OBControl.xcdatamodel */; };
@@ -73,7 +72,6 @@
 		01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFoursquareUser.json; sourceTree = "<group>"; };
 		01C83D191262C03B0008D4F8 /* OBFriend.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFriend.json; sourceTree = "<group>"; };
 		01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBTwitterUser.json; sourceTree = "<group>"; };
-		01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBFacemashUser.json; sourceTree = "<group>"; };
 		01C83D1C1262C03B0008D4F8 /* OBOAuthServiceConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBOAuthServiceConfig.json; sourceTree = "<group>"; };
 		01C83D1D1262C03B0008D4F8 /* OBClient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OBClient.json; sourceTree = "<group>"; };
 		01C83D281262C0550008D4F8 /* OBControl.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = OBControl.xcdatamodel; sourceTree = "<group>"; };
@@ -153,7 +151,6 @@
 				01C83D181262C03B0008D4F8 /* OBFoursquareUser.json */,
 				01C83D191262C03B0008D4F8 /* OBFriend.json */,
 				01C83D1A1262C03B0008D4F8 /* OBTwitterUser.json */,
-				01C83D1B1262C03B0008D4F8 /* OBFacemashUser.json */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -412,7 +409,6 @@
 				01C83D1F1262C03B0008D4F8 /* OBFoursquareUser.json in Resources */,
 				01C83D201262C03B0008D4F8 /* OBFriend.json in Resources */,
 				01C83D211262C03B0008D4F8 /* OBTwitterUser.json in Resources */,
-				01C83D221262C03B0008D4F8 /* OBFacemashUser.json in Resources */,
 				01C83D231262C03B0008D4F8 /* OBOAuthServiceConfig.json in Resources */,
 				01C83D241262C03B0008D4F8 /* OBClient.json in Resources */,
 			);

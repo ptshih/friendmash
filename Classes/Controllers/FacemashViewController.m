@@ -42,6 +42,9 @@
 
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
+@synthesize currentUserRequest = _currentUserRequest;
+@synthesize friendsRequest = _friendsRequest;
+@synthesize matchRequest = _matchRequest;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -96,8 +99,8 @@
 
 - (void)checkFBAuthAndGetCurrentUser {
   if([OBFacebookOAuthService isBound]) {
-    _currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-    _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
+    self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+    self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
     [self loadAndShowLeftFaceView];
     [self loadAndShowRightFaceView];
   } else {
@@ -236,11 +239,50 @@
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 
+- (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
+  if ([operation.request isEqual:self.currentUserRequest]) {
+    //this should be an object response
+    if ([response isKindOfClass:[OBClientObjectResponse class]]) {
+      OBClientObjectResponse *obj = (OBClientObjectResponse *)response;
+      
+      //get the entity id for the current user.
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:obj.entityID];
+      
+      [OBFacemashClient postUser:user withDelegate:self];
+      
+      [[NSUserDefaults standardUserDefaults] setObject:user.facebookId forKey:@"currentUserId"];
+    } else {
+      NSLog(@"Got the wrong response back for the current user request, should be an object response but was: %@", response);
+    }
+  } else if ([operation.request isEqual:self.friendsRequest]) {
+    //this operation should be a collection response
+    if ([response isKindOfClass:[OBClientCollectionResponse class]]) {
+      OBClientCollectionResponse *collection = (OBClientCollectionResponse *)response;
+      
+      //send the friends list up to the server
+      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
+      
+      NSMutableArray *friends = [NSMutableArray array];
+      for (NSManagedObjectID *objectID in collection.list) {
+        NSManagedObject *obj = [context objectWithID:objectID];
+        if (obj) {
+          [friends addObject:obj];
+        }
+      }
+      
+      //send the friends
+      NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+      [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
+    }
+  }
+}
+
 /*!
  Called immediately after the request is sent if it is successful, i.e. hasOKHTTPResponse returns YES.
  */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  if(request == _currentUserRequest) {
+  if(request == self.currentUserRequest) {
     // Set the current user's info locally
 //    NSString *currentUserResponse = [[NSString alloc] initWithData:[operation responseData] encoding:NSUTF8StringEncoding];
     NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];

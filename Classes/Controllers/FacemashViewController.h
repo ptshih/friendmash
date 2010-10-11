@@ -20,12 +20,16 @@
   IBOutlet UIToolbar *_toolbar;
   OBOAuth2Request *_currentUserRequest;
   OBOAuth2Request *_friendsRequest;
+  OBOAuth2Request *_matchRequest;
   FaceView *_leftView;
   FaceView *_rightView;
 }
 
 @property (nonatomic, retain) FaceView *leftView;
 @property (nonatomic, retain) FaceView *rightView;
+@property (nonatomic,retain) OBOAuth2Request *currentUserRequest;
+@property (nonatomic,retain) OBOAuth2Request *friendsRequest;
+@property (nonatomic,retain) OBOAuth2Request *matchRequest;
 
 - (void)fbLogin;
 - (void)fbLogout;
