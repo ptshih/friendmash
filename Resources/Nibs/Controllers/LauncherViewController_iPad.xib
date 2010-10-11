@@ -45,7 +45,7 @@
 					<object class="IBUIActivityIndicatorView" id="604529841">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{493, 334}, {37, 37}}</string>
+						<string key="NSFrame">{{493, 356}, {37, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -60,7 +60,7 @@
 							<object class="IBUIButton" id="497120080">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{161, 172}, {160, 360}}</string>
+								<string key="NSFrame">{{161, 194}, {160, 360}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -91,7 +91,7 @@
 							<object class="IBUIButton" id="788873696">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{474, 495}, {75, 37}}</string>
+								<string key="NSFrame">{{474, 517}, {75, 37}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -110,7 +110,7 @@
 							<object class="IBUIButton" id="93529735">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{703, 172}, {160, 360}}</string>
+								<string key="NSFrame">{{703, 194}, {160, 360}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -129,7 +129,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrameSize">{1024, 704}</string>
+						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -138,7 +138,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{1024, 704}</string>
+				<string key="NSFrameSize">{1024, 748}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -149,10 +149,6 @@
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
-				</object>
-				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
-					<int key="IBUIBarStyle">1</int>
-					<bool key="IBUIPrompted">NO</bool>
 				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">3</int>
@@ -302,7 +298,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>LauncherViewController</string>
 					<string>UIResponder</string>
-					<string>{{63, 176}, {1024, 768}}</string>
+					<string>{{37, 176}, {1024, 768}}</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBCocoaTouchFramework</string>
 						<integer value="2" key="NS.object.0"/>

@@ -58,8 +58,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"facemash", @"facemash");
-  self.navigationController.navigationBar.hidden = YES;
+//  self.title = NSLocalizedString(@"facemash", @"facemash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
   
   // Check token and authorize
@@ -67,6 +66,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  self.navigationController.navigationBar.hidden = YES;
   if([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     _launcherView.hidden = NO;
     [_activityIndicator stopAnimating];

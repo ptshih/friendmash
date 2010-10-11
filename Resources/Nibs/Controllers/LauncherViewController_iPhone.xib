@@ -45,7 +45,7 @@
 					<object class="IBUIActivityIndicatorView" id="512703835">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{221, 110}, {37, 37}}</string>
+						<string key="NSFrame">{{221, 132}, {37, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -60,7 +60,7 @@
 							<object class="IBUIButton" id="2069835">
 								<reference key="NSNextResponder" ref="793705269"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{66, 38}, {80, 180}}</string>
+								<string key="NSFrame">{{66, 60}, {80, 180}}</string>
 								<reference key="NSSuperview" ref="793705269"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -91,7 +91,7 @@
 							<object class="IBUIButton" id="518853438">
 								<reference key="NSNextResponder" ref="793705269"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{202, 181}, {75, 37}}</string>
+								<string key="NSFrame">{{202, 203}, {75, 37}}</string>
 								<reference key="NSSuperview" ref="793705269"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -110,7 +110,7 @@
 							<object class="IBUIButton" id="130532155">
 								<reference key="NSNextResponder" ref="793705269"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{333, 38}, {80, 180}}</string>
+								<string key="NSFrame">{{333, 60}, {80, 180}}</string>
 								<reference key="NSSuperview" ref="793705269"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -129,7 +129,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrameSize">{480, 256}</string>
+						<string key="NSFrameSize">{480, 300}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -138,7 +138,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{480, 256}</string>
+				<string key="NSFrameSize">{480, 300}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -149,10 +149,6 @@
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
-				</object>
-				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
-					<int key="IBUIBarStyle">1</int>
-					<bool key="IBUIPrompted">NO</bool>
 				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">3</int>

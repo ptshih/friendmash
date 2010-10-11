@@ -65,7 +65,6 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"facemash", @"facemash");
-  self.navigationController.navigationBar.hidden = NO;
   _toolbar.tintColor = RGBCOLOR(59,89,152);
   
 //  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
@@ -75,7 +74,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  
+  self.navigationController.navigationBar.hidden = NO;
 }
 
 - (void)testRequest {
