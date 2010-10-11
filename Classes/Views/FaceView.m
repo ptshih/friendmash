@@ -7,10 +7,12 @@
 //
 
 #import "FaceView.h"
-#import "UIImage+Resize.h"
-#import "UIImage+Alpha.h"
 #import "UIImage+RoundedCorner.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Constants.h"
+
+#define IPAD_FRAME_WIDTH 1024.0
+#define IPHONE_FRAME_WIDTH 480.0
 
 @interface FaceView (Private)
 
@@ -91,6 +93,7 @@
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
+  NSLog(@"response: %@",[[NSString alloc] initWithData:[operation responseData] encoding:4]);
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[operation responseData] waitUntilDone:YES];
 
 }
@@ -99,6 +102,7 @@
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
+//  self.faceImageView.image = [UIImage imageWithData:faceData];
   UIImage *faceImage = [UIImage imageWithData:faceData];
   self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
   self.backgroundColor = [UIColor clearColor];
@@ -170,11 +174,19 @@
   BOOL flicked = [self wasFlicked:touch];
   NSLog(@"was flicked: %d",flicked);
 //  self.center = defaultOrigin;
+  
+  CGFloat frameWidth;
+  if(isDeviceIPad()) {
+    frameWidth = IPAD_FRAME_WIDTH;
+  } else {
+    frameWidth = IPHONE_FRAME_WIDTH;
+  }
+
   if(flicked) {
     [self animateOffScreen];
   } else if((self.center.x - DRAG_THRESHOLD) <= 0.0 && self.isLeft) {
     [self animateOffScreen];
-  } else if((self.center.x + DRAG_THRESHOLD) >= 1024.0 && !self.isLeft) {  
+  } else if((self.center.x + DRAG_THRESHOLD) >= frameWidth && !self.isLeft) {  
     [self animateOffScreen];
   } else {
     [self animateToCenter];

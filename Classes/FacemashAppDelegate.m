@@ -21,7 +21,12 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController" bundle:nil];
+  if(isDeviceIPad()) {
+    _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPad" bundle:nil];
+  } else {
+    _facemashViewController = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
+  }
+
   _navigationController = [[UINavigationController alloc] initWithRootViewController:self.facemashViewController];
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
   

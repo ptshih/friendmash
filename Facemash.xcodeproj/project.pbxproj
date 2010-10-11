@@ -14,6 +14,13 @@
 		251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1991262ABF80055CFD2 /* UIImage+Resize.m */; };
 		251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */; };
 		251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */; };
+		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
+		251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */; };
+		251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */; };
+		251EA3641262CB680055CFD2 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3601262CB680055CFD2 /* Icon-Small.png */; };
+		251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3611262CB680055CFD2 /* Icon-Small@2x.png */; };
+		251EA3661262CB680055CFD2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3621262CB680055CFD2 /* Icon.png */; };
+		251EA3671262CB680055CFD2 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3631262CB680055CFD2 /* Icon@2x.png */; };
 		252E0FC1126083390008BD55 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FC0126083390008BD55 /* Icon-72.png */; };
 		252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FE3126083CD0008BD55 /* Icon-Small-50.png */; };
 		258632C6126090A400260ECB /* bieber_profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 258632C4126090A400260ECB /* bieber_profile.jpg */; };
@@ -23,9 +30,9 @@
 		25BEC25E1260626400E18F34 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEC25D1260626400E18F34 /* QuartzCore.framework */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
-		25E05186125FCBD000CA6AC1 /* FacemashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController.xib */; };
-		25E05187125FCBD000CA6AC1 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05184125FCBD000CA6AC1 /* MainWindow.xib */; };
-		25E05189125FCBE300CA6AC1 /* FaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05188125FCBE300CA6AC1 /* FaceView.xib */; };
+		25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */; };
+		25E05187125FCBD000CA6AC1 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */; };
+		25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +79,13 @@
 		251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		251EA1A01262AC380055CFD2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
+		251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPhone.xib; sourceTree = "<group>"; };
+		251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPhone.xib; sourceTree = "<group>"; };
+		251EA3601262CB680055CFD2 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		251EA3611262CB680055CFD2 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		251EA3621262CB680055CFD2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		251EA3631262CB680055CFD2 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		252E0FC0126083390008BD55 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		252E0FE3126083CD0008BD55 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		258632C4126090A400260ECB /* bieber_profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bieber_profile.jpg; sourceTree = "<group>"; };
@@ -84,9 +98,9 @@
 		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
 		25E05176125FCB8F00CA6AC1 /* FaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceView.h; sourceTree = "<group>"; };
 		25E05177125FCB8F00CA6AC1 /* FaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceView.m; sourceTree = "<group>"; };
-		25E05183125FCBD000CA6AC1 /* FacemashViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController.xib; sourceTree = "<group>"; };
-		25E05184125FCBD000CA6AC1 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		25E05188125FCBE300CA6AC1 /* FaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView.xib; sourceTree = "<group>"; };
+		25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPad.xib; sourceTree = "<group>"; };
+		25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPad.xib; sourceTree = "<group>"; };
+		25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPad.xib; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Facemash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facemash_Prefix.pch; sourceTree = "<group>"; };
@@ -149,6 +163,10 @@
 			children = (
 				258632C4126090A400260ECB /* bieber_profile.jpg */,
 				258632C5126090A400260ECB /* mrt_profile.jpg */,
+				251EA3601262CB680055CFD2 /* Icon-Small.png */,
+				251EA3611262CB680055CFD2 /* Icon-Small@2x.png */,
+				251EA3621262CB680055CFD2 /* Icon.png */,
+				251EA3631262CB680055CFD2 /* Icon@2x.png */,
 				252E0FE3126083CD0008BD55 /* Icon-Small-50.png */,
 				252E0FC0126083390008BD55 /* Icon-72.png */,
 			);
@@ -196,7 +214,8 @@
 			children = (
 				25E05182125FCBD000CA6AC1 /* Controllers */,
 				25E05185125FCBD000CA6AC1 /* Views */,
-				25E05184125FCBD000CA6AC1 /* MainWindow.xib */,
+				251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */,
+				25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */,
 			);
 			name = Nibs;
 			path = Resources/Nibs;
@@ -205,7 +224,8 @@
 		25E05182125FCBD000CA6AC1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				25E05183125FCBD000CA6AC1 /* FacemashViewController.xib */,
+				251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */,
+				25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -213,7 +233,8 @@
 		25E05185125FCBD000CA6AC1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				25E05188125FCBE300CA6AC1 /* FaceView.xib */,
+				251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */,
+				25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -343,13 +364,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25E05186125FCBD000CA6AC1 /* FacemashViewController.xib in Resources */,
-				25E05187125FCBD000CA6AC1 /* MainWindow.xib in Resources */,
-				25E05189125FCBE300CA6AC1 /* FaceView.xib in Resources */,
+				25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */,
+				25E05187125FCBD000CA6AC1 /* MainWindow_iPad.xib in Resources */,
+				25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */,
 				252E0FC1126083390008BD55 /* Icon-72.png in Resources */,
 				252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */,
 				258632C6126090A400260ECB /* bieber_profile.jpg in Resources */,
 				258632C7126090A400260ECB /* mrt_profile.jpg in Resources */,
+				251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */,
+				251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */,
+				251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */,
+				251EA3641262CB680055CFD2 /* Icon-Small.png in Resources */,
+				251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */,
+				251EA3661262CB680055CFD2 /* Icon.png in Resources */,
+				251EA3671262CB680055CFD2 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +419,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
 				INFOPLIST_FILE = "Facemash-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				PRODUCT_NAME = Facemash;
 				SDKROOT = iphoneos;
 			};
@@ -405,7 +433,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
 				INFOPLIST_FILE = "Facemash-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				PRODUCT_NAME = Facemash;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -421,13 +449,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Classes/Vendor/OBCommand/Classes/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -441,11 +470,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Classes/Vendor/OBCommand/Classes/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos4.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
