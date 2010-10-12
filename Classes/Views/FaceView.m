@@ -116,7 +116,7 @@
   } else {
 #ifdef USE_ROUNDED_CORNERS
 //    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
-    self.faceImageView.image = [ImageManipulator makeRoundCornerImage:faceImage :5 :5];
+    self.faceImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:5 withCornerHeight:5];
 #else
     self.faceImageView.image = faceImage;
 #endif

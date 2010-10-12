@@ -31,15 +31,12 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWi
   CGContextRestoreGState(context);
 }
 
-+(UIImage *)makeRoundCornerImage : (UIImage*) img : (int) cornerWidth : (int) cornerHeight
-{
++ (UIImage *)roundCornerImageWithImage:(UIImage*)img withCornerWidth:(NSUInteger)cornerWidth withCornerHeight:(NSUInteger)cornerHeight {
 	UIImage * newImage = nil;
   
-	if( nil != img)
-	{
-		NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-		int w = img.size.width;
-		int h = img.size.height;
+	if(img){
+		NSUInteger w = img.size.width;
+		NSUInteger h = img.size.height;
     
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 		CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst);
@@ -55,12 +52,9 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWi
 		CGImageRef imageMasked = CGBitmapContextCreateImage(context);
 		CGContextRelease(context);
 		CGColorSpaceRelease(colorSpace);
-		[img release];
     
-		newImage = [[UIImage imageWithCGImage:imageMasked] retain];
+		newImage = [UIImage imageWithCGImage:imageMasked];
 		CGImageRelease(imageMasked);
-    
-		[pool release];
 	}
   
   return newImage;

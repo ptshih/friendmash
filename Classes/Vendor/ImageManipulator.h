@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface ImageManipulator : NSObject {
+  
 }
-+(UIImage *)makeRoundCornerImage:(UIImage*)img :(int) cornerWidth :(int) cornerHeight;
+
++ (UIImage *)roundCornerImageWithImage:(UIImage*)img withCornerWidth:(NSUInteger)cornerWidth withCornerHeight:(NSUInteger)cornerHeight;
+
 @end
