@@ -16,6 +16,7 @@
 @synthesize navigationController = _navigationController;
 @synthesize launcherViewController = _launcherViewController;
 @synthesize currentUserDictionary = _currentUserDictionary;
+@synthesize touchActive = _touchActive;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -24,6 +25,7 @@
   // DEBUG
 //  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriedsList"];
   
+  _touchActive = NO;
   
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];

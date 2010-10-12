@@ -17,6 +17,7 @@
  API: graph.facebook.com/{userId}/picture?type=large
  */
 @class FaceView;
+@class FacemashViewController;
 
 @protocol FaceViewDelegate <NSObject>
 @optional
@@ -44,6 +45,7 @@ typedef enum {
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
   NSString *_facebookId;
+  BOOL _touchAllowed;
 }
 
 @property (nonatomic, retain) UIImageView *faceImageView;

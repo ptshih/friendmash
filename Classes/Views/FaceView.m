@@ -7,7 +7,6 @@
 //
 
 #import "FaceView.h"
-//#import "UIImage+RoundedCorner.h"
 #import "ImageManipulator.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
@@ -21,16 +20,6 @@
 - (void)animateOffScreen;
 - (BOOL)wasFlicked:(UITouch *)touch;
 - (void)getPictureForFacebookId:(NSString *)facebookId;
-
-/**
- Resize the FaceView view/borders to fit the dimensions of the returned image
- */
-- (void)resizeViewForFaceImage;
-
-/**
- Draw a 1px grey border with a 4px whitespace around the imageview
- */
-- (void)drawBorderAroundImage;
 
 @end
 
@@ -49,6 +38,7 @@
     _imageLoaded = NO;
     _facebookId = 0;
     self.isAnimating = NO;
+    _touchAllowed = YES;
   }
   return self;
 }
@@ -57,27 +47,6 @@
   _loadingView.layer.cornerRadius = 5.0;
   self.userInteractionEnabled = NO;
 }
-
-/*
-- (void)drawRect:(CGRect)rect {
-  if(!_imageLoaded) return;
-  return;
-  // Drawing code
-  CGContextRef c = UIGraphicsGetCurrentContext();
-  
-  CGContextSetRGBStrokeColor(c, 0.6, 0.6, 0.6, 1.0);
-  
-  CGContextBeginPath(c);
-  CGContextMoveToPoint(c, self.faceImageView.frame.origin.x - 5.0, self.faceImageView.frame.origin.y - 5.0);
-  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x + self.faceImageView.frame.size.width + 5.0, self.faceImageView.frame.origin.y - 5.0);
-  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x + self.faceImageView.frame.size.width + 5.0, self.faceImageView.frame.origin.y + self.faceImageView.frame.size.height + 5.0);
-  CGContextAddLineToPoint(c, self.faceImageView.frame.origin.x - 5.0, self.faceImageView.frame.origin.y + self.faceImageView.frame.size.height + 5.0);
-
-  CGContextClosePath(c);
-  CGContextSetLineWidth(c, 1.0); // this is set from now on until you explicitly change it
-  CGContextStrokePath(c);
-}
- */
 
 - (void)prepareFaceViewWithFacebookId:(NSString *)facebookId {
   _facebookId = facebookId;
@@ -92,7 +61,6 @@
 
 #pragma mark OBClientOperationDelegate
 - (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
-  self.isAnimating = YES;
 }
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
@@ -121,59 +89,27 @@
     self.faceImageView.image = faceImage;
 #endif
     self.backgroundColor = [UIColor clearColor];
-    [self resizeViewForFaceImage];
     _imageLoaded = YES;
     [_spinner stopAnimating];
     [_loadingView removeFromSuperview];
-    self.isAnimating = NO;
   }
   self.userInteractionEnabled = YES;
-}
-
-- (void)resizeViewForFaceImage {
-//  CGFloat imageWidth = self.faceImageView.image.size.width;
-//  CGFloat imageHeight = self.faceImageView.image.size.height;
-//  CGFloat aspectX = self.faceImageView.image.size.width / self.faceImageView.image.size.height;
-//  CGFloat aspectY = self.faceImageView.image.size.height / self.faceImageView.image.size.width;
-  
-//  [self setNeedsDisplay];
-  
-  
-
-//  if(imageWidth > imageHeight) {
-//    CGFloat newHeight = floor(452 / aspectX) + 2;
-//    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y + ((452 - newHeight) / 4) , 452, newHeight);
-//    self.faceImageView.frame = CGRectMake(self.faceImageView.frame.origin.x, self.faceImageView.frame.origin.y, 440, floor(440 / aspectX));
-//    _borderView.frame = CGRectMake(_borderView.frame.origin.x, _borderView.frame.origin.y, 450, floor(450 / aspectX) + 1);
-//    
-//  } else if(imageWidth < imageHeight) {
-//    CGFloat newWidth = floor(452 / aspectY) + 2;
-//    self.frame = CGRectMake(self.frame.origin.x + ((452 - newWidth) / 4), self.frame.origin.y, newWidth, 452);
-//    self.faceImageView.frame = CGRectMake(self.faceImageView.frame.origin.x, self.faceImageView.frame.origin.y, floor(440 / aspectY), 440);
-//    _borderView.frame = CGRectMake(_borderView.frame.origin.x, _borderView.frame.origin.y, floor(450 / aspectY) + 1, 450);
-//  }
-
-  
-  NSLog(@"imageview width: %g, height: %g",self.faceImageView.frame.size.width, self.faceImageView.frame.size.height);
-  NSLog(@"image width: %g, height: %g",self.faceImageView.image.size.width, self.faceImageView.image.size.height);
-  NSLog(@"frame width: %g, height: %g", self.frame.size.width, self.frame.size.height);
-
-  // need to resize relative to aspect ratio
-  
-}
-
-- (void)drawBorderAroundImage {
-  
+  APP_DELEGATE.touchActive = NO;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  if(self.isAnimating) return;
-  [self.canvas bringSubviewToFront:self];
-  touchOrigin = [[touches anyObject] locationInView:self.canvas];
+  if(!APP_DELEGATE.touchActive) {
+    APP_DELEGATE.touchActive = YES;
+    _touchAllowed = YES;
+    [self.canvas bringSubviewToFront:self];
+    touchOrigin = [[touches anyObject] locationInView:self.canvas];
+  } else {
+    _touchAllowed = NO;
+  }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  if(self.isAnimating) return;
+  if(!_touchAllowed) return;
   UITouch *touch = [touches anyObject];
   CGPoint location = [touch locationInView:self.canvas];
   CGFloat diffX = touchOrigin.x - location.x;
@@ -186,7 +122,7 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  if(self.isAnimating) return;
+  if(!_touchAllowed) return;
   UITouch *touch = [touches anyObject];
   BOOL flicked = [self wasFlicked:touch];
   NSLog(@"was flicked: %d",flicked);
@@ -207,6 +143,8 @@
     [self animateOffScreen];
   } else {
     [self animateToCenter];
+    APP_DELEGATE.touchActive = NO;
+    _touchAllowed = NO;
   }
 }
 
@@ -229,7 +167,6 @@
 }
 
 - (void)animateOffScreen {
-  self.isAnimating = YES;
   CALayer *faceLayer = self.layer;
   
   // Create a keyframe animation to follow a path back to the center
@@ -271,7 +208,6 @@
 }
 
 - (void)animateToCenter {
-  self.isAnimating = YES;
   CALayer *faceLayer = self.layer;
   
   // Create a keyframe animation to follow a path back to the center
@@ -319,7 +255,6 @@
   currentAnimationType = 1;
 }
 
-
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
 	//Animation delegate method called when the animation's finished:
 	// restore the transform and reenable user interaction
@@ -334,7 +269,6 @@
       [self.delegate release];
     }
   }
-  self.isAnimating = NO;
 }
 
 - (void)dealloc {
