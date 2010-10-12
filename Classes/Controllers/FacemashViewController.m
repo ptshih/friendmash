@@ -83,7 +83,7 @@
 //  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
 //  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] intValue] withDelegate:self];
+  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withDelegate:self];
 }
 
 - (IBAction)sendMashResults {
@@ -92,13 +92,13 @@
 
 - (IBAction)sendMashRequest {
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] intValue] withDelegate:self];
+  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withDelegate:self];
 }
 
 - (IBAction)sendFriendsList {
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
   NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] intValue] withArray:friendsList withDelegate:self];
+  [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withArray:friendsList withDelegate:self];
 }
 
 /*
@@ -118,8 +118,8 @@
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
-  NSLog(@"rand: %g",randomNum);
-  return [[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue];
+  NSLog(@"found opponent with id: %d with name: %@",[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
+  return [[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue];
 }
 
 - (void)prepareBothFaceViews {
@@ -161,7 +161,7 @@
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
-  [self.leftView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
+  [self.leftView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue]];
    */
   
 }
@@ -192,7 +192,7 @@
   float randomNum = arc4random() % count;
   NSLog(@"rand: %g",randomNum);
   
-  [self.rightView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue]];
+  [self.rightView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue]];
    */
 }
 
@@ -289,9 +289,6 @@
 - (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
 }
 
-/*!
- Called when the operation fails to send the request, with the error object returned from NSURLConnection
- */
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 
@@ -307,8 +304,8 @@
         OBFacebookUser *user1 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:0]];
         OBFacebookUser *user2 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:1]];
         
-        _leftUserId = [user1.facebookId intValue];
-        _rightUserId = [user2.facebookId intValue];
+        _leftUserId = [user1.facebookId unsignedIntegerValue];
+        _rightUserId = [user2.facebookId unsignedIntegerValue];
         [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
       }
       [context release];
@@ -331,7 +328,7 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _leftUserId = [user.facebookId intValue];
+      _leftUserId = [user.facebookId unsignedIntegerValue];
       [context release];
       [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
     }
@@ -353,31 +350,19 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _rightUserId = [user.facebookId intValue];
+      _rightUserId = [user.facebookId unsignedIntegerValue];
       [context release];
       [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
     }
   }
 }
 
-/*!
- Called immediately after the request is sent if it is successful, i.e. hasOKHTTPResponse returns YES.
- */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
 }
 
-/*!
- Called after the request has finished processing.  That is if the request is an OBClientRequest and a valid OBClientResponse object
- is returned the operation automatically invokes processResponseData on the response object and upon completion calls this delegate method.
- 
- This is the last stage in the request / response loop after which the operation will be popped out of the NSOperationQueue and deallocated.
- */
 - (void)obClientOperation:(OBClientOperation *)operation didFinishRequest:(NSURLRequest *)request {
 }
 
-/*!
- Called when the request completes but hasOKHTTPResponse returns NO.
- */
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
 
 }

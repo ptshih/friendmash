@@ -46,6 +46,7 @@
     // Initialization code
     currentAnimationType = 0;
     _imageLoaded = NO;
+    _facebookId = 0;
     self.isAnimating = NO;
   }
   return self;
@@ -78,9 +79,10 @@
  */
 
 - (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId {
+  _facebookId = facebookId;
   myCenter = self.center;
   defaultOrigin = self.center;
-  [self getPictureForFacebookId:facebookId];
+  [self getPictureForFacebookId:_facebookId];
 }
 
 - (void)getPictureForFacebookId:(NSUInteger)facebookId {
@@ -99,18 +101,17 @@
 
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
-  
+  NSLog(@"request failed for request: %@, with error: %@",request,error);
+  // Let's fire it off again
+  [OBFacebookOAuthService sendRequest:request withDelegate:self];
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
 //  self.faceImageView.image = [UIImage imageWithData:faceData];
   UIImage *faceImage = [UIImage imageWithData:faceData];
   if(!faceImage) {
-    NSLog(@"wtf");
-    [_spinner stopAnimating];
-    [_loadingView removeFromSuperview];
-     _imageLoaded = YES;
-    self.isAnimating = NO;
+    // somehow the data came back and failed, resend request
+    [self prepareFaceViewWithFacebookId:_facebookId];
   } else {
     self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
     self.backgroundColor = [UIColor clearColor];

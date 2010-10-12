@@ -43,6 +43,7 @@ typedef enum {
   BOOL _imageLoaded;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
+  NSUInteger _facebookId;
 }
 
 @property (nonatomic, retain) UIImageView *faceImageView;
