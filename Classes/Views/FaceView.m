@@ -27,6 +27,7 @@
 
 @synthesize faceImageView = _faceImageView;
 @synthesize canvas = _canvas;
+@synthesize toolbar = _toolbar;
 @synthesize isLeft = _isLeft;
 @synthesize isAnimating = _isAnimating;
 @synthesize delegate = _delegate;
@@ -102,6 +103,7 @@
     APP_DELEGATE.touchActive = YES;
     _touchAllowed = YES;
     [self.canvas bringSubviewToFront:self];
+    [self.canvas bringSubviewToFront:self.toolbar];
     touchOrigin = [[touches anyObject] locationInView:self.canvas];
   } else {
     _touchAllowed = NO;
@@ -129,17 +131,20 @@
 //  self.center = defaultOrigin;
   
   CGFloat frameWidth;
+  CGFloat dragThreshold;
   if(isDeviceIPad()) {
     frameWidth = IPAD_FRAME_WIDTH;
+    dragThreshold = IPAD_DRAG_THRESHOLD;
   } else {
     frameWidth = IPHONE_FRAME_WIDTH;
+    dragThreshold = IPHONE_DRAG_THRESHOLD;
   }
 
   if(flicked) {
     [self animateOffScreen];
-  } else if((self.center.x - DRAG_THRESHOLD) <= 0.0 && self.isLeft) {
+  } else if((self.center.x - dragThreshold) <= 0.0 && self.isLeft) {
     [self animateOffScreen];
-  } else if((self.center.x + DRAG_THRESHOLD) >= frameWidth && !self.isLeft) {  
+  } else if((self.center.x + dragThreshold) >= frameWidth && !self.isLeft) {  
     [self animateOffScreen];
   } else {
     [self animateToCenter];

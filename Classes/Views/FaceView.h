@@ -10,7 +10,8 @@
 #import "OBFacebookOAuthService.h"
 
 #define FLICK_THRESHOLD 20.0
-#define DRAG_THRESHOLD 80.0
+#define IPAD_DRAG_THRESHOLD 80.0
+#define IPHONE_DRAG_THRESHOLD 40.0
 
 /**
  Profile Pictures are 200px wide, variable height up to 602px
@@ -36,6 +37,7 @@ typedef enum {
   IBOutlet UIActivityIndicatorView *_spinner;
   IBOutlet UIView *_loadingView;
   UIView *_canvas;
+  UIToolbar *_toolbar;
   CGPoint defaultOrigin;
   CGPoint myCenter;
   CGPoint touchOrigin;
@@ -50,6 +52,7 @@ typedef enum {
 
 @property (nonatomic, retain) UIImageView *faceImageView;
 @property (nonatomic, assign) UIView *canvas;
+@property (nonatomic, assign) UIToolbar *toolbar;
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;

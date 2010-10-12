@@ -86,20 +86,20 @@
   [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] withDelegate:self];
 }
 
-- (IBAction)sendMashResults {
-  [OBFacemashClient postMashResultsForWinnerId:@"100000049912171" andLoserId:@"100000199684521" withDelegate:self];
-}
-
-- (IBAction)sendMashRequest {
-  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] withDelegate:self];
-}
-
-- (IBAction)sendFriendsList {
-  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  [OBFacemashClient postFriendsForFacebookId:[currentUserDictionary objectForKey:@"id"] withArray:friendsList withDelegate:self];
-}
+//- (IBAction)sendMashResults {
+//  [OBFacemashClient postMashResultsForWinnerId:@"100000049912171" andLoserId:@"100000199684521" withDelegate:self];
+//}
+//
+//- (IBAction)sendMashRequest {
+//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+//  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] stringValue] withDelegate:self];
+//}
+//
+//- (IBAction)sendFriendsList {
+//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+//  NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+//  [OBFacemashClient postFriendsForFacebookId:[currentUserDictionary objectForKey:@"id"] withArray:friendsList withDelegate:self];
+//}
 
 /*
 - (void)checkFBAuthAndGetCurrentUser {
@@ -146,6 +146,7 @@
   }
 
   self.leftView.canvas = self.view;
+  self.leftView.toolbar = _toolbar;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
   if(isDeviceIPad()) {
@@ -176,6 +177,7 @@
   }
 
   self.rightView.canvas = self.view;
+  self.rightView.toolbar = _toolbar;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
   if(isDeviceIPad()) {
@@ -200,7 +202,8 @@
 
 - (void)showLeftFaceView {
   self.leftView.alpha = 0.0;
-  [self.view addSubview:self.leftView];
+  [self.view insertSubview:self.leftView belowSubview:_toolbar];
+//  [self.view addSubview:self.leftView];
   [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -213,7 +216,8 @@
 
 - (void)showRightFaceView {
   self.rightView.alpha = 0.0;
-  [self.view addSubview:self.rightView];
+  [self.view insertSubview:self.rightView belowSubview:_toolbar];
+//  [self.view addSubview:self.rightView];
   [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];

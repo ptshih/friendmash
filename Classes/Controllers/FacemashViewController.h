@@ -39,9 +39,9 @@
 @property (nonatomic,retain) NSString *gender;
 
 // Debug methods
-- (IBAction)sendMashResults;
-- (IBAction)sendMashRequest;
-- (IBAction)sendFriendsList;
+//- (IBAction)sendMashResults;
+//- (IBAction)sendMashRequest;
+//- (IBAction)sendFriendsList;
 
 @end
 
