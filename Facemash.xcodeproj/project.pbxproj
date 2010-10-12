@@ -18,9 +18,6 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1991262ABF80055CFD2 /* UIImage+Resize.m */; };
-		251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */; };
-		251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */; };
 		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
 		251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */; };
 		251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */; };
@@ -45,6 +42,7 @@
 		25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */; };
 		25E1C59F126332350052BE93 /* female.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59D126332350052BE93 /* female.png */; };
 		25E1C5A0126332350052BE93 /* male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59E126332350052BE93 /* male.png */; };
+		25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EB5DD912643DE000619ECE /* ImageManipulator.m */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
@@ -92,12 +90,6 @@
 		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		251EA1981262ABF80055CFD2 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
-		251EA1991262ABF80055CFD2 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
-		251EA19D1262AC230055CFD2 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
-		251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
-		251EA1A01262AC380055CFD2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
-		251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
 		251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPhone.xib; sourceTree = "<group>"; };
 		251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPhone.xib; sourceTree = "<group>"; };
@@ -126,6 +118,8 @@
 		25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPad.xib; sourceTree = "<group>"; };
 		25E1C59D126332350052BE93 /* female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = female.png; sourceTree = "<group>"; };
 		25E1C59E126332350052BE93 /* male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = male.png; sourceTree = "<group>"; };
+		25EB5DD812643DE000619ECE /* ImageManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulator.h; sourceTree = "<group>"; };
+		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Facemash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facemash_Prefix.pch; sourceTree = "<group>"; };
@@ -213,12 +207,8 @@
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				251EA1981262ABF80055CFD2 /* UIImage+Resize.h */,
-				251EA1991262ABF80055CFD2 /* UIImage+Resize.m */,
-				251EA19D1262AC230055CFD2 /* UIImage+RoundedCorner.h */,
-				251EA19E1262AC230055CFD2 /* UIImage+RoundedCorner.m */,
-				251EA1A01262AC380055CFD2 /* UIImage+Alpha.h */,
-				251EA1A11262AC380055CFD2 /* UIImage+Alpha.m */,
+				25EB5DD812643DE000619ECE /* ImageManipulator.h */,
+				25EB5DD912643DE000619ECE /* ImageManipulator.m */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -474,11 +464,9 @@
 				1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */,
 				25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */,
 				25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */,
-				251EA19A1262ABF80055CFD2 /* UIImage+Resize.m in Sources */,
-				251EA19F1262AC230055CFD2 /* UIImage+RoundedCorner.m in Sources */,
-				251EA1A21262AC380055CFD2 /* UIImage+Alpha.m in Sources */,
 				01C83D291262C0550008D4F8 /* OBControl.xcdatamodel in Sources */,
 				25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */,
+				25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
