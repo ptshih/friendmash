@@ -16,6 +16,11 @@
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
  */
 
+typedef enum {
+  FacemashGameModeNormal = 0,
+  FacemashGameModeRandom = 1
+} FacemashGameMode;
+
 @interface FacemashViewController : UIViewController <OBClientOperationDelegate, FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
   NSMutableURLRequest *_resultsRequest;
@@ -23,6 +28,7 @@
   NSMutableURLRequest *_rightRequest;
   NSMutableURLRequest *_bothRequest;
   NSString *_gender;
+  NSUInteger _gameMode;
   NSString *_leftUserId;
   NSString *_rightUserId;
 
@@ -37,6 +43,7 @@
 @property (nonatomic,retain) NSMutableURLRequest *rightRequest;
 @property (nonatomic,retain) NSMutableURLRequest *bothRequest;
 @property (nonatomic,retain) NSString *gender;
+@property (nonatomic,assign) NSUInteger gameMode;
 
 // Debug methods
 //- (IBAction)sendMashResults;

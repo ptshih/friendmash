@@ -43,6 +43,7 @@
 @synthesize rightRequest = _rightRequest;
 @synthesize bothRequest = _bothRequest;
 @synthesize gender = _gender;
+@synthesize gameMode = _gameMode;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -51,6 +52,7 @@
     _leftUserId = nil;
     _rightUserId = nil;
     _gender = @"male"; // male by default
+    _gameMode = FacemashGameModeNormal; // normal game mode by default
   }
   return self;
 }
@@ -119,9 +121,15 @@
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
 //  randomNum = 128; // testing a VERY LARGE ID
-  NSLog(@"found opponent with id: %@ with name: %@",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
+  
+  if([[[friendsArray objectAtIndex:randomNum] objectForKey:@"gender"] isEqualToString:self.gender]) {
+  
+    NSLog(@"found opponent with id: %@ with name: %@",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
 //  return @"13710035";
-  return [[friendsArray objectAtIndex:randomNum] objectForKey:@"id"];
+    return [[friendsArray objectAtIndex:randomNum] objectForKey:@"id"];
+  } else {
+    return [self getNewOpponentId];
+  }
 }
 
 - (void)prepareBothFaceViews {
@@ -281,14 +289,27 @@
 #ifndef USE_OFFLINE_MODE
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
 #endif
-    [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
+    if(self.gameMode == FacemashGameModeNormal) {
+      [self.leftView removeFromSuperview];
+      [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
+    } else {
+      [self.leftView removeFromSuperview];
+      [self.rightView removeFromSuperview];
+      [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+    }
   } else {
 #ifndef USE_OFFLINE_MODE
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
 #endif
-    [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
+    if(self.gameMode == FacemashGameModeNormal) {
+      [self.rightView removeFromSuperview];
+      [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
+    } else {
+      [self.leftView removeFromSuperview];
+      [self.rightView removeFromSuperview];
+      [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+    }
   }
-  [faceView removeFromSuperview];
 }
 
 #pragma mark OBClientOperationDelegate

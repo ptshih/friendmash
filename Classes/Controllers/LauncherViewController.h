@@ -14,6 +14,7 @@
 @interface LauncherViewController : UIViewController <OBOAuthServiceDelegate, OBClientOperationDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
+  IBOutlet UISwitch *_gameModeSwitch;
   OBOAuth2Request *_currentUserRequest;
   OBOAuth2Request *_friendsRequest;
   NSMutableURLRequest *_postUserRequest;
