@@ -148,8 +148,6 @@
     [self animateOffScreen];
   } else {
     [self animateToCenter];
-    APP_DELEGATE.touchActive = NO;
-    _touchAllowed = NO;
   }
 }
 
@@ -172,6 +170,7 @@
 }
 
 - (void)animateOffScreen {
+  APP_DELEGATE.touchActive = YES;
   CALayer *faceLayer = self.layer;
   
   // Create a keyframe animation to follow a path back to the center
@@ -264,7 +263,6 @@
 	//Animation delegate method called when the animation's finished:
 	// restore the transform and reenable user interaction
 	self.transform = CGAffineTransformIdentity;
-	self.userInteractionEnabled = YES;
   if(currentAnimationType == FaceViewAnimationOffScreen) {
     if(self.delegate) {
       [self.delegate retain];
@@ -273,6 +271,9 @@
       }
       [self.delegate release];
     }
+  } else if(currentAnimationType = FaceViewAnimationCenter) {
+    APP_DELEGATE.touchActive = NO;
+    _touchAllowed = NO;
   }
 }
 

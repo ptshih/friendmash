@@ -10,8 +10,8 @@
 #import "OBFacebookOAuthService.h"
 
 #define FLICK_THRESHOLD 20.0
-#define IPAD_DRAG_THRESHOLD 80.0
-#define IPHONE_DRAG_THRESHOLD 40.0
+#define IPAD_DRAG_THRESHOLD 120.0
+#define IPHONE_DRAG_THRESHOLD 60.0
 
 /**
  Profile Pictures are 200px wide, variable height up to 602px
