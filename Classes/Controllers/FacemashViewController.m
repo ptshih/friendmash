@@ -114,15 +114,13 @@
 }
 */
 
-//- (UIImage *)getNewOpponent {
-//  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-//  if(!friendsArray) return [UIImage imageNamed:@"mrt_profile.jpg"];
-//  NSInteger count = [friendsArray count];
-//  float randomNum = arc4random() % count;
-//  NSLog(@"rand: %g",randomNum);
-//  NSString *graphUrl = [NSString stringWithFormat:@"https:/graph.facebook.com/%@/picture?type=large",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"]];
-//  return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:graphUrl]]];
-//}
+- (NSUInteger)getNewOpponentId {
+  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
+  NSInteger count = [friendsArray count];
+  float randomNum = arc4random() % count;
+  NSLog(@"rand: %g",randomNum);
+  return [[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] intValue];
+}
 
 - (void)prepareBothFaceViews {
     [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
@@ -235,13 +233,23 @@
 - (void)loadAndShowLeftFaceView {
   [self loadLeftFaceView];
   [self showLeftFaceView];
+#ifdef USE_OFFLINE_MODE
+  _leftUserId = [self getNewOpponentId];
+  [self prepareLeftFaceView];
+#else
   if(_rightUserId > 0) self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
+#endif
 }
 
 - (void)loadAndShowRightFaceView {
   [self loadRightFaceView];
   [self showRightFaceView];
+#ifdef USE_OFFLINE_MODE
+  _rightUserId = [self getNewOpponentId];
+  [self prepareRightFaceView];
+#else
   if(_leftUserId > 0) self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
+#endif
 }
 
 - (void)loadBothFaceViews {
@@ -249,7 +257,13 @@
   [self showLeftFaceView];
   [self loadRightFaceView];
   [self showRightFaceView];
+#ifdef USE_OFFLINE_MODE
+  _leftUserId = [self getNewOpponentId];
+  _rightUserId = [self getNewOpponentId];
+  [self prepareBothFaceViews];
+#else
   self.bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
+#endif
 }
 
 #pragma mark FaceViewDelegate
@@ -258,10 +272,14 @@
 }
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
   if(faceView.isLeft) {
+#ifndef USE_OFFLINE_MODE
     if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
+#endif
     [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
   } else {
+#ifndef USE_OFFLINE_MODE
     if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
+#endif
     [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
   }
   [faceView removeFromSuperview];

@@ -111,15 +111,16 @@
     [_loadingView removeFromSuperview];
      _imageLoaded = YES;
     self.isAnimating = NO;
-    return;
+  } else {
+    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
+    self.backgroundColor = [UIColor clearColor];
+    [self resizeViewForFaceImage];
+    _imageLoaded = YES;
+    [_spinner stopAnimating];
+    [_loadingView removeFromSuperview];
+    self.isAnimating = NO;
   }
-  self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
-  self.backgroundColor = [UIColor clearColor];
-  [self resizeViewForFaceImage];
-   _imageLoaded = YES;
-  [_spinner stopAnimating];
-  [_loadingView removeFromSuperview];
-  self.isAnimating = NO;
+  self.userInteractionEnabled = YES;
 }
 
 - (void)resizeViewForFaceImage {

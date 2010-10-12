@@ -21,8 +21,13 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  // DEBUG
+//  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriedsList"];
+  
+  
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  
   
   if(isDeviceIPad()) {
     _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];

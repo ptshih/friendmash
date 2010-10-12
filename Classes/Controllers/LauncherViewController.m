@@ -204,7 +204,9 @@
       NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
       OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:obj.entityID];
       
+#ifndef USE_OFFLINE_MODE
       self.postUserRequest = [OBFacemashClient postUser:user withDelegate:self];
+#endif
       
       [[NSUserDefaults standardUserDefaults] setObject:user.facebookId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
@@ -229,8 +231,10 @@
       }
       
       //send the friends
+#ifndef USE_OFFLINE_MODE
       NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
       if([facebookId intValue] > 0) self.postFriendsRequest = [OBFacemashClient postFriendsForFacebookId:[facebookId intValue] withArray:friends withDelegate:self];
+#endif
       [context release];
     }
   }
@@ -238,8 +242,16 @@
 
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
   if(request == self.postFriendsRequest) {
-    [self performSelectorOnMainThread:@selector(launchFacemash) withObject:nil waitUntilDone:YES];
+    [self displayLauncher];
   } else if(request == self.postUserRequest) {
+  } else if(request == self.friendsRequest) {
+    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
+    NSArray *responseArray = [responseDict objectForKey:@"data"];
+    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+#ifdef USE_OFFLINE_MODE
+    [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
+#endif
   }
 }
   
