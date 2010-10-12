@@ -23,8 +23,8 @@
   NSMutableURLRequest *_rightRequest;
   NSMutableURLRequest *_bothRequest;
   NSString *_gender;
-  NSUInteger _leftUserId;
-  NSUInteger _rightUserId;
+  NSString *_leftUserId;
+  NSString *_rightUserId;
 
   FaceView *_leftView;
   FaceView *_rightView;

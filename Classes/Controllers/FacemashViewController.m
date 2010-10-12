@@ -48,8 +48,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
-    _leftUserId = 0;
-    _rightUserId = 0;
+    _leftUserId = nil;
+    _rightUserId = nil;
     _gender = @"male"; // male by default
   }
   return self;
@@ -83,22 +83,22 @@
 //  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
 //  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withDelegate:self];
+  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] withDelegate:self];
 }
 
 - (IBAction)sendMashResults {
-  [OBFacemashClient postMashResultsForWinnerId:1 andLoserId:2 withDelegate:self];
+  [OBFacemashClient postMashResultsForWinnerId:@"100000049912171" andLoserId:@"100000199684521" withDelegate:self];
 }
 
 - (IBAction)sendMashRequest {
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withDelegate:self];
+  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] withDelegate:self];
 }
 
 - (IBAction)sendFriendsList {
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
   NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  [OBFacemashClient postFriendsForFacebookId:[[currentUserDictionary objectForKey:@"id"] unsignedIntegerValue] withArray:friendsList withDelegate:self];
+  [OBFacemashClient postFriendsForFacebookId:[currentUserDictionary objectForKey:@"id"] withArray:friendsList withDelegate:self];
 }
 
 /*
@@ -114,12 +114,14 @@
 }
 */
 
-- (NSUInteger)getNewOpponentId {
+- (NSString *)getNewOpponentId {
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
-  NSLog(@"found opponent with id: %d with name: %@",[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
-  return [[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue];
+//  randomNum = 128; // testing a VERY LARGE ID
+  NSLog(@"found opponent with id: %@ with name: %@",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
+//  return @"13710035";
+  return [[friendsArray objectAtIndex:randomNum] objectForKey:@"id"];
 }
 
 - (void)prepareBothFaceViews {
@@ -222,7 +224,7 @@
 }
 
 - (void)loadAndShowFaceViews {
-  if(_leftUserId == 0 && _rightUserId == 0) {
+  if(!_leftUserId && !_rightUserId) {
     [self loadBothFaceViews];
   } else {
     [self loadAndShowLeftFaceView];
@@ -273,12 +275,12 @@
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
   if(faceView.isLeft) {
 #ifndef USE_OFFLINE_MODE
-    if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
+    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
 #endif
     [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
   } else {
 #ifndef USE_OFFLINE_MODE
-    if(_rightUserId > 0 && _leftUserId > 0) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
+    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
 #endif
     [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
   }
@@ -304,8 +306,8 @@
         OBFacebookUser *user1 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:0]];
         OBFacebookUser *user2 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:1]];
         
-        _leftUserId = [user1.facebookId unsignedIntegerValue];
-        _rightUserId = [user2.facebookId unsignedIntegerValue];
+        _leftUserId = [user1.facebookId stringValue];
+        _rightUserId = [user2.facebookId stringValue];
         [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
       }
       [context release];
@@ -328,7 +330,7 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _leftUserId = [user.facebookId unsignedIntegerValue];
+      _leftUserId = [user.facebookId stringValue];
       [context release];
       [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
     }
@@ -350,7 +352,7 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _rightUserId = [user.facebookId unsignedIntegerValue];
+      _rightUserId = [user.facebookId stringValue];
       [context release];
       [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
     }

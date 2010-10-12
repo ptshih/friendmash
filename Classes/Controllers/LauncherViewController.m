@@ -232,8 +232,8 @@
       
       //send the friends
 #ifndef USE_OFFLINE_MODE
-      NSNumber *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      if([facebookId unsignedIntegerValue] > 0) self.postFriendsRequest = [OBFacemashClient postFriendsForFacebookId:[facebookId unsignedIntegerValue] withArray:friends withDelegate:self];
+      NSString *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+      if(facebookId) self.postFriendsRequest = [OBFacemashClient postFriendsForFacebookId:facebookId withArray:friends withDelegate:self];
 #endif
       [context release];
     }

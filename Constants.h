@@ -9,6 +9,7 @@
 
 // IF enabled, we will use local client side friends list
 #define USE_OFFLINE_MODE
+#define USE_ROUNDED_CORNERS
 
 #define RGBCOLOR(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0]
 #define RGBACOLOR(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]

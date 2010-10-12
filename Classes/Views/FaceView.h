@@ -43,7 +43,7 @@ typedef enum {
   BOOL _imageLoaded;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
-  NSUInteger _facebookId;
+  NSString *_facebookId;
 }
 
 @property (nonatomic, retain) UIImageView *faceImageView;
@@ -52,6 +52,6 @@ typedef enum {
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 
-- (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId;
+- (void)prepareFaceViewWithFacebookId:(NSString *)facebookId;
 
 @end

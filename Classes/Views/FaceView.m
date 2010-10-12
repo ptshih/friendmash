@@ -7,7 +7,8 @@
 //
 
 #import "FaceView.h"
-#import "UIImage+RoundedCorner.h"
+//#import "UIImage+RoundedCorner.h"
+#import "ImageManipulator.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
 
@@ -19,7 +20,7 @@
 - (void)animateToCenter;
 - (void)animateOffScreen;
 - (BOOL)wasFlicked:(UITouch *)touch;
-- (void)getPictureForFacebookId:(NSUInteger)facebookId;
+- (void)getPictureForFacebookId:(NSString *)facebookId;
 
 /**
  Resize the FaceView view/borders to fit the dimensions of the returned image
@@ -78,15 +79,15 @@
 }
  */
 
-- (void)prepareFaceViewWithFacebookId:(NSUInteger)facebookId {
+- (void)prepareFaceViewWithFacebookId:(NSString *)facebookId {
   _facebookId = facebookId;
   myCenter = self.center;
   defaultOrigin = self.center;
   [self getPictureForFacebookId:_facebookId];
 }
 
-- (void)getPictureForFacebookId:(NSUInteger)facebookId {
-  [OBFacebookOAuthService getPictureForUserWithID:[NSNumber numberWithInt:facebookId] withLargeSize:YES withDelegate:self];
+- (void)getPictureForFacebookId:(NSString *)facebookId {
+  [OBFacebookOAuthService getPictureForUserWithID:facebookId withLargeSize:YES withDelegate:self];
 }
 
 #pragma mark OBClientOperationDelegate
@@ -113,7 +114,12 @@
     // somehow the data came back and failed, resend request
     [self prepareFaceViewWithFacebookId:_facebookId];
   } else {
-    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
+#ifdef USE_ROUNDED_CORNERS
+//    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
+    self.faceImageView.image = [ImageManipulator makeRoundCornerImage:faceImage :5 :5];
+#else
+    self.faceImageView.image = faceImage;
+#endif
     self.backgroundColor = [UIColor clearColor];
     [self resizeViewForFaceImage];
     _imageLoaded = YES;

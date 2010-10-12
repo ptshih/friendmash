@@ -28,6 +28,8 @@
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
+//  NSLog(@"friends: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"]);
+  
   
   if(isDeviceIPad()) {
     _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
