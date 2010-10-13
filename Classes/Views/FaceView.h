@@ -23,8 +23,8 @@
 @protocol FaceViewDelegate <NSObject>
 @optional
 - (void)faceViewDidFinishLoading:(BOOL)isLeft;
-- (void)faceViewWillAnimateOffScreen:(FaceView *)faceView;
-- (void)faceViewDidAnimateOffScreen:(FaceView *)faceView;
+- (void)faceViewWillAnimateOffScreen:(BOOL)isLeft;
+- (void)faceViewDidAnimateOffScreen:(BOOL)isLeft;
 @end
 
 typedef enum {
@@ -60,6 +60,10 @@ typedef enum {
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 
+/**
+ This method prepares the FaceView by setting the local iVar for _facebookId and the default origin for the FaceView
+ It then calls getPictureForFacebookId which fires off the request to FB to get the profile picture
+ */
 - (void)prepareFaceViewWithFacebookId:(NSString *)facebookId;
 
 @end

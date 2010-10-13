@@ -295,11 +295,11 @@
   }
 }
 
-- (void)faceViewWillAnimateOffScreen:(FaceView *)faceView {
+- (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
 
 }
-- (void)faceViewDidAnimateOffScreen:(FaceView *)faceView {
-  if(faceView.isLeft) {
+- (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
+  if(isLeft) {
 #ifndef USE_OFFLINE_MODE
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
 #endif

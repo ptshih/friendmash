@@ -17,11 +17,34 @@
 
 @interface FaceView (Private)
 
+/**
+ This method performs an animation that bounces the FaceView back to it's original position
+ */
 - (void)animateToCenter;
+
+/**
+ This method performs an animation that slides the FaceView off the screen
+ */
 - (void)animateOffScreen;
+
+/**
+ This method tries to detect based on x,y touch coordinate changes if the user flicked a FaceView
+ */
 - (BOOL)wasFlicked:(UITouch *)touch;
+
+/**
+ This fires an OAuth request to the FB graph API to retrieve a profile picture for the given facebookId
+ */
 - (void)getPictureForFacebookId:(NSString *)facebookId;
+
+/**
+ This calls the delegate (FacemashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to NO
+ */
 - (void)faceViewDidUnload;
+
+/**
+ This calls the delegate (FacemashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to YES
+ */
 - (void)faceViewDidFinishLoading;
 
 @end
@@ -282,7 +305,7 @@
   if(self.delegate) {
     [self.delegate retain];
     if([self.delegate respondsToSelector:@selector(faceViewDidAnimateOffScreen:)]) {
-      [self.delegate faceViewDidAnimateOffScreen:self];
+      [self.delegate faceViewDidAnimateOffScreen:self.isLeft];
     }
     [self.delegate release];
   } 
