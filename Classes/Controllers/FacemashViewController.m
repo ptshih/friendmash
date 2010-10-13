@@ -304,27 +304,31 @@
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
+      _isLeftLoaded = NO;
       [self.leftView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
     } else {
+      _isLeftLoaded = NO;
+      _isRightLoaded = NO;
       [self.leftView removeFromSuperview];
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
     }
-    _isLeftLoaded = NO;
   } else {
 #ifndef USE_OFFLINE_MODE
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
+      _isRightLoaded = NO;
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
     } else {
+      _isLeftLoaded = NO;
+      _isRightLoaded = NO;
       [self.leftView removeFromSuperview];
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
     }
-    _isRightLoaded = NO;
   }
 }
 
