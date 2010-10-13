@@ -34,10 +34,14 @@ typedef enum {
 
   FaceView *_leftView;
   FaceView *_rightView;
+  BOOL _isLeftLoaded;
+  BOOL _isRightLoaded;
 }
 
 @property (nonatomic,assign) FaceView *leftView;
 @property (nonatomic,assign) FaceView *rightView;
+@property (nonatomic,assign) BOOL isLeftLoaded;
+@property (nonatomic,assign) BOOL isRightLoaded;
 @property (nonatomic,retain) NSMutableURLRequest *resultsRequest;
 @property (nonatomic,retain) NSMutableURLRequest *leftRequest;
 @property (nonatomic,retain) NSMutableURLRequest *rightRequest;

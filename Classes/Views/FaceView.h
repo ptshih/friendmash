@@ -22,6 +22,7 @@
 
 @protocol FaceViewDelegate <NSObject>
 @optional
+- (void)faceViewDidFinishLoading:(BOOL)isLeft;
 - (void)faceViewWillAnimateOffScreen:(FaceView *)faceView;
 - (void)faceViewDidAnimateOffScreen:(FaceView *)faceView;
 @end
@@ -36,6 +37,7 @@ typedef enum {
   IBOutlet UIImageView *_faceImageView;
   IBOutlet UIActivityIndicatorView *_spinner;
   IBOutlet UIView *_loadingView;
+  FacemashViewController *_facemashViewController;
   UIView *_canvas;
   UIToolbar *_toolbar;
   CGPoint defaultOrigin;
@@ -50,6 +52,7 @@ typedef enum {
   BOOL _touchAllowed;
 }
 
+@property (nonatomic, assign) FacemashViewController *facemashViewController;
 @property (nonatomic, retain) UIImageView *faceImageView;
 @property (nonatomic, assign) UIView *canvas;
 @property (nonatomic, assign) UIToolbar *toolbar;

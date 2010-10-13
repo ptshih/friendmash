@@ -38,6 +38,8 @@
 
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
+@synthesize isLeftLoaded = _isLeftLoaded;
+@synthesize isRightLoaded = _isRightLoaded;
 @synthesize resultsRequest = _resultsRequest;
 @synthesize leftRequest = _leftRequest;
 @synthesize rightRequest = _rightRequest;
@@ -53,6 +55,8 @@
     _rightUserId = nil;
     _gender = @"male"; // male by default
     _gameMode = FacemashGameModeNormal; // normal game mode by default
+    _isLeftLoaded = NO;
+    _isRightLoaded = NO;
   }
   return self;
 }
@@ -153,6 +157,7 @@
     _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
   }
 
+  self.leftView.facemashViewController = self;
   self.leftView.canvas = self.view;
   self.leftView.toolbar = _toolbar;
   self.leftView.isLeft = YES;
@@ -183,7 +188,8 @@
   } else {
     _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
   }
-
+  
+  self.rightView.facemashViewController = self;
   self.rightView.canvas = self.view;
   self.rightView.toolbar = _toolbar;
   self.rightView.isLeft = NO;
@@ -281,6 +287,14 @@
 }
 
 #pragma mark FaceViewDelegate
+- (void)faceViewDidFinishLoading:(BOOL)isLeft {
+  if(isLeft) {
+    _isLeftLoaded = YES;
+  } else {
+    _isRightLoaded = YES;
+  }
+}
+
 - (void)faceViewWillAnimateOffScreen:(FaceView *)faceView {
 
 }
@@ -297,6 +311,7 @@
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
     }
+    _isLeftLoaded = NO;
   } else {
 #ifndef USE_OFFLINE_MODE
     if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
@@ -309,6 +324,7 @@
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
     }
+    _isRightLoaded = NO;
   }
 }
 

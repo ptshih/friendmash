@@ -7,6 +7,7 @@
 //
 
 #import "FaceView.h"
+#import "FacemashViewController.h"
 #import "ImageManipulator.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
@@ -20,11 +21,14 @@
 - (void)animateOffScreen;
 - (BOOL)wasFlicked:(UITouch *)touch;
 - (void)getPictureForFacebookId:(NSString *)facebookId;
+- (void)faceViewDidUnload;
+- (void)faceViewDidFinishLoading;
 
 @end
 
 @implementation FaceView
 
+@synthesize facemashViewController = _facemashViewController;
 @synthesize faceImageView = _faceImageView;
 @synthesize canvas = _canvas;
 @synthesize toolbar = _toolbar;
@@ -94,11 +98,14 @@
     [_spinner stopAnimating];
     [_loadingView removeFromSuperview];
   }
+  [self faceViewDidFinishLoading];
   self.userInteractionEnabled = YES;
   APP_DELEGATE.touchActive = NO;
+
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  if(!self.facemashViewController.isLeftLoaded || !self.facemashViewController.isRightLoaded) return;
   if(!APP_DELEGATE.touchActive) {
     APP_DELEGATE.touchActive = YES;
     _touchAllowed = YES;
@@ -264,17 +271,31 @@
 	// restore the transform and reenable user interaction
 	self.transform = CGAffineTransformIdentity;
   if(currentAnimationType == FaceViewAnimationOffScreen) {
-    if(self.delegate) {
-      [self.delegate retain];
-      if([self.delegate respondsToSelector:@selector(faceViewDidAnimateOffScreen:)]) {
-        [self.delegate faceViewDidAnimateOffScreen:self];
-      }
-      [self.delegate release];
-    }
+    [self faceViewDidUnload];
   } else if(currentAnimationType = FaceViewAnimationCenter) {
     APP_DELEGATE.touchActive = NO;
     _touchAllowed = NO;
   }
+}
+
+- (void)faceViewDidUnload {
+  if(self.delegate) {
+    [self.delegate retain];
+    if([self.delegate respondsToSelector:@selector(faceViewDidAnimateOffScreen:)]) {
+      [self.delegate faceViewDidAnimateOffScreen:self];
+    }
+    [self.delegate release];
+  } 
+}
+
+- (void)faceViewDidFinishLoading {
+  if(self.delegate) {
+    [self.delegate retain];
+    if([self.delegate respondsToSelector:@selector(faceViewDidFinishLoading:)]) {
+      [self.delegate faceViewDidFinishLoading:self.isLeft];
+    }
+    [self.delegate release];
+  } 
 }
 
 - (void)dealloc {
