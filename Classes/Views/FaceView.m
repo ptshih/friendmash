@@ -100,7 +100,8 @@
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
   NSLog(@"request failed for request: %@, with error: %@",request,error);
   // Let's fire it off again
-  [OBFacebookOAuthService sendRequest:request withDelegate:self];
+  // This should only happen like 3 times
+//  [OBFacebookOAuthService sendRequest:request withDelegate:self];
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
@@ -108,6 +109,7 @@
   UIImage *faceImage = [UIImage imageWithData:faceData];
   if(!faceImage) {
     // somehow the data came back and failed, resend request
+    // make sure we don't do this more than 3 times
     [self prepareFaceViewWithFacebookId:_facebookId];
   } else {
 #ifdef USE_ROUNDED_CORNERS
@@ -319,6 +321,10 @@
     }
     [self.delegate release];
   } 
+}
+
+- (void)viewDidUnload {
+   [OBClient removeDelegateFromOperations:self];
 }
 
 - (void)dealloc {
