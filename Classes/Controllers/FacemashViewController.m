@@ -167,9 +167,9 @@
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
   if(isDeviceIPad()) {
-    self.leftView.frame = CGRectMake(48, 111, self.leftView.frame.size.width, self.leftView.frame.size.height);
+    self.leftView.frame = CGRectMake(48, 175, self.leftView.frame.size.width, self.leftView.frame.size.height);
   } else {
-    self.leftView.frame = CGRectMake(20, 6, self.leftView.frame.size.width, self.leftView.frame.size.height);
+    self.leftView.frame = CGRectMake(20, 70, self.leftView.frame.size.width, self.leftView.frame.size.height);
   }
   
   // Temp random
@@ -199,9 +199,9 @@
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
   if(isDeviceIPad()) {
-    self.rightView.frame = CGRectMake(536, 111, self.rightView.frame.size.width, self.rightView.frame.size.height);
+    self.rightView.frame = CGRectMake(536, 175, self.rightView.frame.size.width, self.rightView.frame.size.height);
   } else {
-    self.rightView.frame = CGRectMake(250, 6, self.rightView.frame.size.width, self.rightView.frame.size.height);
+    self.rightView.frame = CGRectMake(250, 70, self.rightView.frame.size.width, self.rightView.frame.size.height);
   }
 
   // Temp random
@@ -220,8 +220,7 @@
 
 - (void)showLeftFaceView {
   self.leftView.alpha = 0.0;
-  [self.view insertSubview:self.leftView belowSubview:_toolbar];
-//  [self.view addSubview:self.leftView];
+  [self.view addSubview:self.leftView];
   [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -234,8 +233,7 @@
 
 - (void)showRightFaceView {
   self.rightView.alpha = 0.0;
-  [self.view insertSubview:self.rightView belowSubview:_toolbar];
-//  [self.view addSubview:self.rightView];
+  [self.view addSubview:self.rightView];
   [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];

@@ -47,7 +47,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{5, 5}, {430, 430}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
+						<object class="NSColor" key="IBUIBackgroundColor" id="52780114">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
@@ -108,7 +108,7 @@
 				</object>
 				<string key="NSFrameSize">{440, 440}</string>
 				<reference key="NSSuperview"/>
-				<reference key="IBUIBackgroundColor" ref="338446820"/>
+				<reference key="IBUIBackgroundColor" ref="52780114"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">3</int>
 				</object>
@@ -267,14 +267,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_faceImageView</string>
-							<string>_faceName</string>
 							<string>_loadingView</string>
 							<string>_spinner</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
-							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UIActivityIndicatorView</string>
 						</object>
@@ -284,7 +282,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_faceImageView</string>
-							<string>_faceName</string>
 							<string>_loadingView</string>
 							<string>_spinner</string>
 						</object>
@@ -293,10 +290,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">_faceImageView</string>
 								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_faceName</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_loadingView</string>
