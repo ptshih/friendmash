@@ -49,6 +49,9 @@ typedef enum {
 @property (nonatomic,retain) NSString *gender;
 @property (nonatomic,assign) NSUInteger gameMode;
 
+
+- (IBAction)back;
+
 // Debug methods
 //- (IBAction)sendMashResults;
 //- (IBAction)sendMashRequest;

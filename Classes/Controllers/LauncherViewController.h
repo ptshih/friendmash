@@ -40,10 +40,8 @@
  */
 - (IBAction)female;
 
-/**
- Initiate logout from Facebook
- This will punt us back to the FBLoginDialog
- */
-- (IBAction)fbLogout;
+- (IBAction)settings;
+
+- (IBAction)rankings;
 
 @end

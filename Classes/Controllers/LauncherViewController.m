@@ -8,6 +8,7 @@
 
 #import "LauncherViewController.h"
 #import "FacemashViewController.h"
+#import "SettingsViewController.h"
 #import "Constants.h"
 #import "OBFacemashClient.h"
 #import "CJSONDeserializer.h"
@@ -46,15 +47,11 @@
 @synthesize postUserRequest = _postUserRequest;
 @synthesize postFriendsRequest = _postFriendsRequest;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
-    }
-    return self;
+  if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+  }
+  return self;
 }
-*/
 
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -95,6 +92,21 @@
   [self launchFacemashWithGender:@"female"];
 }
 
+- (IBAction)settings {
+  SettingsViewController *svc;
+  if(isDeviceIPad()) {
+    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
+  } else {
+    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
+  }
+  [self presentModalViewController:svc animated:YES];
+  [svc release];
+}
+
+- (IBAction)rankings {
+  
+}
+
 - (void)launchFacemashWithGender:(NSString *)gender {
   FacemashViewController *fvc;
   if(isDeviceIPad()) {
@@ -122,29 +134,6 @@
       self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
       self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
     }
-  }
-}
-
-- (void)fbLogin {
-  
-}
-
-- (void)fbLogout {
-  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
-  [logoutAlert show];
-  [logoutAlert autorelease];
-}
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      break;
-    case 1:
-      [OBFacebookOAuthService unbindWithDelegate:self];
-      break;
-    default:
-      break;
   }
 }
 
@@ -269,7 +258,13 @@
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
-  else return NO;
+  else {
+    if(self.modalViewController) {
+      return YES;
+    } else {
+      return NO;
+    }
+  }
 }
 
 - (void)didReceiveMemoryWarning {

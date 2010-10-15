@@ -93,7 +93,6 @@
 - (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
 }
 - (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  NSLog(@"response: %@",[[[NSString alloc] initWithData:[operation responseData] encoding:4] autorelease]);
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[operation responseData] waitUntilDone:YES];
 
 }
@@ -110,7 +109,7 @@
   if(!faceImage) {
     // somehow the data came back and failed, resend request
     // make sure we don't do this more than 3 times
-    [self prepareFaceViewWithFacebookId:_facebookId];
+//    [self prepareFaceViewWithFacebookId:_facebookId];
   } else {
 #ifdef USE_ROUNDED_CORNERS
 //    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
@@ -159,7 +158,7 @@
   if(!_touchAllowed) return;
   UITouch *touch = [touches anyObject];
   BOOL flicked = [self wasFlicked:touch];
-  NSLog(@"was flicked: %d",flicked);
+//  NSLog(@"was flicked: %d",flicked);
 //  self.center = defaultOrigin;
   
   CGFloat frameWidth;
@@ -196,7 +195,7 @@
   if(diffX > 0 && self.isLeft) return NO;
   if(diffX < 0 && !self.isLeft) return NO;
   
-  NSLog(@"Last dist = %f", dist);
+//  NSLog(@"Last dist = %f", dist);
   
   return dist > FLICK_THRESHOLD; // experiment with best value
 }

@@ -82,14 +82,18 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  self.navigationController.navigationBar.hidden = NO;
+  self.navigationController.navigationBar.hidden = YES;
+}
+
+- (IBAction)back {
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)testRequest {
 //  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
 //  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
   NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] withDelegate:self];
+  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] andGender:self.gender withDelegate:self];
 }
 
 //- (IBAction)sendMashResults {
@@ -257,7 +261,7 @@
   _leftUserId = [self getNewOpponentId];
   [self prepareLeftFaceView];
 #else
-  if(_rightUserId > 0) self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId withDelegate:self];
+  if(_rightUserId) self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId andGender:self.gender withDelegate:self];
 #endif
 }
 
@@ -268,7 +272,7 @@
   _rightUserId = [self getNewOpponentId];
   [self prepareRightFaceView];
 #else
-  if(_leftUserId > 0) self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId withDelegate:self];
+  if(_leftUserId) self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId andGender:self.gender withDelegate:self];
 #endif
 }
 
@@ -282,7 +286,7 @@
   _rightUserId = [self getNewOpponentId];
   [self prepareBothFaceViews];
 #else
-  self.bothRequest = [OBFacemashClient getInitialMashOpponentsWithDelegate:self];
+  self.bothRequest = [OBFacemashClient getInitialMashOpponentsForGender:self.gender withDelegate:self];
 #endif
 }
 
@@ -340,7 +344,9 @@
 }
 
 - (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
+  NSLog(@"Response string: %@", [[[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding] autorelease]);
   if ([operation.request isEqual:self.bothRequest]) {
+    NSLog(@"Got both request: %@ with response: %@", operation.request, response);
     if([response isKindOfClass:[OBClientArrayResponse class]]) {
       OBClientArrayResponse *array = (OBClientArrayResponse *)response;
       
@@ -351,13 +357,15 @@
         OBFacebookUser *user1 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:0]];
         OBFacebookUser *user2 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:1]];
         
-        _leftUserId = [user1.facebookId stringValue];
-        _rightUserId = [user2.facebookId stringValue];
+        _leftUserId = user1.facebookId;
+        _rightUserId = user2.facebookId;
+        NSLog(@"Received matches with leftId: %@ and rightId: %@", _leftUserId, _rightUserId);
         [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
       }
       [context release];
     }
   } else if ([operation.request isEqual:self.leftRequest]) {
+    NSLog(@"Got right request: %@ with response: %@", operation.request, response);
     if([response isKindOfClass:[OBClientObjectResponse class]]) {
       OBClientObjectResponse *object = (OBClientObjectResponse *)response;
       //get the entity id for the current user.
@@ -375,11 +383,13 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _leftUserId = [user.facebookId stringValue];
+      _leftUserId = user.facebookId;
+      NSLog(@"Received matches with leftId: %@", _leftUserId);
       [context release];
       [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
     }
   } else if ([operation.request isEqual:self.rightRequest]) {
+    NSLog(@"Got right request: %@ with response: %@", operation.request, response);
     if([response isKindOfClass:[OBClientObjectResponse class]]) {
       OBClientObjectResponse *object = (OBClientObjectResponse *)response;
       //get the entity id for the current user.
@@ -397,9 +407,12 @@
           NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
         }
       }
-      _rightUserId = [user.facebookId stringValue];
+      _rightUserId = user.facebookId;
+      NSLog(@"Received matches with rightId: %@", _rightUserId);
       [context release];
       [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
+    } else {
+      NSLog(@"Not sure what to do with request: %@", operation.request);
     }
   }
 }
