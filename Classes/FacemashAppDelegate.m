@@ -17,6 +17,7 @@
 @synthesize launcherViewController = _launcherViewController;
 @synthesize currentUserDictionary = _currentUserDictionary;
 @synthesize touchActive = _touchActive;
+@synthesize fbAccessToken = _fbAccessToken;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -24,6 +25,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // DEBUG
 //  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriedsList"];
+  
+  self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
   
   _touchActive = NO;
   
@@ -95,6 +98,7 @@
 
 
 - (void)dealloc {
+  [_fbAccessToken release];
   [_currentUserDictionary release];
   [_launcherViewController release];
   [_navigationController release];

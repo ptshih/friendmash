@@ -17,6 +17,8 @@
   LauncherViewController *_launcherViewController;
   NSMutableDictionary *_currentUserDictionary;
   BOOL _touchActive;
+  
+  NSString *_fbAccessToken;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -24,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet LauncherViewController *launcherViewController;
 @property (nonatomic, retain) NSMutableDictionary *currentUserDictionary;
 @property (nonatomic, assign) BOOL touchActive;
+@property (nonatomic, retain) NSString *fbAccessToken;
 
 @end
 

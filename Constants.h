@@ -22,7 +22,11 @@
   #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
 #endif
 
-#define OAUTH_TOKEN @"151779758183785|2.mlbpS5_RD5Ao_hTpWQtBVg__.3600.1289080800-548430564|es6q1fc8hb7pSL2UpwFegiF1F8c"
+#define FB_APP_ID @"151779758183785"
+#define FB_APP_SECRET @"77bcf63d51d3062fed22da00243998ae"
+#define FB_PERMISSIONS [NSArray arrayWithObjects:@"user_birthday",@"friends_birthday",@"user_relationships",@"friends_relationships",nil]
+
+//#define OAUTH_TOKEN @"151779758183785|2.mlbpS5_RD5Ao_hTpWQtBVg__.3600.1289080800-548430564|es6q1fc8hb7pSL2UpwFegiF1F8c"
 
 #define RGBCOLOR(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0]
 #define RGBACOLOR(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]

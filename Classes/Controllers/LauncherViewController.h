@@ -7,19 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FBConnect.h"
-#import "OBOAuthService.h"
-#import "OBFacebookOAuthService.h"
 #import "ASIHTTPRequest.h"
-#import "CJSONDataSerializer.h"
+#import "CJSONSerializer.h"
+#import "FBConnect.h"
 
-@interface LauncherViewController : UIViewController <OBOAuthServiceDelegate, OBClientOperationDelegate> {
+@interface LauncherViewController : UIViewController <FBSessionDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_friendsRequest;
   ASIHTTPRequest *_registerFriendsRequest;
+  
+  Facebook *_facebook;
   
   UIButton *_logoutButton;
 }

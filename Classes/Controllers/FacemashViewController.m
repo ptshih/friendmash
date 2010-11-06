@@ -331,7 +331,7 @@
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate {
   NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", nil];
-  NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
+  NSData *postData = [[CJSONSerializer serializer] serializeDictionary:resultDictionary error:nil];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
   self.resultsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.resultsRequest setDelegate:self];

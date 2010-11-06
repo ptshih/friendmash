@@ -8,11 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "FaceView.h"
-#import "FBConnect.h"
-#import "OBOAuthService.h"
-#import "OBFacebookOAuthService.h"
 #import "ASIHTTPRequest.h"
-#import "CJSONDataSerializer.h"
+#import "CJSONSerializer.h"
 
 /**
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
@@ -23,7 +20,7 @@ typedef enum {
   FacemashGameModeRandom = 1
 } FacemashGameMode;
 
-@interface FacemashViewController : UIViewController <OBClientOperationDelegate, FaceViewDelegate> {
+@interface FacemashViewController : UIViewController <FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
   ASIHTTPRequest *_resultsRequest;
   ASIHTTPRequest *_leftRequest;

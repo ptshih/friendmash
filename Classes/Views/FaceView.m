@@ -84,7 +84,7 @@
 }
 
 - (void)getPictureForFacebookId:(NSString *)facebookId {
-  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *type = @"large";
   NSString *params = [NSString stringWithFormat:@"access_token=%@&type=%@", token, type];
   NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", facebookId, params];

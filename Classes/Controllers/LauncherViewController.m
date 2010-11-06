@@ -10,6 +10,7 @@
 #import "FacemashViewController.h"
 #import "SettingsViewController.h"
 #import "Constants.h"
+#import "CJSONSerializer.h"
 #import "CJSONDeserializer.h"
 
 @interface LauncherViewController (Private)
@@ -48,6 +49,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+    _facebook = [[Facebook alloc] init];
   }
   return self;
 }
@@ -92,14 +94,15 @@
 }
 
 - (IBAction)settings {
-  SettingsViewController *svc;
-  if(isDeviceIPad()) {
-    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
-  } else {
-    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
-  }
-  [self presentModalViewController:svc animated:YES];
-  [svc release];
+  [self unbindWithFacebook];
+//  SettingsViewController *svc;
+//  if(isDeviceIPad()) {
+//    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
+//  } else {
+//    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
+//  }
+//  [self presentModalViewController:svc animated:YES];
+//  [svc release];
 }
 
 - (IBAction)rankings {
@@ -121,18 +124,56 @@
 
 #pragma mark OAuth / FBConnect
 - (void)bindWithFacebook {
-  [OBFacebookOAuthService bindWithDelegate:self andView:self.view]; 
+  [_facebook authorize:FB_APP_ID permissions:FB_PERMISSIONS delegate:self];
+  
+  
+  
+//  [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
 }
 
-- (void)checkAuthAndGetCurrentUser {
-  if([OBFacebookOAuthService isBound]) {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasSentFriendsList"]) {
-//      [self performSelectorOnMainThread:@selector(launchFacemash) withObject:nil waitUntilDone:YES];
-      [self displayLauncher];
-    } else {
-      [self getCurrentUserRequest];
-    }
+- (void)unbindWithFacebook {
+  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+  [logoutAlert show];
+  [logoutAlert autorelease];
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      break;
+    case 1:
+      [_facebook logout:self];
+      break;
+    default:
+      break;
   }
+}
+
+- (void)fbDidLogin {
+  // Store the OAuth token
+  DLog(@"Received OAuth access token: %@",_facebook.accessToken);
+  APP_DELEGATE.fbAccessToken = _facebook.accessToken;
+  [[NSUserDefaults standardUserDefaults] setObject:_facebook.accessToken forKey:@"fbAccessToken"];
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasSentFriendsList"]) {
+    [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
+  } else {
+    [self performSelectorOnMainThread:@selector(getCurrentUserRequest) withObject:nil waitUntilDone:YES];
+  }
+}
+
+- (void)fbDidNotLogin:(BOOL)cancelled {
+}
+
+- (void)fbDidLogout {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  [self bindWithFacebook];
+  [self displayLauncher];
 }
 
 /*
@@ -140,7 +181,7 @@
  */
 - (void)getCurrentUserRequest {
 //  self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
   NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
   NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me?%@", params];
@@ -156,7 +197,7 @@
  */
 - (void)getFriendsRequest {
 //  self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];  
-  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
   NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
   NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me/friends?%@", params];
@@ -175,7 +216,7 @@
   NSMutableArray *friendsArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"]];
   [friendsArray insertObject:currentUser atIndex:0];
   
-  NSData *postData = [[CJSONDataSerializer serializer] serializeArray:friendsArray];
+  NSData *postData = [[CJSONSerializer serializer] serializeArray:friendsArray error:nil];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"]];
   self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.registerFriendsRequest setDelegate:self];
@@ -226,45 +267,18 @@
   // NSError *error = [request error];
 }
 
-#pragma mark OBOAuthServiceDelegate
-- (void)oauthService:(Class)service didReceiveAccessToken:(OBOAuthToken *)accessToken {
-  NSLog(@"Got access token:%@ with key: %@ and secret: %@", accessToken, accessToken.key, accessToken.secret);
-  
-  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  //store the token
-  [OBOAuthToken persistTokens];
-  [self checkAuthAndGetCurrentUser];
-}
+//#pragma mark OBOAuthServiceDelegate
+//- (void)oauthService:(Class)service didReceiveAccessToken:(OBOAuthToken *)accessToken {
+//  NSLog(@"Got access token:%@ with key: %@ and secret: %@", accessToken, accessToken.key, accessToken.secret);
+//  
+//  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
+//  [[NSUserDefaults standardUserDefaults] synchronize];
+//  
+//  //store the token
+//  [OBOAuthToken persistTokens];
+//  [self checkAuthAndGetCurrentUser];
+//}
 
-- (void)dismissCredentialsView {
-  if (self.modalViewController) {
-    [self dismissModalViewControllerAnimated:YES];
-  }
-}
-
-- (void)oauthService:(Class)service didFailToAuthenticateWithError:(NSError *)error {
-  if ([[error domain] isEqualToString:OBOAuthServiceErrorDomain]) {
-    if ([error code] == OBOAuthServiceErrorInvalidCredentials) {
-      [self performSelectorOnMainThread:@selector(showBadCredentialsAlert) withObject:nil waitUntilDone:YES];
-    }
-  }
-}
-
-- (void)showBadCredentialsAlert {
-  NSString *title = [NSString stringWithFormat:NSLocalizedString(@"%@ Error", @"service error title format"), @"Facebook"];
-  NSString *message = NSLocalizedString(@"Error authenticating, please check your credentials and try again.", @"error bad credentials");
-  UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"ok button title") otherButtonTitles:nil] autorelease];
-  [alert show];
-}
-
-- (void)oauthServiceDidUnbind:(Class)service {
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  [self bindWithFacebook];
-}
 
 #pragma mark Memory Management
 // Override to allow orientations other than the default portrait orientation.
