@@ -10,9 +10,7 @@
 #import "FacemashViewController.h"
 #import "SettingsViewController.h"
 #import "Constants.h"
-#import "OBFacemashClient.h"
 #import "CJSONDeserializer.h"
-#import "OBCoreDataStack.h"
 
 @interface LauncherViewController (Private)
 /**
@@ -27,6 +25,8 @@
  If a token does not exist, remove left/right views from superview and perform FB authorization.
  */
 - (void)checkAuthAndGetCurrentUser;
+
+- (void)getCurrentUserRequest;
 
 /**
  This method creates and pushes the FacemashViewController and sets it's iVar to the designated gender
@@ -44,8 +44,7 @@
 
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
-@synthesize postUserRequest = _postUserRequest;
-@synthesize postFriendsRequest = _postFriendsRequest;
+@synthesize registerFriendsRequest = _registerFriendsRequest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
@@ -131,10 +130,100 @@
 //      [self performSelectorOnMainThread:@selector(launchFacemash) withObject:nil waitUntilDone:YES];
       [self displayLauncher];
     } else {
-      self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-      self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
+      [self getCurrentUserRequest];
     }
   }
+}
+
+/*
+ * Get current user's profile from FB
+ */
+- (void)getCurrentUserRequest {
+//  self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
+  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
+  NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
+  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me?%@", params];
+  self.currentUserRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.currentUserRequest setRequestMethod:@"GET"];
+  [self.currentUserRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.currentUserRequest setDelegate:self];
+  [self.currentUserRequest startAsynchronous];
+}
+
+/*
+ * Get current user's friends list from FB
+ */
+- (void)getFriendsRequest {
+//  self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];  
+  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
+  NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
+  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me/friends?%@", params];
+  self.friendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.friendsRequest setRequestMethod:@"GET"];
+  [self.friendsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.friendsRequest setDelegate:self];
+  [self.friendsRequest startAsynchronous];
+}
+
+/*
+ * Send current user's friends list to facemash
+ */
+- (void)sendRegisterFriendsRequest {  
+  NSDictionary *currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"];
+  NSMutableArray *friendsArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"]];
+  [friendsArray insertObject:currentUser atIndex:0];
+  
+  NSData *postData = [[CJSONDataSerializer serializer] serializeArray:friendsArray];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"]];
+  self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.registerFriendsRequest setDelegate:self];
+  [self.registerFriendsRequest setRequestMethod:@"POST"];
+  [self.registerFriendsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.registerFriendsRequest setPostLength:[postData length]];
+  [self.registerFriendsRequest setPostBody:(NSMutableData *)postData];
+  [self.registerFriendsRequest startAsynchronous];
+}
+
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  if([request isEqual:self.currentUserRequest]) {
+    DLog(@"current user request finished");
+    
+    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:responseDict forKey:@"currentUser"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self performSelectorOnMainThread:@selector(getFriendsRequest) withObject:nil waitUntilDone:YES];
+    
+  } else if([request isEqual:self.friendsRequest]) {
+    DLog(@"friends request finished");
+    
+    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
+    NSArray *responseArray = [responseDict objectForKey:@"data"];
+    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+#ifndef USE_OFFLINE_MODE
+    [self performSelectorOnMainThread:@selector(sendRegisterFriendsRequest) withObject:nil waitUntilDone:YES];
+#endif
+  } else if([request isEqual:self.registerFriendsRequest]) {
+    DLog(@"register friends request finished");
+    
+    [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
+  }
+  
+  // Use when fetching text data
+  // NSString *responseString = [request responseString];
+  
+  // Use when fetching binary data
+  // NSData *responseData = [request responseData];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+  // NSError *error = [request error];
 }
 
 #pragma mark OBOAuthServiceDelegate
@@ -177,83 +266,6 @@
   [self bindWithFacebook];
 }
 
-#pragma mark OBClientOperationDelegate
-- (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
-}
-
-- (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
-}
-
-- (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
-  if ([operation.request isEqual:self.currentUserRequest]) {
-    //this should be an object response
-    if ([response isKindOfClass:[OBClientObjectResponse class]]) {
-      OBClientObjectResponse *obj = (OBClientObjectResponse *)response;
-      
-      //get the entity id for the current user.
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      OBFacebookUser *user = (OBFacebookUser *)[context objectWithID:obj.entityID];
-      
-#ifndef USE_OFFLINE_MODE
-      self.postUserRequest = [OBFacemashClient postUser:user withDelegate:self];
-#endif
-      
-      [[NSUserDefaults standardUserDefaults] setObject:user.facebookId forKey:@"currentUserId"];
-      [[NSUserDefaults standardUserDefaults] synchronize];
-      [context release];
-    } else {
-      NSLog(@"Got the wrong response back for the current user request, should be an object response but was: %@", response);
-    }
-  } else if ([operation.request isEqual:self.friendsRequest]) {
-    //this operation should be a collection response
-    if ([response isKindOfClass:[OBClientCollectionResponse class]]) {
-      OBClientCollectionResponse *collection = (OBClientCollectionResponse *)response;
-      
-      //send the friends list up to the server
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      
-      NSMutableArray *friends = [NSMutableArray array];
-      for (NSManagedObjectID *objectID in collection.list) {
-        NSManagedObject *obj = [context objectWithID:objectID];
-        if (obj) {
-          [friends addObject:obj];
-        }
-      }
-      
-      //send the friends
-#ifndef USE_OFFLINE_MODE
-      NSString *facebookId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      if(facebookId) self.postFriendsRequest = [OBFacemashClient postFriendsForFacebookId:facebookId withArray:friends withDelegate:self];
-#endif
-      [context release];
-    }
-  }
-}
-
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  if(request == self.postFriendsRequest) {
-    [self displayLauncher];
-  } else if(request == self.postUserRequest) {
-  } else if(request == self.friendsRequest) {
-    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[operation responseData] error:nil];
-    NSArray *responseArray = [responseDict objectForKey:@"data"];
-    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-#ifdef USE_OFFLINE_MODE
-    [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
-#endif
-  }
-}
-  
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
-  NSLog(@"Error sending request: %@ with error: %@",request, error);
-  if(request == self.postFriendsRequest) {
-    // resend request
-  } else if(request == self.postUserRequest) {
-    // resend request
-  }
-}
-
 #pragma mark Memory Management
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -282,10 +294,6 @@
 
 
 - (void)dealloc {
-  if(_currentUserRequest) [_currentUserRequest release];
-  if(_friendsRequest) [_friendsRequest release];
-  if(_postUserRequest) [_postUserRequest release];
-  if(_postFriendsRequest) [_postFriendsRequest release];
   [super dealloc];
 }
 

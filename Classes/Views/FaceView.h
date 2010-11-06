@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OBFacebookOAuthService.h"
+#import "ASIHTTPRequest.h"
 
 #define FLICK_THRESHOLD 20.0
 #define IPAD_DRAG_THRESHOLD 120.0
@@ -33,7 +33,7 @@ typedef enum {
   FaceViewAnimationOffScreen = 2
 } FaceViewAnimationType;
 
-@interface FaceView : UIView <OBClientOperationDelegate> {
+@interface FaceView : UIView {
   IBOutlet UIImageView *_faceImageView;
   IBOutlet UIActivityIndicatorView *_spinner;
   IBOutlet UIView *_loadingView;

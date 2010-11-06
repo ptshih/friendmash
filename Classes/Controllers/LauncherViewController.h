@@ -10,23 +10,23 @@
 #import "FBConnect.h"
 #import "OBOAuthService.h"
 #import "OBFacebookOAuthService.h"
+#import "ASIHTTPRequest.h"
+#import "CJSONDataSerializer.h"
 
 @interface LauncherViewController : UIViewController <OBOAuthServiceDelegate, OBClientOperationDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
-  OBOAuth2Request *_currentUserRequest;
-  OBOAuth2Request *_friendsRequest;
-  NSMutableURLRequest *_postUserRequest;
-  NSMutableURLRequest *_postFriendsRequest;
+  ASIHTTPRequest *_currentUserRequest;
+  ASIHTTPRequest *_friendsRequest;
+  ASIHTTPRequest *_registerFriendsRequest;
   
   UIButton *_logoutButton;
 }
 
-@property (nonatomic,retain) OBOAuth2Request *currentUserRequest;
-@property (nonatomic,retain) OBOAuth2Request *friendsRequest;
-@property (nonatomic,retain) NSMutableURLRequest *postUserRequest;
-@property (nonatomic,retain) NSMutableURLRequest *postFriendsRequest;
+@property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
+@property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
+@property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;
 
 /**
  Start mashing with gender = male

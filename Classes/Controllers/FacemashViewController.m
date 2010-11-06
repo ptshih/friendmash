@@ -8,9 +8,7 @@
 
 #import "FacemashViewController.h"
 #import "Constants.h"
-#import "OBFacemashClient.h"
 #import "CJSONDeserializer.h"
-#import "OBCoreDataStack.h"
 
 @interface FacemashViewController (Private)
 
@@ -32,6 +30,12 @@
 - (void)loadAndShowRightFaceView;
 - (void)loadAndShowFaceViews;
 - (void)loadBothFaceViews;
+
+- (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate;
+- (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate;
+- (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate;
+
 @end
 
 @implementation FacemashViewController
@@ -45,6 +49,8 @@
 @synthesize rightRequest = _rightRequest;
 @synthesize bothRequest = _bothRequest;
 @synthesize gender = _gender;
+@synthesize leftUserId = _leftUserId;
+@synthesize rightUserId = _rightUserId;
 @synthesize gameMode = _gameMode;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -92,8 +98,8 @@
 - (void)testRequest {
 //  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
 //  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
-  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] andGender:self.gender withDelegate:self];
+//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
+//  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] andGender:self.gender withDelegate:self];
 }
 
 //- (IBAction)sendMashResults {
@@ -141,17 +147,17 @@
 }
 
 - (void)prepareBothFaceViews {
-    [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
-    [self.rightView prepareFaceViewWithFacebookId:_rightUserId];
+    [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
+    [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }
 
 - (void)prepareLeftFaceView {
-  [self.leftView prepareFaceViewWithFacebookId:_leftUserId];
+  [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
 }
 
 - (void)prepareRightFaceView {
 
-  [self.rightView prepareFaceViewWithFacebookId:_rightUserId];
+  [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }
 
 - (void)loadLeftFaceView {
@@ -203,19 +209,6 @@
   } else {
     self.rightView.frame = CGRectMake(250, 70, self.rightView.frame.size.width, self.rightView.frame.size.height);
   }
-
-  // Temp random
-  /*
-  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  if (friendsArray == nil) {
-    return;
-  }
-  NSInteger count = [friendsArray count];
-  float randomNum = arc4random() % count;
-  NSLog(@"rand: %g",randomNum);
-  
-  [self.rightView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue]];
-   */
 }
 
 - (void)showLeftFaceView {
@@ -244,7 +237,7 @@
 }
 
 - (void)loadAndShowFaceViews {
-  if(!_leftUserId && !_rightUserId) {
+  if(!self.leftUserId && !self.rightUserId) {
     [self loadBothFaceViews];
   } else {
     [self loadAndShowLeftFaceView];
@@ -256,10 +249,10 @@
   [self loadLeftFaceView];
   [self showLeftFaceView];
 #ifdef USE_OFFLINE_MODE
-  _leftUserId = [self getNewOpponentId];
+  self.leftUserId = [self getNewOpponentId];
   [self prepareLeftFaceView];
 #else
-  if(_rightUserId) self.leftRequest = [OBFacemashClient getMashOpponentForId:_rightUserId andGender:self.gender withDelegate:self];
+  if(self.rightUserId) [self sendMashRequestForLeftFaceViewWithDelegate:self];
 #endif
 }
 
@@ -267,10 +260,10 @@
   [self loadRightFaceView];
   [self showRightFaceView];
 #ifdef USE_OFFLINE_MODE
-  _rightUserId = [self getNewOpponentId];
+  self.rightUserId = [self getNewOpponentId];
   [self prepareRightFaceView];
 #else
-  if(_leftUserId) self.rightRequest = [OBFacemashClient getMashOpponentForId:_leftUserId andGender:self.gender withDelegate:self];
+  if(self.leftUserId) [self sendMashRequestForRightFaceViewWithDelegate:self];
 #endif
 }
 
@@ -280,11 +273,11 @@
   [self loadRightFaceView];
   [self showRightFaceView];
 #ifdef USE_OFFLINE_MODE
-  _leftUserId = [self getNewOpponentId];
-  _rightUserId = [self getNewOpponentId];
+  self.leftUserId = [self getNewOpponentId];
+  self.rightUserId = [self getNewOpponentId];
   [self prepareBothFaceViews];
 #else
-  self.bothRequest = [OBFacemashClient getInitialMashOpponentsForGender:self.gender withDelegate:self];
+  [self sendMashRequestForBothFaceViewsWithDelegate:self];
 #endif
 }
 
@@ -303,7 +296,8 @@
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
   if(isLeft) {
 #ifndef USE_OFFLINE_MODE
-    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
+//    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
       _isLeftLoaded = NO;
@@ -318,7 +312,8 @@
     }
   } else {
 #ifndef USE_OFFLINE_MODE
-    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
+//    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
       _isRightLoaded = NO;
@@ -334,95 +329,91 @@
   }
 }
 
-#pragma mark OBClientOperationDelegate
-- (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate {
+  NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", nil];
+  NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
+  self.resultsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.resultsRequest setDelegate:self];
+  [self.resultsRequest setRequestMethod:@"POST"];
+  [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.resultsRequest setPostLength:[postData length]];
+  [self.resultsRequest setPostBody:(NSMutableData *)postData];
+  [self.resultsRequest startAsynchronous];
 }
 
-- (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
+- (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate {
+  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.rightUserId, params];
+  self.leftRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.leftRequest setRequestMethod:@"GET"];
+  [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.leftRequest setDelegate:self];
+  [self.leftRequest startAsynchronous];
 }
 
-- (void)obClientOperation:(OBClientOperation *)operation didProcessResponse:(OBClientResponse *)response {
-  NSLog(@"Response string: %@", [[[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding] autorelease]);
-  if ([operation.request isEqual:self.bothRequest]) {
-    NSLog(@"Got both request: %@ with response: %@", operation.request, response);
-    if([response isKindOfClass:[OBClientArrayResponse class]]) {
-      OBClientArrayResponse *array = (OBClientArrayResponse *)response;
-      
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      
-      if (array.array.count == 2) {
-        //we're in business
-        OBFacebookUser *user1 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:0]];
-        OBFacebookUser *user2 = (OBFacebookUser *)[context objectWithID:[array.array objectAtIndex:1]];
-        
-        _leftUserId = user1.facebookId;
-        _rightUserId = user2.facebookId;
-        NSLog(@"Received matches with leftId: %@ and rightId: %@", _leftUserId, _rightUserId);
-        [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
-      }
-      [context release];
-    }
-  } else if ([operation.request isEqual:self.leftRequest]) {
-    NSLog(@"Got right request: %@ with response: %@", operation.request, response);
-    if([response isKindOfClass:[OBClientObjectResponse class]]) {
-      OBClientObjectResponse *object = (OBClientObjectResponse *)response;
-      //get the entity id for the current user.
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      NSError *error = nil;
-      OBFacebookUser *user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
-      if (error) {
-        NSLog(@"Error getting user with id: %@, error: %@", object.entityID, error);
-        
-        //try again
-        [context reset];
-        error = nil;
-        user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
-        if (error) {
-          NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
-        }
-      }
-      _leftUserId = user.facebookId;
-      NSLog(@"Received matches with leftId: %@", _leftUserId);
-      [context release];
-      [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
-    }
-  } else if ([operation.request isEqual:self.rightRequest]) {
-    NSLog(@"Got right request: %@ with response: %@", operation.request, response);
-    if([response isKindOfClass:[OBClientObjectResponse class]]) {
-      OBClientObjectResponse *object = (OBClientObjectResponse *)response;
-      //get the entity id for the current user.
-      NSManagedObjectContext *context = [OBCoreDataStack newManagedObjectContext];
-      NSError *error = nil;
-      OBFacebookUser *user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
-      if (error) {
-        NSLog(@"Error getting user with id: %@, error: %@", object.entityID, error);
-        
-        //try again
-        [context reset];
-        error = nil;
-        user = (OBFacebookUser *)[context existingObjectWithID:object.entityID error:&error];
-        if (error) {
-          NSLog(@"Tried twice to fetch a user, both times failed for object: %@, error: %@", object.entityID, error);
-        }
-      }
-      _rightUserId = user.facebookId;
-      NSLog(@"Received matches with rightId: %@", _rightUserId);
-      [context release];
-      [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
-    } else {
-      NSLog(@"Not sure what to do with request: %@", operation.request);
-    }
+- (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate {
+  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.leftUserId, params];
+  self.rightRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.rightRequest setRequestMethod:@"GET"];
+  [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.rightRequest setDelegate:self];
+  [self.rightRequest startAsynchronous];
+}
+
+- (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
+  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random?%@", FACEMASH_BASE_URL, params];
+  self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [self.bothRequest setRequestMethod:@"GET"];
+  [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.bothRequest setDelegate:self];
+  [self.bothRequest startAsynchronous];
+}
+
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  // Use when fetching text data
+  NSString *responseString = [request responseString];
+  NSLog(@"Raw response string from request: %@ => %@",request, responseString);
+  
+  if([request isEqual:self.resultsRequest]) {
+    DLog(@"send results request finished");
+    
+  } else if([request isEqual:self.leftRequest]) {
+    
+    DLog(@"left request finished");
+    
+    self.leftUserId = [request responseString];
+    NSLog(@"Received match with leftId: %@", self.leftUserId);
+    [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
+    
+  } else if([request isEqual:self.rightRequest]) {
+    
+    DLog(@"right request finished");
+    
+    self.rightUserId = [request responseString];
+    NSLog(@"Received match with rightId: %@", self.rightUserId);
+    [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
+    
+  } else if([request isEqual:self.bothRequest]) {
+    
+    DLog(@"both request finished");
+    NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+
+    self.leftUserId = [responseArray objectAtIndex:0];
+    self.rightUserId = [responseArray objectAtIndex:1];
+    
+    NSLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
+    [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
+    
   }
 }
 
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-}
-
-- (void)obClientOperation:(OBClientOperation *)operation didFinishRequest:(NSURLRequest *)request {
-}
-
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
-
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+  // NSError *error = [request error];
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -446,6 +437,8 @@
 
 - (void)dealloc {
   [_gender release];
+  [_leftUserId release];
+  [_rightUserId release];
   [super dealloc];
 }
 

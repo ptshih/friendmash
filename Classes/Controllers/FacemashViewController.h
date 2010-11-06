@@ -11,6 +11,8 @@
 #import "FBConnect.h"
 #import "OBOAuthService.h"
 #import "OBFacebookOAuthService.h"
+#import "ASIHTTPRequest.h"
+#import "CJSONDataSerializer.h"
 
 /**
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
@@ -23,15 +25,15 @@ typedef enum {
 
 @interface FacemashViewController : UIViewController <OBClientOperationDelegate, FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
-  NSMutableURLRequest *_resultsRequest;
-  NSMutableURLRequest *_leftRequest;
-  NSMutableURLRequest *_rightRequest;
-  NSMutableURLRequest *_bothRequest;
+  ASIHTTPRequest *_resultsRequest;
+  ASIHTTPRequest *_leftRequest;
+  ASIHTTPRequest *_rightRequest;
+  ASIHTTPRequest *_bothRequest;
   NSString *_gender;
-  NSUInteger _gameMode;
   NSString *_leftUserId;
   NSString *_rightUserId;
-
+  NSUInteger _gameMode;
+  
   FaceView *_leftView;
   FaceView *_rightView;
   BOOL _isLeftLoaded;
@@ -42,13 +44,14 @@ typedef enum {
 @property (nonatomic,assign) FaceView *rightView;
 @property (nonatomic,assign) BOOL isLeftLoaded;
 @property (nonatomic,assign) BOOL isRightLoaded;
-@property (nonatomic,retain) NSMutableURLRequest *resultsRequest;
-@property (nonatomic,retain) NSMutableURLRequest *leftRequest;
-@property (nonatomic,retain) NSMutableURLRequest *rightRequest;
-@property (nonatomic,retain) NSMutableURLRequest *bothRequest;
+@property (nonatomic,retain) ASIHTTPRequest *resultsRequest;
+@property (nonatomic,retain) ASIHTTPRequest *leftRequest;
+@property (nonatomic,retain) ASIHTTPRequest *rightRequest;
+@property (nonatomic,retain) ASIHTTPRequest *bothRequest;
 @property (nonatomic,retain) NSString *gender;
+@property (nonatomic,retain) NSString *leftUserId;
+@property (nonatomic,retain) NSString *rightUserId;
 @property (nonatomic,assign) NSUInteger gameMode;
-
 
 - (IBAction)back;
 

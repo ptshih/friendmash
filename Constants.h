@@ -8,10 +8,21 @@
  */
 
 #import "FacemashAppDelegate.h"
+#import "NSString+Util.h"
 
 // IF enabled, we will use local client side friends list
-#define USE_OFFLINE_MODE
+//#define USE_OFFLINE_MODE
 #define USE_ROUNDED_CORNERS
+
+#define STAGING
+
+#ifdef STAGING
+  #define FACEMASH_BASE_URL @"http://localhost:3000"
+#else
+  #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
+#endif
+
+#define OAUTH_TOKEN @"151779758183785|2.mlbpS5_RD5Ao_hTpWQtBVg__.3600.1289080800-548430564|es6q1fc8hb7pSL2UpwFegiF1F8c"
 
 #define RGBCOLOR(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0]
 #define RGBACOLOR(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]

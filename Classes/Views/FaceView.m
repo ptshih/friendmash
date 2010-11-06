@@ -84,23 +84,26 @@
 }
 
 - (void)getPictureForFacebookId:(NSString *)facebookId {
-  [OBFacebookOAuthService getPictureForUserWithID:facebookId withLargeSize:YES withDelegate:self];
+  NSString *token = [OAUTH_TOKEN stringWithPercentEscape];
+  NSString *type = @"large";
+  NSString *params = [NSString stringWithFormat:@"access_token=%@&type=%@", token, type];
+  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", facebookId, params];
+  ASIHTTPRequest *pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+  [pictureRequest setRequestMethod:@"GET"];
+  [pictureRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [pictureRequest setDelegate:self];
+  [pictureRequest startAsynchronous];
 }
 
-#pragma mark OBClientOperationDelegate
-- (void)obClientOperation:(OBClientOperation *)operation willSendRequest:(NSURLRequest *)request {
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  DLog(@"pictureRequest request finished");
+  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[request responseData] waitUntilDone:YES];
 }
-- (void)obClientOperation:(OBClientOperation *)operation failedToSendRequest:(NSURLRequest *)request withError:(NSError *)error {
-}
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request {
-  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[operation responseData] waitUntilDone:YES];
 
-}
-- (void)obClientOperation:(OBClientOperation *)operation didSendRequest:(NSURLRequest *)request whichFailedWithError:(NSError *)error {
-  NSLog(@"request failed for request: %@, with error: %@",request,error);
-  // Let's fire it off again
-  // This should only happen like 3 times
-//  [OBFacebookOAuthService sendRequest:request withDelegate:self];
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+  // NSError *error = [request error];
 }
 
 - (void)loadNewFaceWithData:(NSData *)faceData {
@@ -323,7 +326,6 @@
 }
 
 - (void)viewDidUnload {
-   [OBClient removeDelegateFromOperations:self];
 }
 
 - (void)dealloc {
