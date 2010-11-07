@@ -342,6 +342,7 @@
   [self.resultsRequest setDelegate:self];
   [self.resultsRequest setRequestMethod:@"POST"];
   [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.resultsRequest setPostLength:[postData length]];
   [self.resultsRequest setPostBody:(NSMutableData *)postData];
   [self.resultsRequest startAsynchronous];
@@ -353,6 +354,7 @@
   self.leftRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.leftRequest setRequestMethod:@"GET"];
   [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.leftRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.leftRequest setDelegate:self];
   [self.leftRequest startAsynchronous];
 }
@@ -363,6 +365,7 @@
   self.rightRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.rightRequest setRequestMethod:@"GET"];
   [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.rightRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.rightRequest setDelegate:self];
   [self.rightRequest startAsynchronous];
 }
@@ -373,6 +376,7 @@
   self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.bothRequest setRequestMethod:@"GET"];
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.bothRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.bothRequest setDelegate:self];
   [self.bothRequest startAsynchronous];
 }
@@ -410,7 +414,7 @@
     self.leftUserId = [responseArray objectAtIndex:0];
     self.rightUserId = [responseArray objectAtIndex:1];
     
-    NSLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
+    DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
     [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
     
   }
