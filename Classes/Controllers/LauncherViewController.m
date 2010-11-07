@@ -10,7 +10,7 @@
 #import "FacemashViewController.h"
 #import "SettingsViewController.h"
 #import "Constants.h"
-#import "CJSONSerializer.h"
+#import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
 
 @interface LauncherViewController (Private)
@@ -216,7 +216,7 @@
   NSMutableArray *friendsArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"]];
   [friendsArray insertObject:currentUser atIndex:0];
   
-  NSData *postData = [[CJSONSerializer serializer] serializeArray:friendsArray error:nil];
+  NSData *postData = [[CJSONDataSerializer serializer] serializeArray:friendsArray];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"]];
   self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.registerFriendsRequest setDelegate:self];

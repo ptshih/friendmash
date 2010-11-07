@@ -14,7 +14,13 @@
 //#define USE_OFFLINE_MODE
 #define USE_ROUNDED_CORNERS
 
-#define STAGING
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#endif
+
+#if TARGET_IPHONE_SIMULATOR
+  #define STAGING
+#endif
 
 #ifdef STAGING
   #define FACEMASH_BASE_URL @"http://localhost:3000"

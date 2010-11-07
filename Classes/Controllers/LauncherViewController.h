@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
-#import "CJSONSerializer.h"
 #import "FBConnect.h"
 
 @interface LauncherViewController : UIViewController <FBSessionDelegate> {
