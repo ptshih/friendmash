@@ -32,6 +32,7 @@
 #import "CDataScanner_Extensions.h"
 
 @interface CDataScanner ()
+@property (readwrite, nonatomic, retain) NSCharacterSet *doubleCharacters;
 @end
 
 #pragma mark -
@@ -42,16 +43,19 @@ inline static unichar CharacterAtPointer(void *start, void *end)
 
 const u_int8_t theByte = *(u_int8_t *)start;
 if (theByte & 0x80)
-	{
-	// TODO -- UNICODE!!!! (well in theory nothing todo here)
-	}
+  {
+  // TODO -- UNICODE!!!! (well in theory nothing todo here)
+  }
 const unichar theCharacter = theByte;
 return(theCharacter);
 }
 
-static NSCharacterSet *sDoubleCharacters = NULL;
-
 @implementation CDataScanner
+
+@dynamic data;
+@dynamic scanLocation;
+@dynamic isAtEnd;
+@synthesize doubleCharacters;
 
 + (id)scannerWithData:(NSData *)inData
 {
@@ -60,26 +64,19 @@ theScanner.data = inData;
 return(theScanner);
 }
 
-+ (void)initialize
-{
-if (sDoubleCharacters == NULL)
-    {
-    sDoubleCharacters = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789eE-."] retain];
-    }
-}
-
 - (id)init
 {
 if ((self = [super init]) != nil)
-	{
-	}
+  {
+  self.doubleCharacters = [NSCharacterSet characterSetWithCharactersInString:@"0123456789eE-."];
+  }
 return(self);
 }
 
 - (void)dealloc
 {
-[data release];
-data = NULL;
+self.data = NULL;
+self.doubleCharacters = NULL;
 //
 [super dealloc];
 }
@@ -89,37 +86,30 @@ data = NULL;
 return(current - start);
 }
 
-- (NSUInteger)bytesRemaining
-{
-return(end - current);
-}
-
 - (NSData *)data
 {
-return(data);
+return(data); 
 }
 
 - (void)setData:(NSData *)inData
 {
 if (data != inData)
-	{
-    [data release];
-    data = [inData retain];
-    }
-
-if (data)
+  {
+  if (data)
     {
+    [data release];
+    data = NULL;
+    }
+  
+  if (inData)
+    {
+    data = [inData retain];
+    //
     start = (u_int8_t *)data.bytes;
     end = start + data.length;
     current = start;
     length = data.length;
     }
-else
-    {
-    start = NULL;
-    end = NULL;
-    current = NULL;
-    length = 0;
     }
 }
 
@@ -150,40 +140,40 @@ return(theCharacter);
 {
 unichar theCharacter = CharacterAtPointer(current, end);
 if (theCharacter == inCharacter)
-	{
-	++current;
-	return(YES);
-	}
+  {
+  ++current;
+  return(YES);
+  }
 else
-	return(NO);
+  return(NO);
 }
 
-- (BOOL)scanUTF8String:(const char *)inString intoString:(NSString **)outValue
+- (BOOL)scanUTF8String:(const char *)inString intoString:(NSString **)outValue;
 {
 const size_t theLength = strlen(inString);
 if ((size_t)(end - current) < theLength)
-	return(NO);
+  return(NO);
 if (strncmp((char *)current, inString, theLength) == 0)
-	{
-	current += theLength;
-	if (outValue)
-		*outValue = [NSString stringWithUTF8String:inString];
-	return(YES);
-	}
+  {
+  current += theLength;
+  if (outValue)
+    *outValue = [NSString stringWithUTF8String:inString];
+  return(YES);
+  }
 return(NO);
 }
 
 - (BOOL)scanString:(NSString *)inString intoString:(NSString **)outValue
 {
 if ((size_t)(end - current) < inString.length)
-	return(NO);
+  return(NO);
 if (strncmp((char *)current, [inString UTF8String], inString.length) == 0)
-	{
-	current += inString.length;
-	if (outValue)
-		*outValue = inString;
-	return(YES);
-	}
+  {
+  current += inString.length;
+  if (outValue)
+    *outValue = inString;
+  return(YES);
+  }
 return(NO);
 }
 
@@ -191,18 +181,18 @@ return(NO);
 {
 u_int8_t *P;
 for (P = current; P < end && [inSet characterIsMember:*P] == YES; ++P)
-	;
+  ;
 
 if (P == current)
-	{
-	return(NO);
-	}
+  {
+  return(NO);
+  }
 
 if (outValue)
-	{
-	*outValue = [[[NSString alloc] initWithBytes:current length:P - current encoding:NSUTF8StringEncoding] autorelease];
-	}
-
+  {
+  *outValue = [[[NSString alloc] initWithBytes:current length:P - current encoding:NSUTF8StringEncoding] autorelease];
+  }
+  
 current = P;
 
 return(YES);
@@ -213,14 +203,14 @@ return(YES);
 const char *theToken = [inString UTF8String];
 const char *theResult = strnstr((char *)current, theToken, end - current);
 if (theResult == NULL)
-	{
-	return(NO);
-	}
+  {
+  return(NO);
+  }
 
 if (outValue)
-	{
-	*outValue = [[[NSString alloc] initWithBytes:current length:theResult - (char *)current encoding:NSUTF8StringEncoding] autorelease];
-	}
+  {
+  *outValue = [[[NSString alloc] initWithBytes:current length:theResult - (char *)current encoding:NSUTF8StringEncoding] autorelease];
+  }
 
 current = (u_int8_t *)theResult;
 
@@ -231,18 +221,18 @@ return(YES);
 {
 u_int8_t *P;
 for (P = current; P < end && [inSet characterIsMember:*P] == NO; ++P)
-	;
+  ;
 
 if (P == current)
-	{
-	return(NO);
-	}
+  {
+  return(NO);
+  }
 
 if (outValue)
-	{
-	*outValue = [[[NSString alloc] initWithBytes:current length:P - current encoding:NSUTF8StringEncoding] autorelease];
-	}
-
+  {
+  *outValue = [[[NSString alloc] initWithBytes:current length:P - current encoding:NSUTF8StringEncoding] autorelease];
+  }
+  
 current = P;
 
 return(YES);
@@ -252,37 +242,20 @@ return(YES);
 {
 // Replace all of this with a strtod call
 NSString *theString = NULL;
-if ([self scanCharactersFromSet:sDoubleCharacters intoString:&theString])
-	{
-	if (outValue)
-		*outValue = [NSNumber numberWithDouble:[theString doubleValue]]; // TODO dont use doubleValue
-	return(YES);
-	}
+if ([self scanCharactersFromSet:doubleCharacters intoString:&theString])
+  {
+  if (outValue)
+    *outValue = [NSNumber numberWithDouble:[theString doubleValue]]; // TODO dont use doubleValue
+  return(YES);
+  }
 return(NO);
 }
-
-- (BOOL)scanDataOfLength:(NSUInteger)inLength intoData:(NSData **)outData;
-    {
-    if (self.bytesRemaining < inLength)
-        {
-        return(NO);
-        }
-    
-    if (outData)
-        {
-        *outData = [NSData dataWithBytes:current length:inLength];
-        }
-
-    current += inLength;
-    return(YES);
-    }
-
 
 - (void)skipWhitespace
 {
 u_int8_t *P;
 for (P = current; P < end && (isspace(*P)); ++P)
-	;
+  ;
 
 current = P;
 }
@@ -292,12 +265,6 @@ current = P;
 NSData *theRemainingData = [NSData dataWithBytes:current length:end - current];
 NSString *theString = [[[NSString alloc] initWithData:theRemainingData encoding:NSUTF8StringEncoding] autorelease];
 return(theString);
-}
-
-- (NSData *)remainingData;
-{
-NSData *theRemainingData = [NSData dataWithBytes:current length:end - current];
-return(theRemainingData);
 }
 
 @end

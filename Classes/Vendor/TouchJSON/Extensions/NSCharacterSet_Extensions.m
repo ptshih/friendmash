@@ -38,20 +38,11 @@
 #define LS 0x2028 // Line Separator
 #define PS 0x2029 // Paragraph Separator
 
-static NSCharacterSet *sLineBreaksCharacterSet = NULL;
-
 + (NSCharacterSet *)linebreaksCharacterSet
 {
-@synchronized(self)
-    {
-    if (sLineBreaksCharacterSet == NULL)
-        {
-        unichar theCharacters[] = { LF, FF, CR, NEL, LS, PS, };
+unichar theCharacters[] = { LF, FF, CR, NEL, LS, PS, };
 
-        sLineBreaksCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:theCharacters length:sizeof(theCharacters) / sizeof(*theCharacters)]] retain];
-        }
-    return(sLineBreaksCharacterSet);
-    }
+return([NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:theCharacters length:sizeof(theCharacters) / sizeof(*theCharacters)]]);
 }
 
 @end

@@ -31,12 +31,7 @@
 
 /// CDataScanner subclass that understands JSON syntax natively. You should generally use CJSONDeserializer instead of this class. (TODO - this could have been a category?)
 @interface CJSONScanner : CDataScanner {
-	BOOL strictEscapeCodes;
-    id nullObject;
 }
-
-@property (readwrite, nonatomic, assign) BOOL strictEscapeCodes;
-@property (readwrite, nonatomic, retain) id nullObject;
 
 - (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError;
 - (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError;
