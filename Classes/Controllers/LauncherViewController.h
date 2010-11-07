@@ -28,6 +28,12 @@
 @property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;
 
 /**
+ Initiate a bind/unbind with Facebook for OAuth token
+ */
+- (void)bindWithFacebook;
+- (void)unbindWithFacebook;
+
+/**
  Start mashing with gender = male
  This will launch FacemashViewController and set the gender iVar to male for retrieving the first set
  */

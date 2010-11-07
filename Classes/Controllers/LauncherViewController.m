@@ -15,11 +15,6 @@
 
 @interface LauncherViewController (Private)
 /**
- Initiate a bind with Facebook for OAuth token
- */
-- (void)bindWithFacebook;
-
-/**
  This method checks to see if an OAuth token exists for FB.
  If a token exists, we are already bound and will load, position, and display the left/right faceViews.
  Also send a request to get an NSDictionary of the current user and store it in userDefaults.
@@ -68,7 +63,7 @@
   self.view.backgroundColor = RGBCOLOR(59,89,152);
   
   // Check token and authorize
-  [self bindWithFacebook];
+  // [self bindWithFacebook];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -124,30 +119,15 @@
 
 #pragma mark OAuth / FBConnect
 - (void)bindWithFacebook {
-  [_facebook authorize:FB_APP_ID permissions:FB_PERMISSIONS delegate:self];
-  
-  
-  
-//  [OBFacebookOAuthService bindWithDelegate:self andView:self.view];
+  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
+    [_facebook authorize:FB_APP_ID permissions:FB_PERMISSIONS delegate:self view:self.view];
+  }
 }
 
 - (void)unbindWithFacebook {
   UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
   [logoutAlert show];
   [logoutAlert autorelease];
-}
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      break;
-    case 1:
-      [_facebook logout:self];
-      break;
-    default:
-      break;
-  }
 }
 
 - (void)fbDidLogin {
@@ -166,14 +146,33 @@
 }
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
+  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [permissionsAlert show];
+  [permissionsAlert autorelease];
+  [self bindWithFacebook];
 }
 
 - (void)fbDidLogout {
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self bindWithFacebook];
   [self displayLauncher];
+}
+
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      break;
+    case 1:
+      [_facebook logout:self];
+      break;
+    default:
+      break;
+  }
 }
 
 /*

@@ -6,13 +6,13 @@
  * You may obtain a copy of the License at
  * 
  *    http://www.apache.org/licenses/LICENSE-2.0
-
+ 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 
 #import "FBDialog.h"
@@ -33,7 +33,7 @@ static CGFloat kTransitionDuration = 0.3;
 static CGFloat kTitleMarginX = 8;
 static CGFloat kTitleMarginY = 4;
 static CGFloat kPadding = 10;
-static CGFloat kBorderWidth = 10;
+static CGFloat kBorderWidth = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ BOOL FBIsDeviceIPad() {
 @implementation FBDialog
 
 @synthesize delegate = _delegate,
-            params   = _params;
+params   = _params;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // private
@@ -59,7 +59,7 @@ BOOL FBIsDeviceIPad() {
 - (void)addRoundedRectToPath:(CGContextRef)context rect:(CGRect)rect radius:(float)radius {
   CGContextBeginPath(context);
   CGContextSaveGState(context);
-
+  
   if (radius == 0) {
     CGContextTranslateCTM(context, CGRectGetMinX(rect), CGRectGetMinY(rect));
     CGContextAddRect(context, rect);
@@ -76,7 +76,7 @@ BOOL FBIsDeviceIPad() {
     CGContextAddArcToPoint(context, 0, 0, fw/2, 0, 1);
     CGContextAddArcToPoint(context, fw, 0, fw, fh/2, 1);
   }
-
+  
   CGContextClosePath(context);
   CGContextRestoreGState(context);
 }
@@ -84,7 +84,7 @@ BOOL FBIsDeviceIPad() {
 - (void)drawRect:(CGRect)rect fill:(const CGFloat*)fillColors radius:(CGFloat)radius {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
-
+  
   if (fillColors) {
     CGContextSaveGState(context);
     CGContextSetFillColor(context, fillColors);
@@ -103,12 +103,12 @@ BOOL FBIsDeviceIPad() {
 - (void)strokeLines:(CGRect)rect stroke:(const CGFloat*)strokeColor {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
-
+  
   CGContextSaveGState(context);
   CGContextSetStrokeColorSpace(context, space);
   CGContextSetStrokeColor(context, strokeColor);
   CGContextSetLineWidth(context, 1.0);
-    
+  
   {
     CGPoint points[] = {{rect.origin.x+0.5, rect.origin.y-0.5},
       {rect.origin.x+rect.size.width, rect.origin.y-0.5}};
@@ -131,18 +131,19 @@ BOOL FBIsDeviceIPad() {
   }
   
   CGContextRestoreGState(context);
-
+  
   CGColorSpaceRelease(space);
 }
 
 - (BOOL)shouldRotateToOrientation:(UIDeviceOrientation)orientation {
+  return NO; // hack to disable FBConnect login from rotating
   if (orientation == _orientation) {
     return NO;
   } else {
     return orientation == UIDeviceOrientationLandscapeLeft
-      || orientation == UIDeviceOrientationLandscapeRight
-      || orientation == UIDeviceOrientationPortrait
-      || orientation == UIDeviceOrientationPortraitUpsideDown;
+    || orientation == UIDeviceOrientationLandscapeRight
+    || orientation == UIDeviceOrientationPortrait
+    || orientation == UIDeviceOrientationPortraitUpsideDown;
   }
 }
 
@@ -163,21 +164,21 @@ BOOL FBIsDeviceIPad() {
   if (transform) {
     self.transform = CGAffineTransformIdentity;
   }
-
+  
   CGRect frame = [UIScreen mainScreen].applicationFrame;
   CGPoint center = CGPointMake(
-    frame.origin.x + ceil(frame.size.width/2),
-    frame.origin.y + ceil(frame.size.height/2));
-
+                               frame.origin.x + ceil(frame.size.width/2),
+                               frame.origin.y + ceil(frame.size.height/2));
+  
   CGFloat scale_factor = 1.0f;
   if (FBIsDeviceIPad()) {
     // On the iPad the dialog's dimensions should only be 60% of the screen's
     scale_factor = 0.6f;
   }
-
+  
   CGFloat width = floor(scale_factor * frame.size.width) - kPadding * 2;
   CGFloat height = floor(scale_factor * frame.size.height) - kPadding * 2;
-
+  
   _orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(_orientation)) {
     self.frame = CGRectMake(kPadding, kPadding, height, width);
@@ -185,7 +186,7 @@ BOOL FBIsDeviceIPad() {
     self.frame = CGRectMake(kPadding, kPadding, width, height);
   }
   self.center = center;
-
+  
   if (transform) {
     self.transform = [self transformForOrientation];
   }
@@ -195,10 +196,10 @@ BOOL FBIsDeviceIPad() {
   UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     [_webView stringByEvaluatingJavaScriptFromString:
-      @"document.body.setAttribute('orientation', 90);"];
+     @"document.body.setAttribute('orientation', 90);"];
   } else {
     [_webView stringByEvaluatingJavaScriptFromString:
-      @"document.body.removeAttribute('orientation');"];
+     @"document.body.removeAttribute('orientation');"];
   }
 }
 
@@ -224,16 +225,16 @@ BOOL FBIsDeviceIPad() {
     for (NSString* key in params.keyEnumerator) {
       NSString* value = [params objectForKey:key];
       NSString* escaped_value = (NSString *)CFURLCreateStringByAddingPercentEscapes(
-                                  NULL, /* allocator */
-                                  (CFStringRef)value,
-                                  NULL, /* charactersToLeaveUnescaped */
-                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                  kCFStringEncodingUTF8);
-
+                                                                                    NULL, /* allocator */
+                                                                                    (CFStringRef)value,
+                                                                                    NULL, /* charactersToLeaveUnescaped */
+                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                    kCFStringEncodingUTF8);
+      
       [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, escaped_value]];
       [escaped_value release];
     }
-      
+    
     NSString* query = [pairs componentsJoinedByString:@"&"];
     NSString* url = [NSString stringWithFormat:@"%@?%@", baseURL, query];
     return [NSURL URLWithString:url];
@@ -244,21 +245,21 @@ BOOL FBIsDeviceIPad() {
 
 - (void)addObservers {
   [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(deviceOrientationDidChange:)
-    name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+                                           selector:@selector(deviceOrientationDidChange:)
+                                               name:@"UIDeviceOrientationDidChangeNotification" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(keyboardWillShow:) name:@"UIKeyboardWillShowNotification" object:nil];
+                                           selector:@selector(keyboardWillShow:) name:@"UIKeyboardWillShowNotification" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(keyboardWillHide:) name:@"UIKeyboardWillHideNotification" object:nil];
+                                           selector:@selector(keyboardWillHide:) name:@"UIKeyboardWillHideNotification" object:nil];
 }
 
 - (void)removeObservers {
   [[NSNotificationCenter defaultCenter] removeObserver:self
-    name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self
-    name:@"UIKeyboardWillShowNotification" object:nil];
+                                                  name:@"UIKeyboardWillShowNotification" object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self
-    name:@"UIKeyboardWillHideNotification" object:nil];
+                                                  name:@"UIKeyboardWillHideNotification" object:nil];
 }
 
 - (void)postDismissCleanup {
@@ -268,7 +269,7 @@ BOOL FBIsDeviceIPad() {
 
 - (void)dismiss:(BOOL)animated {
   [self dialogWillDisappear];
-
+  
   [_loadingURL release];
   _loadingURL = nil;
   
@@ -316,18 +317,18 @@ BOOL FBIsDeviceIPad() {
     [_closeButton setTitleColor:color forState:UIControlStateNormal];
     [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_closeButton addTarget:self action:@selector(cancel)
-      forControlEvents:UIControlEventTouchUpInside];
+           forControlEvents:UIControlEventTouchUpInside];
     
     // To be compatible with OS 2.x
-    #if __IPHONE_OS_VERSION_MAX_ALLOWED <= __IPHONE_2_2
-      _closeButton.font = [UIFont boldSystemFontOfSize:12];
-    #else
-      _closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    #endif
+#if __IPHONE_OS_VERSION_MAX_ALLOWED <= __IPHONE_2_2
+    _closeButton.font = [UIFont boldSystemFontOfSize:12];
+#else
+    _closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+#endif
     
     _closeButton.showsTouchWhenHighlighted = YES;
     _closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
-      | UIViewAutoresizingFlexibleBottomMargin;
+    | UIViewAutoresizingFlexibleBottomMargin;
     [self addSubview:_closeButton];
     
     CGFloat titleLabelFontSize = (FBIsDeviceIPad() ? 18 : 14);
@@ -337,19 +338,19 @@ BOOL FBIsDeviceIPad() {
     _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.font = [UIFont boldSystemFontOfSize:titleLabelFontSize];
     _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin
-      | UIViewAutoresizingFlexibleBottomMargin;
+    | UIViewAutoresizingFlexibleBottomMargin;
     [self addSubview:_titleLabel];
-       
+    
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(kPadding, kPadding, 480, 480)];
     _webView.delegate = self;
     _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_webView];
-
+    
     _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
-      UIActivityIndicatorViewStyleWhiteLarge];
+                UIActivityIndicatorViewStyleWhiteLarge];
     _spinner.autoresizingMask =
-      UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
-      | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+    | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [self addSubview:_spinner];
   }
   return self;
@@ -374,16 +375,16 @@ BOOL FBIsDeviceIPad() {
 - (void)drawRect:(CGRect)rect {
   CGRect grayRect = CGRectOffset(rect, -0.5, -0.5);
   [self drawRect:grayRect fill:kBorderGray radius:10];
-
+  
   CGRect headerRect = CGRectMake(
-    ceil(rect.origin.x + kBorderWidth), ceil(rect.origin.y + kBorderWidth),
-    rect.size.width - kBorderWidth*2, _titleLabel.frame.size.height);
+                                 ceil(rect.origin.x + kBorderWidth), ceil(rect.origin.y + kBorderWidth),
+                                 rect.size.width - kBorderWidth*2, _titleLabel.frame.size.height);
   [self drawRect:headerRect fill:kFacebookBlue radius:0];
   [self strokeLines:headerRect stroke:kBorderBlue];
-
+  
   CGRect webRect = CGRectMake(
-    ceil(rect.origin.x + kBorderWidth), headerRect.origin.y + headerRect.size.height,
-    rect.size.width - kBorderWidth*2, _webView.frame.size.height+1);
+                              ceil(rect.origin.x + kBorderWidth), headerRect.origin.y + headerRect.size.height,
+                              rect.size.width - kBorderWidth*2, _webView.frame.size.height+1);
   [self strokeLines:webRect stroke:kBorderBlack];
 }
 
@@ -391,9 +392,9 @@ BOOL FBIsDeviceIPad() {
 // UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
-    navigationType:(UIWebViewNavigationType)navigationType {
+ navigationType:(UIWebViewNavigationType)navigationType {
   NSURL* url = request.URL;
-
+  
   if ([url.scheme isEqualToString:@"fbconnect"]) {
     if ([[url.resourceSpecifier substringToIndex:8] isEqualToString:@"//cancel"]) {
       NSString * errorCode = [self getStringFromUrl:[url absoluteString] needle:@"error_code="];
@@ -449,7 +450,7 @@ BOOL FBIsDeviceIPad() {
   UIDeviceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (!_showingKeyboard && [self shouldRotateToOrientation:orientation]) {
     [self updateWebOrientation];
-
+    
     CGFloat duration = [UIApplication sharedApplication].statusBarOrientationAnimationDuration;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:duration];
@@ -462,35 +463,34 @@ BOOL FBIsDeviceIPad() {
 // UIKeyboardNotifications
 
 - (void)keyboardWillShow:(NSNotification*)notification {
-  
-  _showingKeyboard = YES;
-  
   if (FBIsDeviceIPad()) {
     // On the iPad the screen is large enough that we don't need to 
     // resize the dialog to accomodate the keyboard popping up
     return;
   }
-
+  
   UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     _webView.frame = CGRectInset(_webView.frame,
-      -(kPadding + kBorderWidth),
-      -(kPadding + kBorderWidth) - _titleLabel.frame.size.height);
+                                 -(kPadding + kBorderWidth),
+                                 -(kPadding + kBorderWidth) - _titleLabel.frame.size.height);
   }
+  
+  _showingKeyboard = YES;
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-  _showingKeyboard = NO;
-  
   if (FBIsDeviceIPad()) {
     return;
   }
   UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (UIInterfaceOrientationIsLandscape(orientation)) {
     _webView.frame = CGRectInset(_webView.frame,
-      kPadding + kBorderWidth,
-      kPadding + kBorderWidth + _titleLabel.frame.size.height);
+                                 kPadding + kBorderWidth,
+                                 kPadding + kBorderWidth + _titleLabel.frame.size.height);
   }
+  
+  _showingKeyboard = NO;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -513,7 +513,7 @@ BOOL FBIsDeviceIPad() {
   
   return str;
 }
- 
+
 - (id)initWithURL: (NSString *) serverURL 
            params: (NSMutableDictionary *) params  
          delegate: (id <FBDialogDelegate>) delegate {
@@ -543,55 +543,55 @@ BOOL FBIsDeviceIPad() {
   [_loadingURL release];
   _loadingURL = [[self generateURL:url params:getParams] retain];
   NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:_loadingURL];
-
+  
   [_webView loadRequest:request];
 }
 
 - (void)show {
   [self load];
   [self sizeToFitOrientation:NO];
-
+  
   CGFloat innerWidth = self.frame.size.width - (kBorderWidth+1)*2;  
   [_iconView sizeToFit];
   [_titleLabel sizeToFit];
   [_closeButton sizeToFit];
-
+  
   _titleLabel.frame = CGRectMake(
-    kBorderWidth + kTitleMarginX + _iconView.frame.size.width + kTitleMarginX,
-    kBorderWidth,
-    innerWidth - (_titleLabel.frame.size.height + _iconView.frame.size.width + kTitleMarginX*2),
-    _titleLabel.frame.size.height + kTitleMarginY*2);
+                                 kBorderWidth + kTitleMarginX + _iconView.frame.size.width + kTitleMarginX,
+                                 kBorderWidth,
+                                 innerWidth - (_titleLabel.frame.size.height + _iconView.frame.size.width + kTitleMarginX*2),
+                                 _titleLabel.frame.size.height + kTitleMarginY*2);
   
   _iconView.frame = CGRectMake(
-    kBorderWidth + kTitleMarginX,
-    kBorderWidth + floor(_titleLabel.frame.size.height/2 - _iconView.frame.size.height/2),
-    _iconView.frame.size.width,
-    _iconView.frame.size.height);
-
+                               kBorderWidth + kTitleMarginX,
+                               kBorderWidth + floor(_titleLabel.frame.size.height/2 - _iconView.frame.size.height/2),
+                               _iconView.frame.size.width,
+                               _iconView.frame.size.height);
+  
   _closeButton.frame = CGRectMake(
-    self.frame.size.width - (_titleLabel.frame.size.height + kBorderWidth),
-    kBorderWidth,
-    _titleLabel.frame.size.height,
-    _titleLabel.frame.size.height);
+                                  self.frame.size.width - (_titleLabel.frame.size.height + kBorderWidth),
+                                  kBorderWidth,
+                                  _titleLabel.frame.size.height,
+                                  _titleLabel.frame.size.height);
   
   _webView.frame = CGRectMake(
-    kBorderWidth+1,
-    kBorderWidth + _titleLabel.frame.size.height,
-    innerWidth,
-    self.frame.size.height - (_titleLabel.frame.size.height + 1 + kBorderWidth*2));
-
+                              kBorderWidth+1,
+                              kBorderWidth + _titleLabel.frame.size.height,
+                              innerWidth,
+                              self.frame.size.height - (_titleLabel.frame.size.height + 1 + kBorderWidth*2));
+  
   [_spinner sizeToFit];
   [_spinner startAnimating];
   _spinner.center = _webView.center;
-
+  
   UIWindow* window = [UIApplication sharedApplication].keyWindow;
   if (!window) {
     window = [[UIApplication sharedApplication].windows objectAtIndex:0];
   }
   [window addSubview:self];
-
+  
   [self dialogWillAppear];
-    
+  
   self.transform = CGAffineTransformScale([self transformForOrientation], 0.001, 0.001);
   [UIView beginAnimations:nil context:nil];
   [UIView setAnimationDuration:kTransitionDuration/1.5];
@@ -599,7 +599,54 @@ BOOL FBIsDeviceIPad() {
   [UIView setAnimationDidStopSelector:@selector(bounce1AnimationStopped)];
   self.transform = CGAffineTransformScale([self transformForOrientation], 1.1, 1.1);
   [UIView commitAnimations];
+  
+  [self addObservers];
+}
 
+- (void)showInView:(UIView *)view {
+  [self load];
+  [self sizeToFitOrientation:NO];
+  
+  CGFloat innerWidth = self.frame.size.width - (kBorderWidth+1)*2;  
+  [_iconView sizeToFit];
+  [_titleLabel sizeToFit];
+  [_closeButton sizeToFit];
+  
+  _titleLabel.frame = CGRectMake(
+                                 kBorderWidth + kTitleMarginX + _iconView.frame.size.width + kTitleMarginX,
+                                 kBorderWidth,
+                                 innerWidth - (_titleLabel.frame.size.height + _iconView.frame.size.width + kTitleMarginX*2),
+                                 _titleLabel.frame.size.height + kTitleMarginY*2);
+  
+  _iconView.frame = CGRectMake(
+                               kBorderWidth + kTitleMarginX,
+                               kBorderWidth + floor(_titleLabel.frame.size.height/2 - _iconView.frame.size.height/2),
+                               _iconView.frame.size.width,
+                               _iconView.frame.size.height);
+  
+  _closeButton.frame = CGRectMake(
+                                  self.frame.size.width - (_titleLabel.frame.size.height + kBorderWidth),
+                                  kBorderWidth,
+                                  _titleLabel.frame.size.height,
+                                  _titleLabel.frame.size.height);
+  
+  _webView.frame = CGRectMake(
+                              kBorderWidth+1,
+                              kBorderWidth + _titleLabel.frame.size.height,
+                              innerWidth,
+                              self.frame.size.height - (_titleLabel.frame.size.height + 1 + kBorderWidth*2));
+  
+  // Override frame for Web View
+  _closeButton.hidden = YES;
+  [_spinner sizeToFit];
+  [_spinner startAnimating];
+  _spinner.center = _webView.center;
+  self.frame = view.frame;
+  
+  [view addSubview:self];
+  
+  [self dialogWillAppear];
+  
   [self addObservers];
 }
 

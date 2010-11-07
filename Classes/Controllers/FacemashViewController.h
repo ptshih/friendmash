@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FaceView.h"
 #import "ASIHTTPRequest.h"
-#import "CJSONSerializer.h"
 
 /**
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
