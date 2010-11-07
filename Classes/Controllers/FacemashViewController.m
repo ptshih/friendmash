@@ -53,6 +53,7 @@
 @synthesize leftUserId = _leftUserId;
 @synthesize rightUserId = _rightUserId;
 @synthesize gameMode = _gameMode;
+@synthesize recentOpponentsArray = _recentOpponentsArray;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -64,6 +65,7 @@
     _gameMode = FacemashGameModeNormal; // normal game mode by default
     _isLeftLoaded = NO;
     _isRightLoaded = NO;
+    _recentOpponentsArray = [[NSMutableArray alloc] init];
   }
   return self;
 }
@@ -253,6 +255,7 @@
   self.leftUserId = [self getNewOpponentId];
   [self prepareLeftFaceView];
 #else
+  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
   if(self.rightUserId) [self sendMashRequestForLeftFaceViewWithDelegate:self];
 #endif
 }
@@ -264,6 +267,7 @@
   self.rightUserId = [self getNewOpponentId];
   [self prepareRightFaceView];
 #else
+  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
   if(self.leftUserId) [self sendMashRequestForRightFaceViewWithDelegate:self];
 #endif
 }
@@ -278,6 +282,8 @@
   self.rightUserId = [self getNewOpponentId];
   [self prepareBothFaceViews];
 #else
+  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
+  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
   [self sendMashRequestForBothFaceViewsWithDelegate:self];
 #endif
 }
@@ -297,7 +303,6 @@
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
   if(isLeft) {
 #ifndef USE_OFFLINE_MODE
-//    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_rightUserId andLoserId:_leftUserId withDelegate:self];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
@@ -313,7 +318,6 @@
     }
   } else {
 #ifndef USE_OFFLINE_MODE
-//    if(_rightUserId && _leftUserId) self.resultsRequest = [OBFacemashClient postMashResultsForWinnerId:_leftUserId andLoserId:_rightUserId withDelegate:self];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId withDelegate:self];
 #endif
     if(self.gameMode == FacemashGameModeNormal) {
@@ -344,7 +348,7 @@
 }
 
 - (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.rightUserId, params];
   self.leftRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.leftRequest setRequestMethod:@"GET"];
@@ -354,7 +358,7 @@
 }
 
 - (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.leftUserId, params];
   self.rightRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.rightRequest setRequestMethod:@"GET"];
@@ -364,7 +368,7 @@
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@",self.gender];
+  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/random?%@", FACEMASH_BASE_URL, params];
   self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.bothRequest setRequestMethod:@"GET"];
@@ -437,6 +441,7 @@
 
 
 - (void)dealloc {
+  [_recentOpponentsArray release];
   [_gender release];
   [_leftUserId release];
   [_rightUserId release];

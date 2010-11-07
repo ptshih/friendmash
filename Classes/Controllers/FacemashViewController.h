@@ -34,6 +34,8 @@ typedef enum {
   FaceView *_rightView;
   BOOL _isLeftLoaded;
   BOOL _isRightLoaded;
+  
+  NSMutableArray *_recentOpponentsArray;
 }
 
 @property (nonatomic,assign) FaceView *leftView;
@@ -48,6 +50,7 @@ typedef enum {
 @property (nonatomic,retain) NSString *leftUserId;
 @property (nonatomic,retain) NSString *rightUserId;
 @property (nonatomic,assign) NSUInteger gameMode;
+@property (nonatomic,retain) NSMutableArray *recentOpponentsArray;
 
 - (IBAction)back;
 

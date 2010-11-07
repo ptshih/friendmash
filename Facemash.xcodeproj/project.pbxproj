@@ -272,12 +272,12 @@
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 				2573EA3A12861A08004EBEBB /* TouchJSON */,
 				2573E7E512860444004EBEBB /* FBConnect */,
 				2573E541128589CF004EBEBB /* Reachability */,
 				25EB5DD812643DE000619ECE /* ImageManipulator.h */,
 				25EB5DD912643DE000619ECE /* ImageManipulator.m */,
-				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
