@@ -9,6 +9,7 @@
 #import "LauncherViewController.h"
 #import "FacemashViewController.h"
 #import "SettingsViewController.h"
+#import "RankingsViewController.h"
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
@@ -89,26 +90,27 @@
 }
 
 - (IBAction)settings {
-  [self unbindWithFacebook];
-//  SettingsViewController *svc;
-//  if(isDeviceIPad()) {
-//    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
-//  } else {
-//    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
-//  }
-//  [self presentModalViewController:svc animated:YES];
-//  [svc release];
-}
-
-- (IBAction)rankings {
   SettingsViewController *svc;
   if(isDeviceIPad()) {
     svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
   } else {
     svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
   }
+  svc.launcherViewController = self;
   [self presentModalViewController:svc animated:YES];
   [svc release];
+}
+
+- (IBAction)rankings {
+  RankingsViewController *rvc;
+  if(isDeviceIPad()) {
+    rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPad" bundle:nil];
+  } else {
+    rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPhone" bundle:nil];
+  }
+  rvc.launcherViewController = self;
+  [self presentModalViewController:rvc animated:YES];
+  [rvc release];
 }
 
 - (void)launchFacemashWithGender:(NSString *)gender {
@@ -131,9 +133,7 @@
 }
 
 - (void)unbindWithFacebook {
-  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
-  [logoutAlert show];
-  [logoutAlert autorelease];
+  [_facebook logout:self];
 }
 
 - (void)fbDidLogin {
@@ -165,20 +165,6 @@
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self bindWithFacebook];
   [self displayLauncher];
-}
-
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      break;
-    case 1:
-      [_facebook logout:self];
-      break;
-    default:
-      break;
-  }
 }
 
 /*

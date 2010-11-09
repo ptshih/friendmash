@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class LauncherViewController;
 
 @interface SettingsViewController : UIViewController {
-
+  LauncherViewController *_launcherViewController;
 }
+
+@property (nonatomic, assign) LauncherViewController *launcherViewController;
 
 - (IBAction)dismissSettings;
 
