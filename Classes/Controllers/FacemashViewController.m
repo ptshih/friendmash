@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
+#import "ASINetworkQueue.h"
 
 @interface FacemashViewController (Private)
 
@@ -45,6 +46,7 @@
 @synthesize rightView = _rightView;
 @synthesize isLeftLoaded = _isLeftLoaded;
 @synthesize isRightLoaded = _isRightLoaded;
+@synthesize networkQueue = _networkQueue;
 @synthesize resultsRequest = _resultsRequest;
 @synthesize leftRequest = _leftRequest;
 @synthesize rightRequest = _rightRequest;
@@ -66,6 +68,12 @@
     _isLeftLoaded = NO;
     _isRightLoaded = NO;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
+    _networkQueue = [ASINetworkQueue queue];
+    
+    [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   }
   return self;
 }
@@ -92,6 +100,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [self.networkQueue cancelAllOperations];
 }
 
 - (IBAction)back {
@@ -345,7 +357,9 @@
   [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.resultsRequest setPostLength:[postData length]];
   [self.resultsRequest setPostBody:(NSMutableData *)postData];
-  [self.resultsRequest startAsynchronous];
+  [self.networkQueue addOperation:self.resultsRequest];
+  [self.networkQueue go];
+//  [self.resultsRequest startAsynchronous];
 }
 
 - (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate {
@@ -356,7 +370,9 @@
   [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.leftRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.leftRequest setDelegate:self];
-  [self.leftRequest startAsynchronous];
+  [self.networkQueue addOperation:self.leftRequest];
+  [self.networkQueue go];
+//  [self.leftRequest startAsynchronous];
 }
 
 - (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate {
@@ -367,7 +383,9 @@
   [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.rightRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.rightRequest setDelegate:self];
-  [self.rightRequest startAsynchronous];
+  [self.networkQueue addOperation:self.rightRequest];
+  [self.networkQueue go];
+//  [self.rightRequest startAsynchronous];
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
@@ -378,7 +396,9 @@
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.bothRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
   [self.bothRequest setDelegate:self];
-  [self.bothRequest startAsynchronous];
+  [self.networkQueue addOperation:self.bothRequest];
+  [self.networkQueue go];
+//  [self.bothRequest startAsynchronous];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -422,7 +442,12 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+  DLog(@"Request failed: %@", request);
   // NSError *error = [request error];
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -445,6 +470,7 @@
 
 
 - (void)dealloc {
+  [_networkQueue release];
   [_recentOpponentsArray release];
   [_gender release];
   [_leftUserId release];

@@ -19,8 +19,11 @@ typedef enum {
   FacemashGameModeRandom = 1
 } FacemashGameMode;
 
+@class ASINetworkQueue;
+
 @interface FacemashViewController : UIViewController <FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
+  ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_resultsRequest;
   ASIHTTPRequest *_leftRequest;
   ASIHTTPRequest *_rightRequest;
@@ -42,6 +45,7 @@ typedef enum {
 @property (nonatomic,assign) FaceView *rightView;
 @property (nonatomic,assign) BOOL isLeftLoaded;
 @property (nonatomic,assign) BOOL isRightLoaded;
+@property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,retain) ASIHTTPRequest *resultsRequest;
 @property (nonatomic,retain) ASIHTTPRequest *leftRequest;
 @property (nonatomic,retain) ASIHTTPRequest *rightRequest;
