@@ -24,12 +24,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // DEBUG
-//  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriedsList"];
+  // [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriendsList"];
   
   self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
   
   _touchActive = NO;
   
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   

@@ -250,6 +250,8 @@
   } else if([request isEqual:self.registerFriendsRequest]) {
     DLog(@"register friends request finished");
     
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriendsList"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
   }
   

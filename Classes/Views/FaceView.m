@@ -97,12 +97,14 @@
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
-  DLog(@"pictureRequest request finished");
+  DLog(@"picture request finished");
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+  DLog(@"picture request failed");
+  // We should try and resend this request into the queue
   UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:failWhale waitUntilDone:YES];
   // NSError *error = [request error];
