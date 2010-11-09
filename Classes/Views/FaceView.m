@@ -98,17 +98,18 @@
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
   DLog(@"pictureRequest request finished");
-  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[request responseData] waitUntilDone:YES];
+  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+  UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
+  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:failWhale waitUntilDone:YES];
   // NSError *error = [request error];
 }
 
-- (void)loadNewFaceWithData:(NSData *)faceData {
+- (void)loadNewFaceWithData:(UIImage *)faceImage {
 //  self.faceImageView.image = [UIImage imageWithData:faceData];
-  UIImage *faceImage = [UIImage imageWithData:faceData];
   if(!faceImage) {
     // somehow the data came back and failed, resend request
     // make sure we don't do this more than 3 times

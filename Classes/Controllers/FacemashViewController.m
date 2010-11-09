@@ -67,9 +67,9 @@
     _gender = @"male"; // male by default
     _gameMode = FacemashGameModeRandom; // random game mode by default
     _isLeftLoaded = NO;
-    _isRightLoaded = NO;
+    _isRightLoaded = NO;;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
-    _networkQueue = [ASINetworkQueue queue];
+    _networkQueue = [[ASINetworkQueue queue] retain];
     
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
@@ -116,6 +116,15 @@
   }
 }
 
+- (IBAction)remash {
+  _remashButton.enabled = NO;
+  _isLeftLoaded = NO;
+  _isRightLoaded = NO;
+  [self.leftView removeFromSuperview];
+  [self.rightView removeFromSuperview];
+  [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+}
+
 - (NSString *)getNewOpponentId {
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   NSInteger count = [friendsArray count];
@@ -133,8 +142,8 @@
 }
 
 - (void)prepareBothFaceViews {
-    [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
-    [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
+  [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
+  [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }
 
 - (void)prepareLeftFaceView {
@@ -278,6 +287,8 @@
   } else {
     _isRightLoaded = YES;
   }
+  
+  if(_isLeftLoaded && _isRightLoaded) _remashButton.enabled = YES;
 }
 
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
@@ -293,11 +304,7 @@
       [self.leftView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
     } else {
-      _isLeftLoaded = NO;
-      _isRightLoaded = NO;
-      [self.leftView removeFromSuperview];
-      [self.rightView removeFromSuperview];
-      [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+      [self remash];
     }
   } else {
 #ifndef USE_OFFLINE_MODE
@@ -308,11 +315,7 @@
       [self.rightView removeFromSuperview];
       [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
     } else {
-      _isLeftLoaded = NO;
-      _isRightLoaded = NO;
-      [self.leftView removeFromSuperview];
-      [self.rightView removeFromSuperview];
-      [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+      [self remash];
     }
   }
 }
@@ -322,7 +325,7 @@
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
   self.resultsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.resultsRequest setDelegate:self];
+//  [self.resultsRequest setDelegate:self];
   [self.resultsRequest setRequestMethod:@"POST"];
   [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
@@ -340,7 +343,7 @@
   [self.leftRequest setRequestMethod:@"GET"];
   [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.leftRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
-  [self.leftRequest setDelegate:self];
+//  [self.leftRequest setDelegate:self];
   [self.networkQueue addOperation:self.leftRequest];
   [self.networkQueue go];
 //  [self.leftRequest startAsynchronous];
@@ -353,7 +356,7 @@
   [self.rightRequest setRequestMethod:@"GET"];
   [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.rightRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
-  [self.rightRequest setDelegate:self];
+//  [self.rightRequest setDelegate:self];
   [self.networkQueue addOperation:self.rightRequest];
   [self.networkQueue go];
 //  [self.rightRequest startAsynchronous];
@@ -366,7 +369,7 @@
   [self.bothRequest setRequestMethod:@"GET"];
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.bothRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
-  [self.bothRequest setDelegate:self];
+//  [self.bothRequest setDelegate:self];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];
 //  [self.bothRequest startAsynchronous];
@@ -407,7 +410,6 @@
     
     DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
     [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
-    
   }
   
   if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
@@ -420,7 +422,7 @@
 {
   DLog(@"Request failed: %@", request);
   // NSError *error = [request error];
-  
+
   if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
     DLog(@"POP QUEUE FROM ERROR");
     [self.navigationController popViewControllerAnimated:YES];

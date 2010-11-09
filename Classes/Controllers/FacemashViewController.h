@@ -23,6 +23,7 @@ typedef enum {
 
 @interface FacemashViewController : UIViewController <FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
+  IBOutlet UIButton *_remashButton;
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_resultsRequest;
   ASIHTTPRequest *_leftRequest;
@@ -58,6 +59,7 @@ typedef enum {
 @property (nonatomic,retain) NSMutableArray *recentOpponentsArray;
 
 - (IBAction)back;
+- (IBAction)remash;
 
 @end
 
