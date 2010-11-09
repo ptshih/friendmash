@@ -61,6 +61,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
+    _shouldGoBack = NO;
     _leftUserId = nil;
     _rightUserId = nil;
     _gender = @"male"; // male by default
@@ -103,47 +104,17 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-  [self.networkQueue cancelAllOperations];
 }
 
 - (IBAction)back {
-  [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)testRequest {
-//  [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-//  _friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
-//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-//  [OBFacemashClient getMashOpponentForId:[currentUserDictionary objectForKey:@"id"] andGender:self.gender withDelegate:self];
-}
-
-//- (IBAction)sendMashResults {
-//  [OBFacemashClient postMashResultsForWinnerId:@"100000049912171" andLoserId:@"100000199684521" withDelegate:self];
-//}
-//
-//- (IBAction)sendMashRequest {
-//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-//  [OBFacemashClient getMashOpponentForId:[[currentUserDictionary objectForKey:@"id"] stringValue] withDelegate:self];
-//}
-//
-//- (IBAction)sendFriendsList {
-//  NSDictionary *currentUserDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserDictionary"];
-//  NSArray *friendsList = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-//  [OBFacemashClient postFriendsForFacebookId:[currentUserDictionary objectForKey:@"id"] withArray:friendsList withDelegate:self];
-//}
-
-/*
-- (void)checkFBAuthAndGetCurrentUser {
-  if([OBFacebookOAuthService isBound]) {
-    self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-    self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];
-    [self loadAndShowFaceViews];
+  if(self.networkQueue.requestsCount == 0) {
+    DLog(@"POP");
+    [self.navigationController popViewControllerAnimated:YES];
   } else {
-    if(_leftView) [self.leftView removeFromSuperview];
-    if(_rightView) [self.rightView removeFromSuperview];
-  } 
+    _shouldGoBack = YES;
+    [self.networkQueue cancelAllOperations];
+  }
 }
-*/
 
 - (NSString *)getNewOpponentId {
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
@@ -438,16 +409,27 @@
     [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
     
   }
+  
+  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
+    DLog(@"POP QUEUE");
+    [self.navigationController popViewControllerAnimated:YES];
+  }
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request failed: %@", request);
   // NSError *error = [request error];
+  
+  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
+    DLog(@"POP QUEUE FROM ERROR");
+    [self.navigationController popViewControllerAnimated:YES];
+  }
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
+
 }
 
 // Override to allow orientations other than the default portrait orientation.

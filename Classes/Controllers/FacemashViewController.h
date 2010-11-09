@@ -35,6 +35,7 @@ typedef enum {
   
   FaceView *_leftView;
   FaceView *_rightView;
+  BOOL _shouldGoBack;
   BOOL _isLeftLoaded;
   BOOL _isRightLoaded;
   
@@ -57,11 +58,6 @@ typedef enum {
 @property (nonatomic,retain) NSMutableArray *recentOpponentsArray;
 
 - (IBAction)back;
-
-// Debug methods
-//- (IBAction)sendMashResults;
-//- (IBAction)sendMashRequest;
-//- (IBAction)sendFriendsList;
 
 @end
 
