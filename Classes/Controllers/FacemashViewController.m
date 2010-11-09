@@ -126,6 +126,7 @@
 }
 
 - (NSString *)getNewOpponentId {
+#ifdef USE_OFFLINE_MODE
   NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
   NSInteger count = [friendsArray count];
   float randomNum = arc4random() % count;
@@ -139,6 +140,9 @@
   } else {
     return [self getNewOpponentId];
   }
+#else
+  return nil;
+#endif
 }
 
 - (void)prepareBothFaceViews {
@@ -172,19 +176,6 @@
   } else {
     self.leftView.frame = CGRectMake(20, 70, self.leftView.frame.size.width, self.leftView.frame.size.height);
   }
-  
-  // Temp random
-  /*
-  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  if (friendsArray == nil) {
-    return;
-  }
-  NSInteger count = [friendsArray count];
-  float randomNum = arc4random() % count;
-  NSLog(@"rand: %g",randomNum);
-  [self.leftView prepareFaceViewWithFacebookId:[[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"] unsignedIntegerValue]];
-   */
-  
 }
 
 - (void)loadRightFaceView {

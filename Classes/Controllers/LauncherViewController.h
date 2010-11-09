@@ -20,12 +20,16 @@
   
   Facebook *_facebook;
   
+  NSArray *_friendsArray;
+  
   UIButton *_logoutButton;
 }
 
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
 @property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;
+
+@property (nonatomic,retain) NSArray *friendsArray;
 
 /**
  Initiate a bind/unbind with Facebook for OAuth token

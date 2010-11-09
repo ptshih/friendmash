@@ -42,10 +42,12 @@
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
 @synthesize registerFriendsRequest = _registerFriendsRequest;
+@synthesize friendsArray = _friendsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _facebook = [[Facebook alloc] init];
+    _friendsArray = [[NSArray alloc] init];
   }
   return self;
 }
@@ -185,7 +187,7 @@
 - (void)getCurrentUserRequest {
 //  self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
+  NSString *fields = FB_PARAMS;
   NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
   NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me?%@", params];
   self.currentUserRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -201,7 +203,7 @@
 - (void)getFriendsRequest {
 //  self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];  
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *fields = @"id,first_name,last_name,name,email,gender,birthday,relationship_status";
+  NSString *fields = FB_PARAMS;
   NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
   NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me/friends?%@", params];
   self.friendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -216,10 +218,10 @@
  */
 - (void)sendRegisterFriendsRequest {  
   NSDictionary *currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"];
-  NSMutableArray *friendsArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"]];
-  [friendsArray insertObject:currentUser atIndex:0];
+  NSMutableArray *allFriendsArray = [NSMutableArray arrayWithArray:self.friendsArray];
+  [allFriendsArray insertObject:currentUser atIndex:0];
   
-  NSData *postData = [[CJSONDataSerializer serializer] serializeArray:friendsArray];
+  NSData *postData = [[CJSONDataSerializer serializer] serializeArray:allFriendsArray];
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
   NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@?%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"], params];
@@ -247,9 +249,9 @@
     DLog(@"friends request finished");
     
     NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
-    NSArray *responseArray = [responseDict objectForKey:@"data"];
-    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.friendsArray = [responseDict objectForKey:@"data"];
+//    [[NSUserDefaults standardUserDefaults] setObject:responseArray forKey:@"friendsArray"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 
 #ifndef USE_OFFLINE_MODE
     [self performSelectorOnMainThread:@selector(sendRegisterFriendsRequest) withObject:nil waitUntilDone:YES];
@@ -309,6 +311,7 @@
 
 
 - (void)dealloc {
+  if(_friendsArray) [_friendsArray release];
   [super dealloc];
 }
 
