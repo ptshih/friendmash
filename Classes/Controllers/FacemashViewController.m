@@ -65,7 +65,7 @@
     _leftUserId = nil;
     _rightUserId = nil;
     _gender = @"male"; // male by default
-    _gameMode = FacemashGameModeRandom; // random game mode by default
+    _gameMode = FacemashGameModeNetwork; // ALL game mode by default, currently forced to NETWORK ONLY
     _isLeftLoaded = NO;
     _isRightLoaded = NO;;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
@@ -295,29 +295,10 @@
 
 }
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
-  if(isLeft) {
 #ifndef USE_OFFLINE_MODE
-    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId withDelegate:self];
+  if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId withDelegate:self];
 #endif
-    if(self.gameMode == FacemashGameModeNormal) {
-      _isLeftLoaded = NO;
-      [self.leftView removeFromSuperview];
-      [self performSelectorOnMainThread:@selector(loadAndShowLeftFaceView) withObject:nil waitUntilDone:YES];
-    } else {
-      [self remash];
-    }
-  } else {
-#ifndef USE_OFFLINE_MODE
-    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId withDelegate:self];
-#endif
-    if(self.gameMode == FacemashGameModeNormal) {
-      _isRightLoaded = NO;
-      [self.rightView removeFromSuperview];
-      [self performSelectorOnMainThread:@selector(loadAndShowRightFaceView) withObject:nil waitUntilDone:YES];
-    } else {
-      [self remash];
-    }
-  }
+  [self remash];
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate {
@@ -363,8 +344,8 @@
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random?%@", FACEMASH_BASE_URL, params];
+  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","],self.gameMode];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random/%@?%@", FACEMASH_BASE_URL, [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"], params];
   self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.bothRequest setRequestMethod:@"GET"];
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];

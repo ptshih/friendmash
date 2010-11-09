@@ -16,7 +16,7 @@
 
 typedef enum {
   FacemashGameModeNormal = 0,
-  FacemashGameModeRandom = 1
+  FacemashGameModeNetwork = 1
 } FacemashGameMode;
 
 @class ASINetworkQueue;

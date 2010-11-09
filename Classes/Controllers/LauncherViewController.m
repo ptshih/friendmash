@@ -152,10 +152,9 @@
 }
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
-  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [permissionsAlert show];
   [permissionsAlert autorelease];
-  [self bindWithFacebook];
 }
 
 - (void)fbDidLogout {
@@ -166,6 +165,18 @@
   [self bindWithFacebook];
   [self displayLauncher];
 }
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      [self bindWithFacebook];
+      break;
+    default:
+      break;
+  }
+}
+
 
 /*
  * Get current user's profile from FB
@@ -208,7 +219,9 @@
   [friendsArray insertObject:currentUser atIndex:0];
   
   NSData *postData = [[CJSONDataSerializer serializer] serializeArray:friendsArray];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"]];
+  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
+  NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@?%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"], params];
   self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.registerFriendsRequest setDelegate:self];
   [self.registerFriendsRequest setRequestMethod:@"POST"];

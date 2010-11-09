@@ -23,8 +23,6 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  // DEBUG
-  // [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriendsList"];
   
   self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
   
