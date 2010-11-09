@@ -42,11 +42,13 @@
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
 @synthesize registerFriendsRequest = _registerFriendsRequest;
+@synthesize currentUser = _currentUser;
 @synthesize friendsArray = _friendsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _facebook = [[Facebook alloc] init];
+    _currentUser = [[NSDictionary alloc] init];
     _friendsArray = [[NSArray alloc] init];
   }
   return self;
@@ -217,14 +219,13 @@
  * Send current user's friends list to facemash
  */
 - (void)sendRegisterFriendsRequest {  
-  NSDictionary *currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"];
   NSMutableArray *allFriendsArray = [NSMutableArray arrayWithArray:self.friendsArray];
-  [allFriendsArray insertObject:currentUser atIndex:0];
+  [allFriendsArray insertObject:self.currentUser atIndex:0];
   
   NSData *postData = [[CJSONDataSerializer serializer] serializeArray:allFriendsArray];
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@?%@", FACEMASH_BASE_URL, [currentUser objectForKey:@"id"], params];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@?%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"], params];
   self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.registerFriendsRequest setDelegate:self];
   [self.registerFriendsRequest setRequestMethod:@"POST"];
@@ -239,8 +240,8 @@
   if([request isEqual:self.currentUserRequest]) {
     DLog(@"current user request finished");
     
-    NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
-    [[NSUserDefaults standardUserDefaults] setObject:responseDict forKey:@"currentUser"];
+    self.currentUser = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:[self.currentUser objectForKey:@"id"] forKey:@"currentUserId"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self performSelectorOnMainThread:@selector(getFriendsRequest) withObject:nil waitUntilDone:YES];
@@ -311,6 +312,7 @@
 
 
 - (void)dealloc {
+  if(_currentUser) [_currentUser release];
   if(_friendsArray) [_friendsArray release];
   [super dealloc];
 }

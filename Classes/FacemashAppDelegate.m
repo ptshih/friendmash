@@ -15,7 +15,6 @@
 @synthesize window;
 @synthesize navigationController = _navigationController;
 @synthesize launcherViewController = _launcherViewController;
-@synthesize currentUserDictionary = _currentUserDictionary;
 @synthesize touchActive = _touchActive;
 @synthesize fbAccessToken = _fbAccessToken;
 
@@ -42,17 +41,6 @@
 
   _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
-  
-  // Current User Dictionary
-//  if([[NSUserDefaults standardUserDefaults] valueForKey:@"currentUserDictionary"]) {
-//    _currentUserDictionary = [[NSUserDefaults standardUserDefaults] valueForKey:@"currentUserDictionary"];
-//  } else {
-//    _currentUserDictionary = [[NSMutableDictionary alloc] init];
-//    [[NSUserDefaults standardUserDefaults] setObject:self.currentUserDictionary forKey:@"currentUserDictionary"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-//  }
-
-//  [[NSUserDefaults standardUserDefaults] setObject:self.currentUserDictionary forKey:@"currentUserDictionary"];
   
   // Override point for customization after app launch. 
   [window addSubview:self.navigationController.view];
@@ -95,7 +83,6 @@
 
 - (void)dealloc {
   [_fbAccessToken release];
-  [_currentUserDictionary release];
   [_launcherViewController release];
   [_navigationController release];
   [window release];

@@ -20,6 +20,7 @@
   
   Facebook *_facebook;
   
+  NSDictionary *_currentUser;
   NSArray *_friendsArray;
   
   UIButton *_logoutButton;
@@ -29,6 +30,7 @@
 @property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
 @property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;
 
+@property (nonatomic,retain) NSDictionary *currentUser;
 @property (nonatomic,retain) NSArray *friendsArray;
 
 /**

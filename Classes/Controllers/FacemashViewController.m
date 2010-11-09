@@ -300,7 +300,7 @@
 //  [self.resultsRequest setDelegate:self];
   [self.resultsRequest setRequestMethod:@"POST"];
   [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
+  [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [self.resultsRequest setPostLength:[postData length]];
   [self.resultsRequest setPostBody:(NSMutableData *)postData];
   [self.networkQueue addOperation:self.resultsRequest];
@@ -314,7 +314,7 @@
   self.leftRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.leftRequest setRequestMethod:@"GET"];
   [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.leftRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
+  [self.leftRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
 //  [self.leftRequest setDelegate:self];
   [self.networkQueue addOperation:self.leftRequest];
   [self.networkQueue go];
@@ -327,7 +327,7 @@
   self.rightRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.rightRequest setRequestMethod:@"GET"];
   [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.rightRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
+  [self.rightRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
 //  [self.rightRequest setDelegate:self];
   [self.networkQueue addOperation:self.rightRequest];
   [self.networkQueue go];
@@ -336,11 +336,11 @@
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","],self.gameMode];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random/%@?%@", FACEMASH_BASE_URL, [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"], params];
+  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random/%@?%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"], params];
   self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [self.bothRequest setRequestMethod:@"GET"];
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.bothRequest addRequestHeader:@"X-User-Id" value:[[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUser"] objectForKey:@"id"]];
+  [self.bothRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
 //  [self.bothRequest setDelegate:self];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];
