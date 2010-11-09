@@ -112,7 +112,6 @@
     fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
   }
   fvc.gender = gender;
-  fvc.gameMode = [[NSNumber numberWithBool:_gameModeSwitch.on] integerValue];
   [self.navigationController pushViewController:fvc animated:YES];
   [fvc release];
 }
