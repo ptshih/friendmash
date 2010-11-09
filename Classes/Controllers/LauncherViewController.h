@@ -13,6 +13,7 @@
 @interface LauncherViewController : UIViewController <FBSessionDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
+  IBOutlet UISwitch *_gameModeSwitch;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_friendsRequest;
   ASIHTTPRequest *_registerFriendsRequest;

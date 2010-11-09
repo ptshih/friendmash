@@ -28,6 +28,8 @@
   
   _touchActive = NO;
   
+  // NOTE: Currently this forces the friends list to be sent every app launch
+  // This needs to be changed before shipping
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];

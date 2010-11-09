@@ -65,7 +65,7 @@
     _leftUserId = nil;
     _rightUserId = nil;
     _gender = @"male"; // male by default
-    _gameMode = FacemashGameModeNetwork; // ALL game mode by default, currently forced to NETWORK ONLY
+    _gameMode = FacemashGameModeNormal; // ALL game mode by default
     _isLeftLoaded = NO;
     _isRightLoaded = NO;;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
