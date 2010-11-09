@@ -11,6 +11,7 @@
 #import "ImageManipulator.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
+#import "ASINetworkQueue.h"
 
 #define IPAD_FRAME_WIDTH 1024.0
 #define IPHONE_FRAME_WIDTH 480.0
@@ -58,20 +59,31 @@
 @synthesize isLeft = _isLeft;
 @synthesize isAnimating = _isAnimating;
 @synthesize delegate = _delegate;
+@synthesize networkQueue = _networkQueue;
 
-- (id)initWithFrame:(CGRect)frame {
-  if ((self = [super initWithFrame:frame])) {
-    // Initialization code
-    currentAnimationType = 0;
-    _imageLoaded = NO;
-    _facebookId = 0;
-    self.isAnimating = NO;
-    _touchAllowed = YES;
-  }
-  return self;
-}
+//- (id)initWithFrame:(CGRect)frame {
+//  if ((self = [super initWithFrame:frame])) {
+//    // Initialization code
+//
+//
+//  }
+//  return self;
+//}
 
 - (void)awakeFromNib {
+  _retryCount = 0;
+  currentAnimationType = 0;
+  _imageLoaded = NO;
+  _facebookId = 0;
+  self.isAnimating = NO;
+  _touchAllowed = YES;
+  
+  _networkQueue = [[ASINetworkQueue queue] retain];
+  [[self networkQueue] setDelegate:self];
+  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+  
   _loadingView.layer.cornerRadius = 5.0;
   self.userInteractionEnabled = NO;
 }
@@ -91,23 +103,38 @@
   ASIHTTPRequest *pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
   [pictureRequest setRequestMethod:@"GET"];
   [pictureRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [pictureRequest setDelegate:self];
-  [pictureRequest startAsynchronous];
+  [self.networkQueue addOperation:pictureRequest];
+  [self.networkQueue go];
+//  [pictureRequest setDelegate:self];
+//  [pictureRequest startAsynchronous];
 }
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
-  DLog(@"picture request finished");
+  DLog(@"FaceView picture request finished");
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  DLog(@"picture request failed");
+  DLog(@"FaceView picture request failed");
   // We should try and resend this request into the queue
-  UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
-  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:failWhale waitUntilDone:YES];
+  if(_retryCount < 3) {
+    [self.networkQueue addOperation:request];
+    [self.networkQueue go];
+    _retryCount++;
+  } else {
+    UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
+    [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:failWhale waitUntilDone:YES];
+    _retryCount = 0;
+  }
+
   // NSError *error = [request error];
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"FaceView Queue finished");
+  
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
@@ -332,6 +359,7 @@
 }
 
 - (void)dealloc {
+  [_networkQueue release];
   if(_faceImageView) [_faceImageView release];
   [super dealloc];
 }

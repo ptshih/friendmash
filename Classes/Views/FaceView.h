@@ -19,6 +19,7 @@
  */
 @class FaceView;
 @class FacemashViewController;
+@class ASINetworkQueue;
 
 @protocol FaceViewDelegate <NSObject>
 @optional
@@ -50,6 +51,9 @@ typedef enum {
   NSUInteger currentAnimationType;
   NSString *_facebookId;
   BOOL _touchAllowed;
+  
+  ASINetworkQueue *_networkQueue;
+  NSUInteger _retryCount;
 }
 
 @property (nonatomic, assign) FacemashViewController *facemashViewController;
@@ -59,6 +63,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
+@property (retain) ASINetworkQueue *networkQueue;
 
 /**
  This method prepares the FaceView by setting the local iVar for _facebookId and the default origin for the FaceView
