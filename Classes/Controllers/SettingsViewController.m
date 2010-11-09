@@ -8,7 +8,6 @@
 
 #import "SettingsViewController.h"
 
-
 @implementation SettingsViewController
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -47,11 +46,8 @@
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  if(UIDeviceOrientationIsPortrait(interfaceOrientation)) {
-    return YES;
-  } else {
-    return NO;
-  }
+  if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
+  else return NO;
 }
 
 - (void)didReceiveMemoryWarning {

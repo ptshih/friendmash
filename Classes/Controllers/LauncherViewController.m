@@ -101,7 +101,14 @@
 }
 
 - (IBAction)rankings {
-  
+  SettingsViewController *svc;
+  if(isDeviceIPad()) {
+    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
+  } else {
+    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
+  }
+  [self presentModalViewController:svc animated:YES];
+  [svc release];
 }
 
 - (void)launchFacemashWithGender:(NSString *)gender {
@@ -284,13 +291,7 @@
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
-  else {
-    if(self.modalViewController) {
-      return YES;
-    } else {
-      return NO;
-    }
-  }
+  else return NO;
 }
 
 - (void)didReceiveMemoryWarning {
