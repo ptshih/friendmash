@@ -78,6 +78,8 @@
 		2573EA5A12861A08004EBEBB /* CSerializedJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA5012861A08004EBEBB /* CSerializedJSONData.m */; };
 		258632C6126090A400260ECB /* bieber_profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 258632C4126090A400260ECB /* bieber_profile.jpg */; };
 		258632C7126090A400260ECB /* mrt_profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 258632C5126090A400260ECB /* mrt_profile.jpg */; };
+		25BDF0C6128A3A60004F046A /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25BDF0C3128A3A60004F046A /* ASIDataCompressor.m */; };
+		25BDF0C7128A3A60004F046A /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25BDF0C5128A3A60004F046A /* ASIDataDecompressor.m */; };
 		25BEBF611260289700E18F34 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEBF601260289700E18F34 /* CoreData.framework */; };
 		25BEC25E1260626400E18F34 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25BEC25D1260626400E18F34 /* QuartzCore.framework */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
@@ -203,6 +205,10 @@
 		2573EA5012861A08004EBEBB /* CSerializedJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSerializedJSONData.m; sourceTree = "<group>"; };
 		258632C4126090A400260ECB /* bieber_profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bieber_profile.jpg; sourceTree = "<group>"; };
 		258632C5126090A400260ECB /* mrt_profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mrt_profile.jpg; sourceTree = "<group>"; };
+		25BDF0C2128A3A60004F046A /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
+		25BDF0C3128A3A60004F046A /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
+		25BDF0C4128A3A60004F046A /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
+		25BDF0C5128A3A60004F046A /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
 		25BEBF601260289700E18F34 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		25BEC25D1260626400E18F34 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -361,6 +367,10 @@
 				2573E51F12858874004EBEBB /* ASINetworkQueue.h */,
 				2573E52012858874004EBEBB /* ASINetworkQueue.m */,
 				2573E52112858874004EBEBB /* ASIProgressDelegate.h */,
+				25BDF0C2128A3A60004F046A /* ASIDataCompressor.h */,
+				25BDF0C3128A3A60004F046A /* ASIDataCompressor.m */,
+				25BDF0C4128A3A60004F046A /* ASIDataDecompressor.h */,
+				25BDF0C5128A3A60004F046A /* ASIDataDecompressor.m */,
 			);
 			path = ASIHTTPRequest;
 			sourceTree = "<group>";
@@ -713,6 +723,8 @@
 				2573EA5812861A08004EBEBB /* CJSONScanner.m in Sources */,
 				2573EA5912861A08004EBEBB /* CJSONSerializer.m in Sources */,
 				2573EA5A12861A08004EBEBB /* CSerializedJSONData.m in Sources */,
+				25BDF0C6128A3A60004F046A /* ASIDataCompressor.m in Sources */,
+				25BDF0C7128A3A60004F046A /* ASIDataDecompressor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
