@@ -9,9 +9,11 @@
 #import "FaceView.h"
 #import "FacemashViewController.h"
 #import "ImageManipulator.h"
-#import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
+#import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
+#import "RemoteRequest.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define IPAD_FRAME_WIDTH 1024.0
 #define IPHONE_FRAME_WIDTH 480.0
@@ -61,15 +63,6 @@
 @synthesize delegate = _delegate;
 @synthesize networkQueue = _networkQueue;
 
-//- (id)initWithFrame:(CGRect)frame {
-//  if ((self = [super initWithFrame:frame])) {
-//    // Initialization code
-//
-//
-//  }
-//  return self;
-//}
-
 - (void)awakeFromNib {
   _retryCount = 0;
   currentAnimationType = 0;
@@ -96,17 +89,9 @@
 }
 
 - (void)getPictureForFacebookId:(NSString *)facebookId {
-  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *type = @"large";
-  NSString *params = [NSString stringWithFormat:@"access_token=%@&type=%@", token, type];
-  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", facebookId, params];
-  ASIHTTPRequest *pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [pictureRequest setRequestMethod:@"GET"];
-  [pictureRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:facebookId andType:@"large" withDelegate:nil];
   [self.networkQueue addOperation:pictureRequest];
   [self.networkQueue go];
-//  [pictureRequest setDelegate:self];
-//  [pictureRequest startAsynchronous];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -117,7 +102,8 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  DLog(@"FaceView picture request failed");
+  DLog(@"Request Failed with Error: %@", [request error]);
+  
   // We should try and resend this request into the queue
   if(_retryCount < 3) {
     [self getPictureForFacebookId:_facebookId];

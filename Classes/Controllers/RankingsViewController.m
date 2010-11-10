@@ -10,6 +10,9 @@
 #import "LauncherViewController.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
+#import "RemoteRequest.h"
+#import "ASIHTTPRequest.h"
+#import "ASINetworkQueue.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation RankingsViewController
@@ -17,6 +20,7 @@
 @synthesize launcherViewController = _launcherViewController;
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
+@synthesize networkQueue = _networkQueue;
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -24,6 +28,13 @@
     _rankingsArray = [[NSArray alloc] init];
     _imageCache = [[ImageCache alloc] init];
     self.imageCache.delegate = self;
+    
+    _networkQueue = [[ASINetworkQueue queue] retain];
+    
+    [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   }
   return self;
 }
@@ -39,13 +50,11 @@
 
 - (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode {
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d", gender, mode];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/rankings?%@", FACEMASH_BASE_URL, params];
-  ASIHTTPRequest *rankingsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [rankingsRequest setDelegate:self];
-  [rankingsRequest setRequestMethod:@"GET"];
-  [rankingsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [rankingsRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [rankingsRequest startAsynchronous];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings", FACEMASH_BASE_URL];
+  
+  ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  [self.networkQueue addOperation:rankingsRequest];
+  [self.networkQueue go];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -58,7 +67,11 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  // NSError *error = [request error];
+  DLog(@"Request Failed with Error: %@", [request error]);
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
 }
 
 - (IBAction)selectMode:(UISegmentedControl *)segmentedControl {
@@ -121,10 +134,8 @@
   } else {
     if (_tableView.dragging == NO && _tableView.decelerating == NO)
     {
-      NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-      NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
-      NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], params];
-      [self.imageCache cacheImageWithURL:[NSURL URLWithString:urlString] forIndexPath:indexPath];
+      ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"] andType:@"square" withDelegate:nil];
+      [self.imageCache cacheImageWithRequest:pictureRequest forIndexPath:indexPath];
     }
     cell.imageView.image = [UIImage imageNamed:@"picture_loading.png"];
   }
@@ -156,14 +167,12 @@
 
 - (void)loadImagesForOnscreenRows
 {
-  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
   NSArray *visiblePaths = [_tableView indexPathsForVisibleRows];
   for (NSIndexPath *indexPath in visiblePaths)
   {
     if(![self.imageCache getImageForIndexPath:indexPath]) {
-      NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], params];
-      [self.imageCache cacheImageWithURL:[NSURL URLWithString:urlString] forIndexPath:indexPath];
+      ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"] andType:@"square" withDelegate:nil];
+      [self.imageCache cacheImageWithRequest:pictureRequest forIndexPath:indexPath];
     }
   }
 }
@@ -189,6 +198,9 @@
 
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
+  [_networkQueue release];
   [_imageCache release];
   [_rankingsArray release];
   [super dealloc];

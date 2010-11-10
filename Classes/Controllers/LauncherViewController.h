@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHTTPRequest.h"
 #import "FBConnect.h"
+
+@class ASIHTTPRequest;
+@class ASINetworkQueue;
 
 @interface LauncherViewController : UIViewController <FBSessionDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
+  ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_friendsRequest;
   ASIHTTPRequest *_registerFriendsRequest;
@@ -26,6 +29,7 @@
   UIButton *_logoutButton;
 }
 
+@property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
 @property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;

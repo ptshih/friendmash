@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHTTPRequest.h"
 
 #define FLICK_THRESHOLD 20.0
 #define IPAD_DRAG_THRESHOLD 120.0
@@ -19,6 +18,7 @@
  */
 @class FaceView;
 @class FacemashViewController;
+@class ASIHTTPRequest;
 @class ASINetworkQueue;
 
 @protocol FaceViewDelegate <NSObject>

@@ -42,6 +42,7 @@
 		253E985B1267FC300037CB2D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* SettingsViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
+		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
 		2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5071285859A004EBEBB /* SystemConfiguration.framework */; };
 		2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E509128585A4004EBEBB /* MobileCoreServices.framework */; };
@@ -144,6 +145,8 @@
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
+		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
+		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2573E5071285859A004EBEBB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2573E509128585A4004EBEBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -275,6 +278,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				25698388128AB13000B2466B /* Client */,
 				2573E5FC12859171004EBEBB /* Categories */,
 				251EA13D1262ABD60055CFD2 /* Vendor */,
 				25E0516E125FCB7500CA6AC1 /* Controllers */,
@@ -375,6 +379,15 @@
 				253E98061267F4750037CB2D /* bg_ipad.png */,
 			);
 			path = ipad;
+			sourceTree = "<group>";
+		};
+		25698388128AB13000B2466B /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				25698389128AB1DE00B2466B /* RemoteRequest.h */,
+				2569838A128AB1DE00B2466B /* RemoteRequest.m */,
+			);
+			path = Client;
 			sourceTree = "<group>";
 		};
 		2573E51112858874004EBEBB /* ASIHTTPRequest */ = {
@@ -763,6 +776,7 @@
 				25BDF0C6128A3A60004F046A /* ASIDataCompressor.m in Sources */,
 				25BDF0C7128A3A60004F046A /* ASIDataDecompressor.m in Sources */,
 				25BDF3DD128A8666004F046A /* ImageCache.m in Sources */,
+				2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

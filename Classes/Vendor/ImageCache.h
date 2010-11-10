@@ -13,6 +13,7 @@
 - (void)imageDidLoad:(NSIndexPath *)indexPath;
 @end
 
+@class ASIHTTPRequest;
 @class ASINetworkQueue;
 
 @interface ImageCache : NSObject {
@@ -28,6 +29,7 @@
 @property (nonatomic, assign) id <ImageCacheDelegate> delegate;
 
 - (void)resetCache;
+- (void)cacheImageWithRequest:(ASIHTTPRequest *)request forIndexPath:(NSIndexPath *)indexPath;
 - (void)cacheImageWithURL:(NSURL *)url forIndexPath:(NSIndexPath *)indexPath;
 - (UIImage *)getImageForIndexPath:(NSIndexPath *)indexPath;
 

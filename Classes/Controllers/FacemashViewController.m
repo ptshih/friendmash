@@ -12,6 +12,7 @@
 #import "CJSONDeserializer.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
+#import "RemoteRequest.h"
 
 @interface FacemashViewController (Private)
 
@@ -296,60 +297,28 @@
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate {
   NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", nil];
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
-  self.resultsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-//  [self.resultsRequest setDelegate:self];
-  [self.resultsRequest setRequestMethod:@"POST"];
-  [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  [self.resultsRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [self.resultsRequest setPostLength:[postData length]];
-  [self.resultsRequest setPostBody:(NSMutableData *)postData];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
+  self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
-//  [self.resultsRequest startAsynchronous];
 }
 
 - (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.rightUserId, params];
-  self.leftRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.leftRequest setRequestMethod:@"GET"];
-  [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.leftRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  [self.leftRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-//  [self.leftRequest setDelegate:self];
-  [self.networkQueue addOperation:self.leftRequest];
-  [self.networkQueue go];
-//  [self.leftRequest startAsynchronous];
+//  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
+//  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.rightUserId, params];
 }
 
 - (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.leftUserId, params];
-  self.rightRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.rightRequest setRequestMethod:@"GET"];
-  [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.rightRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  [self.rightRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-//  [self.rightRequest setDelegate:self];
-  [self.networkQueue addOperation:self.rightRequest];
-  [self.networkQueue go];
-//  [self.rightRequest startAsynchronous];
+//  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
+//  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.leftUserId, params];
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
-  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","],self.gameMode];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/random/%@?%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"], params];
-  self.bothRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.bothRequest setRequestMethod:@"GET"];
-  [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.bothRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  [self.bothRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-//  [self.bothRequest setDelegate:self];
+  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  self.bothRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];
-//  [self.bothRequest startAsynchronous];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -397,8 +366,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  DLog(@"Request failed: %@", request);
-  // NSError *error = [request error];
+  DLog(@"Request Failed with Error: %@", [request error]);
 
   if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
     DLog(@"POP QUEUE FROM ERROR");
@@ -408,7 +376,6 @@
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
-
 }
 
 // Override to allow orientations other than the default portrait orientation.

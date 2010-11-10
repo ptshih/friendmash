@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ImageCache.h"
+
+@class ASINetworkQueue;
 @class LauncherViewController;
 
 @interface RankingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, ImageCacheDelegate> {
@@ -15,11 +17,13 @@
   LauncherViewController *_launcherViewController;
   NSArray *_rankingsArray;
   ImageCache *_imageCache;
+  ASINetworkQueue *_networkQueue;
 }
 
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
 @property (nonatomic, retain) NSArray *rankingsArray;
 @property (nonatomic, retain) ImageCache *imageCache;
+@property (retain) ASINetworkQueue *networkQueue;
 
 - (void)loadImagesForOnscreenRows;
 - (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode;

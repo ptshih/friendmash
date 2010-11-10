@@ -13,6 +13,9 @@
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
+#import "ASIHTTPRequest.h"
+#import "ASINetworkQueue.h"
+#import "RemoteRequest.h"
 
 @interface LauncherViewController (Private)
 /**
@@ -39,6 +42,7 @@
 
 @implementation LauncherViewController
 
+@synthesize networkQueue = _networkQueue;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
 @synthesize registerFriendsRequest = _registerFriendsRequest;
@@ -50,6 +54,13 @@
     _facebook = [[Facebook alloc] init];
     _currentUser = [[NSDictionary alloc] init];
     _friendsArray = [[NSArray alloc] init];
+    
+    _networkQueue = [[ASINetworkQueue queue] retain];
+    
+    [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   }
   return self;
 }
@@ -187,37 +198,22 @@
   }
 }
 
-
 /*
  * Get current user's profile from FB
  */
 - (void)getCurrentUserRequest {
-//  self.currentUserRequest = [OBFacebookOAuthService getCurrentUserWithDelegate:self];
-  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *fields = FB_PARAMS;
-  NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
-  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me?%@", params];
-  self.currentUserRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.currentUserRequest setRequestMethod:@"GET"];
-  [self.currentUserRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.currentUserRequest setDelegate:self];
-  [self.currentUserRequest startAsynchronous];
+  self.currentUserRequest = [RemoteRequest getFacebookRequestForMeWithDelegate:nil];
+  [self.networkQueue addOperation:self.currentUserRequest];
+  [self.networkQueue go];
 }
 
 /*
  * Get current user's friends list from FB
  */
 - (void)getFriendsRequest {
-//  self.friendsRequest = [OBFacebookOAuthService getFriendsWithDelegate:self];  
-  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *fields = FB_PARAMS;
-  NSString *params = [NSString stringWithFormat:@"access_token=%@&fields=%@", token, fields];
-  NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/me/friends?%@", params];
-  self.friendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.friendsRequest setRequestMethod:@"GET"];
-  [self.friendsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.friendsRequest setDelegate:self];
-  [self.friendsRequest startAsynchronous];
+  self.friendsRequest = [RemoteRequest getFacebookRequestForFriendsWithDelegate:nil];
+  [self.networkQueue addOperation:self.friendsRequest];
+  [self.networkQueue go];
 }
 
 /*
@@ -230,15 +226,11 @@
   NSData *postData = [[CJSONDataSerializer serializer] serializeArray:allFriendsArray];
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
-  NSString *urlString = [NSString stringWithFormat:@"%@/mash/friends/%@?%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"], params];
-  self.registerFriendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
-  [self.registerFriendsRequest setDelegate:self];
-  [self.registerFriendsRequest setRequestMethod:@"POST"];
-  [self.registerFriendsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  [self.registerFriendsRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [self.registerFriendsRequest setPostLength:[postData length]];
-  [self.registerFriendsRequest setPostBody:(NSMutableData *)postData];
-  [self.registerFriendsRequest startAsynchronous];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/friends/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  
+  self.registerFriendsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:postData withDelegate:nil];
+  [self.networkQueue addOperation:self.registerFriendsRequest];
+  [self.networkQueue go];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -280,7 +272,11 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  // NSError *error = [request error];
+  DLog(@"Request Failed with Error: %@", [request error]);
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
 }
 
 //#pragma mark OBOAuthServiceDelegate
@@ -318,6 +314,9 @@
 
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
+  [_networkQueue release];
   if(_currentUser) [_currentUser release];
   if(_friendsArray) [_friendsArray release];
   [super dealloc];

@@ -44,6 +44,12 @@
   [self.networkQueue go];
 }
 
+- (void)cacheImageWithRequest:(ASIHTTPRequest *)request forIndexPath:(NSIndexPath *)indexPath {
+  [self.pendingRequests setObject:request forKey:indexPath];
+  [self.networkQueue addOperation:request];
+  [self.networkQueue go];
+}
+
 - (UIImage *)getImageForIndexPath:(NSIndexPath *)indexPath {
   return [self.imageCache objectForKey:indexPath];
 }
@@ -61,23 +67,16 @@
     }
   }
 
-  // Use when fetching text data
-  // NSString *responseString = [request responseString];
-  
-  // Use when fetching binary data
-  // NSData *responseData = [request responseData];
-  
   DLog(@"Request finished successfully");
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  // NSError *error = [request error];
+  DLog(@"Request Failed with Error: %@", [request error]);
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
-  
 }
 
 - (void)dealloc {

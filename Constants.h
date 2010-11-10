@@ -30,6 +30,9 @@
   #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
 #endif
 
+#define FB_GRAPH_FRIENDS @"https://graph.facebook.com/me/friends"
+#define FB_GRAPH_ME @"https://graph.facebook.com/me"
+
 #define FB_APP_ID @"151779758183785"
 #define FB_APP_SECRET @"77bcf63d51d3062fed22da00243998ae"
 #define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_birthday",@"friends_birthday",@"user_location",@"friends_location",@"user_hometown",@"friends_hometown",@"user_photos",@"friends_photos",@"user_relationships",@"friends_relationships",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
