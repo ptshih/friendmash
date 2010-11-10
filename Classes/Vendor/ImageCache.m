@@ -56,7 +56,9 @@
     NSIndexPath *indexPath = [[self.pendingRequests allKeysForObject:request] objectAtIndex:0];
     [self.pendingRequests removeObjectForKey:indexPath];
     [self.imageCache setObject:[UIImage imageWithData:[request responseData]] forKey:indexPath];
-    [delegate imageDidLoad:indexPath];
+    if([delegate respondsToSelector:@selector(imageDidLoad:)]) {
+      [delegate imageDidLoad:indexPath];
+    }
   }
 
   // Use when fetching text data
@@ -65,7 +67,7 @@
   // Use when fetching binary data
   // NSData *responseData = [request responseData];
   
-  DLog(@"image cache request finished successfully");
+  DLog(@"Request finished successfully");
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request

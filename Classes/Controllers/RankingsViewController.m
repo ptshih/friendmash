@@ -52,13 +52,6 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   // This is on the main thread
   self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-  
-  // Use when fetching text data
-  NSString *responseString = [request responseString];
-  
-  // Use when fetching binary data
-  NSData *responseData = [request responseData];
-  
   [_tableView reloadData];
   DLog(@"rankings request finished successfully");
 }
@@ -70,7 +63,7 @@
 
 - (IBAction)selectMode:(UISegmentedControl *)segmentedControl {
   DLog(@"selected section: %d", segmentedControl.selectedSegmentIndex);
-  [self.imageCache resetCache];
+  [self.imageCache resetCache]; // reset the cache when switching segments
   switch (segmentedControl.selectedSegmentIndex) {
     case 0:
       [self getTopRankingsForGender:@"male" andMode:0];
