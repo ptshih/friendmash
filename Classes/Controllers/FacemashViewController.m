@@ -301,6 +301,7 @@
   [self.resultsRequest setRequestMethod:@"POST"];
   [self.resultsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.resultsRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  [self.resultsRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [self.resultsRequest setPostLength:[postData length]];
   [self.resultsRequest setPostBody:(NSMutableData *)postData];
   [self.networkQueue addOperation:self.resultsRequest];
@@ -315,6 +316,7 @@
   [self.leftRequest setRequestMethod:@"GET"];
   [self.leftRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.leftRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  [self.leftRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
 //  [self.leftRequest setDelegate:self];
   [self.networkQueue addOperation:self.leftRequest];
   [self.networkQueue go];
@@ -328,6 +330,7 @@
   [self.rightRequest setRequestMethod:@"GET"];
   [self.rightRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.rightRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  [self.rightRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
 //  [self.rightRequest setDelegate:self];
   [self.networkQueue addOperation:self.rightRequest];
   [self.networkQueue go];
@@ -341,6 +344,7 @@
   [self.bothRequest setRequestMethod:@"GET"];
   [self.bothRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [self.bothRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  [self.bothRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
 //  [self.bothRequest setDelegate:self];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];
@@ -426,6 +430,8 @@
 
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
   [_networkQueue release];
   [_recentOpponentsArray release];
   [_gender release];

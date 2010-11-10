@@ -120,8 +120,7 @@
   DLog(@"FaceView picture request failed");
   // We should try and resend this request into the queue
   if(_retryCount < 3) {
-    [self.networkQueue addOperation:request];
-    [self.networkQueue go];
+    [self getPictureForFacebookId:_facebookId];
     _retryCount++;
   } else {
     UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
@@ -359,6 +358,8 @@
 }
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
   [_networkQueue release];
   if(_faceImageView) [_faceImageView release];
   [super dealloc];

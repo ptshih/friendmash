@@ -230,6 +230,7 @@
   [self.registerFriendsRequest setDelegate:self];
   [self.registerFriendsRequest setRequestMethod:@"POST"];
   [self.registerFriendsRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [self.registerFriendsRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [self.registerFriendsRequest setPostLength:[postData length]];
   [self.registerFriendsRequest setPostBody:(NSMutableData *)postData];
   [self.registerFriendsRequest startAsynchronous];
