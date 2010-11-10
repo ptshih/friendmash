@@ -10,7 +10,8 @@
 
 @class LauncherViewController;
 
-@interface SettingsViewController : UIViewController {
+@interface SettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+  IBOutlet UITableView *_tableView;
   LauncherViewController *_launcherViewController;
 }
 
