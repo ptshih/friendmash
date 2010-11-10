@@ -38,7 +38,7 @@
 - (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate;
 - (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate;
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
-- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate;
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 
 @end
 
@@ -289,15 +289,15 @@
 }
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
 #ifndef USE_OFFLINE_MODE
-  if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId withDelegate:self];
+  if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
 #endif
   [self remash];
 }
 
-- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId withDelegate:(id)delegate {
-  NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", nil];
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
+  NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", nil];
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result", FACEMASH_BASE_URL];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
