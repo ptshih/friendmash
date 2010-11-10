@@ -141,7 +141,8 @@
   }
   cell.imageView.layer.cornerRadius = 5.0;
   cell.imageView.layer.masksToBounds = YES;
-  cell.textLabel.text = [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"];
+//  cell.textLabel.text = [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"];
+  cell.textLabel.text = [[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"rank"] stringValue];
   return cell;
 }
 
