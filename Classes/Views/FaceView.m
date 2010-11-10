@@ -84,7 +84,7 @@
   [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
   [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   
-  _loadingView.layer.cornerRadius = 5.0;
+  _loadingView.layer.cornerRadius = 10.0;
   self.userInteractionEnabled = NO;
 }
 
@@ -145,7 +145,7 @@
   } else {
 #ifdef USE_ROUNDED_CORNERS
 //    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
-    self.faceImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:5 withCornerHeight:5];
+    self.faceImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
 #else
     self.faceImageView.image = faceImage;
 #endif
