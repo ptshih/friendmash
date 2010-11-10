@@ -23,8 +23,11 @@
   [getRequest setRequestMethod:@"GET"];
   [getRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [getRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [getRequest addRequestHeader:@"X-Fashmash-Secret" value:@"omgwtfbbq"];
-
+  [getRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
+  [getRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  [getRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
+  [getRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
+  [getRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
   
   return getRequest;
 }
@@ -40,7 +43,11 @@
   [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
-  [postRequest addRequestHeader:@"X-Fashmash-Secret" value:@"omgwtfbbq"];
+  [postRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
+  [postRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  [postRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
+  [postRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
+  [postRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
   [postRequest setPostLength:[postData length]];
   [postRequest setPostBody:(NSMutableData *)postData];
   

@@ -18,7 +18,7 @@
 #include "TargetConditionals.h"
 #endif
 
-#define OFFLINE_DEBUG
+//#define OFFLINE_DEBUG
 
 #if TARGET_IPHONE_SIMULATOR
   #define STAGING
