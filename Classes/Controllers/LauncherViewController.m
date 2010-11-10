@@ -77,6 +77,10 @@
 }
 
 - (void)displayLauncher {
+#ifdef OFFLINE_DEBUG
+  _launcherView.hidden = NO;
+  [_activityIndicator stopAnimating];
+#else
   if([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     _launcherView.hidden = NO;
     [_activityIndicator stopAnimating];
@@ -84,6 +88,7 @@
     _launcherView.hidden = YES;
     [_activityIndicator startAnimating];
   }
+#endif
 }
 
 - (IBAction)male {

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "FaceView.h"
-#import "ASIHTTPRequest.h"
 
 /**
  Need to make sure that we don't allow both left and right views to be dismissed at the same time
@@ -19,6 +18,7 @@ typedef enum {
   FacemashGameModeNetwork = 1
 } FacemashGameMode;
 
+@class ASIHTTPRequest;
 @class ASINetworkQueue;
 
 @interface FacemashViewController : UIViewController <FaceViewDelegate> {

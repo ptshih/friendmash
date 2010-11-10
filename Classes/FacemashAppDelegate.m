@@ -59,7 +59,9 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+#ifndef OFFLINE_DEBUG
   [self.launcherViewController bindWithFacebook];
+#endif
 }
 
 

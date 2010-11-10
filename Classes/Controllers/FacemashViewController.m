@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
+#import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 
 @interface FacemashViewController (Private)
