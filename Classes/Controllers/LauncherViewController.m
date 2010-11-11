@@ -18,12 +18,6 @@
 #import "RemoteRequest.h"
 
 @interface LauncherViewController (Private)
-- (void)authorizeDidSucceed:(NSURL*)url;
-- (NSURL *)generateFacebookURL:(NSString *)baseURL params:(NSDictionary *)params;
-- (NSString *) getStringFromUrl: (NSString*) url needle:(NSString *) needle;
-
-- (void)fbDidLoginWithToken:(NSString *)token;
-- (void)fbDidNotLoginWithError:(NSError *)error;
 - (void)fbDidLogout;
 
 - (void)getCurrentUserRequest;
@@ -42,17 +36,22 @@
 
 @implementation LauncherViewController
 
+@synthesize loginViewController = _loginViewController;
 @synthesize networkQueue = _networkQueue;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
 @synthesize friendsListRequest = _friendsListRequest;
 @synthesize currentUser = _currentUser;
 @synthesize friendsArray = _friendsArray;
+@synthesize shouldShowLogoutOnAppear = _shouldShowLogoutOnAppear;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _currentUser = [[NSDictionary alloc] init];
     _friendsArray = [[NSArray alloc] init];
+    
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
+    self.loginViewController.delegate = self;
     
     _networkQueue = [[ASINetworkQueue queue] retain];
     
@@ -60,6 +59,8 @@
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+    
+    _shouldShowLogoutOnAppear = NO;
   }
   return self;
 }
@@ -80,6 +81,13 @@
 - (void)viewWillAppear:(BOOL)animated {
   self.navigationController.navigationBar.hidden = YES;
   [self displayLauncher];
+  
+  if(self.shouldShowLogoutOnAppear) {
+    self.shouldShowLogoutOnAppear = NO;
+    UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+    [logoutAlert show];
+    [logoutAlert autorelease];
+  }
 }
 
 - (void)displayLauncher {
@@ -141,132 +149,11 @@
   [fvc release];
 }
 
-#pragma mark UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
- navigationType:(UIWebViewNavigationType)navigationType {
-  [_activityIndicator startAnimating];
-  NSURL *url = request.URL;
-  
-  if ([url.scheme isEqualToString:@"fbconnect"]) {
-    if ([[url.resourceSpecifier substringToIndex:8] isEqualToString:@"//cancel"]) {
-      NSString *errorCode = [self getStringFromUrl:[url absoluteString] needle:@"error_code="];
-      NSString *errorStr = [self getStringFromUrl:[url absoluteString] needle:@"error_msg="];
-      if (errorCode) {
-        NSDictionary *errorData = [NSDictionary dictionaryWithObject:errorStr forKey:@"error_msg"];
-        NSError *error = [NSError errorWithDomain:@"facebookErrDomain" code:[errorCode intValue] userInfo:errorData];
-        [self fbDidNotLoginWithError:error];
-      } else {
-        [self fbDidNotLoginWithError:nil];
-      }
-    } else {
-      [self authorizeDidSucceed:url];
-    }
-    return NO;
-  } else if ([_authorizeURL isEqual:url]) {
-    return YES;
-  } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-    [[UIApplication sharedApplication] openURL:request.URL];
-    return NO;
-  } else {
-    return YES;
-  }
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-  [_activityIndicator stopAnimating];
-  
-  self.title = [_facebookWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-  if (!(([error.domain isEqualToString:@"NSURLErrorDomain"] && error.code == -999) ||
-        ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102))) {
-    [self fbDidNotLoginWithError:error];
-  }
-}
-
-- (NSString *)getStringFromUrl:(NSString *)url needle:(NSString *)needle {
-  NSString *str = nil;
-  NSRange start = [url rangeOfString:needle];
-  if (start.location != NSNotFound) {
-    NSRange end = [[url substringFromIndex:start.location+start.length] rangeOfString:@"&"];
-    NSUInteger offset = start.location+start.length;
-    str = end.location == NSNotFound
-    ? [url substringFromIndex:offset]
-    : [url substringWithRange:NSMakeRange(offset, end.location)];  
-    str = [str stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; 
-  }
-  
-  return str;
-}
-
-- (void)authorizeDidSucceed:(NSURL *)url {
-  NSString *q = [url absoluteString];
-  NSString *token = [self getStringFromUrl:q needle:@"access_token="];
-  NSString *expTime = [self getStringFromUrl:q needle:@"expires_in="];
-  NSDate *expirationDate =nil;
-  
-  if (expTime != nil) {
-    int expVal = [expTime intValue];
-    if (expVal == 0) {
-      expirationDate = [NSDate distantFuture];
-    } else {
-      expirationDate = [NSDate dateWithTimeIntervalSinceNow:expVal];
-    } 
-  } 
-  
-  if ((token == (NSString *) [NSNull null]) || (token.length == 0)) {
-    [self fbDidNotLoginWithError:nil];
-  } else {
-    [self fbDidLoginWithToken:token];
-  }
-}
-
-#pragma mark OAuth / FBConnect
-- (void)authorizeFacebook {
-  NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 FB_APP_ID, @"client_id",
-                                 @"user_agent", @"type", 
-                                 @"fbconnect://success", @"redirect_uri",
-                                 @"touch", @"display", 
-                                 @"ios", @"sdk",
-                                 nil];
-  
-  NSString* scope = [FB_PERMISSIONS componentsJoinedByString:@","];
-  [params setValue:scope forKey:@"scope"];
-  
-  _authorizeURL = [[self generateFacebookURL:FB_AUTHORIZE_URL params:params] retain];
-  NSMutableURLRequest *authorizeRequest = [NSMutableURLRequest requestWithURL:_authorizeURL];
-  [_facebookWebView loadRequest:authorizeRequest];
-}
-
-- (NSURL *)generateFacebookURL:(NSString *)baseURL params:(NSDictionary *)params {
-  if (params) {
-    NSMutableArray *pairs = [NSMutableArray array];
-    for (NSString *key in params.keyEnumerator) {
-      NSString *value = [params objectForKey:key];
-      NSString *escaped_value = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)value, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
-      
-      [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, escaped_value]];
-      [escaped_value release];
-    }
-    
-    NSString *query = [pairs componentsJoinedByString:@"&"];
-    NSString *url = [NSString stringWithFormat:@"%@?%@", baseURL, query];
-    return [NSURL URLWithString:url];
-  } else {
-    return [NSURL URLWithString:baseURL];
-  }
-}
-
+#pragma mark Facebook Login/Logout
 - (void)bindWithFacebook {
   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    _facebookWebView.hidden = NO;
-    _fbDialogView.hidden = NO;
-    [self authorizeFacebook];
+    [self presentModalViewController:self.loginViewController animated:YES];
   } else {
-    _facebookWebView.hidden = YES;
-    _fbDialogView.hidden = YES;
   }
 }
 
@@ -282,6 +169,7 @@
 }
 
 - (void)fbDidLoginWithToken:(NSString *)token {
+  [self.loginViewController dismissModalViewControllerAnimated:YES];
   // Store the OAuth token
   DLog(@"Received OAuth access token: %@",token);
   APP_DELEGATE.fbAccessToken = token;
@@ -289,9 +177,6 @@
   [[NSUserDefaults standardUserDefaults] setObject:APP_DELEGATE.fbAccessToken forKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  _facebookWebView.hidden = YES;
-  _fbDialogView.hidden = YES;
   
   if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasSentFriendsList"]) {
     [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
@@ -301,6 +186,7 @@
 }
 
 - (void)fbDidNotLoginWithError:(NSError *)error {
+  [self.loginViewController dismissModalViewControllerAnimated:YES];
   DLog(@"Login failed with error: %@",error);
   UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [permissionsAlert show];
@@ -323,6 +209,8 @@
     case 0:
       [self bindWithFacebook];
       break;
+    case 1:
+      [self unbindWithFacebook];;
     default:
       break;
   }
@@ -428,6 +316,7 @@
   [_networkQueue release];
   if(_currentUser) [_currentUser release];
   if(_friendsArray) [_friendsArray release];
+  if(_loginViewController) [_loginViewController release];
   [super dealloc];
 }
 

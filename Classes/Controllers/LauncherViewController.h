@@ -7,16 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginViewController.h"
 
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LauncherViewController : UIViewController {
-  IBOutlet UIView *_fbDialogView;
-  IBOutlet UIWebView *_facebookWebView;
+@interface LauncherViewController : UIViewController <FacebookLoginDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
+  
+  LoginViewController *_loginViewController;
+  
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_friendsRequest;
@@ -28,7 +30,11 @@
   NSArray *_friendsArray;
   
   UIButton *_logoutButton;
+  
+  BOOL _shouldShowLogoutOnAppear;
 }
+
+@property (nonatomic,retain) LoginViewController *loginViewController;
 
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
@@ -37,6 +43,8 @@
 
 @property (nonatomic,retain) NSDictionary *currentUser;
 @property (nonatomic,retain) NSArray *friendsArray;
+
+@property (nonatomic,assign) BOOL shouldShowLogoutOnAppear;
 
 /**
  Initiate a bind/unbind with Facebook for OAuth token
