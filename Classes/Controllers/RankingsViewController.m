@@ -60,6 +60,7 @@
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
   // This is on the main thread
+  // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
   [_tableView reloadData];
   DLog(@"rankings request finished successfully");

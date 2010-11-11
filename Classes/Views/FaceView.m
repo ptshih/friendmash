@@ -97,6 +97,8 @@
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
   DLog(@"FaceView picture request finished");
+  // {"error":{"type":"OAuthException","message":"Error validating access token."}}
+  
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
 
