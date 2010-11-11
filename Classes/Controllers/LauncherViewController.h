@@ -7,21 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FBConnect.h"
 
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LauncherViewController : UIViewController <FBSessionDelegate> {
+@interface LauncherViewController : UIViewController {
+  IBOutlet UIView *_fbDialogView;
+  IBOutlet UIWebView *_facebookWebView;
   IBOutlet UIView *_launcherView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_friendsRequest;
-  ASIHTTPRequest *_registerFriendsRequest;
+  ASIHTTPRequest *_friendsListRequest;
   
-  Facebook *_facebook;
+  NSURL *_authorizeURL;
   
   NSDictionary *_currentUser;
   NSArray *_friendsArray;
@@ -32,7 +33,7 @@
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
-@property (nonatomic,retain) ASIHTTPRequest *registerFriendsRequest;
+@property (nonatomic,retain) ASIHTTPRequest *friendsListRequest;
 
 @property (nonatomic,retain) NSDictionary *currentUser;
 @property (nonatomic,retain) NSArray *friendsArray;
