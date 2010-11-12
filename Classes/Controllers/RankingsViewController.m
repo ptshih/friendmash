@@ -8,13 +8,13 @@
 
 #import "RankingsViewController.h"
 #import "LauncherViewController.h"
-#import "WebViewController.h"
+#import "RankingsTableViewCell.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
 #import "RemoteRequest.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
-#import <QuartzCore/QuartzCore.h>
+
 
 @implementation RankingsViewController
 
@@ -126,9 +126,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RankingCell"];
+  RankingsTableViewCell *cell = (RankingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RankingCell"];
 	if(cell == nil) { 
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RankingCell"] autorelease];
+		cell = [[[RankingsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RankingCell"] autorelease];
 		cell.backgroundColor = [UIColor clearColor];
 		cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_cell_bg_landscape.png"]];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"table_cell_bg_selected.png"] stretchableImageWithLeftCapWidth:1 topCapHeight:20]];
@@ -137,20 +137,16 @@
 	}
   
   UIImage *profilePic = [self.imageCache getImageForIndexPath:indexPath];
-  if(profilePic) {
-    cell.imageView.image = profilePic;
-  } else {
+  if(!profilePic) {
     if (_tableView.dragging == NO && _tableView.decelerating == NO)
     {
       ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"] andType:@"square" withDelegate:nil];
       [self.imageCache cacheImageWithRequest:pictureRequest forIndexPath:indexPath];
     }
-    cell.imageView.image = [UIImage imageNamed:@"picture_loading.png"];
+    profilePic = [UIImage imageNamed:@"picture_loading.png"];
   }
-  cell.imageView.layer.cornerRadius = 5.0;
-  cell.imageView.layer.masksToBounds = YES;
-//  cell.textLabel.text = [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"];
-  cell.textLabel.text = [[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"rank"] stringValue];
+  
+  [RankingsTableViewCell fillCell:cell withDictionary:[self.rankingsArray objectAtIndex:indexPath.row] andImage:profilePic];
   return cell;
 }
 
