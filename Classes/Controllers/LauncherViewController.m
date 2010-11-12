@@ -37,6 +37,7 @@
 @implementation LauncherViewController
 
 @synthesize loginViewController = _loginViewController;
+@synthesize loginPopoverController = _loginPopoverController;
 @synthesize networkQueue = _networkQueue;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
@@ -50,12 +51,10 @@
     _currentUser = [[NSDictionary alloc] init];
     _friendsArray = [[NSArray alloc] init];
     
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
-    self.loginViewController.delegate = self;
-    
     _networkQueue = [[ASINetworkQueue queue] retain];
     
     [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
@@ -69,17 +68,19 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  self.navigationController.navigationBar.hidden = YES;
+  
 //  self.title = NSLocalizedString(@"facemash", @"facemash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
   
   // Check token and authorize
 #ifndef OFFLINE_DEBUG
-  [self bindWithFacebook];
+  [self bindWithFacebook:YES];
 #endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  self.navigationController.navigationBar.hidden = YES;
+//  self.navigationController.navigationBar.hidden = YES;
   [self displayLauncher];
   
   if(self.shouldShowLogoutOnAppear) {
@@ -93,14 +94,14 @@
 - (void)displayLauncher {
 #ifdef OFFLINE_DEBUG
   _launcherView.hidden = NO;
-  [_activityIndicator stopAnimating];
+  _splashView.hidden = YES;
 #else
   if([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
     _launcherView.hidden = NO;
-    [_activityIndicator stopAnimating];
+    _splashView.hidden = YES;
   } else {
     _launcherView.hidden = YES;
-    [_activityIndicator startAnimating];
+    _splashView.hidden = NO;
   }
 #endif
 }
@@ -149,10 +150,38 @@
   [fvc release];
 }
 
+- (void)showLoginView:(BOOL)animated {
+  if(isDeviceIPad()) {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
+    self.loginViewController.delegate = self;
+    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
+    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
+    self.loginPopoverController.delegate = self;
+    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.view.center.x, 20, 0, 0) inView:self.navigationController.view.window permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+  } else {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
+    self.loginViewController.delegate = self;
+    [self presentModalViewController:self.loginViewController animated:animated];
+  }
+}
+
+- (void)dismissLoginView:(BOOL)animated {
+  if(isDeviceIPad()) {
+    [self.loginPopoverController dismissPopoverAnimated:animated];
+  } else {
+    [self.loginViewController dismissModalViewControllerAnimated:animated];
+  }
+}
+
+#pragma mark UIPopoverControllerDelegate
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
+  return NO;
+}
+
 #pragma mark Facebook Login/Logout
-- (void)bindWithFacebook {
+- (void)bindWithFacebook:(BOOL)animated {
   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    [self presentModalViewController:self.loginViewController animated:YES];
+    [self showLoginView:animated];
   } else {
   }
 }
@@ -168,13 +197,14 @@
   [self fbDidLogout];
 }
 
-- (void)fbDidLoginWithToken:(NSString *)token {
-  [self.loginViewController dismissModalViewControllerAnimated:YES];
+- (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
+  [self dismissLoginView:YES];
   // Store the OAuth token
   DLog(@"Received OAuth access token: %@",token);
   APP_DELEGATE.fbAccessToken = token;
   
   [[NSUserDefaults standardUserDefaults] setObject:APP_DELEGATE.fbAccessToken forKey:@"fbAccessToken"];
+  [[NSUserDefaults standardUserDefaults] setObject:expiration forKey:@"fbAccessTokenExpiration"];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
@@ -186,7 +216,7 @@
 }
 
 - (void)fbDidNotLoginWithError:(NSError *)error {
-  [self.loginViewController dismissModalViewControllerAnimated:YES];
+  [self dismissLoginView:YES];
   DLog(@"Login failed with error: %@",error);
   UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [permissionsAlert show];
@@ -196,10 +226,11 @@
 - (void)fbDidLogout {
   APP_DELEGATE.fbAccessToken = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessTokenExpiration"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  [self bindWithFacebook];
+  [self bindWithFacebook:YES];
   [self displayLauncher];
 }
 
@@ -207,10 +238,10 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
-      [self bindWithFacebook];
+      [self bindWithFacebook:YES];
       break;
     case 1:
-      [self unbindWithFacebook];;
+      [self unbindWithFacebook];
     default:
       break;
   }
@@ -220,6 +251,7 @@
  * Get current user's profile from FB
  */
 - (void)getCurrentUserRequest {
+  _splashLabel.text = NSLocalizedString(@"Retrieving your Facebook profile...", @"Retrieving your Facebook profile...");
   self.currentUserRequest = [RemoteRequest getFacebookRequestForMeWithDelegate:nil];
   [self.networkQueue addOperation:self.currentUserRequest];
   [self.networkQueue go];
@@ -229,6 +261,7 @@
  * Get current user's friends list from FB
  */
 - (void)getFriendsRequest {
+  _splashLabel.text = NSLocalizedString(@"Retrieving your Facebook friends...", @"Retrieving your Facebook friends...");
   self.friendsRequest = [RemoteRequest getFacebookRequestForFriendsWithDelegate:nil];
   [self.networkQueue addOperation:self.friendsRequest];
   [self.networkQueue go];
@@ -238,6 +271,7 @@
  * Send current user's friends list to facemash
  */
 - (void)postFriendsRequest {  
+  _splashLabel.text = NSLocalizedString(@"Sending data to Facemash...", @"Sending data to Facemash...");
   NSMutableArray *allFriendsArray = [NSMutableArray arrayWithArray:self.friendsArray];
   [allFriendsArray insertObject:self.currentUser atIndex:0];
   
@@ -317,6 +351,7 @@
   if(_currentUser) [_currentUser release];
   if(_friendsArray) [_friendsArray release];
   if(_loginViewController) [_loginViewController release];
+  if(_loginPopoverController) [_loginPopoverController release];
   [super dealloc];
 }
 

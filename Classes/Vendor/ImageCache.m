@@ -25,6 +25,7 @@
     _networkQueue = [[ASINetworkQueue queue] retain];
     
     [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];

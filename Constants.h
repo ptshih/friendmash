@@ -47,6 +47,8 @@
 #define WEBVIEW_LEFT @"left.png"
 #define WEBVIEW_RIGHT @"right.png"
 
+// ERROR STRINGS
+#define FM_NETWORK_ERROR @"Facemash has encountered a network error. Please check your network connection and try again."
 
 //#define OAUTH_TOKEN @"151779758183785|2.mlbpS5_RD5Ao_hTpWQtBVg__.3600.1289080800-548430564|es6q1fc8hb7pSL2UpwFegiF1F8c"
 

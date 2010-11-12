@@ -74,6 +74,7 @@
     _networkQueue = [[ASINetworkQueue queue] retain];
     
     [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
@@ -368,10 +369,14 @@
 {
   DLog(@"Request Failed with Error: %@", [request error]);
 
-  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
-    DLog(@"POP QUEUE FROM ERROR");
-    [self.navigationController popViewControllerAnimated:YES];
-  }
+  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [networkErrorAlert show];
+  [networkErrorAlert autorelease];
+  
+//  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
+//    DLog(@"POP QUEUE FROM ERROR");
+//    [self.navigationController popViewControllerAnimated:YES];
+//  }
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
