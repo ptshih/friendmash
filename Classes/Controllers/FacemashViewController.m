@@ -324,6 +324,14 @@
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200 ) {
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [networkErrorAlert show];
+    [networkErrorAlert autorelease];
+    return;
+  }
+  
   // Use when fetching text data
   NSString *responseString = [request responseString];
   NSLog(@"Raw response string from request: %@ => %@",request, responseString);

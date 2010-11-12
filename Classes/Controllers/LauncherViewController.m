@@ -289,6 +289,13 @@
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200 ) {
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [networkErrorAlert show];
+    [networkErrorAlert autorelease];
+    return;
+  }
   if([request isEqual:self.currentUserRequest]) {
     DLog(@"current user request finished");
     

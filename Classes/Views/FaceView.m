@@ -99,6 +99,13 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   DLog(@"FaceView picture request finished");
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200 ) {
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [networkErrorAlert show];
+    [networkErrorAlert autorelease];
+    return;
+  }
   
   [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
@@ -110,6 +117,17 @@
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"FaceView Queue finished");
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      [self getPictureForFacebookId:_facebookId];
+      break;
+    default:
+      break;
+  }
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
