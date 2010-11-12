@@ -21,8 +21,9 @@
   ASIHTTPRequest *getRequest = [ASIHTTPRequest requestWithURL:getURL];
   [getRequest setDelegate:delegate];
   [getRequest setNumberOfTimesToRetryOnTimeout:2];
-//  [getRequest setAllowCompressedResponse:YES];
-//  [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [getRequest setAllowCompressedResponse:YES];
+  [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [getRequest addRequestHeader:@"Accept" value:@"application/json"];
   [getRequest setRequestMethod:@"GET"];
   [getRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [getRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
@@ -46,7 +47,8 @@
   [postRequest setNumberOfTimesToRetryOnTimeout:2];
   [postRequest setRequestMethod:@"POST"];
   [postRequest setShouldCompressRequestBody:YES]; // GZIP the postData
-//  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [postRequest addRequestHeader:@"Accept" value:@"application/json"];
   [postRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [postRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
@@ -68,6 +70,7 @@
   
   ASIHTTPRequest *meRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
   [meRequest setNumberOfTimesToRetryOnTimeout:2];
+  [meRequest setAllowCompressedResponse:YES];
   [meRequest setDelegate:delegate];
   
   return meRequest;
@@ -81,6 +84,7 @@
   
   ASIHTTPRequest *friendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
   [friendsRequest setNumberOfTimesToRetryOnTimeout:2];
+  [friendsRequest setAllowCompressedResponse:YES];
   [friendsRequest setDelegate:delegate];
   
   return friendsRequest;
