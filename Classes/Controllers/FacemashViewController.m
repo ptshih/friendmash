@@ -63,7 +63,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
-    _shouldGoBack = NO;
     _leftUserId = nil;
     _rightUserId = nil;
     _gender = @"male"; // male by default
@@ -110,13 +109,7 @@
 }
 
 - (IBAction)back {
-  if(self.networkQueue.requestsCount == 0) {
-    DLog(@"POP");
-    [self.navigationController popViewControllerAnimated:YES];
-  } else {
-    _shouldGoBack = YES;
-    [self.networkQueue cancelAllOperations];
-  }
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)remash {
@@ -372,11 +365,6 @@
       [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
     }
   }
-  
-  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
-    DLog(@"POP QUEUE");
-    [self.navigationController popViewControllerAnimated:YES];
-  }
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -386,11 +374,6 @@
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
-  
-//  if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
-//    DLog(@"POP QUEUE FROM ERROR");
-//    [self.navigationController popViewControllerAnimated:YES];
-//  }
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {

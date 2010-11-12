@@ -36,7 +36,6 @@ typedef enum {
   
   FaceView *_leftView;
   FaceView *_rightView;
-  BOOL _shouldGoBack;
   BOOL _isLeftLoaded;
   BOOL _isRightLoaded;
   
