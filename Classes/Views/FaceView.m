@@ -100,7 +100,7 @@
   DLog(@"FaceView picture request finished");
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200 ) {
+  if(statusCode > 200) {
     UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [networkErrorAlert show];
     [networkErrorAlert autorelease];

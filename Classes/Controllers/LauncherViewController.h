@@ -33,6 +33,7 @@
   NSArray *_friendsArray;
   
   UIButton *_logoutButton;
+  UIAlertView *_networkErrorAlert;
 }
 
 @property (nonatomic,retain) LoginViewController *loginViewController;

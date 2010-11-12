@@ -235,20 +235,6 @@
   [self displayLauncher];
 }
 
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      [self bindWithFacebook:YES];
-      break;
-    case 1:
-      [self unbindWithFacebook];
-      break;
-    default:
-      break;
-  }
-}
-
 /*
  * Get current user's profile from FB
  */
@@ -290,14 +276,15 @@
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
   NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200 ) {
-    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    [networkErrorAlert show];
-    [networkErrorAlert autorelease];
-    return;
-  }
+
   if([request isEqual:self.currentUserRequest]) {
     DLog(@"current user request finished");
+    if(statusCode > 200) {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+      return;
+    }
     
     self.currentUser = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
     [[NSUserDefaults standardUserDefaults] setObject:[self.currentUser objectForKey:@"id"] forKey:@"currentUserId"];
@@ -307,6 +294,12 @@
     
   } else if([request isEqual:self.friendsRequest]) {
     DLog(@"friends request finished");
+    if(statusCode > 200) {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+      return;
+    }
     
     NSDictionary *responseDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
     self.friendsArray = [responseDict objectForKey:@"data"];
@@ -318,6 +311,12 @@
 #endif
   } else if([request isEqual:self.friendsListRequest]) {
     DLog(@"register friends request finished");
+    if(statusCode > 200) {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+      return;
+    }
     
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSentFriendsList"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -332,6 +331,24 @@
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if([alertView isEqual:_networkErrorAlert]) {
+    [self getCurrentUserRequest];
+  } else {
+    switch (buttonIndex) {
+      case 0:
+        [self bindWithFacebook:YES];
+        break;
+      case 1:
+        [self unbindWithFacebook];
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 #pragma mark Memory Management

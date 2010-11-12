@@ -296,10 +296,9 @@
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
-  NSDictionary *resultDictionary = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", nil];
-  NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:resultDictionary];
+  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d", winnerId, loserId, isLeft];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData withDelegate:nil];
+  self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
 }
@@ -325,7 +324,7 @@
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
   NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200 ) {
+  if(statusCode > 200) {
     UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
