@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
-#import "SettingsViewController.h"
+#import "ProfileViewController.h"
 
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LauncherViewController : UIViewController <FacebookLoginDelegate, SettingsDelegate, UIPopoverControllerDelegate> {
+@interface LauncherViewController : UIViewController <FacebookLoginDelegate, ProfileDelegate, UIPopoverControllerDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;
@@ -65,7 +65,7 @@
  */
 - (IBAction)female;
 
-- (IBAction)settings;
+- (IBAction)profile;
 
 - (IBAction)rankings;
 

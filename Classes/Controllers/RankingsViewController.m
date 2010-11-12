@@ -22,6 +22,7 @@
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
 @synthesize networkQueue = _networkQueue;
+@synthesize selectedGender = _selectedGender;
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -37,13 +38,16 @@
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+    
+    self.selectedGender = @"male";
+    _selectedMode = 0;
   }
   return self;
 }
 
 - (void)viewDidLoad {
   // Call initial rankings
-  [self getTopRankingsForGender:@"male" andMode:0];
+  [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -63,6 +67,14 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   // This is on the main thread
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200) {
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [networkErrorAlert show];
+    [networkErrorAlert autorelease];
+    return;
+  }
+  
   self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
   [_tableView reloadData];
   DLog(@"rankings request finished successfully");
@@ -80,26 +92,43 @@
   DLog(@"Queue finished");
 }
 
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
+      break;
+    default:
+      break;
+  }
+}
+
 - (IBAction)selectMode:(UISegmentedControl *)segmentedControl {
   DLog(@"selected section: %d", segmentedControl.selectedSegmentIndex);
   [self.imageCache resetCache]; // reset the cache when switching segments
   switch (segmentedControl.selectedSegmentIndex) {
     case 0:
-      [self getTopRankingsForGender:@"male" andMode:0];
+      self.selectedGender = @"male";
+      _selectedMode = 0;
       break;
     case 1:
-      [self getTopRankingsForGender:@"female" andMode:0];
+      self.selectedGender = @"female";
+      _selectedMode = 0;
       break;
     case 2:
-      [self getTopRankingsForGender:@"male" andMode:1];
+      self.selectedGender = @"male";
+      _selectedMode = 1;
       break;
     case 3:
-      [self getTopRankingsForGender:@"female" andMode:1];
+      self.selectedGender = @"female";
+      _selectedMode = 1;
       break;
     default:
-      [self getTopRankingsForGender:@"male" andMode:0];
+      self.selectedGender = @"male";
+      _selectedMode = 0;
       break;
   }
+  [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
 }
 
 - (IBAction)dismissRankings {

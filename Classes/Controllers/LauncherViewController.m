@@ -8,7 +8,7 @@
 
 #import "LauncherViewController.h"
 #import "FacemashViewController.h"
-#import "SettingsViewController.h"
+#import "ProfileViewController.h"
 #import "RankingsViewController.h"
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
@@ -103,18 +103,19 @@
   [self launchFacemashWithGender:@"female"];
 }
 
-- (IBAction)settings {
-  SettingsViewController *svc;
+- (IBAction)profile {
+  ProfileViewController *pvc;
   if(isDeviceIPad()) {
-    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
-    svc.modalPresentationStyle = UIModalPresentationFormSheet;
+    pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController_iPad" bundle:nil];
+    pvc.modalPresentationStyle = UIModalPresentationFormSheet;
   } else {
-    svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
+    pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController_iPhone" bundle:nil];
   }
-  svc.launcherViewController = self;
-  svc.delegate = self;
-  [self presentModalViewController:svc animated:YES];
-  [svc release];
+  pvc.launcherViewController = self;
+  pvc.delegate = self;
+  pvc.profileId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+  [self presentModalViewController:pvc animated:YES];
+  [pvc release];
 }
 
 - (IBAction)rankings {

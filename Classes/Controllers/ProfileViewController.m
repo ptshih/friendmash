@@ -1,22 +1,41 @@
-    //
-//  SettingsViewController.m
+//
+//  ProfileViewController.m
 //  Facemash
 //
 //  Created by Peter Shih on 10/14/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "SettingsViewController.h"
+#import "ProfileViewController.h"
 #import "LauncherViewController.h"
+#import "RemoteRequest.h"
+#import "ASIHTTPRequest.h"
+#import "ASINetworkQueue.h"
+#import "Constants.h"
+#import "CJSONDeserializer.h"
 
-@implementation SettingsViewController
+@interface ProfileViewController (Private)
+- (void)getProfileForCurrentUser;
+@end
+
+@implementation ProfileViewController
 
 @synthesize launcherViewController = _launcherViewController;
+@synthesize networkQueue = _networkQueue;
+@synthesize profileDict = _profileDict;
+@synthesize profileId = _profileId;
 @synthesize delegate;
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+      _networkQueue = [[ASINetworkQueue queue] retain];
+      
+      [[self networkQueue] setDelegate:self];
+      [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
+      [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+      [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+      [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
     }
     return self;
 }
@@ -26,6 +45,7 @@
 
 - (void)viewDidLoad {
   _tableView.backgroundColor = [UIColor clearColor];
+  [self getProfileForCurrentUser];
 }
 
 - (IBAction)logout {
@@ -35,6 +55,56 @@
 
 - (IBAction)dismissSettings {
   [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)getProfileForCurrentUser {
+//  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", gender, mode, FM_RANKINGS_COUNT];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/profile/%@", FACEMASH_BASE_URL, self.profileId];
+  
+  ASIHTTPRequest *profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
+  [self.networkQueue addOperation:profileRequest];
+  [self.networkQueue go];
+}
+
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  // This is on the main thread
+  // {"error":{"type":"OAuthException","message":"Error validating access token."}}
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200) {
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [networkErrorAlert show];
+    [networkErrorAlert autorelease];
+    return;
+  }
+  
+  self.profileDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
+
+  [_tableView reloadData];
+  DLog(@"rankings request finished successfully");
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+  DLog(@"Request Failed with Error: %@", [request error]);
+  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [networkErrorAlert show];
+  [networkErrorAlert autorelease];
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      [self getProfileForCurrentUser];
+      break;
+    default:
+      break;
+  }
 }
 
 #pragma mark UITableViewDelegate
@@ -152,6 +222,11 @@
 
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
+  [_networkQueue release];
+  if(_profileDict) [_profileDict release];
+  if(_profileId) [_profileId release];
   [super dealloc];
 }
 

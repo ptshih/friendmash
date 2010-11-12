@@ -1,5 +1,5 @@
 //
-//  SettingsViewController.h
+//  ProfileViewController.h
 //  Facemash
 //
 //  Created by Peter Shih on 10/14/10.
@@ -8,21 +8,28 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SettingsDelegate <NSObject>
+@protocol ProfileDelegate <NSObject>
 @optional
 - (void)shouldPerformLogout;
 @end
 
+@class ASINetworkQueue;
 @class LauncherViewController;
 
-@interface SettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface ProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
   IBOutlet UITableView *_tableView;
   LauncherViewController *_launcherViewController;
-  id <SettingsDelegate> delegate;
+  ASINetworkQueue *_networkQueue;
+  NSDictionary *_profileDict;
+  NSString *_profileId;
+  id <ProfileDelegate> delegate;
 }
 
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
-@property (nonatomic, assign) id <SettingsDelegate> delegate;
+@property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) NSDictionary *profileDict;
+@property (nonatomic, retain) NSString *profileId;
+@property (nonatomic, assign) id <ProfileDelegate> delegate;
 
 - (IBAction)dismissSettings;
 

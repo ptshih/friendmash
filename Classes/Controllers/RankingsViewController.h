@@ -18,12 +18,15 @@
   NSArray *_rankingsArray;
   ImageCache *_imageCache;
   ASINetworkQueue *_networkQueue;
+  NSString *_selectedGender;
+  NSInteger _selectedMode;
 }
 
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
 @property (nonatomic, retain) NSArray *rankingsArray;
 @property (nonatomic, retain) ImageCache *imageCache;
 @property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) NSString *selectedGender;
 
 - (void)loadImagesForOnscreenRows;
 - (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode;

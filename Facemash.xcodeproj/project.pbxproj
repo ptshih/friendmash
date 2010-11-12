@@ -38,8 +38,8 @@
 		253E98401267F86B0037CB2D /* btn_settings_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E983B1267F86B0037CB2D /* btn_settings_iPad.png */; };
 		253E98411267F86B0037CB2D /* f_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E983C1267F86B0037CB2D /* f_iPad.png */; };
 		253E98421267F86B0037CB2D /* m_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E983D1267F86B0037CB2D /* m_iPad.png */; };
-		253E98571267FB980037CB2D /* SettingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98561267FB980037CB2D /* SettingsViewController_iPhone.xib */; };
-		253E985B1267FC300037CB2D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* SettingsViewController.m */; };
+		253E98571267FB980037CB2D /* ProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98561267FB980037CB2D /* ProfileViewController_iPhone.xib */; };
+		253E985B1267FC300037CB2D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* ProfileViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
 		2556FE03128D6F5400E6C482 /* RankingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */; };
@@ -53,7 +53,7 @@
 		255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */; };
 		255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */; };
 		255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */; };
-		255BD0BF128CD43B00DB5363 /* SettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */; };
+		255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */; };
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
 		25698466128B327B00B2466B /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25698464128B327B00B2466B /* WebViewController.m */; };
@@ -140,9 +140,9 @@
 		253E983B1267F86B0037CB2D /* btn_settings_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_settings_iPad.png; sourceTree = "<group>"; };
 		253E983C1267F86B0037CB2D /* f_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f_iPad.png; sourceTree = "<group>"; };
 		253E983D1267F86B0037CB2D /* m_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = m_iPad.png; sourceTree = "<group>"; };
-		253E98561267FB980037CB2D /* SettingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController_iPhone.xib; sourceTree = "<group>"; };
-		253E98591267FC300037CB2D /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		253E985A1267FC300037CB2D /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		253E98561267FB980037CB2D /* ProfileViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController_iPhone.xib; sourceTree = "<group>"; };
+		253E98591267FC300037CB2D /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		253E985A1267FC300037CB2D /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 		255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPhone.xib; sourceTree = "<group>"; };
 		255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
 		255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_cell_bg_selected.png; sourceTree = "<group>"; };
-		255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController_iPad.xib; sourceTree = "<group>"; };
+		255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController_iPad.xib; sourceTree = "<group>"; };
 		25646E9E128C165800FF534C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
@@ -496,8 +496,8 @@
 				25E05170125FCB7500CA6AC1 /* FacemashViewController.m */,
 				25E1C35C1263092D0052BE93 /* LauncherViewController.h */,
 				25E1C35D1263092D0052BE93 /* LauncherViewController.m */,
-				253E98591267FC300037CB2D /* SettingsViewController.h */,
-				253E985A1267FC300037CB2D /* SettingsViewController.m */,
+				253E98591267FC300037CB2D /* ProfileViewController.h */,
+				253E985A1267FC300037CB2D /* ProfileViewController.m */,
 				253E98D3126805B70037CB2D /* RankingsViewController.h */,
 				253E98D4126805B70037CB2D /* RankingsViewController.m */,
 				25646E9E128C165800FF534C /* LoginViewController.h */,
@@ -545,8 +545,8 @@
 				25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */,
 				25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */,
 				25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */,
-				253E98561267FB980037CB2D /* SettingsViewController_iPhone.xib */,
-				255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */,
+				253E98561267FB980037CB2D /* ProfileViewController_iPhone.xib */,
+				255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */,
 				253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */,
 				255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */,
 				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
@@ -697,7 +697,7 @@
 				253E98401267F86B0037CB2D /* btn_settings_iPad.png in Resources */,
 				253E98411267F86B0037CB2D /* f_iPad.png in Resources */,
 				253E98421267F86B0037CB2D /* m_iPad.png in Resources */,
-				253E98571267FB980037CB2D /* SettingsViewController_iPhone.xib in Resources */,
+				253E98571267FB980037CB2D /* ProfileViewController_iPhone.xib in Resources */,
 				253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */,
 				25BDF1F0128A4603004F046A /* table_cell_bg.png in Resources */,
 				25BDF1F2128A4612004F046A /* table_cell_bg@2x.png in Resources */,
@@ -712,7 +712,7 @@
 				255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */,
 				255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */,
 				255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */,
-				255BD0BF128CD43B00DB5363 /* SettingsViewController_iPad.xib in Resources */,
+				255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */,
 				2556FFD0128DD1CE00E6C482 /* favorite_star.png in Resources */,
 				2556FFD2128DD1F300E6C482 /* favorite_star@2x.png in Resources */,
 			);
@@ -731,7 +731,7 @@
 				25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */,
 				25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */,
 				25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */,
-				253E985B1267FC300037CB2D /* SettingsViewController.m in Sources */,
+				253E985B1267FC300037CB2D /* ProfileViewController.m in Sources */,
 				253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */,
 				2573E52212858874004EBEBB /* ASIAuthenticationDialog.m in Sources */,
 				2573E52312858874004EBEBB /* ASIDownloadCache.m in Sources */,

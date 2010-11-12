@@ -312,15 +312,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">settings</string>
-						<reference key="source" ref="769886553"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">24</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">rankings</string>
 						<reference key="source" ref="656986604"/>
 						<reference key="destination" ref="372490531"/>
@@ -351,6 +342,15 @@
 						<reference key="destination" ref="439833732"/>
 					</object>
 					<int key="connectionID">45</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">profile</string>
+						<reference key="source" ref="769886553"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">46</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -420,7 +420,7 @@
 						<int key="objectID">22</int>
 						<reference key="object" ref="769886553"/>
 						<reference key="parent" ref="793705269"/>
-						<string key="objectName">settingsButton</string>
+						<string key="objectName">profileButton</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">23</int>
@@ -571,7 +571,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">46</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -585,8 +585,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>female</string>
 							<string>male</string>
+							<string>profile</string>
 							<string>rankings</string>
-							<string>settings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -602,8 +602,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>female</string>
 							<string>male</string>
+							<string>profile</string>
 							<string>rankings</string>
-							<string>settings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -616,11 +616,11 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">rankings</string>
+								<string key="name">profile</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">settings</string>
+								<string key="name">rankings</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -674,6 +674,20 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/Controllers/LauncherViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Categories/NSObject+ConvenienceMethods.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/Categories/UIView+Additions.h</string>
 					</object>
 				</object>
 			</object>
