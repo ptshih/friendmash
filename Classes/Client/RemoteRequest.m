@@ -40,11 +40,12 @@
   NSURL *postURL = [NSURL URLWithString:postURLString];
   
   ASIHTTPRequest *postRequest = [ASIHTTPRequest requestWithURL:postURL];
-  postRequest.shouldCompressRequestBody = YES;
+
   [postRequest setDelegate:delegate];
   [postRequest setNumberOfTimesToRetryOnTimeout:2];
   [postRequest setRequestMethod:@"POST"];
-  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+  [postRequest setShouldCompressRequestBody:YES]; // GZIP the postData
+//  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [postRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
@@ -52,7 +53,7 @@
   [postRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
   [postRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
   [postRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
-  [postRequest setPostLength:[postData length]];
+//  [postRequest setPostLength:[postData length]];
   [postRequest setPostBody:(NSMutableData *)postData];
   
   return postRequest;
