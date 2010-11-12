@@ -25,7 +25,6 @@
   [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [getRequest addRequestHeader:@"Accept" value:@"application/json"];
   [getRequest setRequestMethod:@"GET"];
-  [getRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [getRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [getRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
   [getRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
@@ -49,7 +48,6 @@
   [postRequest setShouldCompressRequestBody:YES]; // GZIP the postData
   [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"Accept" value:@"application/json"];
-  [postRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [postRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
   [postRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
