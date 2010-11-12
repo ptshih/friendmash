@@ -356,7 +356,14 @@
     self.rightUserId = [responseArray objectAtIndex:1];
     
     DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
-    [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
+    // protect against null IDs from failed server call
+    if(!self.leftUserId || !self.rightUserId) {
+      UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [networkErrorAlert show];
+      [networkErrorAlert autorelease];
+    } else {
+      [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
+    }
   }
   
   if(_shouldGoBack && self.networkQueue.requestsCount == 0) {
@@ -369,7 +376,7 @@
 {
   DLog(@"Request Failed with Error: %@", [request error]);
 
-  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
   
@@ -381,6 +388,17 @@
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      [self sendMashRequestForBothFaceViewsWithDelegate:self];
+      break;
+    default:
+      break;
+  }
 }
 
 // Override to allow orientations other than the default portrait orientation.
