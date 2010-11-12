@@ -40,6 +40,7 @@
 
 - (void)cacheImageWithURL:(NSURL *)url forIndexPath:(NSIndexPath *)indexPath {
   ASIHTTPRequest *rankingsRequest = [ASIHTTPRequest requestWithURL:url];
+  [rankingsRequest setNumberOfTimesToRetryOnTimeout:2];
   [self.pendingRequests setObject:rankingsRequest forKey:indexPath];
   [self.networkQueue addOperation:rankingsRequest];
   [self.networkQueue go];

@@ -20,6 +20,8 @@
   
   ASIHTTPRequest *getRequest = [ASIHTTPRequest requestWithURL:getURL];
   [getRequest setDelegate:delegate];
+  [getRequest setNumberOfTimesToRetryOnTimeout:2];
+  [getRequest setAllowCompressedResponse:YES];
   [getRequest setRequestMethod:@"GET"];
   [getRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [getRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
@@ -38,7 +40,9 @@
   NSURL *postURL = [NSURL URLWithString:postURLString];
   
   ASIHTTPRequest *postRequest = [ASIHTTPRequest requestWithURL:postURL];
+  postRequest.shouldCompressRequestBody = YES;
   [postRequest setDelegate:delegate];
+  [postRequest setNumberOfTimesToRetryOnTimeout:2];
   [postRequest setRequestMethod:@"POST"];
   [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
@@ -61,6 +65,7 @@
   NSString *baseURLString = [NSString stringWithFormat:@"%@?%@", FB_GRAPH_ME, params];
   
   ASIHTTPRequest *meRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
+  [meRequest setNumberOfTimesToRetryOnTimeout:2];
   [meRequest setDelegate:delegate];
   
   return meRequest;
@@ -73,6 +78,7 @@
   NSString *baseURLString = [NSString stringWithFormat:@"%@?%@", FB_GRAPH_FRIENDS, params];
   
   ASIHTTPRequest *friendsRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
+  [friendsRequest setNumberOfTimesToRetryOnTimeout:2];
   [friendsRequest setDelegate:delegate];
   
   return friendsRequest;
@@ -84,6 +90,7 @@
   NSString *baseURLString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?%@", facebookId, params];
   
   ASIHTTPRequest *pictureRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
+  [pictureRequest setNumberOfTimesToRetryOnTimeout:2];
   [pictureRequest setDelegate:delegate];
   
   return pictureRequest;

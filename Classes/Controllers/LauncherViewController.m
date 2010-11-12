@@ -243,6 +243,7 @@
       break;
     case 1:
       [self unbindWithFacebook];
+      break;
     default:
       break;
   }

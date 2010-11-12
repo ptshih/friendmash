@@ -106,31 +106,16 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request Failed with Error: %@", [request error]);
-  
-  // We should try and resend this request into the queue
-  if(_retryCount < 3) {
-    [self getPictureForFacebookId:_facebookId];
-    _retryCount++;
-  } else {
-    UIImage *failWhale = [UIImage imageNamed:@"mrt_profile.jpg"];
-    [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:failWhale waitUntilDone:YES];
-    _retryCount = 0;
-  }
-
-  // NSError *error = [request error];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"FaceView Queue finished");
-  
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
 //  self.faceImageView.image = [UIImage imageWithData:faceData];
   if(!faceImage) {
-    // somehow the data came back and failed, resend request
-    // make sure we don't do this more than 3 times
-//    [self prepareFaceViewWithFacebookId:_facebookId];
+
   } else {
 #ifdef USE_ROUNDED_CORNERS
 //    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
@@ -146,7 +131,6 @@
   [self faceViewDidFinishLoading];
   self.userInteractionEnabled = YES;
   APP_DELEGATE.touchActive = NO;
-
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
