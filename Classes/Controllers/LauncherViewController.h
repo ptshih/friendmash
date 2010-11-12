@@ -14,10 +14,12 @@
 
 @interface LauncherViewController : UIViewController <FacebookLoginDelegate> {
   IBOutlet UIView *_launcherView;
-  IBOutlet UIActivityIndicatorView *_activityIndicator;
   IBOutlet UISwitch *_gameModeSwitch;
+  IBOutlet UIView *_splashView;
+  IBOutlet UILabel *_splashLabel;
   
   LoginViewController *_loginViewController;
+  UIPopoverController *_loginPopoverController;
   
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
@@ -35,6 +37,7 @@
 }
 
 @property (nonatomic,retain) LoginViewController *loginViewController;
+@property (nonatomic,retain) UIPopoverController *loginPopoverController;
 
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
@@ -49,7 +52,7 @@
 /**
  Initiate a bind/unbind with Facebook for OAuth token
  */
-- (void)bindWithFacebook;
+- (void)bindWithFacebook:(BOOL)animated;
 - (void)unbindWithFacebook;
 
 /**

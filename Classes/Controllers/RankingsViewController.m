@@ -32,6 +32,7 @@
     _networkQueue = [[ASINetworkQueue queue] retain];
     
     [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
@@ -69,6 +70,9 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request Failed with Error: %@", [request error]);
+  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [networkErrorAlert show];
+  [networkErrorAlert autorelease];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -126,6 +130,8 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RankingCell"] autorelease];
 		cell.backgroundColor = [UIColor clearColor];
 		cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_cell_bg_landscape.png"]];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"table_cell_bg_selected.png"] stretchableImageWithLeftCapWidth:1 topCapHeight:20]];
+    
 //		cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"table_cell_bg_landscape.png"]];
 	}
   

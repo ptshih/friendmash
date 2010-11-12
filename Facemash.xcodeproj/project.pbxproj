@@ -10,7 +10,7 @@
 		1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* FacemashAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
 		251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */; };
 		251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */; };
@@ -42,11 +42,15 @@
 		253E985B1267FC300037CB2D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* SettingsViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
+		255BD026128CD2AE00DB5363 /* RankingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */; };
+		255BD02B128CD2DA00DB5363 /* LoginViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */; };
+		255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */; };
+		255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */; };
+		255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */; };
+		255BD0BF128CD43B00DB5363 /* SettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */; };
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
-		25646EA2128C165800FF534C /* LoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25646EA0128C165800FF534C /* LoginViewController_iPhone.xib */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
 		25698466128B327B00B2466B /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25698464128B327B00B2466B /* WebViewController.m */; };
-		25698467128B327B00B2466B /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25698465128B327B00B2466B /* WebViewController_iPhone.xib */; };
 		2569846E128B34CD00B2466B /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846C128B34CD00B2466B /* left.png */; };
 		2569846F128B34CD00B2466B /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846D128B34CD00B2466B /* right.png */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
@@ -139,14 +143,18 @@
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
+		255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPad.xib; sourceTree = "<group>"; };
+		255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPad.xib; sourceTree = "<group>"; };
+		255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPhone.xib; sourceTree = "<group>"; };
+		255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
+		255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_cell_bg_selected.png; sourceTree = "<group>"; };
+		255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SettingsViewController_iPad.xib; path = Resources/Nibs/Controllers/SettingsViewController_iPad.xib; sourceTree = "<group>"; };
 		25646E9E128C165800FF534C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		25646EA0128C165800FF534C /* LoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LoginViewController_iPhone.xib; path = ../../../Classes/Controllers/LoginViewController_iPhone.xib; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
 		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
 		25698463128B327B00B2466B /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		25698464128B327B00B2466B /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		25698465128B327B00B2466B /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController_iPhone.xib; path = ../../../Classes/Controllers/WebViewController_iPhone.xib; sourceTree = "<group>"; };
 		2569846C128B34CD00B2466B /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
 		2569846D128B34CD00B2466B /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -307,6 +315,7 @@
 				251EA3631262CB680055CFD2 /* Icon@2x.png */,
 				252E0FE3126083CD0008BD55 /* Icon-Small-50.png */,
 				252E0FC0126083390008BD55 /* Icon-72.png */,
+				255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */,
 			);
 			name = Assets;
 			path = Resources/Assets;
@@ -521,8 +530,10 @@
 				25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */,
 				253E98561267FB980037CB2D /* SettingsViewController_iPhone.xib */,
 				253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */,
-				25646EA0128C165800FF534C /* LoginViewController_iPhone.xib */,
-				25698465128B327B00B2466B /* WebViewController_iPhone.xib */,
+				255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */,
+				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
+				255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */,
+				255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -548,6 +559,7 @@
 				2573E5071285859A004EBEBB /* SystemConfiguration.framework */,
 				2573E509128585A4004EBEBB /* MobileCoreServices.framework */,
 				2573E50B128585B1004EBEBB /* libz.1.2.3.dylib */,
+				255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -679,10 +691,14 @@
 				25BDF1F8128A478B004F046A /* table_cell_bg_landscape@2x.png in Resources */,
 				25BDF38F128A83C4004F046A /* picture_loading.png in Resources */,
 				25BDF391128A83CA004F046A /* picture_loading@2x.png in Resources */,
-				25698467128B327B00B2466B /* WebViewController_iPhone.xib in Resources */,
 				2569846E128B34CD00B2466B /* left.png in Resources */,
 				2569846F128B34CD00B2466B /* right.png in Resources */,
-				25646EA2128C165800FF534C /* LoginViewController_iPhone.xib in Resources */,
+				255BD026128CD2AE00DB5363 /* RankingsViewController_iPad.xib in Resources */,
+				255BD02B128CD2DA00DB5363 /* LoginViewController_iPad.xib in Resources */,
+				255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */,
+				255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */,
+				255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */,
+				255BD0BF128CD43B00DB5363 /* SettingsViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

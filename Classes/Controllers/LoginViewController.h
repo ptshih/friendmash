@@ -10,12 +10,15 @@
 
 @protocol FacebookLoginDelegate <NSObject>
 @optional
-- (void)fbDidLoginWithToken:(NSString *)token;
+- (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration;
 - (void)fbDidNotLoginWithError:(NSError *)error;
 @end
 
 @interface LoginViewController : UIViewController {
   IBOutlet UIWebView *_fbWebView;
+  IBOutlet UIView *_splashView;
+  IBOutlet UILabel *_splashLabel;
+  IBOutlet UILabel *_titleLabel;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> delegate;
 }

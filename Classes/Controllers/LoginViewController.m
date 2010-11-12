@@ -13,7 +13,7 @@
 - (void)authorizeFacebook;
 - (void)authorizeDidSucceed:(NSURL*)url;
 - (NSURL *)generateFacebookURL:(NSString *)baseURL params:(NSDictionary *)params;
-- (NSString *) getStringFromUrl: (NSString*) url needle:(NSString *) needle;
+- (NSString *)getStringFromUrl: (NSString*)url needle:(NSString *)needle;
 @end
 
 @implementation LoginViewController
@@ -36,14 +36,18 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
+
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
   [self authorizeFacebook];
 }
 
 #pragma mark OAuth / FBConnect
 - (void)authorizeFacebook {
+  _splashLabel.text = NSLocalizedString(@"Authenticating with Facebook...", @"Authenticating with Facebook...");
+  
   NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  FB_APP_ID, @"client_id",
                                  @"user_agent", @"type", 
@@ -95,6 +99,7 @@
 }
 
 - (void)authorizeDidSucceed:(NSURL *)url {
+  _splashLabel.text = NSLocalizedString(@"Authenticated with Facebook...", @"Authenticated with Facebook...");
   NSString *q = [url absoluteString];
   NSString *token = [self getStringFromUrl:q needle:@"access_token="];
   NSString *expTime = [self getStringFromUrl:q needle:@"expires_in="];
@@ -112,7 +117,7 @@
   if ((token == (NSString *) [NSNull null]) || (token.length == 0)) {
     [self.delegate fbDidNotLoginWithError:nil];
   } else {
-    [self.delegate fbDidLoginWithToken:token];
+    [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
 }
 
@@ -120,6 +125,7 @@
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
  navigationType:(UIWebViewNavigationType)navigationType {
+  _splashView.hidden = NO;
   NSURL *url = request.URL;
   
   if ([url.scheme isEqualToString:@"fbconnect"]) {
@@ -149,6 +155,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
   self.title = [_fbWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
+  _titleLabel.text = [_fbWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
+  _splashView.hidden = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
