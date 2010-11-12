@@ -46,7 +46,7 @@
   [postRequest setNumberOfTimesToRetryOnTimeout:2];
   [postRequest setRequestMethod:@"POST"];
   [postRequest setShouldCompressRequestBody:YES]; // GZIP the postData
-  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+//  [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"Accept" value:@"application/json"];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
   [postRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
