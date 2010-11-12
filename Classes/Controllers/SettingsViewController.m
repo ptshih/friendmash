@@ -12,6 +12,7 @@
 @implementation SettingsViewController
 
 @synthesize launcherViewController = _launcherViewController;
+@synthesize delegate;
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -28,7 +29,7 @@
 }
 
 - (IBAction)logout {
-  self.launcherViewController.shouldShowLogoutOnAppear = YES;
+  [delegate shouldPerformLogout];
   [self dismissModalViewControllerAnimated:YES];
 }
 

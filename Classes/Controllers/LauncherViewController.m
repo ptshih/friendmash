@@ -44,7 +44,6 @@
 @synthesize friendsListRequest = _friendsListRequest;
 @synthesize currentUser = _currentUser;
 @synthesize friendsArray = _friendsArray;
-@synthesize shouldShowLogoutOnAppear = _shouldShowLogoutOnAppear;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
@@ -58,8 +57,6 @@
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
-    
-    _shouldShowLogoutOnAppear = NO;
   }
   return self;
 }
@@ -82,13 +79,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 //  self.navigationController.navigationBar.hidden = YES;
   [self displayLauncher];
-  
-  if(self.shouldShowLogoutOnAppear) {
-    self.shouldShowLogoutOnAppear = NO;
-    UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
-    [logoutAlert show];
-    [logoutAlert autorelease];
-  }
 }
 
 - (void)displayLauncher {
@@ -122,6 +112,7 @@
     svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
   }
   svc.launcherViewController = self;
+  svc.delegate = self;
   [self presentModalViewController:svc animated:YES];
   [svc release];
 }
@@ -169,10 +160,17 @@
 
 - (void)dismissLoginView:(BOOL)animated {
   if(isDeviceIPad()) {
-    [self.loginPopoverController dismissPopoverAnimated:animated];
+    [self.loginPopoverController dismissPopoverAnimated:YES];
   } else {
     [self.loginViewController dismissModalViewControllerAnimated:animated];
   }
+}
+
+#pragma mark SettingsDelegate
+- (void)shouldPerformLogout {
+  UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+  [logoutAlert show];
+  [logoutAlert autorelease];
 }
 
 #pragma mark UIPopoverControllerDelegate
@@ -200,7 +198,7 @@
 }
 
 - (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
-  [self dismissLoginView:YES];
+  [self dismissLoginView:NO];
   // Store the OAuth token
   DLog(@"Received OAuth access token: %@",token);
   APP_DELEGATE.fbAccessToken = token;
@@ -218,7 +216,7 @@
 }
 
 - (void)fbDidNotLoginWithError:(NSError *)error {
-  [self dismissLoginView:YES];
+  [self dismissLoginView:NO];
   DLog(@"Login failed with error: %@",error);
   UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [permissionsAlert show];

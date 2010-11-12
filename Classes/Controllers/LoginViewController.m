@@ -119,6 +119,7 @@
   } else {
     [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
+  _splashLabel.text = @"";
 }
 
 

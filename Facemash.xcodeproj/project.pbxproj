@@ -148,7 +148,7 @@
 		255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPhone.xib; sourceTree = "<group>"; };
 		255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
 		255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_cell_bg_selected.png; sourceTree = "<group>"; };
-		255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SettingsViewController_iPad.xib; path = Resources/Nibs/Controllers/SettingsViewController_iPad.xib; sourceTree = "<group>"; };
+		255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController_iPad.xib; sourceTree = "<group>"; };
 		25646E9E128C165800FF534C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
@@ -529,6 +529,7 @@
 				25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */,
 				25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */,
 				253E98561267FB980037CB2D /* SettingsViewController_iPhone.xib */,
+				255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */,
 				253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */,
 				255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */,
 				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
@@ -559,7 +560,6 @@
 				2573E5071285859A004EBEBB /* SystemConfiguration.framework */,
 				2573E509128585A4004EBEBB /* MobileCoreServices.framework */,
 				2573E50B128585B1004EBEBB /* libz.1.2.3.dylib */,
-				255BD0BE128CD43B00DB5363 /* SettingsViewController_iPad.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -793,7 +793,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6A3ACAC7-534D-45AC-81ED-313A3DF9F0A7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E4A084C4-DECF-4BB1-B8A9-FDEEEDD94703";
 				SDKROOT = iphoneos4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -813,7 +813,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6A3ACAC7-534D-45AC-81ED-313A3DF9F0A7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E4A084C4-DECF-4BB1-B8A9-FDEEEDD94703";
 				SDKROOT = iphoneos4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

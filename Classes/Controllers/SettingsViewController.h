@@ -8,14 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SettingsDelegate <NSObject>
+@optional
+- (void)shouldPerformLogout;
+@end
+
 @class LauncherViewController;
 
 @interface SettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
   IBOutlet UITableView *_tableView;
   LauncherViewController *_launcherViewController;
+  id <SettingsDelegate> delegate;
 }
 
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
+@property (nonatomic, assign) id <SettingsDelegate> delegate;
 
 - (IBAction)dismissSettings;
 
