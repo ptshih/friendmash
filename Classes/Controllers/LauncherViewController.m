@@ -224,6 +224,7 @@
 }
 
 - (void)fbDidLogout {
+  _splashLabel.text = @"";
   APP_DELEGATE.fbAccessToken = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessTokenExpiration"];
