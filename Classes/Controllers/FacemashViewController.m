@@ -318,9 +318,16 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
-    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-    [networkErrorAlert show];
-    [networkErrorAlert autorelease];
+    // Check for a not-implemented (did not find opponents) response
+    if(statusCode == 501) {
+      _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+      [_noContentAlert show];
+      [_noContentAlert autorelease];
+    } else {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+    }
     return;
   }
   
@@ -384,7 +391,11 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
-      [self sendMashRequestForBothFaceViewsWithDelegate:self];
+      if([alertView isEqual:_networkErrorAlert]) {
+        [self sendMashRequestForBothFaceViewsWithDelegate:self];
+      } else if[alertView isEqual:_noContentAlert] {
+        [self.navigationController popViewControllerAnimated:YES];
+      }
       break;
     default:
       break;

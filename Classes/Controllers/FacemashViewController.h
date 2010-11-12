@@ -40,6 +40,9 @@ typedef enum {
   BOOL _isRightLoaded;
   
   NSMutableArray *_recentOpponentsArray;
+  
+  UIAlertView *_noContentAlert;
+  UIAlertView *_networkErrorAlert;
 }
 
 @property (nonatomic,assign) FaceView *leftView;
