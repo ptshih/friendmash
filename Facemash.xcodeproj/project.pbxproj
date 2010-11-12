@@ -485,10 +485,10 @@
 				253E985A1267FC300037CB2D /* SettingsViewController.m */,
 				253E98D3126805B70037CB2D /* RankingsViewController.h */,
 				253E98D4126805B70037CB2D /* RankingsViewController.m */,
-				25698463128B327B00B2466B /* WebViewController.h */,
-				25698464128B327B00B2466B /* WebViewController.m */,
 				25646E9E128C165800FF534C /* LoginViewController.h */,
 				25646E9F128C165800FF534C /* LoginViewController.m */,
+				25698463128B327B00B2466B /* WebViewController.h */,
+				25698464128B327B00B2466B /* WebViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
