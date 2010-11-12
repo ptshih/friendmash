@@ -41,13 +41,25 @@
     self.rankLabel.backgroundColor = [UIColor clearColor];
     self.scoreLabel.backgroundColor = [UIColor clearColor];
     self.winLossLabel.backgroundColor = [UIColor clearColor];
+    
+    self.nameLabel.font = [UIFont boldSystemFontOfSize:17.0];
+    
+    self.rankLabel.textAlignment = UITextAlignmentCenter;
+    self.rankLabel.font = [UIFont boldSystemFontOfSize:17.0];
+//    self.rankLabel.font = [UIFont fontWithName:@"Lucida Grande" size:18.0];
 
     self.rankView.backgroundColor = [UIColor clearColor];
+    self.rankView.frame = CGRectMake(0, 0, 52, 50);
+    UIImageView *rankStarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_star.png"]];
+    rankStarView.frame = self.rankView.frame;
+    self.rankLabel.frame = self.rankView.frame;
+    [self.rankView addSubview:rankStarView];
+    [self.rankView addSubview:self.rankLabel];
+    [rankStarView release];
     
     [self.contentView addSubview:self.profileImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.rankLabel];
-    [self.contentView addSubview:self.scoreLabel];
+//    [self.contentView addSubview:self.scoreLabel];
     [self.contentView addSubview:self.winLossLabel];
     [self.contentView addSubview:self.rankView];
     
@@ -100,10 +112,10 @@
   textWidthTop -= self.nameLabel.width + 10;
   textSizeTop = CGSizeMake(textWidthTop, INT_MAX);
   
-  CGSize rankSize = [self.rankLabel.text sizeWithFont:self.rankLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
-  self.rankLabel.height = rankSize.height;
-  self.rankLabel.width = rankSize.width;
-  self.rankLabel.left = self.contentView.width - 10.0 - self.rankLabel.width;
+//  CGSize rankSize = [self.rankLabel.text sizeWithFont:self.rankLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
+//  self.rankLabel.height = rankSize.height;
+//  self.rankLabel.width = rankSize.width;
+//  self.rankLabel.left = self.contentView.width - 10.0 - self.rankLabel.width;
   
   
   // Bottom
@@ -114,18 +126,27 @@
   textWidthBot -= self.nameLabel.width + 10;
   textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
-  CGSize scoreSize = [self.scoreLabel.text sizeWithFont:self.scoreLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
-  self.scoreLabel.height = scoreSize.height;
-  self.scoreLabel.width = scoreSize.width;
-  self.scoreLabel.left = self.contentView.width - 10.0 - self.scoreLabel.width;
+//  CGSize scoreSize = [self.scoreLabel.text sizeWithFont:self.scoreLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
+//  self.scoreLabel.height = scoreSize.height;
+//  self.scoreLabel.width = scoreSize.width;
+//  self.scoreLabel.left = self.contentView.width - 10.0 - self.scoreLabel.width;
+  
+  // Star
+  self.rankView.left = self.contentView.width - 10.0 - self.rankView.width;
+  self.rankView.top = 5.0;
+  
+  CGSize rankSize = [self.rankLabel.text sizeWithFont:self.rankLabel.font constrainedToSize:CGSizeMake(52, 50) lineBreakMode:UILineBreakModeWordWrap];
+  self.rankLabel.height = rankSize.height;
+  self.rankLabel.width = rankSize.width;
+  self.rankLabel.center = CGPointMake(27, 27);
   
 }
 
 + (void)fillCell:(RankingsTableViewCell *)cell withDictionary:(NSDictionary *)dictionary andImage:(UIImage *)profileImage {
   cell.profileImageView.image = profileImage;
   cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
-  cell.rankLabel.text = [NSString stringWithFormat:@"Rank: %@", [[dictionary objectForKey:@"rank"] stringValue]];
-  cell.scoreLabel.text = [NSString stringWithFormat:@"Score: %@", [[dictionary objectForKey:@"score"] stringValue]];
+  cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
+//  cell.scoreLabel.text = [NSString stringWithFormat:@"Score: %@", [[dictionary objectForKey:@"score"] stringValue]];
   cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue]];
 }
 

@@ -47,6 +47,8 @@
 #define WEBVIEW_LEFT @"left.png"
 #define WEBVIEW_RIGHT @"right.png"
 
+#define FM_RANKINGS_COUNT 50
+
 // ERROR STRINGS
 #define FM_NETWORK_ERROR @"Facemash has encountered a network error. Please check your network connection and try again."
 
