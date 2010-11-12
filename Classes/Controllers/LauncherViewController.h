@@ -12,7 +12,7 @@
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LauncherViewController : UIViewController <FacebookLoginDelegate> {
+@interface LauncherViewController : UIViewController <FacebookLoginDelegate, UIPopoverControllerDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;

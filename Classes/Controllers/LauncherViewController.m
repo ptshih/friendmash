@@ -117,6 +117,7 @@
   SettingsViewController *svc;
   if(isDeviceIPad()) {
     svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPad" bundle:nil];
+    svc.modalPresentationStyle = UIModalPresentationFormSheet;
   } else {
     svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController_iPhone" bundle:nil];
   }
@@ -129,6 +130,7 @@
   RankingsViewController *rvc;
   if(isDeviceIPad()) {
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPad" bundle:nil];
+    rvc.modalPresentationStyle = UIModalPresentationFormSheet;
   } else {
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPhone" bundle:nil];
   }
