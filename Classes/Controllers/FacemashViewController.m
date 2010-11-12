@@ -393,7 +393,7 @@
     case 0:
       if([alertView isEqual:_networkErrorAlert]) {
         [self sendMashRequestForBothFaceViewsWithDelegate:self];
-      } else if[alertView isEqual:_noContentAlert] {
+      } else if([alertView isEqual:_noContentAlert]) {
         [self.navigationController popViewControllerAnimated:YES];
       }
       break;
