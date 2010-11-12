@@ -44,16 +44,24 @@
 }
 
 - (void)viewDidLoad {
+  // Display logout button if this is current user's profile
+  if(self.profileId == [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+    UIBarButtonItem *logoutButton = [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logout)] autorelease];
+    _navBarItem.leftBarButtonItem = logoutButton;
+  }
+  
+  UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
+  _navBarItem.rightBarButtonItem = doneButton;  
   _tableView.backgroundColor = [UIColor clearColor];
   [self getProfileForCurrentUser];
 }
 
-- (IBAction)logout {
+- (void)logout {
   [delegate shouldPerformLogout];
   [self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)dismissSettings {
+- (void)done {
   [self dismissModalViewControllerAnimated:YES];
 }
 

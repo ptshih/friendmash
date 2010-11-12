@@ -17,6 +17,7 @@
 @class LauncherViewController;
 
 @interface ProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+  IBOutlet UINavigationItem *_navBarItem;
   IBOutlet UITableView *_tableView;
   LauncherViewController *_launcherViewController;
   ASINetworkQueue *_networkQueue;
@@ -31,12 +32,11 @@
 @property (nonatomic, retain) NSString *profileId;
 @property (nonatomic, assign) id <ProfileDelegate> delegate;
 
-- (IBAction)dismissSettings;
 
 /**
  Initiate logout from Facebook
  This will punt us back to the FBLoginDialog
  */
-- (IBAction)logout;
-
+- (void)logout;
+- (void)done;
 @end
