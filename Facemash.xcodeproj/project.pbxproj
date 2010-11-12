@@ -42,6 +42,8 @@
 		253E985B1267FC300037CB2D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* ProfileViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
+		25560139128DF7BA00E6C482 /* LoadingOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 25560138128DF7BA00E6C482 /* LoadingOverlay.m */; };
+		25560152128DF84E00E6C482 /* loading_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 25560151128DF84E00E6C482 /* loading_bg.png */; };
 		2556FE03128D6F5400E6C482 /* RankingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */; };
 		2556FE6E128D753A00E6C482 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE6D128D753A00E6C482 /* UIView+Additions.m */; };
 		2556FED9128D784E00E6C482 /* NSObject+ConvenienceMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FED6128D784E00E6C482 /* NSObject+ConvenienceMethods.m */; };
@@ -146,6 +148,9 @@
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
+		25560137128DF7BA00E6C482 /* LoadingOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingOverlay.h; sourceTree = "<group>"; };
+		25560138128DF7BA00E6C482 /* LoadingOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingOverlay.m; sourceTree = "<group>"; };
+		25560151128DF84E00E6C482 /* loading_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_bg.png; sourceTree = "<group>"; };
 		2556FE01128D6F5400E6C482 /* RankingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsTableViewCell.h; sourceTree = "<group>"; };
 		2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsTableViewCell.m; sourceTree = "<group>"; };
 		2556FE6C128D753A00E6C482 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
@@ -325,6 +330,7 @@
 				252E0FE3126083CD0008BD55 /* Icon-Small-50.png */,
 				252E0FC0126083390008BD55 /* Icon-72.png */,
 				255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */,
+				25560151128DF84E00E6C482 /* loading_bg.png */,
 			);
 			name = Assets;
 			path = Resources/Assets;
@@ -520,6 +526,8 @@
 			children = (
 				25E05176125FCB8F00CA6AC1 /* FaceView.h */,
 				25E05177125FCB8F00CA6AC1 /* FaceView.m */,
+				25560137128DF7BA00E6C482 /* LoadingOverlay.h */,
+				25560138128DF7BA00E6C482 /* LoadingOverlay.m */,
 				2556FE01128D6F5400E6C482 /* RankingsTableViewCell.h */,
 				2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */,
 			);
@@ -715,6 +723,7 @@
 				255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */,
 				2556FFD0128DD1CE00E6C482 /* favorite_star.png in Resources */,
 				2556FFD2128DD1F300E6C482 /* favorite_star@2x.png in Resources */,
+				25560152128DF84E00E6C482 /* loading_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,6 +770,7 @@
 				2556FE6E128D753A00E6C482 /* UIView+Additions.m in Sources */,
 				2556FED9128D784E00E6C482 /* NSObject+ConvenienceMethods.m in Sources */,
 				2556FEDA128D784E00E6C482 /* NSString+ConvenienceMethods.m in Sources */,
+				25560139128DF7BA00E6C482 /* LoadingOverlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

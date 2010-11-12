@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSString *selectedGender;
 
 - (void)loadImagesForOnscreenRows;
-- (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode;
+- (IBAction)getTopRankings;
 - (IBAction)selectMode:(UISegmentedControl *)segmentedControl;
 - (IBAction)dismissRankings;
 

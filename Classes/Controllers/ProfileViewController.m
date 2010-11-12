@@ -64,6 +64,7 @@
   ASIHTTPRequest *profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
   [self.networkQueue addOperation:profileRequest];
   [self.networkQueue go];
+  [APP_DELEGATE showLoadingOverlay];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -81,6 +82,7 @@
   self.profileDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
 
   [_tableView reloadData];
+  [APP_DELEGATE hideLoadingOverlay];
   DLog(@"rankings request finished successfully");
 }
 

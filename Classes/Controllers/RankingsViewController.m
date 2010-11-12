@@ -47,20 +47,21 @@
 
 - (void)viewDidLoad {
   // Call initial rankings
-  [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
+  [self getTopRankings];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   
 }
 
-- (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode {
-  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", gender, mode, FM_RANKINGS_COUNT];
+- (void)getTopRankings {
+  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", self.selectedGender, _selectedMode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];
   [self.networkQueue go];
+  [APP_DELEGATE showLoadingOverlay];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -77,6 +78,7 @@
   
   self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
   [_tableView reloadData];
+  [APP_DELEGATE hideLoadingOverlay];
   DLog(@"rankings request finished successfully");
 }
 
@@ -96,7 +98,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
-      [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
+      [self getTopRankings];
       break;
     default:
       break;
@@ -128,7 +130,7 @@
       _selectedMode = 0;
       break;
   }
-  [self getTopRankingsForGender:self.selectedGender andMode:_selectedMode];
+  [self getTopRankings];
 }
 
 - (IBAction)dismissRankings {

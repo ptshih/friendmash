@@ -8,6 +8,7 @@
 
 #import "FacemashAppDelegate.h"
 #import "LauncherViewController.h"
+#import "LoadingOverlay.h"
 #import "Constants.h"
 
 @implementation FacemashAppDelegate
@@ -17,6 +18,7 @@
 @synthesize launcherViewController = _launcherViewController;
 @synthesize touchActive = _touchActive;
 @synthesize fbAccessToken = _fbAccessToken;
+@synthesize loadingOverlay = _loadingOverlay;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -32,6 +34,8 @@
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
   
   if(isDeviceIPad()) {
     _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
@@ -69,6 +73,14 @@
      */
 }
 
+#pragma mark LoadingOverlay
+- (void)showLoadingOverlay {
+	[self.window addSubview:self.loadingOverlay];
+}
+
+- (void)hideLoadingOverlay {
+	[self.loadingOverlay removeFromSuperview];
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -81,6 +93,7 @@
 
 
 - (void)dealloc {
+  [_loadingOverlay release];
   [_fbAccessToken release];
   [_launcherViewController release];
   [_navigationController release];
