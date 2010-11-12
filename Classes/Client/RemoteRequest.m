@@ -21,7 +21,8 @@
   ASIHTTPRequest *getRequest = [ASIHTTPRequest requestWithURL:getURL];
   [getRequest setDelegate:delegate];
   [getRequest setNumberOfTimesToRetryOnTimeout:2];
-  [getRequest setAllowCompressedResponse:YES];
+//  [getRequest setAllowCompressedResponse:YES];
+//  [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [getRequest setRequestMethod:@"GET"];
   [getRequest addRequestHeader:@"X-User-Id" value:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   [getRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];

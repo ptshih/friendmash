@@ -8,6 +8,7 @@
 
 #import "RankingsViewController.h"
 #import "LauncherViewController.h"
+#import "WebViewController.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
 #import "RemoteRequest.h"
@@ -51,7 +52,7 @@
 
 - (void)getTopRankingsForGender:(NSString *)gender andMode:(NSInteger)mode {
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d", gender, mode];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings", FACEMASH_BASE_URL];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];
@@ -155,6 +156,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//  WebViewController *wvc = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
+//  [self presentModalViewController:wvc animated:YES];
+//  [wvc setWebViewTitle:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"full_name"]];
+//  [wvc loadURL:[NSString stringWithFormat:@"http://touch.facebook.com/#/profile.php?id=%@&access_token=%@", [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], APP_DELEGATE.fbAccessToken]];
+//  [wvc release];
 }
 
 #pragma mark -

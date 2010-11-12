@@ -29,10 +29,10 @@
 @property (nonatomic, retain) UIActivityIndicatorView *activityView;
 
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withURL:(NSString*)urlString;
-- (void)loadURL:(NSString*)urlString;
-- (void)loadURLRequest:(NSURLRequest*)urlRequest;
+- (void)loadURL:(NSString *)urlString;
+- (void)loadURLRequest:(NSURLRequest *)urlRequest;
 - (void)moreActions;
-- (void)setNewsTitle:(NSString*)newsTitle;
+- (void)setWebViewTitle:(NSString *)webViewTitle;
 
 - (IBAction)dismissView;
 

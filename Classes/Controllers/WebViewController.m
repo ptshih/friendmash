@@ -32,16 +32,16 @@
 	return self;
 }
 
-- (void)setNewsTitle:(NSString*)newsTitle {
-	[_navBarItem setTitle:newsTitle];
+- (void)setWebViewTitle:(NSString *)webViewTitle {
+	[_navBarItem setTitle:webViewTitle];
 }
 
-- (void)loadURL:(NSString*)urlString {
+- (void)loadURL:(NSString *)urlString {
 	NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	[_myWebView loadRequest:req];
 }
 
-- (void)loadURLRequest:(NSURLRequest*)urlRequest {
+- (void)loadURLRequest:(NSURLRequest *)urlRequest {
 	[_myWebView loadRequest:urlRequest];
 }
 
