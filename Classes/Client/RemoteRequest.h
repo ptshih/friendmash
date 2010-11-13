@@ -33,4 +33,8 @@
 
 + (ASIHTTPRequest *)getFacebookRequestForPictureWithFacebookId:(NSString *)facebookId andType:(NSString *)type withDelegate:(id)delegate;
 
++ (NSString *)serializeURL:(NSString *)baseUrl params:(NSDictionary *)params;
+  
++ (NSString*)serializeURL:(NSString *)baseUrl params:(NSDictionary *)params httpMethod:(NSString *)httpMethod;
+
 @end

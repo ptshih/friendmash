@@ -16,6 +16,7 @@
 #import "CJSONDeserializer.h"
 
 @interface FacemashAppDelegate (Private)
+- (NSDictionary*)parseURLParams:(NSString *)query;
 - (void)sendFacebookAccessToken;
 - (void)checkLastExitDate;
 - (void)authenticateWithFacebook:(BOOL)animated;
@@ -39,6 +40,84 @@
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+  // If the URL's structure doesn't match the structure used for Facebook authorization, abort.
+  if (![[url absoluteString] hasPrefix:[NSString stringWithFormat:@"fb%@://authorize", FB_APP_ID]]) {
+    return NO;
+  }
+  
+  NSString *query = [url fragment];
+  
+  // Version 3.2.3 of the Facebook app encodes the parameters in the query but
+  // version 3.3 and above encode the parameters in the fragment. To support
+  // both versions of the Facebook app, we try to parse the query if
+  // the fragment is missing.
+  if (!query) {
+    query = [url query];
+  }
+  
+  NSDictionary *params = [self parseURLParams:query];
+  NSString *accessToken = [params valueForKey:@"access_token"];
+  
+  // If the URL doesn't contain the access token, an error has occurred.
+  if (!accessToken) {
+    NSString *errorReason = [params valueForKey:@"error"];
+    
+    // If the error response indicates that we should try again using Safari, open
+    // the authorization dialog in Safari.
+    if (errorReason && [errorReason isEqualToString:@"service_disabled_use_browser"]) {
+      [self.loginViewController authorizeWithFBAppAuth:NO safariAuth:YES];
+      return YES;
+    }
+    
+    // If the error response indicates that we should try the authorization flow
+    // in an inline dialog, do that.
+    if (errorReason && [errorReason isEqualToString:@"service_disabled"]) {
+      [self.loginViewController authorizeWithFBAppAuth:NO safariAuth:NO];
+      return YES;
+    }
+    
+    // The facebook app may return an error_code parameter in case it
+    // encounters a UIWebViewDelegate error. This should not be treated
+    // as a cancel.
+//    NSString *errorCode = [params valueForKey:@"error_code"];
+    
+//    BOOL userDidCancel =
+//    !errorCode && (!errorReason || [errorReason isEqualToString:@"access_denied"]);
+//    [self fbDialogNotLogin:userDidCancel];
+    [self fbDidNotLoginWithError:nil];
+    return YES;
+  }
+  
+  // We have an access token, so parse the expiration date.
+  NSString *expTime = [params valueForKey:@"expires_in"];
+  NSDate *expirationDate = [NSDate distantFuture];
+  if (expTime != nil) {
+    int expVal = [expTime intValue];
+    if (expVal != 0) {
+      expirationDate = [NSDate dateWithTimeIntervalSinceNow:expVal];
+    }
+  }
+  
+//  [self fbDialogLogin:accessToken expirationDate:expirationDate];
+  [self fbDidLoginWithToken:accessToken andExpiration:expirationDate];
+  return YES;
+}
+
+- (NSDictionary*)parseURLParams:(NSString *)query {
+	NSArray *pairs = [query componentsSeparatedByString:@"&"];
+	NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *pair in pairs) {
+		NSArray *kv = [pair componentsSeparatedByString:@"="];
+		NSString *val =
+    [[kv objectAtIndex:1]
+     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+		[params setObject:val forKey:[kv objectAtIndex:0]];
+	}
+  return params;
+}
 
 // Called when app launches fresh NOT backgrounded
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -95,7 +174,7 @@
     DLog(@"time interval: %g", lastExitInterval);
     
     // If greater than 24hrs, re-authenticate
-    if(lastExitInterval > 86400) {
+    if(lastExitInterval > 1) {
       [self authenticateWithFacebook:YES]; // authenticate
     } else {
       // Reuse our token from last time
@@ -186,7 +265,7 @@
 #pragma mark FacebookLoginDelegate
 - (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
   DLog(@"Received OAuth access token: %@",token);
-  
+
   // Set the facebook access token
   // ignore the expiration since we request non-expiring offline access
   self.fbAccessToken = token;
@@ -231,6 +310,9 @@
   [logoutRequest setHTTPMethod:@"GET"];
   NSHTTPURLResponse *logoutResponse;
   [NSURLConnection sendSynchronousRequest:logoutRequest returningResponse:&logoutResponse error:nil];
+  
+  // NOTE
+  // It might be a good idea to send a request to FM servers to expire/delete this access_token
   
   DLog(@"logging out with response code: %d",[logoutResponse statusCode]);
   

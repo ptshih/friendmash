@@ -18,12 +18,13 @@
   IBOutlet UIWebView *_fbWebView;
   IBOutlet UIView *_splashView;
   IBOutlet UILabel *_splashLabel;
-  IBOutlet UILabel *_titleLabel;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSURL *authorizeURL;
 @property (nonatomic, assign) id <FacebookLoginDelegate> delegate;
+
+- (void)authorizeWithFBAppAuth:(BOOL)tryFBAppAuth safariAuth:(BOOL)trySafariAuth;;
 
 @end

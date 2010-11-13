@@ -100,4 +100,44 @@
   return pictureRequest;
 }
 
++ (NSString *)serializeURL:(NSString *)baseUrl
+                    params:(NSDictionary *)params {
+  return [self serializeURL:baseUrl params:params httpMethod:@"GET"];
+}
+
+/**
+ * Generate get URL
+ */
++ (NSString*)serializeURL:(NSString *)baseUrl
+                   params:(NSDictionary *)params
+               httpMethod:(NSString *)httpMethod {
+  
+  NSURL* parsedURL = [NSURL URLWithString:baseUrl];
+  NSString* queryPrefix = parsedURL.query ? @"&" : @"?";
+  
+  NSMutableArray* pairs = [NSMutableArray array];
+  for (NSString* key in [params keyEnumerator]) {
+    if (([[params valueForKey:key] isKindOfClass:[UIImage class]])
+        ||([[params valueForKey:key] isKindOfClass:[NSData class]])) {
+      if ([httpMethod isEqualToString:@"GET"]) {
+        NSLog(@"can not use GET to upload a file");
+      }
+      continue;
+    }
+    
+    NSString* escaped_value = (NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                  NULL, /* allocator */
+                                                                                  (CFStringRef)[params objectForKey:key],
+                                                                                  NULL, /* charactersToLeaveUnescaped */
+                                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                  kCFStringEncodingUTF8);
+    
+    [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, escaped_value]];
+    [escaped_value release];
+  }
+  NSString* query = [pairs componentsJoinedByString:@"&"];
+  
+  return [NSString stringWithFormat:@"%@%@%@", baseUrl, queryPrefix, query];
+}
+
 @end

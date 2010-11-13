@@ -49,9 +49,9 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage" id="215959088">
+						<object class="NSCustomResource" key="IBUIImage" id="638237398">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">bg_ipad.png</string>
+							<string key="NSResourceName">bg_iPad.png</string>
 						</object>
 					</object>
 					<object class="IBUIView" id="100455445">
@@ -211,7 +211,7 @@
 								<reference key="NSSuperview" ref="483290115"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<reference key="IBUIImage" ref="215959088"/>
+								<reference key="IBUIImage" ref="638237398"/>
 							</object>
 							<object class="IBUILabel" id="312102420">
 								<reference key="NSNextResponder" ref="483290115"/>
@@ -502,7 +502,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>LauncherViewController</string>
 					<string>UIResponder</string>
-					<string>{{681, 213}, {1024, 768}}</string>
+					<string>{{39, 213}, {1024, 768}}</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBCocoaTouchFramework</string>
 						<integer value="2" key="NS.object.0"/>
@@ -966,7 +966,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>bg_ipad.png</string>
+				<string>bg_iPad.png</string>
 				<string>btn_ranks_iPad.png</string>
 				<string>btn_settings_iPad.png</string>
 				<string>f_iPad.png</string>

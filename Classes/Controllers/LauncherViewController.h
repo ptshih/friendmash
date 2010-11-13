@@ -9,36 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ProfileViewController.h"
 
-@class ASIHTTPRequest;
-@class ASINetworkQueue;
-
 @interface LauncherViewController : UIViewController <ProfileDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;
   IBOutlet UILabel *_splashLabel;
-  
-  ASINetworkQueue *_networkQueue;
-  ASIHTTPRequest *_currentUserRequest;
-  ASIHTTPRequest *_friendsRequest;
-  ASIHTTPRequest *_friendsListRequest;
-  
-  NSURL *_authorizeURL;
-  
-  NSDictionary *_currentUser;
-  NSArray *_friendsArray;
-  
-  UIButton *_logoutButton;
-  UIAlertView *_networkErrorAlert;
 }
 
-@property (retain) ASINetworkQueue *networkQueue;
-@property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
-@property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
-@property (nonatomic,retain) ASIHTTPRequest *friendsListRequest;
-
-@property (nonatomic,retain) NSDictionary *currentUser;
-@property (nonatomic,retain) NSArray *friendsArray;
+@property (nonatomic, assign) UIView *launcherView;
+@property (nonatomic, assign) UIView *splashView;
 
 
 /**

@@ -129,7 +129,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="800574421"/>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">btn_settings.png</string>
+									<string key="NSResourceName">profile.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="656986604">
@@ -223,7 +223,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText"/>
+								<string key="IBUIText">syncing with facemash servers</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">LucidaGrande-Bold</string>
 									<double key="NSSize">18</double>
@@ -368,8 +368,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="457000387"/>
-							<reference ref="794196135"/>
 							<reference ref="793705269"/>
+							<reference ref="794196135"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -443,17 +443,18 @@
 						<reference key="object" ref="794196135"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="512703835"/>
-							<reference ref="565028863"/>
 							<reference ref="439833732"/>
+							<reference ref="565028863"/>
+							<reference ref="512703835"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">splashView</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">12</int>
-						<reference key="object" ref="512703835"/>
+						<int key="objectID">44</int>
+						<reference key="object" ref="439833732"/>
 						<reference key="parent" ref="794196135"/>
+						<string key="objectName">splashLabel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">43</int>
@@ -461,10 +462,9 @@
 						<reference key="parent" ref="794196135"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">44</int>
-						<reference key="object" ref="439833732"/>
+						<int key="objectID">12</int>
+						<reference key="object" ref="512703835"/>
 						<reference key="parent" ref="794196135"/>
-						<string key="objectName">splashLabel</string>
 					</object>
 				</object>
 			</object>
@@ -503,7 +503,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>LauncherViewController</string>
 					<string>UIResponder</string>
-					<string>{{70, 131}, {480, 320}}</string>
+					<string>{{58, 609}, {480, 320}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -512,7 +512,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABB4AAAwmQAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABCCAAAwkgAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -525,7 +525,9 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<object class="NSAffineTransform"/>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw5UAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AULiAABDBwAAA</bytes>
@@ -946,17 +948,17 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>bg.png</string>
 				<string>btn_ranks.png</string>
-				<string>btn_settings.png</string>
 				<string>f.png</string>
 				<string>m.png</string>
+				<string>profile.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{480, 300}</string>
 				<string>{64, 48}</string>
-				<string>{63, 48}</string>
 				<string>{208, 188}</string>
 				<string>{209, 188}</string>
+				<string>{61, 46}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">132</string>
