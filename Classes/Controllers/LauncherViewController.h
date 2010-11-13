@@ -7,20 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LoginViewController.h"
 #import "ProfileViewController.h"
 
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LauncherViewController : UIViewController <FacebookLoginDelegate, ProfileDelegate, UIPopoverControllerDelegate> {
+@interface LauncherViewController : UIViewController <ProfileDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;
   IBOutlet UILabel *_splashLabel;
-  
-  LoginViewController *_loginViewController;
-  UIPopoverController *_loginPopoverController;
   
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
@@ -36,9 +32,6 @@
   UIAlertView *_networkErrorAlert;
 }
 
-@property (nonatomic,retain) LoginViewController *loginViewController;
-@property (nonatomic,retain) UIPopoverController *loginPopoverController;
-
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,assign) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic,retain) ASIHTTPRequest *friendsRequest;
@@ -47,11 +40,6 @@
 @property (nonatomic,retain) NSDictionary *currentUser;
 @property (nonatomic,retain) NSArray *friendsArray;
 
-/**
- Initiate a bind/unbind with Facebook for OAuth token
- */
-- (void)bindWithFacebook:(BOOL)animated;
-- (void)unbindWithFacebook;
 
 /**
  Start mashing with gender = male

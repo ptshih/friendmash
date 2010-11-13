@@ -18,7 +18,6 @@
 #import "RemoteRequest.h"
 
 @interface LauncherViewController (Private)
-- (void)fbDidLogout;
 
 - (void)getCurrentUserRequest;
 
@@ -36,8 +35,6 @@
 
 @implementation LauncherViewController
 
-@synthesize loginViewController = _loginViewController;
-@synthesize loginPopoverController = _loginPopoverController;
 @synthesize networkQueue = _networkQueue;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize friendsRequest = _friendsRequest;
@@ -69,11 +66,6 @@
   
 //  self.title = NSLocalizedString(@"facemash", @"facemash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
-  
-  // Check token and authorize
-#ifndef OFFLINE_DEBUG
-  [self bindWithFacebook:YES];
-#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -82,18 +74,8 @@
 }
 
 - (void)displayLauncher {
-#ifdef OFFLINE_DEBUG
   _launcherView.hidden = NO;
   _splashView.hidden = YES;
-#else
-  if([[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    _launcherView.hidden = NO;
-    _splashView.hidden = YES;
-  } else {
-    _launcherView.hidden = YES;
-    _splashView.hidden = NO;
-  }
-#endif
 }
 
 - (IBAction)male {
@@ -144,109 +126,11 @@
   [fvc release];
 }
 
-- (void)showLoginView:(BOOL)animated {
-  if(isDeviceIPad()) {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
-    self.loginViewController.delegate = self;
-    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
-    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
-    self.loginPopoverController.delegate = self;
-    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.view.center.x, 20, 0, 0) inView:self.navigationController.view.window permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-  } else {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
-    self.loginViewController.delegate = self;
-    [self presentModalViewController:self.loginViewController animated:animated];
-  }
-}
-
-- (void)dismissLoginView:(BOOL)animated {
-  if(isDeviceIPad()) {
-    [self.loginPopoverController dismissPopoverAnimated:YES];
-  } else {
-    [self.loginViewController dismissModalViewControllerAnimated:animated];
-  }
-}
-
 #pragma mark SettingsDelegate
 - (void)shouldPerformLogout {
   UIAlertView *logoutAlert = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout of Facebook?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
   [logoutAlert show];
   [logoutAlert autorelease];
-}
-
-#pragma mark UIPopoverControllerDelegate
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
-  return NO;
-}
-
-#pragma mark Facebook Login/Logout
-- (void)bindWithFacebook:(BOOL)animated {
-  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isLoggedIn"]) {
-    [self showLoginView:animated];
-  } else {
-  }
-}
-
-- (void)unbindWithFacebook {
-  // Send the expire session request to FB to force logout
-  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
-  NSString *params = [NSString stringWithFormat:@"access_token=%@",token];
-  NSString *baseURLString = @"https://api.facebook.com/method/auth.expireSession";
-  NSString *logoutURLString = [NSString stringWithFormat:@"%@?%@", baseURLString, params];
-  NSURL *logoutURL = [NSURL URLWithString:logoutURLString];
-  NSMutableURLRequest *logoutRequest = [NSMutableURLRequest requestWithURL:logoutURL];
-  [logoutRequest setHTTPMethod:@"GET"];
-  NSHTTPURLResponse *logoutResponse;
-  [NSURLConnection sendSynchronousRequest:logoutRequest returningResponse:&logoutResponse error:nil];
-  
-  DLog(@"logging out with response code: %d",[logoutResponse statusCode]);
-
-  // Delete facebook cookies
-  NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-  NSArray* facebookCookies = [cookies cookiesForURL:[NSURL URLWithString:@"http://login.facebook.com"]];
-  
-  for (NSHTTPCookie* cookie in facebookCookies) {
-    [cookies deleteCookie:cookie];
-  }
-  [self fbDidLogout];
-}
-
-- (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
-  [self dismissLoginView:NO];
-  // Store the OAuth token
-  DLog(@"Received OAuth access token: %@",token);
-  APP_DELEGATE.fbAccessToken = token;
-  
-  [[NSUserDefaults standardUserDefaults] setObject:APP_DELEGATE.fbAccessToken forKey:@"fbAccessToken"];
-  [[NSUserDefaults standardUserDefaults] setObject:expiration forKey:@"fbAccessTokenExpiration"];
-  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLoggedIn"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasSentFriendsList"]) {
-    [self performSelectorOnMainThread:@selector(displayLauncher) withObject:nil waitUntilDone:YES];
-  } else {
-    [self performSelectorOnMainThread:@selector(getCurrentUserRequest) withObject:nil waitUntilDone:YES];
-  }
-}
-
-- (void)fbDidNotLoginWithError:(NSError *)error {
-  [self dismissLoginView:NO];
-  DLog(@"Login failed with error: %@",error);
-  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Permissions Error" message:@"We need your permission in order for Facemash to work." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-  [permissionsAlert show];
-  [permissionsAlert autorelease];
-}
-
-- (void)fbDidLogout {
-  _splashLabel.text = @"";
-  APP_DELEGATE.fbAccessToken = nil;
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessTokenExpiration"];
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLoggedIn"];
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasSentFriendsList"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  [self bindWithFacebook:YES];
-  [self displayLauncher];
 }
 
 /*
@@ -352,16 +236,8 @@
   if([alertView isEqual:_networkErrorAlert]) {
     [self getCurrentUserRequest];
   } else {
-    switch (buttonIndex) {
-      case 0:
-        [self bindWithFacebook:YES];
-        break;
-      case 1:
-        [self unbindWithFacebook];
-        break;
-      default:
-        break;
-    }
+    // logout
+    [APP_DELEGATE logoutFacebook];
   }
 }
 
@@ -390,8 +266,6 @@
   [_networkQueue release];
   if(_currentUser) [_currentUser release];
   if(_friendsArray) [_friendsArray release];
-  if(_loginViewController) [_loginViewController release];
-  if(_loginPopoverController) [_loginPopoverController release];
   [super dealloc];
 }
 
