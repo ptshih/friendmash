@@ -10,8 +10,13 @@
 #import "LauncherViewController.h"
 #import "LoadingOverlay.h"
 #import "Constants.h"
+#import "ASINetworkQueue.h"
+#import "ASIHTTPRequest.h"
+#import "RemoteRequest.h"
+#import "CJSONDeserializer.h"
 
 @interface FacemashAppDelegate (Private)
+- (void)sendFacebookAccessToken;
 - (void)checkLastExitDate;
 - (void)authenticateWithFacebook:(BOOL)animated;
 - (void)fbDidLogout;
@@ -24,12 +29,184 @@
 @synthesize loginViewController =_loginViewController;
 @synthesize loginPopoverController = _loginPopoverController;
 @synthesize launcherViewController = _launcherViewController;
-@synthesize touchActive = _touchActive;
+@synthesize networkQueue = _networkQueue;
+@synthesize currentUserRequest = _currentUserRequest;
+@synthesize tokenRequest = _tokenRequest;
 @synthesize fbAccessToken = _fbAccessToken;
+@synthesize currentUserId = _currentUserId;
 @synthesize loadingOverlay = _loadingOverlay;
+@synthesize touchActive = _touchActive;
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+// Called when app launches fresh NOT backgrounded
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  _tokenRetryCount = 0;
+  _isShowingLogin = NO;
+  _touchActive = NO; // FaceView state stuff
+  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
+  
+  _networkQueue = [[ASINetworkQueue queue] retain];
+  
+  [[self networkQueue] setDelegate:self];
+  [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
+  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+  
+  // Create login view controller ivar
+  if(isDeviceIPad()) {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
+    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
+    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
+    self.loginPopoverController.delegate = self;
+  } else {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
+  }
+  self.loginViewController.delegate = self;
+  
+  // Create navigation controller
+  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
+  self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
+  
+  // Override point for customization after app launch. 
+  [window addSubview:self.navigationController.view];
+  [window makeKeyAndVisible];
+  
+  // Check last exit so we know if we should auth
+  [self checkLastExitDate];
+
+	return YES;
+}
+
+- (void)checkLastExitDate {
+  self.launcherViewController.launcherView.hidden = YES;
+  self.launcherViewController.splashView.hidden = NO;
+  
+  // Authenticate with Facebook IF it has been more than 24 hours
+  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
+//  lastExitDate = [NSDate dateWithTimeIntervalSince1970:1288501200];
+  
+  if(lastExitDate) {
+    NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
+    DLog(@"time interval: %g", lastExitInterval);
+    
+    // If greater than 24hrs, re-authenticate
+    if(lastExitInterval > 86400) {
+      [self authenticateWithFacebook:YES]; // authenticate
+    } else {
+      // Reuse our token from last time
+      self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
+      self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+      self.launcherViewController.launcherView.hidden = NO;
+      self.launcherViewController.splashView.hidden = YES;
+    }
+  } else { // this is the first time we launched the app, or we just logged off and tried to login again
+    [self authenticateWithFacebook:YES]; // authenticate
+  }
+}
+
+- (void)dismissLoginView:(BOOL)animated {
+  if(isDeviceIPad()) {
+    [self.loginPopoverController dismissPopoverAnimated:YES];
+  } else {
+    [self.loginViewController dismissModalViewControllerAnimated:animated];
+  }
+  _isShowingLogin = NO;
+}
+
+#pragma mark HTTP Requests
+- (void)getCurrentUserRequest {
+  self.currentUserRequest = [RemoteRequest getFacebookRequestForMeWithDelegate:nil];
+  [self.networkQueue addOperation:self.currentUserRequest];
+  [self.networkQueue go];
+}
+
+- (void)sendFacebookAccessToken {
+  // Send the newly acquired FB access token to the facemash server
+  // The facemash server should then use this token to get the user's information and friends list
+  NSString *token = [self.fbAccessToken stringWithPercentEscape];
+  NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FACEMASH_BASE_URL, self.currentUserId];
+  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  [self.networkQueue addOperation:self.tokenRequest];
+  [self.networkQueue go];
+}
+
+
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  NSInteger statusCode = [request responseStatusCode];
+  
+  if([request isEqual:self.currentUserRequest]) {
+    DLog(@"current user request finished");
+    if(statusCode > 200) {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+    } else {
+      NSDictionary *currentUser = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
+      self.currentUserId = [currentUser objectForKey:@"id"];
+      [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      
+      // Fire off the server request to facemash with auth token and userid
+      [self sendFacebookAccessToken];
+      
+      // Remove the splash screen now
+      self.launcherViewController.launcherView.hidden = NO;
+      self.launcherViewController.splashView.hidden = YES;
+    }
+  } else if([request isEqual:self.tokenRequest]) {
+    DLog(@"token request finished");
+    if(statusCode >= 500) {
+      // Retry this request 2 times
+      if(_tokenRetryCount < 2) {
+        _tokenRetryCount++;
+        [self sendFacebookAccessToken];
+      } else {
+        _tokenRetryCount = 0; // epic fail, oh well
+      }
+    }
+  }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+  DLog(@"Request Failed with Error: %@", [request error]);
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
+}
+
+#pragma mark FacebookLoginDelegate
+- (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
+  DLog(@"Received OAuth access token: %@",token);
+  
+  // Set the facebook access token
+  // ignore the expiration since we request non-expiring offline access
+  self.fbAccessToken = token;
+  [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"fbAccessToken"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  // dismiss the login view
+  [self dismissLoginView:YES];
+  
+  // We need to fire off a GET CURRENT USER request to FB GRAPH API
+  [self getCurrentUserRequest];
+}
+
+- (void)fbDidNotLoginWithError:(NSError *)error {
+  [self dismissLoginView:NO];
+  DLog(@"Login failed with error: %@",error);
+  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Facebook failed." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [permissionsAlert show];
+  [permissionsAlert autorelease];
+}
 
 - (void)authenticateWithFacebook:(BOOL)animated {
   if(_isShowingLogin) return;
@@ -75,94 +252,13 @@
   [self authenticateWithFacebook:YES];
 }
 
-
-// Called when app launches fresh NOT backgrounded
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  _isShowingLogin = NO;
-  _touchActive = NO; // FaceView state stuff
-  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
-  
-  // Create login view controller ivar
-  if(isDeviceIPad()) {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
-    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
-    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
-    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
-    self.loginPopoverController.delegate = self;
-  } else {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
-    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
-  }
-  self.loginViewController.delegate = self;
-  
-  // Create navigation controller
-  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
-  self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
-  
-  // Override point for customization after app launch. 
-  [window addSubview:self.navigationController.view];
-  [window makeKeyAndVisible];
-  
-  // Check last exit so we know if we should auth
-  [self checkLastExitDate];
-
-	return YES;
-}
-
-- (void)checkLastExitDate {
-  // Authenticate with Facebook IF it has been more than 24 hours
-  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
-//  lastExitDate = [NSDate dateWithTimeIntervalSince1970:1288501200];
-  
-  if(lastExitDate) {
-    NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
-    DLog(@"time interval: %g", lastExitInterval);
-    
-    // If greater than 24hrs, re-authenticate
-    if(lastExitInterval > 86400) {
-      [self authenticateWithFacebook:YES]; // authenticate
-    } else {
-      // Reuse our token from last time
-      self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
-    }
-  } else { // this is the first time we launched the app, or we just logged off and tried to login again
-    [self authenticateWithFacebook:YES]; // authenticate
-  }
-}
-
-- (void)dismissLoginView:(BOOL)animated {
-  if(isDeviceIPad()) {
-    [self.loginPopoverController dismissPopoverAnimated:YES];
-  } else {
-    [self.loginViewController dismissModalViewControllerAnimated:animated];
-  }
-  _isShowingLogin = NO;
-}
-
-#pragma mark FacebookLoginDelegate
-- (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
-  DLog(@"Received OAuth access token: %@",token);
-  
-  // Set the facebook access token
-  // ignore the expiration since we request non-expiring offline access
-  self.fbAccessToken = token;
-  [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"fbAccessToken"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  [self dismissLoginView:YES];
-}
-
-- (void)fbDidNotLoginWithError:(NSError *)error {
-  [self dismissLoginView:NO];
-  DLog(@"Login failed with error: %@",error);
-  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Facebook failed." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-  [permissionsAlert show];
-  [permissionsAlert autorelease];
-}
-
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  [self authenticateWithFacebook:YES];
+  if([alertView isEqual:_networkErrorAlert]) {
+    [self getCurrentUserRequest];
+  } else {
+    [self authenticateWithFacebook:YES];
+  }
 }
 
 #pragma mark UIPopoverControllerDelegate
@@ -219,10 +315,16 @@
 
 
 - (void)dealloc {
+  if(_tokenRequest) [_tokenRequest release];
+  if(_currentUserRequest) [_currentUserRequest release];
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
+  [_networkQueue release];
   if(_loginViewController) [_loginViewController release];
   if(_loginPopoverController) [_loginPopoverController release];
   [_loadingOverlay release];
   [_fbAccessToken release];
+  [_currentUserId release];
   [_launcherViewController release];
   [_navigationController release];
   [window release];
