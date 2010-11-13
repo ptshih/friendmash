@@ -188,6 +188,19 @@
 }
 
 - (void)unbindWithFacebook {
+  // Send the expire session request to FB to force logout
+  NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
+  NSString *params = [NSString stringWithFormat:@"access_token=%@",token];
+  NSString *baseURLString = @"https://api.facebook.com/method/auth.expireSession";
+  NSString *logoutURLString = [NSString stringWithFormat:@"%@?%@", baseURLString, params];
+  NSURL *logoutURL = [NSURL URLWithString:logoutURLString];
+  NSMutableURLRequest *logoutRequest = [NSMutableURLRequest requestWithURL:logoutURL];
+  [logoutRequest setHTTPMethod:@"GET"];
+  NSHTTPURLResponse *logoutResponse;
+  [NSURLConnection sendSynchronousRequest:logoutRequest returningResponse:&logoutResponse error:nil];
+  
+  DLog(@"logging out with response code: %d",[logoutResponse statusCode]);
+
   // Delete facebook cookies
   NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
   NSArray* facebookCookies = [cookies cookiesForURL:[NSURL URLWithString:@"http://login.facebook.com"]];
