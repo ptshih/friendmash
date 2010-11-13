@@ -283,7 +283,12 @@
 }
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
 #ifndef USE_OFFLINE_MODE
-  if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
+  if(isLeft) {
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
+  } else {
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
+  }
+
 #endif
   [self remash];
 }
