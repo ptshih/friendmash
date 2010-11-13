@@ -147,7 +147,7 @@
   cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
 //  cell.scoreLabel.text = [NSString stringWithFormat:@"Score: %@", [[dictionary objectForKey:@"score"] stringValue]];
-  cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue]];
+  cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@  Score: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue], [[dictionary objectForKey:@"score"] stringValue]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    
