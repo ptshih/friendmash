@@ -19,8 +19,6 @@
 - (NSDictionary*)parseURLParams:(NSString *)query;
 - (void)sendFacebookAccessToken;
 - (void)checkLastExitDate;
-- (void)authenticateWithFacebook:(BOOL)animated;
-- (void)fbDidLogout;
 @end
 
 @implementation FacemashAppDelegate
@@ -119,62 +117,26 @@
   return params;
 }
 
-// Called when app launches fresh NOT backgrounded
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  _tokenRetryCount = 0;
-  _isShowingLogin = NO;
-  _touchActive = NO; // FaceView state stuff
-  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
-  
-  _networkQueue = [[ASINetworkQueue queue] retain];
-  
-  [[self networkQueue] setDelegate:self];
-  [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
-  
-  // Create login view controller ivar
-  if(isDeviceIPad()) {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
-    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
-    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
-    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
-    self.loginPopoverController.delegate = self;
-  } else {
-    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
-    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
-  }
-  self.loginViewController.delegate = self;
-  
-  // Create navigation controller
-  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
-  self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
-  
-  // Override point for customization after app launch. 
-  [window addSubview:self.navigationController.view];
-  [window makeKeyAndVisible];
-  
-  // Check last exit so we know if we should auth
-  [self checkLastExitDate];
-
-	return YES;
-}
-
 - (void)checkLastExitDate {
   self.launcherViewController.launcherView.hidden = YES;
   self.launcherViewController.splashView.hidden = NO;
   
+  // Check if we even have a valid token
+  if(![[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
+    [self authenticateWithFacebook:YES]; // authenticate
+    return;
+  }
+  
   // Authenticate with Facebook IF it has been more than 24 hours
   NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
-//  lastExitDate = [NSDate dateWithTimeIntervalSince1970:1288501200];
   
   if(lastExitDate) {
     NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
     DLog(@"time interval: %g", lastExitInterval);
     
     // If greater than 24hrs, re-authenticate
-    if(lastExitInterval > 1) {
+    // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID
+    if(lastExitInterval > INT_MAX) {
       [self authenticateWithFacebook:YES]; // authenticate
     } else {
       // Reuse our token from last time
@@ -288,7 +250,10 @@
 }
 
 - (void)authenticateWithFacebook:(BOOL)animated {
-  if(_isShowingLogin) return;
+  if(_isShowingLogin) {
+    [self.loginViewController showLogin];
+    return;
+  }
   
   if(isDeviceIPad()) {    
     [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.x, 20, 0, 0) inView:self.window permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
@@ -339,7 +304,7 @@
   if([alertView isEqual:_networkErrorAlert]) {
     [self getCurrentUserRequest];
   } else {
-    [self authenticateWithFacebook:YES];
+//    [self authenticateWithFacebook:YES];
   }
 }
 
@@ -349,14 +314,56 @@
 }
 
 #pragma mark Application resume/suspend/exit stuff
+// Called when app launches fresh NOT backgrounded
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  _tokenRetryCount = 0;
+  _isShowingLogin = NO;
+  _touchActive = NO; // FaceView state stuff
+  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
+  
+  _networkQueue = [[ASINetworkQueue queue] retain];
+  
+  [[self networkQueue] setDelegate:self];
+  [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
+  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+  
+  // Create login view controller ivar
+  if(isDeviceIPad()) {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
+    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
+    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
+    self.loginPopoverController.delegate = self;
+  } else {
+    _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
+    _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
+  }
+  self.loginViewController.delegate = self;
+  
+  // Create navigation controller
+  _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
+  self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
+  
+  // Override point for customization after app launch. 
+  [window addSubview:self.navigationController.view];
+  [window makeKeyAndVisible];
+  
+  // Check last exit so we know if we should auth
+  // Moved to becomeActive
+  // [self checkLastExitDate];
+  
+	return YES;
+}
+
 // iOS4 ONLY, resuming from background
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  [self checkLastExitDate];
 }
 
 // Coming back from a locked phone or call
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  
+  [self checkLastExitDate];
 }
 
 // Someone received a call or hit the lock button

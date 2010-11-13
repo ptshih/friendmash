@@ -48,7 +48,9 @@
 @property (nonatomic, retain) LoadingOverlay *loadingOverlay;
 @property (nonatomic, assign) BOOL touchActive;
 
+- (void)authenticateWithFacebook:(BOOL)animated;
 - (void)logoutFacebook;
+- (void)fbDidLogout;
 - (void)showLoadingOverlay;
 - (void)hideLoadingOverlay;
   

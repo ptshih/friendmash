@@ -13,6 +13,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define IPAD_FRAME_WIDTH 1024.0
@@ -101,13 +102,17 @@
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
-    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-    [networkErrorAlert show];
-    [networkErrorAlert autorelease];
-    return;
+    if(statusCode == 400) {
+      NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
+      [self.delegate faceViewDidFailWithError:errorDict];
+    } else {
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
+    }
+  } else {
+    [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
   }
-  
-  [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -121,12 +126,8 @@
 
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      [self getPictureForFacebookId:_facebookId];
-      break;
-    default:
-      break;
+  if([alertView isEqual:_networkErrorAlert]) {
+    [self getPictureForFacebookId:_facebookId];
   }
 }
 

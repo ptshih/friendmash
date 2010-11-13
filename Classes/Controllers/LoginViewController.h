@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSURL *authorizeURL;
 @property (nonatomic, assign) id <FacebookLoginDelegate> delegate;
 
+- (void)showLogin;
 - (void)authorizeWithFBAppAuth:(BOOL)tryFBAppAuth safariAuth:(BOOL)trySafariAuth;;
 
 @end

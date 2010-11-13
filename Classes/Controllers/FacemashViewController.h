@@ -43,6 +43,9 @@ typedef enum {
   
   UIAlertView *_noContentAlert;
   UIAlertView *_networkErrorAlert;
+  UIAlertView *_oauthErrorAlert;
+  
+  BOOL _faceViewDidError;
 }
 
 @property (nonatomic,assign) FaceView *leftView;

@@ -40,11 +40,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  [self showLogin];
+}
+
+- (void)showLogin {
   _splashLabel.text = NSLocalizedString(@"authenticating with facebook", @"authenticating with facebook");
   UIAlertView *fbAlertView = [[UIAlertView alloc] initWithTitle:@"Single Sign-On" message:@"Use Facebook Single Sign-On?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", @"No", nil];
-  [fbAlertView autorelease];
   [fbAlertView show];
-  
+  [fbAlertView autorelease];  
 }
 
 #pragma mark UIAlertViewDelegate
@@ -184,8 +187,7 @@
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
-  else return NO;
+  return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 - (void)didReceiveMemoryWarning {

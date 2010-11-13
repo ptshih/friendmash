@@ -24,6 +24,7 @@
 @protocol FaceViewDelegate <NSObject>
 @optional
 - (void)faceViewDidFinishLoading:(BOOL)isLeft;
+- (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft;
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft;
 @end
@@ -54,6 +55,8 @@ typedef enum {
   
   ASINetworkQueue *_networkQueue;
   NSUInteger _retryCount;
+  
+  UIAlertView *_networkErrorAlert;
 }
 
 @property (nonatomic, assign) FacemashViewController *facemashViewController;

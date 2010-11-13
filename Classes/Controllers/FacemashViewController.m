@@ -68,9 +68,10 @@
     _gender = @"male"; // male by default
     _gameMode = FacemashGameModeNormal; // ALL game mode by default
     _isLeftLoaded = NO;
-    _isRightLoaded = NO;;
+    _isRightLoaded = NO;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
     _networkQueue = [[ASINetworkQueue queue] retain];
+    _faceViewDidError = NO;
     
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
@@ -278,6 +279,14 @@
   if(_isLeftLoaded && _isRightLoaded) _remashButton.enabled = YES;
 }
 
+- (void)faceViewDidFailWithError:(NSDictionary *)errorDict {
+  if(_faceViewDidError) return;
+  _faceViewDidError = YES;
+  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:[errorDict objectForKey:@"type"] message:[errorDict objectForKey:@"message"] delegate:self cancelButtonTitle:@"Login to Facebook" otherButtonTitles:nil];
+  [_oauthErrorAlert show];
+  [_oauthErrorAlert autorelease];
+}
+
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
 
 }
@@ -370,9 +379,9 @@
     DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
     // protect against null IDs from failed server call
     if(!self.leftUserId || !self.rightUserId) {
-      UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-      [networkErrorAlert show];
-      [networkErrorAlert autorelease];
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_networkErrorAlert show];
+      [_networkErrorAlert autorelease];
     } else {
       [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
     }
@@ -383,9 +392,9 @@
 {
   DLog(@"Request Failed with Error: %@", [request error]);
 
-  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-  [networkErrorAlert show];
-  [networkErrorAlert autorelease];
+  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+  [_networkErrorAlert show];
+  [_networkErrorAlert autorelease];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -394,23 +403,20 @@
 
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      if([alertView isEqual:_networkErrorAlert]) {
-        [self sendMashRequestForBothFaceViewsWithDelegate:self];
-      } else if([alertView isEqual:_noContentAlert]) {
-        [self.navigationController popViewControllerAnimated:YES];
-      }
-      break;
-    default:
-      break;
+  if([alertView isEqual:_networkErrorAlert]) {
+    [self sendMashRequestForBothFaceViewsWithDelegate:self];
+  } else if([alertView isEqual:_noContentAlert]) {
+    [self.navigationController popViewControllerAnimated:YES];
+  } else if([alertView isEqual:_oauthErrorAlert]) {
+    _faceViewDidError = NO;
+//    [APP_DELEGATE authenticateWithFacebook:YES];
+    [APP_DELEGATE fbDidLogout];
   }
 }
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
-  else return NO;
+  return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 - (void)didReceiveMemoryWarning {
