@@ -35,8 +35,8 @@
 
 #define FB_APP_ID @"147806651932979"
 #define FB_APP_SECRET @"587e59801ee014c9fdea54ad17e626c6"
-#define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_birthday",@"friends_birthday",@"user_location",@"friends_location",@"user_hometown",@"friends_hometown",@"user_photos",@"friends_photos",@"user_relationships",@"friends_relationships",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
-#define FB_PARAMS @"id,first_name,last_name,name,email,gender,birthday,relationship_status,location,hometown,education,work"
+#define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_photos",@"friends_photos",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
+#define FB_PARAMS @"id,first_name,last_name,name,gender,education,work,locale"
 #define FB_AUTHORIZE_URL @"https://www.facebook.com/dialog/oauth"
 
 // Unused, FB doesn't seem to return these
