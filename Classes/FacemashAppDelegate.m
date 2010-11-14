@@ -244,9 +244,9 @@
 - (void)fbDidNotLoginWithError:(NSError *)error {
   [self dismissLoginView:NO];
   DLog(@"Login failed with error: %@",error);
-  UIAlertView *permissionsAlert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Facebook failed." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-  [permissionsAlert show];
-  [permissionsAlert autorelease];
+  _loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Facebook failed." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [_loginFailedAlert show];
+  [_loginFailedAlert autorelease];
 }
 
 #pragma mark Authentication Display
@@ -305,8 +305,8 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if([alertView isEqual:_networkErrorAlert]) {
     [self getCurrentUserRequest];
-  } else {
-//    [self authenticateWithFacebook:YES];
+  } else if([alertView isEqual:_loginFailedAlert]) {
+    [self authenticateWithFacebook:NO];
   }
 }
 

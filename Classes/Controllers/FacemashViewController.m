@@ -338,7 +338,7 @@
       [_noContentAlert show];
       [_noContentAlert autorelease];
     } else {
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     }
@@ -379,7 +379,7 @@
     DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
     // protect against null IDs from failed server call
     if(!self.leftUserId || !self.rightUserId) {
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     } else {
@@ -392,7 +392,7 @@
 {
   DLog(@"Request Failed with Error: %@", [request error]);
 
-  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [_networkErrorAlert show];
   [_networkErrorAlert autorelease];
 }
@@ -404,7 +404,15 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if([alertView isEqual:_networkErrorAlert]) {
-    [self sendMashRequestForBothFaceViewsWithDelegate:self];
+    switch (buttonIndex) {
+      case 0:
+        break;
+      case 1:
+        [self sendMashRequestForBothFaceViewsWithDelegate:self];
+        break;
+      default:
+        break;
+    }
   } else if([alertView isEqual:_noContentAlert]) {
     [self.navigationController popViewControllerAnimated:YES];
   } else if([alertView isEqual:_oauthErrorAlert]) {

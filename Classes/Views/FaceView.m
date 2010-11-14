@@ -106,7 +106,7 @@
       NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
       [self.delegate faceViewDidFailWithError:errorDict];
     } else {
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     }
@@ -127,7 +127,15 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if([alertView isEqual:_networkErrorAlert]) {
-    [self getPictureForFacebookId:_facebookId];
+    switch (buttonIndex) {
+      case 0:
+        break;
+      case 1:
+        [self getPictureForFacebookId:_facebookId];
+        break;
+      default:
+        break;
+    }
   }
 }
 

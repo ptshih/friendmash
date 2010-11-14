@@ -21,15 +21,14 @@
 @synthesize authorizeURL = _authorizeURL;
 @synthesize delegate;
 
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
+// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
+    _alertIsVisible = NO;
   }
   return self;
 }
-*/
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -46,12 +45,14 @@
 }
 
 - (void)showLogin {
+  if(_alertIsVisible) return;
   _splashLabel.text = NSLocalizedString(@"authenticating with facebook", @"authenticating with facebook");
   UIDevice *device = [UIDevice currentDevice];
   if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
     UIAlertView *fbAlertView = [[UIAlertView alloc] initWithTitle:@"Single Sign-On" message:@"Use Facebook Single Sign-On?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", @"No", nil];
     [fbAlertView show];
     [fbAlertView autorelease];
+    _alertIsVisible = YES;
   } else {
     [self authorizeWithFBAppAuth:NO safariAuth:NO];
   }
@@ -69,6 +70,7 @@
     default:
       break;
   }
+  _alertIsVisible = NO;
 }
 
 #pragma mark OAuth / FBConnect

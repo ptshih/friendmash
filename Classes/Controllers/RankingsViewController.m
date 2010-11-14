@@ -91,14 +91,13 @@
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
-    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
-    return;
+  } else {  
+    self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+    [_tableView reloadData];
   }
-  
-  self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-  [_tableView reloadData];
   [APP_DELEGATE hideLoadingOverlay];
   DLog(@"rankings request finished successfully");
 }
@@ -106,9 +105,10 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request Failed with Error: %@", [request error]);
-  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
+  [APP_DELEGATE hideLoadingOverlay];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -119,6 +119,8 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
+      break;
+    case 1:
       [self getTopRankings];
       break;
     default:

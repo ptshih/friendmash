@@ -32,6 +32,7 @@
   BOOL _isShowingLogin;
   
   UIAlertView *_networkErrorAlert;
+  UIAlertView *_loginFailedAlert;
   NSInteger _tokenRetryCount;
 }
 

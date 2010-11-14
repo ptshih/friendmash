@@ -20,6 +20,7 @@
   IBOutlet UILabel *_splashLabel;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> delegate;
+  BOOL _alertIsVisible;
 }
 
 @property (nonatomic, retain) NSURL *authorizeURL;
