@@ -105,7 +105,16 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   // logout
-  [APP_DELEGATE logoutFacebook];
+  switch (buttonIndex) {
+    case 0:
+      break;
+    case 1:
+      [APP_DELEGATE logoutFacebook];
+      break;
+    default:
+      break;
+  }
+  
 }
 
 #pragma mark Memory Management
