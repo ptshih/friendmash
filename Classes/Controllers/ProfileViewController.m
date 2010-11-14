@@ -144,7 +144,7 @@
       headerLabel.text = [[self.profileDict objectForKey:@"full_name"] notNil] ? [NSString stringWithFormat:@"%@'s Achievements",[self.profileDict objectForKey:@"full_name"]] : @"My Achievements";
       break;
     case 1:
-      headerLabel.text = @"Facemash Statistics";
+      headerLabel.text = [[self.profileDict objectForKey:@"full_name"] notNil] ? [NSString stringWithFormat:@"%@'s Statistics",[self.profileDict objectForKey:@"full_name"]] : @"My Statistics";
       break;
     default:
       break;
