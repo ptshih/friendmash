@@ -35,7 +35,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
-
+  if(isDeviceIPad()) {
+    // Disable the indicator
+  }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,6 +99,7 @@
   // If single sign-on failed, open an inline login dialog. This will require the user to
   // enter his or her credentials.
   if (!didOpenOtherApp) {
+    _splashView.hidden = NO;
     self.authorizeURL = [NSURL URLWithString:[RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params]];
     NSMutableURLRequest *authorizeRequest = [NSMutableURLRequest requestWithURL:self.authorizeURL];
     [_fbWebView loadRequest:authorizeRequest];

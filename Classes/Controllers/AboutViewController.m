@@ -19,12 +19,114 @@
   return self;
 }
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-  [super viewDidLoad];
+  // Display logout button if this is current user's profile
+  
+  UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
+  _navBarItem.rightBarButtonItem = doneButton;
+  _tableView.backgroundView = nil;
+  _tableView.backgroundColor = [UIColor clearColor];
 }
-*/
+
+- (void)done {
+  [self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 44.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  return 44.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+  return 0.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+  UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)] autorelease];
+  headerView.backgroundColor = [UIColor clearColor];
+  
+  UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 460, 44)];
+  headerLabel.backgroundColor = [UIColor clearColor];
+  
+  switch (section) {
+    case 0:
+      headerLabel.text = @"How to Play Facemash";
+      break;
+    case 1:
+      headerLabel.text = @"About Facemash";
+      break;
+    default:
+      break;
+  }
+  
+  headerLabel.textColor = [UIColor whiteColor];
+  headerLabel.font = [UIFont boldSystemFontOfSize:18.0];
+  headerLabel.shadowColor = [UIColor darkGrayColor];
+  headerLabel.shadowOffset = CGSizeMake(1, 1);
+  [headerView addSubview:headerLabel];
+  [headerLabel release];
+  
+  return headerView;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  return;
+  
+  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark UITableViewDataSource
+//- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+//  return @"Here is the footer";
+//}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  switch (section) {
+    case 0: // how to play
+      return 1;
+      break;
+    case 1: // about
+      return 1;
+      break;
+    default:
+      return 0;
+      break;
+  }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  UITableViewCell *cell = nil;
+  switch (indexPath.section) {
+    case 0:
+      cell = [tableView dequeueReusableCellWithIdentifier:@"HowToCell"];
+      if(cell == nil) { 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HowToCell"] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      }
+      cell.textLabel.text = @"This is how to play, ASSHOLE!";
+      break;
+    case 1:
+      cell = [tableView dequeueReusableCellWithIdentifier:@"AboutCell"];
+      if(cell == nil) { 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AboutCell"] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      }
+      cell.textLabel.text = @"We made this because we are awesome!";
+      break;
+    default:
+      break;
+  }
+  
+  return cell;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   return UIInterfaceOrientationIsLandscape(interfaceOrientation);

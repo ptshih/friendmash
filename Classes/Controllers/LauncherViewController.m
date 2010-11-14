@@ -10,6 +10,7 @@
 #import "FacemashViewController.h"
 #import "ProfileViewController.h"
 #import "RankingsViewController.h"
+#import "AboutViewController.h"
 #import "Constants.h"
 
 @interface LauncherViewController (Private)
@@ -52,6 +53,18 @@
 }
 - (IBAction)female {
   [self launchFacemashWithGender:@"female"];
+}
+
+- (IBAction)about {
+  AboutViewController *avc;
+  if(isDeviceIPad()) {
+    avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController_iPad" bundle:nil];
+    avc.modalPresentationStyle = UIModalPresentationFormSheet;
+  } else {
+    avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController_iPhone" bundle:nil];
+  }
+  [self presentModalViewController:avc animated:YES];
+  [avc release]; 
 }
 
 - (IBAction)profile {

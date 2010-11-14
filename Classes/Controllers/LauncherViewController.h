@@ -35,4 +35,6 @@
 
 - (IBAction)rankings;
 
+- (IBAction)about;
+
 @end

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AboutViewController : UIViewController {
-
+@interface AboutViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+  IBOutlet UINavigationItem *_navBarItem;
+  IBOutlet UITableView *_tableView;
 }
 
 @end

@@ -54,6 +54,7 @@
   
   UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
   _navBarItem.rightBarButtonItem = doneButton;  
+  _tableView.backgroundView = nil;
   _tableView.backgroundColor = [UIColor clearColor];
   [self getProfileForCurrentUser];
 }
@@ -271,11 +272,11 @@
           break;
         case 1:
           cell.textLabel.text = @"Ranking Overall";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"rank"] integerValue]] : nil;
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 2:
           cell.textLabel.text = @"Ranking within Social Network";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"rank_network"] integerValue]] : nil;
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 3:
           cell.textLabel.text = @"Likes Received";

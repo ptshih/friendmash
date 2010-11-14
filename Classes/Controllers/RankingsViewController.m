@@ -47,6 +47,27 @@
 
 - (void)viewDidLoad {
   // Call initial rankings
+  // Read from userdefaults for sticky tab
+  if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {
+    self.selectedGender = [[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {
+      _selectedMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"rankingsStickyMode"];
+      if(_selectedMode == 0) {
+        if([self.selectedGender isEqualToString:@"male"]) {
+          [_segmentedControl setSelectedSegmentIndex:0];
+        } else {
+          [_segmentedControl setSelectedSegmentIndex:1];
+        }
+      } else {
+        if([self.selectedGender isEqualToString:@"male"]) {
+          [_segmentedControl setSelectedSegmentIndex:2];
+        } else {
+          [_segmentedControl setSelectedSegmentIndex:3];
+        }
+      }
+    }
+  }
+  
   [self getTopRankings];
 }
 
@@ -130,6 +151,10 @@
       _selectedMode = 0;
       break;
   }
+  [[NSUserDefaults standardUserDefaults] setObject:self.selectedGender forKey:@"rankingsStickyGender"];
+  [[NSUserDefaults standardUserDefaults] setInteger:_selectedMode forKey:@"rankingsStickyMode"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
   [self getTopRankings];
 }
 

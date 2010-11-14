@@ -98,6 +98,7 @@
 		25B94890128F730600016322 /* bg_portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9488F128F730600016322 /* bg_portrait.png */; };
 		25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B94A03128FA4DC00016322 /* AboutViewController.m */; };
 		25B94A0B128FA5AE00016322 /* AboutViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25B94A0A128FA5AE00016322 /* AboutViewController_iPhone.xib */; };
+		25B94AEC128FE57300016322 /* AboutViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */; };
 		25BDF0C6128A3A60004F046A /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25BDF0C3128A3A60004F046A /* ASIDataCompressor.m */; };
 		25BDF0C7128A3A60004F046A /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25BDF0C5128A3A60004F046A /* ASIDataDecompressor.m */; };
 		25BDF1F0128A4603004F046A /* table_cell_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 25BDF1EF128A4603004F046A /* table_cell_bg.png */; };
@@ -249,6 +250,7 @@
 		25B94A02128FA4DC00016322 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		25B94A03128FA4DC00016322 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		25B94A0A128FA5AE00016322 /* AboutViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController_iPhone.xib; sourceTree = "<group>"; };
+		25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController_iPad.xib; sourceTree = "<group>"; };
 		25BDF0C2128A3A60004F046A /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
 		25BDF0C3128A3A60004F046A /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
 		25BDF0C4128A3A60004F046A /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
@@ -603,6 +605,7 @@
 				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
 				255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */,
 				25B94A0A128FA5AE00016322 /* AboutViewController_iPhone.xib */,
+				25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */,
 				255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */,
 			);
 			path = Controllers;
@@ -781,6 +784,7 @@
 				25B9488E128F72FB00016322 /* bg_portrait@2x.png in Resources */,
 				25B94890128F730600016322 /* bg_portrait.png in Resources */,
 				25B94A0B128FA5AE00016322 /* AboutViewController_iPhone.xib in Resources */,
+				25B94AEC128FE57300016322 /* AboutViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
