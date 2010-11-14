@@ -154,7 +154,7 @@
   if(isDeviceIPad()) {
     [self.loginPopoverController dismissPopoverAnimated:YES];
   } else {
-    [self.loginViewController dismissModalViewControllerAnimated:animated];
+    [self.loginViewController dismissModalViewControllerAnimated:NO];
   }
   _isShowingLogin = NO;
 }
@@ -249,14 +249,15 @@
   [permissionsAlert autorelease];
 }
 
+#pragma mark Authentication Display
 - (void)authenticateWithFacebook:(BOOL)animated {
   if(_isShowingLogin) {
     [self.loginViewController showLogin];
     return;
   }
   
-  if(isDeviceIPad()) {    
-    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.x, 20, 0, 0) inView:self.window permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+  if(isDeviceIPad()) {
+    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.y, 20, 0, 0) inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
   } else {
     
     [self.navigationController presentModalViewController:self.loginViewController animated:animated];

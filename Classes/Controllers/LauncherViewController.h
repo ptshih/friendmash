@@ -13,7 +13,6 @@
   IBOutlet UIView *_launcherView;
   IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;
-  IBOutlet UILabel *_splashLabel;
 }
 
 @property (nonatomic, assign) UIView *launcherView;
