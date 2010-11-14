@@ -141,7 +141,7 @@
   
   switch (section) {
     case 0:
-      headerLabel.text = @"My Achievements";
+      headerLabel.text = [[self.profileDict objectForKey:@"full_name"] notNil] ? [NSString stringWithFormat:@"%@'s Achievements",[self.profileDict objectForKey:@"full_name"]] : @"My Achievements";
       break;
     case 1:
       headerLabel.text = @"Facemash Statistics";
@@ -276,7 +276,7 @@
           break;
         case 2:
           cell.textLabel.text = @"Ranking within Social Network";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 3:
           cell.textLabel.text = @"Likes Received";
