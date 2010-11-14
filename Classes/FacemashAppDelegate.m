@@ -266,6 +266,7 @@
 }
 
 - (void)logoutFacebook {
+#ifdef FB_EXPIRE_TOKEN
   // Send the expire session request to FB to force logout
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@",token];
@@ -276,11 +277,11 @@
   [logoutRequest setHTTPMethod:@"GET"];
   NSHTTPURLResponse *logoutResponse;
   [NSURLConnection sendSynchronousRequest:logoutRequest returningResponse:&logoutResponse error:nil];
+  DLog(@"logging out with response code: %d",[logoutResponse statusCode]);
+#endif
   
   // NOTE
   // It might be a good idea to send a request to FM servers to expire/delete this access_token
-  
-  DLog(@"logging out with response code: %d",[logoutResponse statusCode]);
   
   // Delete facebook cookies
   NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];

@@ -39,6 +39,8 @@
 #define FB_PARAMS @"id,first_name,last_name,name,gender,education,work,locale"
 #define FB_AUTHORIZE_URL @"https://www.facebook.com/dialog/oauth"
 
+// #define FB_EXPIRE_TOKEN // if defined, will send a request to FB to expire a user's token
+
 // Unused, FB doesn't seem to return these
 // interested_in
 // meeting_for

@@ -9,6 +9,7 @@
 #import "ImageCache.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
+#import "CJSONDeserializer.h"
 #import "Constants.h"
 
 @implementation ImageCache
@@ -60,15 +61,25 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   // This is on the main thread
   
-  if([[self.pendingRequests allKeysForObject:request] count] > 0) {
-    NSIndexPath *indexPath = [[self.pendingRequests allKeysForObject:request] objectAtIndex:0];
-    [self.pendingRequests removeObjectForKey:indexPath];
-    [self.imageCache setObject:[UIImage imageWithData:[request responseData]] forKey:indexPath];
-    if([delegate respondsToSelector:@selector(imageDidLoad:)]) {
-      [delegate imageDidLoad:indexPath];
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200) {
+    if(statusCode == 400) {
+      // FB TOKEN EXPIRED!!!
+      // NOTE: We should technically tell the user to login again, code not complete here
+      // NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
+      // oauth token expired
+    }
+  } else {
+    if([[self.pendingRequests allKeysForObject:request] count] > 0) {
+      NSIndexPath *indexPath = [[self.pendingRequests allKeysForObject:request] objectAtIndex:0];
+      [self.pendingRequests removeObjectForKey:indexPath];
+      [self.imageCache setObject:[UIImage imageWithData:[request responseData]] forKey:indexPath];
+      if([delegate respondsToSelector:@selector(imageDidLoad:)]) {
+        [delegate imageDidLoad:indexPath];
+      }
     }
   }
-
+  
   DLog(@"Request finished successfully");
 }
 
