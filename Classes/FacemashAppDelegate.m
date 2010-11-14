@@ -123,7 +123,7 @@
   
   // Check if we even have a valid token
   if(![[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
-    [self authenticateWithFacebook:YES]; // authenticate
+    [self authenticateWithFacebook:NO]; // authenticate
     return;
   }
   
@@ -137,7 +137,7 @@
     // If greater than 24hrs, re-authenticate
     // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID
     if(lastExitInterval > INT_MAX) {
-      [self authenticateWithFacebook:YES]; // authenticate
+      [self authenticateWithFacebook:NO]; // authenticate
     } else {
       // Reuse our token from last time
       self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
@@ -146,7 +146,7 @@
       self.launcherViewController.splashView.hidden = YES;
     }
   } else { // this is the first time we launched the app, or we just logged off and tried to login again
-    [self authenticateWithFacebook:YES]; // authenticate
+    [self authenticateWithFacebook:NO]; // authenticate
   }
 }
 
@@ -257,7 +257,7 @@
   }
   
   if(isDeviceIPad()) {
-    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.y, 20, 0, 0) inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.y, 20, 0, 0) inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
   } else {
     
     [self.navigationController presentModalViewController:self.loginViewController animated:animated];
@@ -297,7 +297,7 @@
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  [self authenticateWithFacebook:YES];
+  [self authenticateWithFacebook:NO];
 }
 
 #pragma mark UIAlertViewDelegate
