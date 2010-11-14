@@ -24,7 +24,9 @@
   
   UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
   _navBarItem.rightBarButtonItem = doneButton;
-  _tableView.backgroundView = nil;
+  if ([_tableView respondsToSelector:@selector(backgroundView)]) {
+    _tableView.backgroundView = nil;
+  }
   _tableView.backgroundColor = [UIColor clearColor];
 }
 

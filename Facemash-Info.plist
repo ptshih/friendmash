@@ -14,10 +14,12 @@
 	<array>
 		<string>Icon</string>
 	</array>
+	<key>UIPrerenderedIcon</key>
+	<false/>
 	<key>UILaunchImageFile</key>
-	<string>bg_portrait.png</string>
+	<string>Default</string>
 	<key>UILaunchImageFile~ipad</key>
-	<string>Default~iPad.png</string>
+	<string>Default~iPad</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sevenminuteapps.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

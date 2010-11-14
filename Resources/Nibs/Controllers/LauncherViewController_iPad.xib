@@ -49,7 +49,7 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage" id="638237398">
+						<object class="NSCustomResource" key="IBUIImage" id="377335297">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">bg_iPad.png</string>
 						</object>
@@ -231,7 +231,7 @@
 								<reference key="NSSuperview" ref="483290115"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<reference key="IBUIImage" ref="638237398"/>
+								<reference key="IBUIImage" ref="377335297"/>
 							</object>
 							<object class="IBUIActivityIndicatorView" id="1034702177">
 								<reference key="NSNextResponder" ref="483290115"/>

@@ -68,7 +68,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">bg_portrait.png</string>
+									<string key="NSResourceName">Default.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="294016982">
@@ -607,7 +607,7 @@
 		<string key="IBDocument.LastKnownRelativeProjectPath">../../../Facemash.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">bg_portrait.png</string>
+			<string key="NS.key.0">Default.png</string>
 			<string key="NS.object.0">{320, 460}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">132</string>

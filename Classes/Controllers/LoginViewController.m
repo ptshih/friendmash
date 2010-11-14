@@ -47,9 +47,14 @@
 
 - (void)showLogin {
   _splashLabel.text = NSLocalizedString(@"authenticating with facebook", @"authenticating with facebook");
-  UIAlertView *fbAlertView = [[UIAlertView alloc] initWithTitle:@"Single Sign-On" message:@"Use Facebook Single Sign-On?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", @"No", nil];
-  [fbAlertView show];
-  [fbAlertView autorelease];  
+  UIDevice *device = [UIDevice currentDevice];
+  if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
+    UIAlertView *fbAlertView = [[UIAlertView alloc] initWithTitle:@"Single Sign-On" message:@"Use Facebook Single Sign-On?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", @"No", nil];
+    [fbAlertView show];
+    [fbAlertView autorelease];
+  } else {
+    [self authorizeWithFBAppAuth:NO safariAuth:NO];
+  }
 }
 
 #pragma mark UIAlertViewDelegate

@@ -108,9 +108,9 @@
   CGSize nameSize = [self.nameLabel.text sizeWithFont:self.nameLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
   self.nameLabel.height = nameSize.height;
   self.nameLabel.width = nameSize.width;
-  leftTop += self.nameLabel.width + 10;
-  textWidthTop -= self.nameLabel.width + 10;
-  textSizeTop = CGSizeMake(textWidthTop, INT_MAX);
+//  leftTop += self.nameLabel.width + 10;
+//  textWidthTop -= self.nameLabel.width + 10;
+//  textSizeTop = CGSizeMake(textWidthTop, INT_MAX);
   
 //  CGSize rankSize = [self.rankLabel.text sizeWithFont:self.rankLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
 //  self.rankLabel.height = rankSize.height;
@@ -122,9 +122,9 @@
   CGSize winLossSize = [self.winLossLabel.text sizeWithFont:self.winLossLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
   self.winLossLabel.height = winLossSize.height;
   self.winLossLabel.width = winLossSize.width;
-  leftBot += self.winLossLabel.width + 10;
-  textWidthBot -= self.nameLabel.width + 10;
-  textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
+//  leftBot += self.winLossLabel.width + 10;
+//  textWidthBot -= self.nameLabel.width + 10;
+//  textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
 //  CGSize scoreSize = [self.scoreLabel.text sizeWithFont:self.scoreLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
 //  self.scoreLabel.height = scoreSize.height;
