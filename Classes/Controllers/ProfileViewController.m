@@ -13,6 +13,8 @@
 #import "ASINetworkQueue.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
+#import "NSString+ConvenienceMethods.h"
+#import "NSObject+ConvenienceMethods.h"
 
 @interface ProfileViewController (Private)
 - (void)getProfileForCurrentUser;
@@ -86,10 +88,11 @@
     return;
   }
   
-  self.profileDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
-
+  self.profileDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"user"];
+  
   [_tableView reloadData];
   DLog(@"rankings request finished successfully");
+  DLog(@"profile dict: %@", self.profileDict);
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -124,37 +127,89 @@
   return 44.0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+  return 0.0;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
   UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)] autorelease];
   headerView.backgroundColor = [UIColor clearColor];
   
   UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 460, 44)];
   headerLabel.backgroundColor = [UIColor clearColor];
-  headerLabel.text = @"Header";
+  
+  switch (section) {
+    case 0:
+      headerLabel.text = @"My Achievements";
+      break;
+    case 1:
+      headerLabel.text = @"Facemash Statistics";
+      break;
+    default:
+      break;
+  }
+  
   headerLabel.textColor = [UIColor whiteColor];
   headerLabel.font = [UIFont boldSystemFontOfSize:18.0];
-  headerLabel.shadowColor = [UIColor blackColor];
-  headerLabel.shadowOffset = CGSizeMake(-1, -1);
+  headerLabel.shadowColor = [UIColor darkGrayColor];
+  headerLabel.shadowOffset = CGSizeMake(1, 1);
   [headerView addSubview:headerLabel];
   [headerLabel release];
   
   return headerView;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-  return 22.0;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  return;
+  
+//  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if(indexPath.section == 0) return;
-  
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (NSString *)getRankForVotes:(NSInteger)votes {
+  // Calculate Rank Label based on number of votes
+  if(votes < 10) {
+    return @"Scout";
+  } else if(votes < 50) {
+    return @"Grunt";
+  } else if(votes < 100) {
+    return @"Sergeant";
+  } else if(votes < 150) {
+    return @"Knight";
+  } else if(votes < 250) {
+    return @"Legionnaire";
+  } else if(votes < 350) {
+    return @"Centurion";
+  } else if(votes < 500) {
+    return @"Champion";
+  } else if(votes < 650) {
+    return @"Commander";
+  } else if(votes < 800) {
+    return @"General";
+  } else if(votes < 1000) {
+    return @"Warlord";
+  } else {
+    return @"High Warlord";
+  }
+}
+
+- (NSString *)getTitleForScore:(NSInteger)score {
+  if(score < 1600) {
+    return @"Challenger";
+  } else if(score < 1800) {
+    return @"Rival";
+  } else if(score < 2000) {
+    return @"Duelist";
+  } else if(score < 2200) {
+    return @"Gladiator";
+  } else {
+    return @"Vanquisher";
+  }
 }
 
 #pragma mark UITableViewDataSource
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-  return @"Here is the footer";
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+//  return @"Here is the footer";
+//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return 2;
@@ -162,11 +217,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   switch (section) {
-    case 0:
+    case 0: // user profile
       return 3;
       break;
-    case 1:
-      return 1;
+    case 1: // stats
+      return 7;
       break;
     default:
       return 0;
@@ -185,18 +240,58 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SettingsCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
       }
-      cell.textLabel.text = @"test";
-      cell.detailTextLabel.text = @"value";
+      switch (indexPath.row) {
+        case 0:
+          cell.textLabel.text = @"Facemash Rank";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
+          break;
+        case 1:
+          cell.textLabel.text = @"Number of Mashes";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [[self.profileDict objectForKey:@"votes"] stringValue] : nil;
+          break;
+        case 2:
+          cell.textLabel.text = @"Number of Mashes within Social Network";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes_network"] notNil] ? [[self.profileDict objectForKey:@"votes_network"] stringValue] : nil;
+          break;
+        default:
+          break;
+      }
+      
       break;
     case 1:
       cell = [tableView dequeueReusableCellWithIdentifier:@"BottomCell"];
       if(cell == nil) { 
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BottomCell"] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
       }
       switch (indexPath.row) {
         case 0:
-          cell.textLabel.text = @"abc";
-          cell.detailTextLabel.text = @"def";
+          cell.textLabel.text = @"Facemash Title";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"score"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"score"] integerValue]] : nil;
+          break;
+        case 1:
+          cell.textLabel.text = @"Ranking Overall";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"rank"] integerValue]] : nil;
+          break;
+        case 2:
+          cell.textLabel.text = @"Ranking within Social Network";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"rank_network"] integerValue]] : nil;
+          break;
+        case 3:
+          cell.textLabel.text = @"Likes Received";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
+          break;
+        case 4:
+          cell.textLabel.text = @"Dislikes Received";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
+          break;
+        case 5:
+          cell.textLabel.text = @"Like Streak";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
+          break;
+        case 6:
+          cell.textLabel.text = @"Dislike Streak";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
           break;
         default:
           break;

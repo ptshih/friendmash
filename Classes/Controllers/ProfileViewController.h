@@ -32,11 +32,8 @@
 @property (nonatomic, retain) NSString *profileId;
 @property (nonatomic, assign) id <ProfileDelegate> delegate;
 
-
-/**
- Initiate logout from Facebook
- This will punt us back to the FBLoginDialog
- */
-- (void)logout;
 - (void)done;
+
+- (NSString *)getRankForVotes:(NSInteger)votes;
+
 @end
