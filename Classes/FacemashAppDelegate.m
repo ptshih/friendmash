@@ -132,7 +132,6 @@
   
   if(lastExitDate) {
     NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
-    DLog(@"time interval: %g", lastExitInterval);
     
     // If greater than 24hrs, re-authenticate
     // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID

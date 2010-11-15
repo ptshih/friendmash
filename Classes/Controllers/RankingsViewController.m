@@ -75,7 +75,9 @@
   
 }
 
-- (void)getTopRankings {
+- (IBAction)getTopRankings {
+  [self.imageCache resetCache]; // reset the cache
+  
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", self.selectedGender, _selectedMode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   

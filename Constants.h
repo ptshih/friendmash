@@ -10,6 +10,14 @@
 #import "FacemashAppDelegate.h"
 #import "NSString+Util.h"
 
+/*
+ 
+ Stuff TODO for v2:
+ 
+ Profile picture slider (paging) for rankings on the bottom of the screem. Then when the user stops on a picture the top half of the screen will show profile info.
+ 
+ */
+
 // IF enabled, we will use local client side friends list
 //#define USE_OFFLINE_MODE
 #define USE_ROUNDED_CORNERS
