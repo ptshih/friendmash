@@ -12,6 +12,11 @@
 @interface AboutViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
   IBOutlet UINavigationItem *_navBarItem;
   IBOutlet UITableView *_tableView;
+  NSString *_howToPlay;
+  NSString *_aboutFacemash;
 }
+
+@property (nonatomic, retain) NSString *howToPlay;
+@property (nonatomic, retain) NSString *aboutFacemash;
 
 @end

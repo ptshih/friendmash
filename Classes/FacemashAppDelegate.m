@@ -259,7 +259,6 @@
   if(isDeviceIPad()) {
     [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.y, 20, 0, 0) inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
   } else {
-    
     [self.navigationController presentModalViewController:self.loginViewController animated:animated];
   } 
   _isShowingLogin = YES;

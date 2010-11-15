@@ -8,14 +8,18 @@
 
 #import "AboutViewController.h"
 
-
 @implementation AboutViewController
+
+@synthesize howToPlay = _howToPlay;
+@synthesize aboutFacemash = _aboutFacemash;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
+  if (self) {
+    self.howToPlay = [@"It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap! It's a trap!" retain];
+    self.aboutFacemash = [@"Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! Hammer Time! " retain];
+  }
   return self;
 }
 
@@ -36,7 +40,22 @@
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 44.0;
+  CGSize textSize = CGSizeMake(440, INT_MAX);
+  switch (indexPath.section) {
+    case 0: {
+      CGSize howToPlaySize = [self.howToPlay sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+      return howToPlaySize.height + 20;
+      break;
+    }
+    case 1: {
+      CGSize aboutFacemashSize = [self.aboutFacemash sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+      return aboutFacemashSize.height + 20;
+      break;
+    }
+    default:
+      return 44.0;
+      break;
+  }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -112,16 +131,20 @@
       if(cell == nil) { 
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HowToCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.numberOfLines = 100;
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
       }
-      cell.textLabel.text = @"This is how to play, ASSHOLE!";
+      cell.textLabel.text = self.howToPlay;
       break;
     case 1:
       cell = [tableView dequeueReusableCellWithIdentifier:@"AboutCell"];
       if(cell == nil) { 
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AboutCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.numberOfLines = 100;
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
       }
-      cell.textLabel.text = @"We made this because we are awesome!";
+      cell.textLabel.text = self.aboutFacemash;
       break;
     default:
       break;
@@ -148,6 +171,8 @@
 
 
 - (void)dealloc {
+  [_howToPlay release];
+  [_aboutFacemash release];
   [super dealloc];
 }
 

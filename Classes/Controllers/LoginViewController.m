@@ -39,8 +39,8 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
   [self showLogin];
 }
 
@@ -62,16 +62,24 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   switch (buttonIndex) {
     case 0:
-      [self authorizeWithFBAppAuth:YES safariAuth:YES];
+      [self performSelector:@selector(authWithSingleSignOn:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.1];
+//      [self authorizeWithFBAppAuth:YES safariAuth:YES];
       break;
     case 1:
-      [self authorizeWithFBAppAuth:NO safariAuth:NO];
+      [self performSelector:@selector(authWithSingleSignOn:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
+//      [self authorizeWithFBAppAuth:NO safariAuth:NO];
       break;
     default:
       break;
   }
   _alertIsVisible = NO;
 }
+
+- (void)authWithSingleSignOn:(NSNumber *)trySingleSignOn {
+  BOOL useSingleSignOn = [trySingleSignOn boolValue];
+  [self authorizeWithFBAppAuth:useSingleSignOn safariAuth:useSingleSignOn];
+}
+
 
 #pragma mark OAuth / FBConnect
 - (void)authorizeWithFBAppAuth:(BOOL)tryFBAppAuth safariAuth:(BOOL)trySafariAuth {  
@@ -149,6 +157,8 @@
     [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
   _splashLabel.text = nil;
+  _fbWebView.hidden = YES;
+  _splashView.hidden = NO;
 }
 
 

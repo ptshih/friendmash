@@ -56,7 +56,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="539112842">
 								<reference key="IBUINavigationBar" ref="887749529"/>
-								<string key="IBUITitle">About Facemash</string>
+								<string key="IBUITitle">Teach Me How To Facemash</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>

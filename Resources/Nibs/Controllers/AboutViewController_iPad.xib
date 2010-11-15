@@ -56,7 +56,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="539112842">
 								<reference key="IBUINavigationBar" ref="887749529"/>
-								<string key="IBUITitle">About Facemash</string>
+								<string key="IBUITitle">Teach Me How To Facemash</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 						</object>
@@ -211,7 +211,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>AboutViewController</string>
 					<string>UIResponder</string>
-					<string>{{123, 0}, {1024, 768}}</string>
+					<string>{{93, 0}, {1024, 768}}</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBCocoaTouchFramework</string>
 						<integer value="2" key="NS.object.0"/>

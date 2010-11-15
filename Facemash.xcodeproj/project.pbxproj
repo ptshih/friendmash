@@ -84,7 +84,6 @@
 		2573EA5812861A08004EBEBB /* CJSONScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4C12861A08004EBEBB /* CJSONScanner.m */; };
 		2573EA5912861A08004EBEBB /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4E12861A08004EBEBB /* CJSONSerializer.m */; };
 		2573EA5A12861A08004EBEBB /* CSerializedJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA5012861A08004EBEBB /* CSerializedJSONData.m */; };
-		258632C7126090A400260ECB /* mrt_profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 258632C5126090A400260ECB /* mrt_profile.jpg */; };
 		25B94874128F6E6100016322 /* btn_refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B94873128F6E6100016322 /* btn_refresh@2x.png */; };
 		25B94876128F6E6C00016322 /* btn_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B94875128F6E6C00016322 /* btn_refresh.png */; };
 		25B9487C128F6F7800016322 /* btn_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9487B128F6F7800016322 /* btn_profile.png */; };
@@ -232,7 +231,6 @@
 		2573EA4E12861A08004EBEBB /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
 		2573EA4F12861A08004EBEBB /* CSerializedJSONData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSerializedJSONData.h; sourceTree = "<group>"; };
 		2573EA5012861A08004EBEBB /* CSerializedJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSerializedJSONData.m; sourceTree = "<group>"; };
-		258632C5126090A400260ECB /* mrt_profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mrt_profile.jpg; sourceTree = "<group>"; };
 		25B94873128F6E6100016322 /* btn_refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_refresh@2x.png"; sourceTree = "<group>"; };
 		25B94875128F6E6C00016322 /* btn_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_refresh.png; sourceTree = "<group>"; };
 		25B9487B128F6F7800016322 /* btn_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_profile.png; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 				253E98051267F4750037CB2D /* ipad */,
 				25E1C59D126332350052BE93 /* female.png */,
 				25E1C59E126332350052BE93 /* male.png */,
-				258632C5126090A400260ECB /* mrt_profile.jpg */,
 				251EA3601262CB680055CFD2 /* Icon-Small.png */,
 				251EA3611262CB680055CFD2 /* Icon-Small@2x.png */,
 				251EA3621262CB680055CFD2 /* Icon.png */,
@@ -713,7 +710,6 @@
 				25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */,
 				252E0FC1126083390008BD55 /* Icon-72.png in Resources */,
 				252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */,
-				258632C7126090A400260ECB /* mrt_profile.jpg in Resources */,
 				251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */,
 				251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */,
 				251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */,

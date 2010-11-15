@@ -28,6 +28,9 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
   if (self) {
+    // Disable selection for now
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     _profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PROFILE_IMAGE_MARGIN_X, PROFILE_IMAGE_MARGIN_Y, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE)];
     self.profileImageView.layer.cornerRadius = 5.0;
     self.profileImageView.layer.masksToBounds = YES;
