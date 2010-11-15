@@ -157,8 +157,6 @@
     [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
   _splashLabel.text = nil;
-  _fbWebView.hidden = YES;
-  _splashView.hidden = NO;
 }
 
 
