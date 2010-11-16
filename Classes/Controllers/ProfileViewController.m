@@ -170,6 +170,32 @@
 //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (UIImage *)getIconForVotes:(NSInteger)votes {
+  if(votes < 10) {
+    return [UIImage imageNamed:@"private.png"];
+  } else if(votes < 50) {
+    return [UIImage imageNamed:@"private_first_class.png"];
+  } else if(votes < 100) {
+    return [UIImage imageNamed:@"corporal.png"];
+  } else if(votes < 250) {
+    return [UIImage imageNamed:@"sergeant.png"];
+  } else if(votes < 500) {
+    return [UIImage imageNamed:@"staff_sergeant.png"];
+  } else if(votes < 750) {
+    return [UIImage imageNamed:@"sergeant_first_class.png"];
+  } else if(votes < 1000) {
+    return [UIImage imageNamed:@"master_sergeant.png"];
+  } else if(votes < 1500) {
+    return [UIImage imageNamed:@"first_sergeant.png"];
+  } else if(votes < 2000) {
+    return [UIImage imageNamed:@"sergeant_major.png"];
+  } else if(votes < 2500) {
+    return [UIImage imageNamed:@"command_sergeant_major.png"];
+  } else {
+    return [UIImage imageNamed:@"sergeant_major_army.png"];
+  }
+}
+
 - (NSString *)getRankForVotes:(NSInteger)votes {
   // Calculate Rank Label based on number of votes
   if(votes < 10) {
@@ -182,15 +208,11 @@
     return @"Knight";
   } else if(votes < 250) {
     return @"Legionnaire";
-  } else if(votes < 350) {
-    return @"Centurion";
   } else if(votes < 500) {
-    return @"Champion";
-  } else if(votes < 650) {
-    return @"Commander";
-  } else if(votes < 800) {
-    return @"General";
+    return @"Centurion";
   } else if(votes < 1000) {
+    return @"Commander";
+  } else if(votes < 1500) {
     return @"Warlord";
   } else {
     return @"High Warlord";
@@ -207,7 +229,7 @@
   } else if(score < 2200) {
     return @"Gladiator";
   } else {
-    return @"Vanquisher";
+    return @"Champion";
   }
 }
 
@@ -248,7 +270,12 @@
       switch (indexPath.row) {
         case 0:
           cell.textLabel.text = @"Facemash Rank";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
+//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
+          if([[self.profileDict objectForKey:@"votes"] notNil]) {
+            UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
+            rankView.frame = CGRectMake(cell.contentView.frame.size.width - 40, 2, 36, 36);
+            [cell.contentView addSubview:rankView];
+          }
           break;
         case 1:
           cell.textLabel.text = @"Number of Mashes";

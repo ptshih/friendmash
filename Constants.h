@@ -11,6 +11,8 @@
 #import "NSString+Util.h"
 
 /*
+ tagline:
+ facemash: settings standards one swipe at a time
  
  Stuff TODO for v2:
  
