@@ -418,6 +418,7 @@
   } else if([alertView isEqual:_oauthErrorAlert]) {
     _faceViewDidError = NO;
 //    [APP_DELEGATE authenticateWithFacebook:YES];
+    [self.navigationController popViewControllerAnimated:NO];
     [APP_DELEGATE fbDidLogout];
   }
 }
