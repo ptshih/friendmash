@@ -26,6 +26,7 @@
   ASIHTTPRequest *_tokenRequest;
   NSString *_fbAccessToken;
   NSString *_currentUserId;
+  NSData *_currentUser;
 
   LoadingOverlay *_loadingOverlay;
   BOOL _touchActive;
@@ -33,6 +34,7 @@
   
   UIAlertView *_networkErrorAlert;
   UIAlertView *_loginFailedAlert;
+  UIAlertView *_tokenFailedAlert;
   NSInteger _tokenRetryCount;
 }
 
@@ -46,6 +48,7 @@
 @property (nonatomic, retain) ASIHTTPRequest *tokenRequest;
 @property (nonatomic, retain) NSString *fbAccessToken;
 @property (nonatomic, retain) NSString *currentUserId;
+@property (nonatomic, retain) NSData *currentUser;
 @property (nonatomic, retain) LoadingOverlay *loadingOverlay;
 @property (nonatomic, assign) BOOL touchActive;
 

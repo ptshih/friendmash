@@ -33,6 +33,7 @@
 @synthesize tokenRequest = _tokenRequest;
 @synthesize fbAccessToken = _fbAccessToken;
 @synthesize currentUserId = _currentUserId;
+@synthesize currentUser = _currentUser;
 @synthesize loadingOverlay = _loadingOverlay;
 @synthesize touchActive = _touchActive;
 
@@ -171,7 +172,8 @@
   NSString *token = [self.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FACEMASH_BASE_URL, self.currentUserId];
-  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+//  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser withDelegate:nil];
   [self.networkQueue addOperation:self.tokenRequest];
   [self.networkQueue go];
 }
@@ -188,28 +190,32 @@
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     } else {
-      NSDictionary *currentUser = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
-      self.currentUserId = [currentUser objectForKey:@"id"];
+      
+      self.currentUser = [request responseData];
+      self.currentUserId = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"id"];
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
       
       // Fire off the server request to facemash with auth token and userid
       [self sendFacebookAccessToken];
-      
-      // Remove the splash screen now
-      self.launcherViewController.launcherView.hidden = NO;
-      self.launcherViewController.splashView.hidden = YES;
     }
   } else if([request isEqual:self.tokenRequest]) {
     DLog(@"token request finished");
-    if(statusCode >= 500) {
+    if(statusCode > 200) {
       // Retry this request 2 times
       if(_tokenRetryCount < 2) {
         _tokenRetryCount++;
         [self sendFacebookAccessToken];
       } else {
         _tokenRetryCount = 0; // epic fail, oh well
+        _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+        [_tokenFailedAlert show];
+        [_tokenFailedAlert autorelease];
       }
+    } else {
+      // Remove the splash screen now
+      self.launcherViewController.launcherView.hidden = NO;
+      self.launcherViewController.splashView.hidden = YES;
     }
   }
 }
@@ -305,6 +311,8 @@
     [self getCurrentUserRequest];
   } else if([alertView isEqual:_loginFailedAlert]) {
     [self authenticateWithFacebook:NO];
+  } else if([alertView isEqual:_tokenFailedAlert]) {
+    [self sendFacebookAccessToken];
   }
 }
 
@@ -408,14 +416,15 @@
   if(_currentUserRequest) [_currentUserRequest release];
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
+  if(_networkQueue) [_networkQueue release];
   if(_loginViewController) [_loginViewController release];
   if(_loginPopoverController) [_loginPopoverController release];
-  [_loadingOverlay release];
-  [_fbAccessToken release];
-  [_currentUserId release];
-  [_launcherViewController release];
-  [_navigationController release];
+  if(_loadingOverlay) [_loadingOverlay release];
+  if(_fbAccessToken) [_fbAccessToken release];
+  if(_currentUserId) [_currentUserId release];
+  if(_currentUser) [_currentUser release];
+  if(_launcherViewController) [_launcherViewController release];
+  if(_navigationController) [_navigationController release];
   [window release];
   [super dealloc];
 }
