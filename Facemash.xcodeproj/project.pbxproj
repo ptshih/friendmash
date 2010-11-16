@@ -24,6 +24,12 @@
 		2513C93A1291CABC002E79EF /* specialist.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92F1291CABC002E79EF /* specialist.png */; };
 		2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9301291CABC002E79EF /* staff_sergeant.png */; };
 		2513C999129232FF002E79EF /* first_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C998129232FF002E79EF /* first_sergeant.png */; };
+		2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2513CB7A129283E0002E79EF /* LightboxViewController.m */; };
+		2513CB7D129283E0002E79EF /* LightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2513CB7B129283E0002E79EF /* LightboxViewController.xib */; };
+		2513CC901292933D002E79EF /* unlike.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CC8F1292933D002E79EF /* unlike.png */; };
+		2513CCA012929347002E79EF /* unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CC9F12929347002E79EF /* unlike@2x.png */; };
+		2513CCA21292935D002E79EF /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CCA11292935D002E79EF /* like.png */; };
+		2513CCA412929364002E79EF /* like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CCA312929364002E79EF /* like@2x.png */; };
 		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
 		251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */; };
 		251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */; };
@@ -151,6 +157,13 @@
 		2513C92F1291CABC002E79EF /* specialist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specialist.png; sourceTree = "<group>"; };
 		2513C9301291CABC002E79EF /* staff_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = staff_sergeant.png; sourceTree = "<group>"; };
 		2513C998129232FF002E79EF /* first_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first_sergeant.png; sourceTree = "<group>"; };
+		2513CB79129283E0002E79EF /* LightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightboxViewController.h; sourceTree = "<group>"; };
+		2513CB7A129283E0002E79EF /* LightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightboxViewController.m; sourceTree = "<group>"; };
+		2513CB7B129283E0002E79EF /* LightboxViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController.xib; sourceTree = "<group>"; };
+		2513CC8F1292933D002E79EF /* unlike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlike.png; sourceTree = "<group>"; };
+		2513CC9F12929347002E79EF /* unlike@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unlike@2x.png"; sourceTree = "<group>"; };
+		2513CCA11292935D002E79EF /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		2513CCA312929364002E79EF /* like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like@2x.png"; sourceTree = "<group>"; };
 		251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
 		251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPhone.xib; sourceTree = "<group>"; };
 		251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPhone.xib; sourceTree = "<group>"; };
@@ -405,6 +418,8 @@
 		253E97F71267F4750037CB2D /* @1x */ = {
 			isa = PBXGroup;
 			children = (
+				2513CCA11292935D002E79EF /* like.png */,
+				2513CC8F1292933D002E79EF /* unlike.png */,
 				25F0310D1290216C003155D6 /* Default.png */,
 				253E97F81267F4750037CB2D /* bg.png */,
 				253E97F91267F4750037CB2D /* btn_back.png */,
@@ -425,6 +440,8 @@
 		253E97FE1267F4750037CB2D /* @2x */ = {
 			isa = PBXGroup;
 			children = (
+				2513CCA312929364002E79EF /* like@2x.png */,
+				2513CC9F12929347002E79EF /* unlike@2x.png */,
 				25F0310F12902174003155D6 /* Default@2x.png */,
 				253E97FF1267F4750037CB2D /* bg@2x.png */,
 				253E98001267F4750037CB2D /* btn_back@2x.png */,
@@ -587,6 +604,8 @@
 				25698464128B327B00B2466B /* WebViewController.m */,
 				25B94A02128FA4DC00016322 /* AboutViewController.h */,
 				25B94A03128FA4DC00016322 /* AboutViewController.m */,
+				2513CB79129283E0002E79EF /* LightboxViewController.h */,
+				2513CB7A129283E0002E79EF /* LightboxViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -638,6 +657,7 @@
 				255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */,
 				25B94A0A128FA5AE00016322 /* AboutViewController_iPhone.xib */,
 				25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */,
+				2513CB7B129283E0002E79EF /* LightboxViewController.xib */,
 				255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */,
 			);
 			path = Controllers;
@@ -825,6 +845,11 @@
 				2513C93A1291CABC002E79EF /* specialist.png in Resources */,
 				2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */,
 				2513C999129232FF002E79EF /* first_sergeant.png in Resources */,
+				2513CB7D129283E0002E79EF /* LightboxViewController.xib in Resources */,
+				2513CC901292933D002E79EF /* unlike.png in Resources */,
+				2513CCA012929347002E79EF /* unlike@2x.png in Resources */,
+				2513CCA21292935D002E79EF /* like.png in Resources */,
+				2513CCA412929364002E79EF /* like@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +898,7 @@
 				2556FEDA128D784E00E6C482 /* NSString+ConvenienceMethods.m in Sources */,
 				25560139128DF7BA00E6C482 /* LoadingOverlay.m in Sources */,
 				25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */,
+				2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

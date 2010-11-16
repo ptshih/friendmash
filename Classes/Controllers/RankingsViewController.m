@@ -1,5 +1,5 @@
-    //
-//  SettingsViewController.m
+//
+//  RankingsViewController.m
 //  Facemash
 //
 //  Created by Peter Shih on 10/14/10.
@@ -9,12 +9,14 @@
 #import "RankingsViewController.h"
 #import "LauncherViewController.h"
 #import "RankingsTableViewCell.h"
+#import "LightboxViewController.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
 #import "RemoteRequest.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 
+static UIImage *_placeholderImage;
 
 @implementation RankingsViewController
 
@@ -23,6 +25,10 @@
 @synthesize imageCache = _imageCache;
 @synthesize networkQueue = _networkQueue;
 @synthesize selectedGender = _selectedGender;
+
++ (void)initialize {
+  _placeholderImage = [[UIImage imageNamed:@"picture_loading.png"] retain];
+}
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -203,24 +209,20 @@
       ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"] andType:@"square" withDelegate:nil];
       [self.imageCache cacheImageWithRequest:pictureRequest forIndexPath:indexPath];
     }
-    profilePic = [UIImage imageNamed:@"picture_loading.png"];
+    profilePic = _placeholderImage;
   }
   
   [RankingsTableViewCell fillCell:cell withDictionary:[self.rankingsArray objectAtIndex:indexPath.row] andImage:profilePic];
   return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  return nil;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//  WebViewController *wvc = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
-//  [self presentModalViewController:wvc animated:YES];
-//  [wvc setWebViewTitle:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"full_name"]];
-//  [wvc loadURL:[NSString stringWithFormat:@"http://touch.facebook.com/#/profile.php?id=%@&access_token=%@", [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], APP_DELEGATE.fbAccessToken]];
-//  [wvc release];
+  // Popup a lightbox view with full sized image
+  LightboxViewController *lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController" bundle:nil];
+  lvc.facebookId = [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"];
+  [self presentModalViewController:lvc animated:YES];
+  [lvc release];
 }
 
 #pragma mark -

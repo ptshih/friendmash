@@ -16,6 +16,8 @@
 #define PROFILE_IMAGE_MARGIN_Y 5.0
 #define PROFILE_IMAGE_SIZE 50.0
 
+static UIImage *_starImage;
+
 @implementation RankingsTableViewCell
 
 @synthesize profileImageView = _profileImageView;
@@ -25,11 +27,15 @@
 @synthesize winLossLabel = _winLossLabel;
 @synthesize rankView = _rankView;
 
++ (void)initialize {
+  _starImage = [[UIImage imageNamed:@"favorite_star.png"] retain];
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
   if (self) {
     // Disable selection for now
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    // self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PROFILE_IMAGE_MARGIN_X, PROFILE_IMAGE_MARGIN_Y, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE)];
     self.profileImageView.layer.cornerRadius = 5.0;
@@ -53,7 +59,7 @@
 
     self.rankView.backgroundColor = [UIColor clearColor];
     self.rankView.frame = CGRectMake(0, 0, 52, 50);
-    UIImageView *rankStarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_star.png"]];
+    UIImageView *rankStarView = [[UIImageView alloc] initWithImage:_starImage];
     rankStarView.frame = self.rankView.frame;
     self.rankLabel.frame = self.rankView.frame;
     [self.rankView addSubview:rankStarView];
@@ -150,7 +156,11 @@
   cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
 //  cell.scoreLabel.text = [NSString stringWithFormat:@"Score: %@", [[dictionary objectForKey:@"score"] stringValue]];
+#ifdef DEBUG
   cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@  Score: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue], [[dictionary objectForKey:@"score"] stringValue]];
+#else
+  cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue]];
+#endif
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    

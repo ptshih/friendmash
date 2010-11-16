@@ -16,6 +16,9 @@
 #import "NSString+ConvenienceMethods.h"
 #import "NSObject+ConvenienceMethods.h"
 
+static UIImage *_likeImage;
+static UIImage *_dislikeImage;
+
 @interface ProfileViewController (Private)
 - (void)getProfileForCurrentUser;
 @end
@@ -27,6 +30,11 @@
 @synthesize profileDict = _profileDict;
 @synthesize profileId = _profileId;
 @synthesize delegate;
+
++ (void)initialize {
+  _likeImage = [[UIImage imageNamed:@"like.png"] retain];
+  _dislikeImage = [[UIImage imageNamed:@"unlike.png"] retain];
+}
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -41,6 +49,7 @@
     }
     return self;
 }
+
 - (void)viewWillAppear:(BOOL)animated {
   
 }
@@ -171,51 +180,53 @@
 }
 
 - (float)getProgressForVotes:(NSInteger)votes {
-  if(votes < 10) {
-    return 0.0;
-  } else if(votes < 50) {
-    return 0.1;
-  } else if(votes < 100) {
-    return 0.2;
-  } else if(votes < 250) {
-    return 0.3;
-  } else if(votes < 500) {
-    return 0.4;
-  } else if(votes < 750) {
-    return 0.5;
-  } else if(votes < 1000) {
-    return 0.6;
-  } else if(votes < 1500) {
-    return 0.7;
-  } else if(votes < 2000) {
-    return 0.8;
-  } else if(votes < 2500) {
-    return 0.9;
+  int k = 100;
+  if(votes < k) {
+    return (float)votes / k;
+  } else if(votes < 2*k) {
+    return (float)(votes - 1*k) / k;
+  } else if(votes < 3*k) {
+    return (float)(votes - 2*k) / k;
+  } else if(votes < 4*k) {
+    return (float)(votes - 3*k) / k;
+  } else if(votes < 5*k) {
+    return (float)(votes - 4*k) / k;
+  } else if(votes < 6*k) {
+    return (float)(votes - 5*k) / k;
+  } else if(votes < 7*k) {
+    return (float)(votes - 6*k) / k;
+  } else if(votes < 8*k) {
+    return (float)(votes - 7*k) / k;
+  } else if(votes < 9*k) {
+    return (float)(votes - 8*k) / k;
+  } else if(votes < 10*k) {
+    return (float)(votes - 9*k) / k;
   } else {
     return 1.0;
   }
 }
 
 - (UIImage *)getIconForVotes:(NSInteger)votes {
-  if(votes < 10) {
+  int k = 100;
+  if(votes < k) {
     return [UIImage imageNamed:@"private.png"];
-  } else if(votes < 50) {
+  } else if(votes < 2*k) {
     return [UIImage imageNamed:@"private_first_class.png"];
-  } else if(votes < 100) {
+  } else if(votes < 3*k) {
     return [UIImage imageNamed:@"corporal.png"];
-  } else if(votes < 250) {
+  } else if(votes < 4*k) {
     return [UIImage imageNamed:@"sergeant.png"];
-  } else if(votes < 500) {
+  } else if(votes < 5*k) {
     return [UIImage imageNamed:@"staff_sergeant.png"];
-  } else if(votes < 750) {
+  } else if(votes < 6*k) {
     return [UIImage imageNamed:@"sergeant_first_class.png"];
-  } else if(votes < 1000) {
+  } else if(votes < 7*k) {
     return [UIImage imageNamed:@"master_sergeant.png"];
-  } else if(votes < 1500) {
+  } else if(votes < 8*k) {
     return [UIImage imageNamed:@"first_sergeant.png"];
-  } else if(votes < 2000) {
+  } else if(votes < 9*k) {
     return [UIImage imageNamed:@"sergeant_major.png"];
-  } else if(votes < 2500) {
+  } else if(votes < 10*k) {
     return [UIImage imageNamed:@"command_sergeant_major.png"];
   } else {
     return [UIImage imageNamed:@"sergeant_major_army.png"];
@@ -223,26 +234,27 @@
 }
 
 - (NSString *)getRankForVotes:(NSInteger)votes {
+  int k = 100;
   // Calculate Rank Label based on number of votes
-  if(votes < 10) {
+  if(votes < k) {
     return @"Private";
-  } else if(votes < 50) {
+  } else if(votes < 2*k) {
     return @"Private First Class";
-  } else if(votes < 100) {
+  } else if(votes < 3*k) {
     return @"Corporal";
-  } else if(votes < 250) {
+  } else if(votes < 4*k) {
     return @"Sergeant";
-  } else if(votes < 500) {
+  } else if(votes < 5*k) {
     return @"Staff Sergeant";
-  } else if(votes < 750) {
+  } else if(votes < 6*k) {
     return @"Sergeant First Class";
-  } else if(votes < 1000) {
+  } else if(votes < 7*k) {
     return @"Master Sergeant";
-  } else if(votes < 1500) {
+  } else if(votes < 8*k) {
     return @"First Sergeant";
-  } else if(votes < 2000) {
+  } else if(votes < 9*k) {
     return @"Sergeant Major";
-  } else if(votes < 2500) {
+  } else if(votes < 10*k) {
     return @"Command Sergeant Major";
   } else {
     return @"High Warlord";
@@ -299,7 +311,7 @@
       }
       switch (indexPath.row) {
         case 0:
-          cell.textLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [NSString stringWithFormat:@"%@", [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]] : nil;
+          cell.textLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [NSString stringWithFormat:@"%@", [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]] : @"Loading...";
 //          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
@@ -308,7 +320,7 @@
           }
           break;
         case 1: {
-          cell.textLabel.text = @"Facemash Progress";
+          cell.textLabel.text = @"Mashes to Next Rank";
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
             progressView.frame = CGRectMake(cell.contentView.frame.size.width - 225, 17, 215, 9);
@@ -346,23 +358,27 @@
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 2:
-          cell.textLabel.text = @"Ranking within Social Network";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
+          cell.textLabel.text = @"Ranking with Friends";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total_network"] stringValue]] : nil;
           break;
         case 3:
-          cell.textLabel.text = @"Likes Received";
+          cell.imageView.image = _likeImage;
+          cell.textLabel.text = @"Likes";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
           break;
         case 4:
-          cell.textLabel.text = @"Dislikes Received";
+          cell.imageView.image = _dislikeImage;
+          cell.textLabel.text = @"Dislikes";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
           break;
         case 5:
-          cell.textLabel.text = @"Likes Received in a Row";
+          cell.imageView.image = _likeImage;
+          cell.textLabel.text = @"Likes in a row";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
           break;
         case 6:
-          cell.textLabel.text = @"Dislikes Received in a Row";
+          cell.imageView.image = _dislikeImage;
+          cell.textLabel.text = @"Dislikes in a row";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
           break;
         default:
