@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -114,7 +114,7 @@
 							<object class="IBUIButton" id="819315331">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{72, 44}, {123, 91}}</string>
+								<string key="NSFrame">{{67, 44}, {123, 91}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -135,7 +135,7 @@
 							<object class="IBUIButton" id="60923321">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{829, 44}, {123, 91}}</string>
+								<string key="NSFrame">{{834, 44}, {123, 91}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -194,7 +194,7 @@
 							<object class="IBUIButton" id="11333704">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{934, 704}, {18, 19}}</string>
+								<string key="NSFrame">{{933, 704}, {18, 19}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -412,10 +412,10 @@
 							<reference ref="374186160"/>
 							<reference ref="601302579"/>
 							<reference ref="497120080"/>
-							<reference ref="93529735"/>
 							<reference ref="819315331"/>
 							<reference ref="60923321"/>
 							<reference ref="502563153"/>
+							<reference ref="93529735"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">launcherView</string>
@@ -443,12 +443,6 @@
 						<string key="objectName">m</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="93529735"/>
-						<reference key="parent" ref="100455445"/>
-						<string key="objectName">f</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">21</int>
 						<reference key="object" ref="819315331"/>
 						<reference key="parent" ref="100455445"/>
@@ -464,6 +458,12 @@
 						<int key="objectID">20</int>
 						<reference key="object" ref="502563153"/>
 						<reference key="parent" ref="100455445"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">8</int>
+						<reference key="object" ref="93529735"/>
+						<reference key="parent" ref="100455445"/>
+						<string key="objectName">f</string>
 					</object>
 				</object>
 			</object>
@@ -552,7 +552,7 @@
 						</object>
 						<object class="IBUserGuide">
 							<reference key="view" ref="100455445"/>
-							<double key="location">72</double>
+							<double key="location">70</double>
 							<int key="affinity">2</int>
 						</object>
 						<object class="IBUserGuide">
@@ -578,7 +578,7 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABEDIAAxAwAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABEDkAAxAwAAA</bytes>
 					</object>
 				</object>
 			</object>
