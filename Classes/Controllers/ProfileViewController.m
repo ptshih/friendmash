@@ -170,6 +170,32 @@
 //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (float)getProgressForVotes:(NSInteger)votes {
+  if(votes < 10) {
+    return 0.0;
+  } else if(votes < 50) {
+    return 0.1;
+  } else if(votes < 100) {
+    return 0.2;
+  } else if(votes < 250) {
+    return 0.3;
+  } else if(votes < 500) {
+    return 0.4;
+  } else if(votes < 750) {
+    return 0.5;
+  } else if(votes < 1000) {
+    return 0.6;
+  } else if(votes < 1500) {
+    return 0.7;
+  } else if(votes < 2000) {
+    return 0.8;
+  } else if(votes < 2500) {
+    return 0.9;
+  } else {
+    return 1.0;
+  }
+}
+
 - (UIImage *)getIconForVotes:(NSInteger)votes {
   if(votes < 10) {
     return [UIImage imageNamed:@"private.png"];
@@ -199,21 +225,25 @@
 - (NSString *)getRankForVotes:(NSInteger)votes {
   // Calculate Rank Label based on number of votes
   if(votes < 10) {
-    return @"Scout";
+    return @"Private";
   } else if(votes < 50) {
-    return @"Grunt";
+    return @"Private First Class";
   } else if(votes < 100) {
-    return @"Sergeant";
-  } else if(votes < 150) {
-    return @"Knight";
+    return @"Corporal";
   } else if(votes < 250) {
-    return @"Legionnaire";
+    return @"Sergeant";
   } else if(votes < 500) {
-    return @"Centurion";
+    return @"Staff Sergeant";
+  } else if(votes < 750) {
+    return @"Sergeant First Class";
   } else if(votes < 1000) {
-    return @"Commander";
+    return @"Master Sergeant";
   } else if(votes < 1500) {
-    return @"Warlord";
+    return @"First Sergeant";
+  } else if(votes < 2000) {
+    return @"Sergeant Major";
+  } else if(votes < 2500) {
+    return @"Command Sergeant Major";
   } else {
     return @"High Warlord";
   }
@@ -245,7 +275,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   switch (section) {
     case 0: // user profile
-      return 3;
+      return 4;
       break;
     case 1: // stats
       return 7;
@@ -269,7 +299,7 @@
       }
       switch (indexPath.row) {
         case 0:
-          cell.textLabel.text = @"Facemash Rank";
+          cell.textLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [NSString stringWithFormat:@"%@", [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]] : nil;
 //          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
@@ -277,12 +307,22 @@
             [cell.contentView addSubview:rankView];
           }
           break;
-        case 1:
-          cell.textLabel.text = @"Number of Mashes";
+        case 1: {
+          cell.textLabel.text = @"Facemash Progress";
+          if([[self.profileDict objectForKey:@"votes"] notNil]) {
+            UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+            progressView.frame = CGRectMake(cell.contentView.frame.size.width - 225, 17, 215, 9);
+            progressView.progress = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getProgressForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : 0.0;
+            [cell.contentView addSubview:progressView];
+          }
+          break;
+        }
+        case 2:
+          cell.textLabel.text = @"Number of Faces Mashed";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [[self.profileDict objectForKey:@"votes"] stringValue] : nil;
           break;
-        case 2:
-          cell.textLabel.text = @"Number of Mashes within Social Network";
+        case 3:
+          cell.textLabel.text = @"Number of Friends Mashed";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes_network"] notNil] ? [[self.profileDict objectForKey:@"votes_network"] stringValue] : nil;
           break;
         default:
@@ -318,11 +358,11 @@
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
           break;
         case 5:
-          cell.textLabel.text = @"Like Streak";
+          cell.textLabel.text = @"Likes Received in a Row";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
           break;
         case 6:
-          cell.textLabel.text = @"Dislike Streak";
+          cell.textLabel.text = @"Dislikes Received in a Row";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
           break;
         default:
