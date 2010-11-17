@@ -215,8 +215,14 @@ static UIImage *_placeholderImage;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  
   // Popup a lightbox view with full sized image
-  LightboxViewController *lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController" bundle:nil];
+  LightboxViewController *lvc;
+  if(isDeviceIPad()) {
+    lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController_iPad" bundle:nil];
+  } else {
+    lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController_iPhone" bundle:nil];
+  }
   lvc.facebookId = [[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"];
   [self presentModalViewController:lvc animated:YES];
   [lvc release];
