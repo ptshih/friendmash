@@ -361,10 +361,6 @@
   [window addSubview:self.navigationController.view];
   [window makeKeyAndVisible];
   
-  // Check last exit so we know if we should auth
-  // Moved to becomeActive
-  // [self checkLastExitDate];
-  
 	return YES;
 }
 
@@ -403,7 +399,6 @@
    Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
    */
 }
-
 
 - (void)dealloc {
   if(_tokenRequest) [_tokenRequest release];

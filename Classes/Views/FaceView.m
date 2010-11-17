@@ -180,12 +180,8 @@
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
-//  self.faceImageView.image = [UIImage imageWithData:faceData];
-  if(!faceImage) {
-
-  } else {
+  if(faceImage) {
 #ifdef USE_ROUNDED_CORNERS
-//    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
     self.faceImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
 #else
     self.faceImageView.image = faceImage;

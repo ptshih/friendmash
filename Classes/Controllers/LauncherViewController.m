@@ -39,14 +39,13 @@
   
   self.navigationController.navigationBar.hidden = YES;
   
-//  self.title = NSLocalizedString(@"facemash", @"facemash");
+  self.title = NSLocalizedString(@"facemash", @"facemash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 //  self.navigationController.navigationBar.hidden = YES;
-//  [self displayLauncher];
 }
 
 - (IBAction)male {

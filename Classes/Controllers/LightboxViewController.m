@@ -56,12 +56,8 @@
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
-  //  self.faceImageView.image = [UIImage imageWithData:faceData];
-  if(!faceImage) {
-    
-  } else {
+  if(faceImage) {
 #ifdef USE_ROUNDED_CORNERS
-    //    self.faceImageView.image = [faceImage roundedCornerImage:5.0 borderSize:0.0];
     _profileImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
 #else
     _profileImageView.image = faceImage;
@@ -127,7 +123,6 @@
   [super viewDidUnload];
 }
 
-
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
@@ -137,6 +132,5 @@
   if(_activityIndicator) [_activityIndicator release];
   [super dealloc];
 }
-
 
 @end
