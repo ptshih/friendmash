@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="22"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -92,8 +92,8 @@
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<string>All Male</string>
 									<string>All Female</string>
-									<string>Network Male</string>
-									<string>Network Female</string>
+									<string>Male Friends</string>
+									<string>Female Friends</string>
 								</object>
 								<object class="NSMutableArray" key="IBSegmentWidths">
 									<bool key="EncodedWithXMLCoder">YES</bool>
