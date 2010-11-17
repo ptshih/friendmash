@@ -25,18 +25,13 @@
  
  Also calls [FaceView setDefaultPosition] this sets an iVar inside FaceView to it's current center position
  */
-- (void)loadLeftFaceView;
-- (void)loadRightFaceView;
+
 /**
  Load and Show just performs the load method and then animates an addToSubview
  */
-- (void)loadAndShowLeftFaceView;
-- (void)loadAndShowRightFaceView;
-- (void)loadAndShowFaceViews;
+
 - (void)loadBothFaceViews;
 
-- (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate;
-- (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate;
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 
@@ -50,8 +45,6 @@
 @synthesize isRightLoaded = _isRightLoaded;
 @synthesize networkQueue = _networkQueue;
 @synthesize resultsRequest = _resultsRequest;
-@synthesize leftRequest = _leftRequest;
-@synthesize rightRequest = _rightRequest;
 @synthesize bothRequest = _bothRequest;
 @synthesize gender = _gender;
 @synthesize leftUserId = _leftUserId;
@@ -79,13 +72,6 @@
   return self;
 }
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
-
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -93,17 +79,16 @@
   self.title = NSLocalizedString(@"facemash", @"facemash");
   _toolbar.tintColor = RGBCOLOR(59,89,152);
   
-//  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(fbLogout)];
-//  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleBordered target:self action:@selector(testRequest)];
-  
-  [self loadAndShowFaceViews];
+  [self remash];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
   self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
 }
 
 - (IBAction)back {
@@ -119,37 +104,8 @@
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
 }
 
-- (NSString *)getNewOpponentId {
-#ifdef USE_OFFLINE_MODE
-  NSArray *friendsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"friendsArray"];
-  NSInteger count = [friendsArray count];
-  float randomNum = arc4random() % count;
-//  randomNum = 128; // testing a VERY LARGE ID
-  
-  if([[[friendsArray objectAtIndex:randomNum] objectForKey:@"gender"] isEqualToString:self.gender]) {
-  
-    NSLog(@"found opponent with id: %@ with name: %@",[[friendsArray objectAtIndex:randomNum] objectForKey:@"id"], [[friendsArray objectAtIndex:randomNum] objectForKey:@"name"]);
-//  return @"13710035";
-    return [[friendsArray objectAtIndex:randomNum] objectForKey:@"id"];
-  } else {
-    return [self getNewOpponentId];
-  }
-#else
-  return nil;
-#endif
-}
-
 - (void)prepareBothFaceViews {
   [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
-  [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
-}
-
-- (void)prepareLeftFaceView {
-  [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
-}
-
-- (void)prepareRightFaceView {
-
   [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }
 
@@ -201,7 +157,6 @@
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
 	self.leftView.alpha = 1.0f;
 	[UIView commitAnimations];
-
 }
 
 - (void)showRightFaceView {
@@ -216,49 +171,12 @@
 	[UIView commitAnimations];
 }
 
-- (void)loadAndShowFaceViews {
-  if(!self.leftUserId && !self.rightUserId) {
-    [self loadBothFaceViews];
-  } else {
-    [self loadAndShowLeftFaceView];
-    [self loadAndShowRightFaceView];
-  }
-}
-
-- (void)loadAndShowLeftFaceView {
-  [self loadLeftFaceView];
-  [self showLeftFaceView];
-#ifdef USE_OFFLINE_MODE
-  self.leftUserId = [self getNewOpponentId];
-  [self prepareLeftFaceView];
-#else
-  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
-  if(self.rightUserId) [self sendMashRequestForLeftFaceViewWithDelegate:self];
-#endif
-}
-
-- (void)loadAndShowRightFaceView {
-  [self loadRightFaceView];
-  [self showRightFaceView];
-#ifdef USE_OFFLINE_MODE
-  self.rightUserId = [self getNewOpponentId];
-  [self prepareRightFaceView];
-#else
-  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
-  if(self.leftUserId) [self sendMashRequestForRightFaceViewWithDelegate:self];
-#endif
-}
-
 - (void)loadBothFaceViews {
   [self loadLeftFaceView];
   [self showLeftFaceView];
   [self loadRightFaceView];
   [self showRightFaceView];
-#ifdef USE_OFFLINE_MODE
-  self.leftUserId = [self getNewOpponentId];
-  self.rightUserId = [self getNewOpponentId];
-  [self prepareBothFaceViews];
-#else
+
   // Don't add to recents if this is an ad
   NSString *adFlagLeft = [self.leftUserId substringToIndex:5];
   NSString *adFlagRight = [self.rightUserId substringToIndex:5];
@@ -268,7 +186,6 @@
   }
 
   [self sendMashRequestForBothFaceViewsWithDelegate:self];
-#endif
 }
 
 #pragma mark FaceViewDelegate
@@ -301,15 +218,14 @@
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
 
 }
+
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
-#ifndef USE_OFFLINE_MODE
   if(isLeft) {
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   } else {
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
   }
 
-#endif
   [self remash];
 }
 
@@ -327,16 +243,6 @@
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
-}
-
-- (void)sendMashRequestForLeftFaceViewWithDelegate:(id)delegate {
-//  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
-//  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.rightUserId, params];
-}
-
-- (void)sendMashRequestForRightFaceViewWithDelegate:(id)delegate {
-//  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@",self.gender,[self.recentOpponentsArray componentsJoinedByString:@","]];
-//  NSString *urlString = [NSString stringWithFormat:@"%@/mash/match/%@?%@", FACEMASH_BASE_URL, self.leftUserId, params];
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
@@ -375,24 +281,7 @@
   if([request isEqual:self.resultsRequest]) {
     DLog(@"send results request finished");
     
-  } else if([request isEqual:self.leftRequest]) {
-    
-    DLog(@"left request finished");
-    
-    self.leftUserId = [request responseString];
-    NSLog(@"Received match with leftId: %@", self.leftUserId);
-    [self performSelectorOnMainThread:@selector(prepareLeftFaceView) withObject:nil waitUntilDone:YES];
-    
-  } else if([request isEqual:self.rightRequest]) {
-    
-    DLog(@"right request finished");
-    
-    self.rightUserId = [request responseString];
-    NSLog(@"Received match with rightId: %@", self.rightUserId);
-    [self performSelectorOnMainThread:@selector(prepareRightFaceView) withObject:nil waitUntilDone:YES];
-    
   } else if([request isEqual:self.bothRequest]) {
-    
     DLog(@"both request finished");
     NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
 
@@ -441,7 +330,6 @@
     [self.navigationController popViewControllerAnimated:YES];
   } else if([alertView isEqual:_oauthErrorAlert]) {
     _faceViewDidError = NO;
-//    [APP_DELEGATE authenticateWithFacebook:YES];
     [self.navigationController popViewControllerAnimated:NO];
     [APP_DELEGATE fbDidLogout];
   } else if([alertView isEqual:_fbPictureErrorAlert]) {
@@ -457,12 +345,13 @@
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+  [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
+  [super viewDidUnload];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }

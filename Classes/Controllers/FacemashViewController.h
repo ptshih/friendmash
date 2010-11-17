@@ -26,8 +26,6 @@ typedef enum {
   IBOutlet UIButton *_remashButton;
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_resultsRequest;
-  ASIHTTPRequest *_leftRequest;
-  ASIHTTPRequest *_rightRequest;
   ASIHTTPRequest *_bothRequest;
   NSString *_gender;
   NSString *_leftUserId;
@@ -55,8 +53,6 @@ typedef enum {
 @property (nonatomic,assign) BOOL isRightLoaded;
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,retain) ASIHTTPRequest *resultsRequest;
-@property (nonatomic,retain) ASIHTTPRequest *leftRequest;
-@property (nonatomic,retain) ASIHTTPRequest *rightRequest;
 @property (nonatomic,retain) ASIHTTPRequest *bothRequest;
 @property (nonatomic,retain) NSString *gender;
 @property (nonatomic,retain) NSString *leftUserId;
