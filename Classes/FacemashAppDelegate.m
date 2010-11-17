@@ -300,7 +300,10 @@
 
 - (void)fbDidLogout {
   self.fbAccessToken = nil;
+  self.currentUserId = nil;
+  self.currentUser = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentUserId"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self authenticateWithFacebook:NO];

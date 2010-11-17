@@ -78,7 +78,7 @@
   }
   pvc.launcherViewController = self;
   pvc.delegate = self;
-  pvc.profileId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+  pvc.profileId = APP_DELEGATE.currentUserId;
   [self presentModalViewController:pvc animated:YES];
   [pvc release];
 }

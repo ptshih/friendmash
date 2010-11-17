@@ -80,11 +80,11 @@ static UIImage *_placeholderImage;
 }
 
 - (IBAction)getTopRankings {
-  [_activityIndicator startAnimating];
+  _loadingView.hidden = NO;
   [self.imageCache resetCache]; // reset the cache
   
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", self.selectedGender, _selectedMode, FM_RANKINGS_COUNT];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];
@@ -104,7 +104,7 @@ static UIImage *_placeholderImage;
     self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
     [_tableView reloadData];
   }
-  [_activityIndicator stopAnimating];
+  _loadingView.hidden = YES;
   DLog(@"rankings request finished successfully");
 }
 
@@ -114,7 +114,7 @@ static UIImage *_placeholderImage;
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
-  [_activityIndicator stopAnimating];
+  _loadingView.hidden = YES;
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -285,7 +285,7 @@ static UIImage *_placeholderImage;
   if(_selectedGender) [_selectedGender release];
   if(_tableView) [_tableView release];
   if(_segmentedControl) [_segmentedControl release];
-  if(_activityIndicator) [_activityIndicator release];
+  if(_loadingView) [_loadingView release];
   [super dealloc];
 }
 

@@ -76,8 +76,6 @@
 		255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */; };
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
-		2569846E128B34CD00B2466B /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846C128B34CD00B2466B /* left.png */; };
-		2569846F128B34CD00B2466B /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846D128B34CD00B2466B /* right.png */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
 		2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5071285859A004EBEBB /* SystemConfiguration.framework */; };
 		2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E509128585A4004EBEBB /* MobileCoreServices.framework */; };
@@ -131,8 +129,6 @@
 		25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E1C35D1263092D0052BE93 /* LauncherViewController.m */; };
 		25E1C36012630A9B0052BE93 /* LauncherViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */; };
 		25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */; };
-		25E1C59F126332350052BE93 /* female.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59D126332350052BE93 /* female.png */; };
-		25E1C5A0126332350052BE93 /* male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C59E126332350052BE93 /* male.png */; };
 		25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EB5DD912643DE000619ECE /* ImageManipulator.m */; };
 		25F0310E1290216C003155D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310D1290216C003155D6 /* Default.png */; };
 		25F0311012902174003155D6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310F12902174003155D6 /* Default@2x.png */; };
@@ -219,8 +215,6 @@
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
 		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
-		2569846C128B34CD00B2466B /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
-		2569846D128B34CD00B2466B /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2573E5071285859A004EBEBB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2573E509128585A4004EBEBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -304,8 +298,6 @@
 		25E1C35D1263092D0052BE93 /* LauncherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LauncherViewController.m; sourceTree = "<group>"; };
 		25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPhone.xib; sourceTree = "<group>"; };
 		25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPad.xib; sourceTree = "<group>"; };
-		25E1C59D126332350052BE93 /* female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = female.png; sourceTree = "<group>"; };
-		25E1C59E126332350052BE93 /* male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = male.png; sourceTree = "<group>"; };
 		25EB5DD812643DE000619ECE /* ImageManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulator.h; sourceTree = "<group>"; };
 		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		25F0310D1290216C003155D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -396,12 +388,9 @@
 			isa = PBXGroup;
 			children = (
 				2513C9251291CABC002E79EF /* ranks */,
-				2569846B128B34CD00B2466B /* WebView */,
 				253E97F71267F4750037CB2D /* @1x */,
 				253E97FE1267F4750037CB2D /* @2x */,
 				253E98051267F4750037CB2D /* ipad */,
-				25E1C59D126332350052BE93 /* female.png */,
-				25E1C59E126332350052BE93 /* male.png */,
 				251EA3601262CB680055CFD2 /* Icon-Small.png */,
 				251EA3611262CB680055CFD2 /* Icon-Small@2x.png */,
 				251EA3621262CB680055CFD2 /* Icon.png */,
@@ -484,15 +473,6 @@
 				2569838A128AB1DE00B2466B /* RemoteRequest.m */,
 			);
 			path = Client;
-			sourceTree = "<group>";
-		};
-		2569846B128B34CD00B2466B /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-				2569846C128B34CD00B2466B /* left.png */,
-				2569846D128B34CD00B2466B /* right.png */,
-			);
-			name = WebView;
 			sourceTree = "<group>";
 		};
 		2573E51112858874004EBEBB /* ASIHTTPRequest */ = {
@@ -782,8 +762,6 @@
 				251EA3671262CB680055CFD2 /* Icon@2x.png in Resources */,
 				25E1C36012630A9B0052BE93 /* LauncherViewController_iPhone.xib in Resources */,
 				25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */,
-				25E1C59F126332350052BE93 /* female.png in Resources */,
-				25E1C5A0126332350052BE93 /* male.png in Resources */,
 				253E98071267F4750037CB2D /* bg.png in Resources */,
 				253E98081267F4750037CB2D /* btn_back.png in Resources */,
 				253E98091267F4750037CB2D /* btn_ranks.png in Resources */,
@@ -810,8 +788,6 @@
 				25BDF1F8128A478B004F046A /* table_cell_bg_landscape@2x.png in Resources */,
 				25BDF38F128A83C4004F046A /* picture_loading.png in Resources */,
 				25BDF391128A83CA004F046A /* picture_loading@2x.png in Resources */,
-				2569846E128B34CD00B2466B /* left.png in Resources */,
-				2569846F128B34CD00B2466B /* right.png in Resources */,
 				255BD026128CD2AE00DB5363 /* RankingsViewController_iPad.xib in Resources */,
 				255BD02B128CD2DA00DB5363 /* LoginViewController_iPad.xib in Resources */,
 				255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */,

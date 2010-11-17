@@ -58,7 +58,7 @@ static UIImage *_dislikeImage;
   [super viewDidLoad];
   
   // Display logout button if this is current user's profile
-  if(self.profileId == [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+  if(self.profileId == APP_DELEGATE.currentUserId) {
     UIBarButtonItem *logoutButton = [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logout)] autorelease];
     _navBarItem.leftBarButtonItem = logoutButton;
   }
@@ -152,7 +152,7 @@ static UIImage *_dislikeImage;
   headerView.backgroundColor = [UIColor clearColor];
   
   UILabel *headerLabel;
-  if(isDeviceIPad() || __IPHONE_OS_VERSION_MAX_ALLOWED <= 30200) {
+  if(isDeviceIPad()) {
     headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 400, 44)];
   } else {
     headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 440, 44)];

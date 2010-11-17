@@ -239,7 +239,7 @@
   
   DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d, isAd: %d",winnerId, loserId, isLeft, isAd);
   NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d&ad=%d", winnerId, loserId, isLeft, self.gameMode, isAd];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
@@ -248,7 +248,7 @@
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
   DLog(@"sending mash request for both face views");
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.bothRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];

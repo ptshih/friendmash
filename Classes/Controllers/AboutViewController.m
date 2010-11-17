@@ -74,7 +74,7 @@
   headerView.backgroundColor = [UIColor clearColor];
   
   UILabel *headerLabel;
-  if(isDeviceIPad() || __IPHONE_OS_VERSION_MAX_ALLOWED <= 30200) {
+  if(isDeviceIPad()) {
     headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 400, 44)];
   } else {
     headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 440, 44)];

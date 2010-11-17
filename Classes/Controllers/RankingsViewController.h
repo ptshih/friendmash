@@ -15,7 +15,7 @@
 @interface RankingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, ImageCacheDelegate> {
   IBOutlet UITableView *_tableView;
   IBOutlet UISegmentedControl *_segmentedControl;
-  IBOutlet UIActivityIndicatorView *_activityIndicator;
+  IBOutlet UIView *_loadingView;
   LauncherViewController *_launcherViewController;
   NSArray *_rankingsArray;
   ImageCache *_imageCache;
