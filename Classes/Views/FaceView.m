@@ -37,11 +37,6 @@
 - (BOOL)wasFlicked:(UITouch *)touch;
 
 /**
- This gets an ad from FM servers instead of FB picture
- */
-- (void)getAd;
-
-/**
  This fires an OAuth request to the FB graph API to retrieve a profile picture for the given facebookId
  */
 - (void)getPicture;
@@ -93,21 +88,7 @@
   self.facebookId = facebookId;
   myCenter = self.center;
   defaultOrigin = self.center;
-  
-  // Check for an ad injection
-  NSString *adFlag = [self.facebookId substringToIndex:5];
-  if([adFlag isEqualToString:@"fmad_"]) {
-    [self getAd];
-  } else {
-    [self getPicture];
-  }
-}
-
-- (void)getAd {
-  // This fetches an ad from FM servers instead of FB
-  ASIHTTPRequest *adRequest = [RemoteRequest getRequestForAdWithAdId:self.facebookId withDelegate:nil];
-  [self.networkQueue addOperation:adRequest];
-  [self.networkQueue go];
+  [self getPicture];
 }
 
 - (void)getPicture {
@@ -164,13 +145,7 @@
       case 0:
         break;
       case 1: {
-        // Check for an ad injection
-        NSString *adFlag = [self.facebookId substringToIndex:5];
-        if([adFlag isEqualToString:@"fmad_"]) {
-          [self getAd];
-        } else {
-          [self getPicture];
-        }
+        [self getPicture];
         break;
       }
       default:

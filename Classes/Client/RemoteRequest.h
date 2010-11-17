@@ -24,11 +24,6 @@
  */
 + (ASIHTTPRequest *)postRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params andPostData:(NSData *)postData withDelegate:(id)delegate;
 
-/**
- * Ad
- */
-+ (ASIHTTPRequest *)getRequestForAdWithAdId:(NSString *)adId withDelegate:(id)delegate;
-
 /*
  * Facebook
  */
