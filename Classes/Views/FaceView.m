@@ -122,16 +122,22 @@
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
-    DLog(@"FaceView status code not 200 in request finished, response: %@", [request responseString]);
+    DLog(@"FaceView status code not 200 in request finished, response length: %d", [[request responseData] length]);
     if(statusCode == 400) {
-      DLog(@"FaceView status code is 400 in request finished, response: %@", [request responseString]);
+      DLog(@"FaceView status code is 400 in request finished, response length: %d", [[request responseData] length]);
       NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
       [self.delegate faceViewDidFailWithError:errorDict];
     } else {
-      DLog(@"FaceView status code not 200 or 400 in request finished, response: %@", [request responseString]);
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-      [_networkErrorAlert show];
-      [_networkErrorAlert autorelease];
+      DLog(@"FaceView status code not 200 or 400 in request finished, response length: %d", [[request responseData] length]);
+      // There is apparently a change where FB will return null response because their CDN is down
+      // For now we're just gonna throw an error and pop out to Launcher
+      if([[request responseData] length] == 0) {
+        [self.delegate faceViewDidFailPictureDoesNotExist];
+      } else {
+        _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
+        [_networkErrorAlert show];
+        [_networkErrorAlert autorelease];
+      }
     }
   } else {
     [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];

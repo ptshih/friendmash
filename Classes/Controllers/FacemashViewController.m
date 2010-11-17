@@ -279,9 +279,17 @@
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict {
   if(_faceViewDidError) return;
   _faceViewDidError = YES;
-  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:[errorDict objectForKey:@"type"] message:[errorDict objectForKey:@"message"] delegate:self cancelButtonTitle:@"Login to Facebook" otherButtonTitles:nil];
+  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Your Facebook session has expired. Please login to Facebook again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [_oauthErrorAlert show];
   [_oauthErrorAlert autorelease];
+}
+
+- (void)faceViewDidFailPictureDoesNotExist {
+  if(_faceViewDidError) return;
+  _faceViewDidError = YES;
+  _fbPictureErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Facebook encountered an error, we promise it isn't our fault! Please try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [_fbPictureErrorAlert show];
+  [_fbPictureErrorAlert autorelease];  
 }
 
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
@@ -423,6 +431,9 @@
 //    [APP_DELEGATE authenticateWithFacebook:YES];
     [self.navigationController popViewControllerAnimated:NO];
     [APP_DELEGATE fbDidLogout];
+  } else if([alertView isEqual:_fbPictureErrorAlert]) {
+    _faceViewDidError = NO;
+    [self.navigationController popViewControllerAnimated:NO];
   }
 }
 

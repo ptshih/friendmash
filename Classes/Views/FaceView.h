@@ -25,6 +25,7 @@
 @optional
 - (void)faceViewDidFinishLoading:(BOOL)isLeft;
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
+- (void)faceViewDidFailPictureDoesNotExist;
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft;
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft;
 @end
