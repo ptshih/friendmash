@@ -189,23 +189,23 @@ static UIImage *_dislikeImage;
   if(votes < k) {
     return (float)votes / k;
   } else if(votes < 2*k) {
-    return (float)(votes - 1*k) / k;
-  } else if(votes < 3*k) {
-    return (float)(votes - 2*k) / k;
+    return (float)(votes - k) / k;
   } else if(votes < 4*k) {
-    return (float)(votes - 3*k) / k;
-  } else if(votes < 5*k) {
-    return (float)(votes - 4*k) / k;
-  } else if(votes < 6*k) {
-    return (float)(votes - 5*k) / k;
-  } else if(votes < 7*k) {
-    return (float)(votes - 6*k) / k;
+    return (float)(votes - 2*k) / k;
   } else if(votes < 8*k) {
-    return (float)(votes - 7*k) / k;
-  } else if(votes < 9*k) {
+    return (float)(votes - 4*k) / k;
+  } else if(votes < 16*k) {
     return (float)(votes - 8*k) / k;
-  } else if(votes < 10*k) {
-    return (float)(votes - 9*k) / k;
+  } else if(votes < 32*k) {
+    return (float)(votes - 16*k) / k;
+  } else if(votes < 64*k) {
+    return (float)(votes - 32*k) / k;
+  } else if(votes < 128*k) {
+    return (float)(votes - 64*k) / k;
+  } else if(votes < 256*k) {
+    return (float)(votes - 128*k) / k;
+  } else if(votes < 512*k) {
+    return (float)(votes - 256*k) / k;
   } else {
     return 1.0;
   }
@@ -217,21 +217,21 @@ static UIImage *_dislikeImage;
     return [UIImage imageNamed:@"private.png"];
   } else if(votes < 2*k) {
     return [UIImage imageNamed:@"private_first_class.png"];
-  } else if(votes < 3*k) {
-    return [UIImage imageNamed:@"corporal.png"];
   } else if(votes < 4*k) {
-    return [UIImage imageNamed:@"sergeant.png"];
-  } else if(votes < 5*k) {
-    return [UIImage imageNamed:@"staff_sergeant.png"];
-  } else if(votes < 6*k) {
-    return [UIImage imageNamed:@"sergeant_first_class.png"];
-  } else if(votes < 7*k) {
-    return [UIImage imageNamed:@"master_sergeant.png"];
+    return [UIImage imageNamed:@"corporal.png"];
   } else if(votes < 8*k) {
+    return [UIImage imageNamed:@"sergeant.png"];
+  } else if(votes < 16*k) {
+    return [UIImage imageNamed:@"staff_sergeant.png"];
+  } else if(votes < 32*k) {
+    return [UIImage imageNamed:@"sergeant_first_class.png"];
+  } else if(votes < 64*k) {
+    return [UIImage imageNamed:@"master_sergeant.png"];
+  } else if(votes < 128*k) {
     return [UIImage imageNamed:@"first_sergeant.png"];
-  } else if(votes < 9*k) {
+  } else if(votes < 256*k) {
     return [UIImage imageNamed:@"sergeant_major.png"];
-  } else if(votes < 10*k) {
+  } else if(votes < 512*k) {
     return [UIImage imageNamed:@"command_sergeant_major.png"];
   } else {
     return [UIImage imageNamed:@"sergeant_major_army.png"];
@@ -245,21 +245,21 @@ static UIImage *_dislikeImage;
     return @"Private";
   } else if(votes < 2*k) {
     return @"Private First Class";
-  } else if(votes < 3*k) {
-    return @"Corporal";
   } else if(votes < 4*k) {
-    return @"Sergeant";
-  } else if(votes < 5*k) {
-    return @"Staff Sergeant";
-  } else if(votes < 6*k) {
-    return @"Sergeant First Class";
-  } else if(votes < 7*k) {
-    return @"Master Sergeant";
+    return @"Corporal";
   } else if(votes < 8*k) {
+    return @"Sergeant";
+  } else if(votes < 16*k) {
+    return @"Staff Sergeant";
+  } else if(votes < 32*k) {
+    return @"Sergeant First Class";
+  } else if(votes < 64*k) {
+    return @"Master Sergeant";
+  } else if(votes < 128*k) {
     return @"First Sergeant";
-  } else if(votes < 9*k) {
+  } else if(votes < 256*k) {
     return @"Sergeant Major";
-  } else if(votes < 10*k) {
+  } else if(votes < 512*k) {
     return @"Command Sergeant Major";
   } else {
     return @"High Warlord";
@@ -295,7 +295,7 @@ static UIImage *_dislikeImage;
       return 4;
       break;
     case 1: // stats
-      return 5;
+      return 7;
       break;
     default:
       return 0;
@@ -363,7 +363,7 @@ static UIImage *_dislikeImage;
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 2:
-          cell.textLabel.text = @"Ranking within Your Social Network";
+          cell.textLabel.text = @"Ranking among Friends";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total_network"] stringValue]] : nil;
           break;
         case 3:
@@ -373,8 +373,18 @@ static UIImage *_dislikeImage;
           break;
         case 4:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Like Streak";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
+          cell.textLabel.text = @"Likes Received from Friends";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins_network"] notNil] ? [[self.profileDict objectForKey:@"wins_network"] stringValue] : nil;
+          break;
+        case 5:
+          cell.imageView.image = _likeImage;
+          cell.textLabel.text = @"Longest Like Streak";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max"] stringValue] : nil;
+          break;
+        case 6:
+          cell.imageView.image = _likeImage;
+          cell.textLabel.text = @"Longest Like Streak among Friends";
+          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max_network"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max_network"] stringValue] : nil;
           break;
 //        case 4:
 //          cell.imageView.image = _dislikeImage;
