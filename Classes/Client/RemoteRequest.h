@@ -14,15 +14,20 @@
 
 }
 
-/*
+/**
  * GET
  */
 + (ASIHTTPRequest *)getRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params withDelegate:(id)delegate;
 
-/*
+/**
  * POST
  */
 + (ASIHTTPRequest *)postRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params andPostData:(NSData *)postData withDelegate:(id)delegate;
+
+/**
+ * Ad
+ */
++ (ASIHTTPRequest *)getRequestForAdWithAdId:(NSString *)adId withDelegate:(id)delegate;
 
 /*
  * Facebook

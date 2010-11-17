@@ -259,8 +259,14 @@
   self.rightUserId = [self getNewOpponentId];
   [self prepareBothFaceViews];
 #else
-  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
-  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
+  // Don't add to recents if this is an ad
+  NSString *adFlagLeft = [self.leftUserId substringToIndex:5];
+  NSString *adFlagRight = [self.rightUserId substringToIndex:5];
+  if(![adFlagLeft isEqualToString:@"fmad_"] && ![adFlagRight isEqualToString:@"fmad_"]) {
+    if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
+    if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
+  }
+
   [self sendMashRequestForBothFaceViewsWithDelegate:self];
 #endif
 }
@@ -308,8 +314,15 @@
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
-  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, isLeft);
-  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, isLeft, self.gameMode];
+  BOOL isAd = NO;
+  NSString *adFlagLeft = [self.leftUserId substringToIndex:5];
+  NSString *adFlagRight = [self.rightUserId substringToIndex:5];
+  if([adFlagLeft isEqualToString:@"fmad_"] && [adFlagRight isEqualToString:@"fmad_"]) {
+    isAd = YES;
+  }
+  
+  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d, isAd: %d",winnerId, loserId, isLeft, isAd);
+  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d&ad=%d", winnerId, loserId, isLeft, self.gameMode, isAd];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];

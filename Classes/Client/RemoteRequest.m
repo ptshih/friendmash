@@ -60,6 +60,22 @@
   return postRequest;
 }
 
++ (ASIHTTPRequest *)getRequestForAdWithAdId:(NSString *)adId withDelegate:(id)delegate {
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/ad/%@", FACEMASH_BASE_URL, adId];
+  ASIHTTPRequest *adRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:baseURLString]];
+  [adRequest setNumberOfTimesToRetryOnTimeout:2];
+  [adRequest setRequestMethod:@"GET"];
+  [adRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];
+  [adRequest addRequestHeader:@"X-Device-Model" value:[[UIDevice currentDevice] model]];
+  [adRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  [adRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
+  [adRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
+  [adRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
+  [adRequest setDelegate:delegate];
+  
+  return adRequest;
+}
+
 + (ASIHTTPRequest *)getFacebookRequestForMeWithDelegate:(id)delegate {
   NSString *token = [APP_DELEGATE.fbAccessToken stringWithPercentEscape];
   NSString *fields = FB_PARAMS;

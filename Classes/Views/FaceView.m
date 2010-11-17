@@ -93,6 +93,8 @@
   self.facebookId = facebookId;
   myCenter = self.center;
   defaultOrigin = self.center;
+  
+  // Check for an ad injection
   NSString *adFlag = [self.facebookId substringToIndex:5];
   if([adFlag isEqualToString:@"fmad_"]) {
     [self getAd];
@@ -103,8 +105,7 @@
 
 - (void)getAd {
   // This fetches an ad from FM servers instead of FB
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/serve_ad/%@", FACEMASH_BASE_URL, self.facebookId];
-  ASIHTTPRequest *adRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
+  ASIHTTPRequest *adRequest = [RemoteRequest getRequestForAdWithAdId:self.facebookId withDelegate:nil];
   [self.networkQueue addOperation:adRequest];
   [self.networkQueue go];
 }
@@ -162,9 +163,16 @@
     switch (buttonIndex) {
       case 0:
         break;
-      case 1:
-        [self getPicture];
+      case 1: {
+        // Check for an ad injection
+        NSString *adFlag = [self.facebookId substringToIndex:5];
+        if([adFlag isEqualToString:@"fmad_"]) {
+          [self getAd];
+        } else {
+          [self getPicture];
+        }
         break;
+      }
       default:
         break;
     }
