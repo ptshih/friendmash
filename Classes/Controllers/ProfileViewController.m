@@ -322,6 +322,7 @@ static UIImage *_dislikeImage;
             UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
             rankView.frame = CGRectMake(cell.contentView.frame.size.width - 40, 2, 36, 36);
             [cell.contentView addSubview:rankView];
+            [rankView release];
           }
           break;
         case 1: {
@@ -329,8 +330,9 @@ static UIImage *_dislikeImage;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
             progressView.frame = CGRectMake(cell.contentView.frame.size.width - 225, 17, 215, 9);
-            progressView.progress = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getProgressForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : 0.0;
+            progressView.progress = [self getProgressForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]];
             [cell.contentView addSubview:progressView];
+            [progressView release];
           }
           break;
         }
@@ -432,6 +434,8 @@ static UIImage *_dislikeImage;
   if(_networkQueue) [_networkQueue release];
   if(_profileDict) [_profileDict release];
   if(_profileId) [_profileId release];
+  if(_navBarItem) [_navBarItem release];
+  if(_tableView) [_tableView release];
   [super dealloc];
 }
 

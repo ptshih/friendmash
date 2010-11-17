@@ -179,6 +179,8 @@
 - (void)dealloc {
   if(_howToPlay) [_howToPlay release];
   if(_aboutFacemash) [_aboutFacemash release];
+  if(_navBarItem) [_navBarItem release];
+  if(_tableView) [_tableView release];
   [super dealloc];
 }
 

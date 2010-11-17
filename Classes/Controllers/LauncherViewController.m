@@ -149,6 +149,9 @@
 
 
 - (void)dealloc {
+  if(_launcherView) [_launcherView release];
+  if(_gameModeSwitch) [_gameModeSwitch release];
+  if(_splashView) [_splashView release];
   [super dealloc];
 }
 

@@ -395,6 +395,8 @@
   if(_networkQueue) [_networkQueue release];
   if(_facebookId) [_facebookId release];
   if(_faceImageView) [_faceImageView release];
+  if(_spinner) [_spinner release];
+  if(_loadingView) [_loadingView release];
   [super dealloc];
 }
 

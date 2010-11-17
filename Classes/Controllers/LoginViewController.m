@@ -227,6 +227,9 @@
 
 - (void)dealloc {
   if(_authorizeURL) [_authorizeURL release];
+  if(_fbWebView) [_fbWebView release];
+  if(_splashView) [_splashView release];
+  if(_splashLabel) [_splashLabel release];
   [super dealloc];
 }
 

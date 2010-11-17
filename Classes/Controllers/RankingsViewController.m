@@ -282,6 +282,9 @@ static UIImage *_placeholderImage;
   if(_imageCache) [_imageCache release];
   if(_rankingsArray) [_rankingsArray release];
   if(_selectedGender) [_selectedGender release];
+  if(_tableView) [_tableView release];
+  if(_segmentedControl) [_segmentedControl release];
+  if(_activityIndicator) [_activityIndicator release];
   [super dealloc];
 }
 

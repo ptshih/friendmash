@@ -133,6 +133,8 @@
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
   if(_facebookId) [_facebookId release];
+  if(_profileImageView) [_profileImageView release];
+  if(_activityIndicator) [_activityIndicator release];
   [super dealloc];
 }
 

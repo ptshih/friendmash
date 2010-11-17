@@ -465,6 +465,8 @@
   if(_rightUserId) [_rightUserId release];
   if(_resultsRequest) [_resultsRequest release];
   if(_bothRequest) [_bothRequest release];
+  if(_toolbar) [_toolbar release];
+  if(_remashButton) [_remashButton release];
   [super dealloc];
 }
 
