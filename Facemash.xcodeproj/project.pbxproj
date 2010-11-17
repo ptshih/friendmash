@@ -11,7 +11,7 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		2513C74612902A62002E79EF /* Default~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C74512902A62002E79EF /* Default~iPad.png */; };
+		2513C74612902A62002E79EF /* Default_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C74512902A62002E79EF /* Default_iPad.png */; };
 		2513C9311291CABC002E79EF /* command_sergeant_major.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9261291CABC002E79EF /* command_sergeant_major.png */; };
 		2513C9321291CABC002E79EF /* corporal.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9271291CABC002E79EF /* corporal.png */; };
 		2513C9331291CABC002E79EF /* master_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9281291CABC002E79EF /* master_sergeant.png */; };
@@ -25,7 +25,7 @@
 		2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9301291CABC002E79EF /* staff_sergeant.png */; };
 		2513C999129232FF002E79EF /* first_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C998129232FF002E79EF /* first_sergeant.png */; };
 		2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2513CB7A129283E0002E79EF /* LightboxViewController.m */; };
-		2513CB7D129283E0002E79EF /* LightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2513CB7B129283E0002E79EF /* LightboxViewController.xib */; };
+		2513CB7D129283E0002E79EF /* LightboxViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */; };
 		2513CC901292933D002E79EF /* unlike.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CC8F1292933D002E79EF /* unlike.png */; };
 		2513CCA012929347002E79EF /* unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CC9F12929347002E79EF /* unlike@2x.png */; };
 		2513CCA21292935D002E79EF /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513CCA11292935D002E79EF /* like.png */; };
@@ -102,6 +102,9 @@
 		2573EA5812861A08004EBEBB /* CJSONScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4C12861A08004EBEBB /* CJSONScanner.m */; };
 		2573EA5912861A08004EBEBB /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4E12861A08004EBEBB /* CJSONSerializer.m */; };
 		2573EA5A12861A08004EBEBB /* CSerializedJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA5012861A08004EBEBB /* CSerializedJSONData.m */; };
+		25B1B8341292C04300BB6D6C /* LightboxViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */; };
+		25B7D51012935CB90089185E /* bullet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B7D50F12935CB90089185E /* bullet@2x.png */; };
+		25B7D52212935CBC0089185E /* bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B7D52112935CBC0089185E /* bullet.png */; };
 		25B94874128F6E6100016322 /* btn_refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B94873128F6E6100016322 /* btn_refresh@2x.png */; };
 		25B94876128F6E6C00016322 /* btn_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B94875128F6E6C00016322 /* btn_refresh.png */; };
 		25B9487C128F6F7800016322 /* btn_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B9487B128F6F7800016322 /* btn_profile.png */; };
@@ -144,7 +147,7 @@
 		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		2513C74512902A62002E79EF /* Default~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~iPad.png"; sourceTree = "<group>"; };
+		2513C74512902A62002E79EF /* Default_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default_iPad.png; sourceTree = "<group>"; };
 		2513C9261291CABC002E79EF /* command_sergeant_major.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = command_sergeant_major.png; sourceTree = "<group>"; };
 		2513C9271291CABC002E79EF /* corporal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corporal.png; sourceTree = "<group>"; };
 		2513C9281291CABC002E79EF /* master_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = master_sergeant.png; sourceTree = "<group>"; };
@@ -159,7 +162,7 @@
 		2513C998129232FF002E79EF /* first_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first_sergeant.png; sourceTree = "<group>"; };
 		2513CB79129283E0002E79EF /* LightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightboxViewController.h; sourceTree = "<group>"; };
 		2513CB7A129283E0002E79EF /* LightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightboxViewController.m; sourceTree = "<group>"; };
-		2513CB7B129283E0002E79EF /* LightboxViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController.xib; sourceTree = "<group>"; };
+		2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController_iPhone.xib; sourceTree = "<group>"; };
 		2513CC8F1292933D002E79EF /* unlike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlike.png; sourceTree = "<group>"; };
 		2513CC9F12929347002E79EF /* unlike@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unlike@2x.png"; sourceTree = "<group>"; };
 		2513CCA11292935D002E79EF /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
@@ -268,6 +271,9 @@
 		2573EA4E12861A08004EBEBB /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
 		2573EA4F12861A08004EBEBB /* CSerializedJSONData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSerializedJSONData.h; sourceTree = "<group>"; };
 		2573EA5012861A08004EBEBB /* CSerializedJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSerializedJSONData.m; sourceTree = "<group>"; };
+		25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController_iPad.xib; sourceTree = "<group>"; };
+		25B7D50F12935CB90089185E /* bullet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet@2x.png"; sourceTree = "<group>"; };
+		25B7D52112935CBC0089185E /* bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet.png; sourceTree = "<group>"; };
 		25B94873128F6E6100016322 /* btn_refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_refresh@2x.png"; sourceTree = "<group>"; };
 		25B94875128F6E6C00016322 /* btn_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_refresh.png; sourceTree = "<group>"; };
 		25B9487B128F6F7800016322 /* btn_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_profile.png; sourceTree = "<group>"; };
@@ -420,6 +426,7 @@
 			children = (
 				2513CCA11292935D002E79EF /* like.png */,
 				2513CC8F1292933D002E79EF /* unlike.png */,
+				25B7D52112935CBC0089185E /* bullet.png */,
 				25F0310D1290216C003155D6 /* Default.png */,
 				253E97F81267F4750037CB2D /* bg.png */,
 				253E97F91267F4750037CB2D /* btn_back.png */,
@@ -442,6 +449,7 @@
 			children = (
 				2513CCA312929364002E79EF /* like@2x.png */,
 				2513CC9F12929347002E79EF /* unlike@2x.png */,
+				25B7D50F12935CB90089185E /* bullet@2x.png */,
 				25F0310F12902174003155D6 /* Default@2x.png */,
 				253E97FF1267F4750037CB2D /* bg@2x.png */,
 				253E98001267F4750037CB2D /* btn_back@2x.png */,
@@ -470,7 +478,7 @@
 				253E983C1267F86B0037CB2D /* f_iPad.png */,
 				253E983D1267F86B0037CB2D /* m_iPad.png */,
 				253E98061267F4750037CB2D /* bg_iPad.png */,
-				2513C74512902A62002E79EF /* Default~iPad.png */,
+				2513C74512902A62002E79EF /* Default_iPad.png */,
 			);
 			path = ipad;
 			sourceTree = "<group>";
@@ -653,11 +661,12 @@
 				255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */,
 				253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */,
 				255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */,
-				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
 				255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */,
+				255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */,
 				25B94A0A128FA5AE00016322 /* AboutViewController_iPhone.xib */,
 				25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */,
-				2513CB7B129283E0002E79EF /* LightboxViewController.xib */,
+				2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */,
+				25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */,
 				255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */,
 			);
 			path = Controllers;
@@ -832,7 +841,7 @@
 				25B94AEC128FE57300016322 /* AboutViewController_iPad.xib in Resources */,
 				25F0310E1290216C003155D6 /* Default.png in Resources */,
 				25F0311012902174003155D6 /* Default@2x.png in Resources */,
-				2513C74612902A62002E79EF /* Default~iPad.png in Resources */,
+				2513C74612902A62002E79EF /* Default_iPad.png in Resources */,
 				2513C9311291CABC002E79EF /* command_sergeant_major.png in Resources */,
 				2513C9321291CABC002E79EF /* corporal.png in Resources */,
 				2513C9331291CABC002E79EF /* master_sergeant.png in Resources */,
@@ -845,11 +854,14 @@
 				2513C93A1291CABC002E79EF /* specialist.png in Resources */,
 				2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */,
 				2513C999129232FF002E79EF /* first_sergeant.png in Resources */,
-				2513CB7D129283E0002E79EF /* LightboxViewController.xib in Resources */,
+				2513CB7D129283E0002E79EF /* LightboxViewController_iPhone.xib in Resources */,
 				2513CC901292933D002E79EF /* unlike.png in Resources */,
 				2513CCA012929347002E79EF /* unlike@2x.png in Resources */,
 				2513CCA21292935D002E79EF /* like.png in Resources */,
 				2513CCA412929364002E79EF /* like@2x.png in Resources */,
+				25B1B8341292C04300BB6D6C /* LightboxViewController_iPad.xib in Resources */,
+				25B7D51012935CB90089185E /* bullet@2x.png in Resources */,
+				25B7D52212935CBC0089185E /* bullet.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

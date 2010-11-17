@@ -201,17 +201,10 @@
     }
   } else if([request isEqual:self.tokenRequest]) {
     DLog(@"token request finished");
-    if(statusCode > 200) {
-      // Retry this request 2 times
-      if(_tokenRetryCount < 2) {
-        _tokenRetryCount++;
-        [self sendFacebookAccessToken];
-      } else {
-        _tokenRetryCount = 0; // epic fail, oh well
-        _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-        [_tokenFailedAlert show];
-        [_tokenFailedAlert autorelease];
-      }
+    if(statusCode >= 500) {
+      _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+      [_tokenFailedAlert show];
+      [_tokenFailedAlert autorelease];
     } else {
       // Remove the splash screen now
       self.launcherViewController.launcherView.hidden = NO;
@@ -223,6 +216,15 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request Failed with Error: %@", [request error]);
+  if([request isEqual:self.currentUserRequest]) {
+    _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [_networkErrorAlert show];
+    [_networkErrorAlert autorelease];
+  } else if([request isEqual:self.tokenRequest]) {
+    _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+    [_tokenFailedAlert show];
+    [_tokenFailedAlert autorelease];
+  }
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {

@@ -63,9 +63,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
-    _leftUserId = nil;
-    _rightUserId = nil;
-    _gender = @"male"; // male by default
     _gameMode = FacemashGameModeNormal; // ALL game mode by default
     _isLeftLoaded = NO;
     _isRightLoaded = NO;
@@ -303,6 +300,7 @@
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
+  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, isLeft);
   NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, isLeft, self.gameMode];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
@@ -321,6 +319,7 @@
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
+  DLog(@"sending mash request for both face views");
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   self.bothRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
@@ -332,12 +331,15 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
+    DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
     // Check for a not-implemented (did not find opponents) response
     if(statusCode == 501) {
+      DLog(@"FMVC status code is 501 in request finished, response: %@", [request responseString]);
       _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
       [_noContentAlert show];
       [_noContentAlert autorelease];
     } else {
+      DLog(@"FMVC status code not 200 or 501 in request finished, response: %@", [request responseString]);
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
@@ -347,7 +349,7 @@
   
   // Use when fetching text data
   NSString *responseString = [request responseString];
-  NSLog(@"Raw response string from request: %@ => %@",request, responseString);
+  DLog(@"Raw response string from request: %@ => %@",request, responseString);
   
   if([request isEqual:self.resultsRequest]) {
     DLog(@"send results request finished");
@@ -379,6 +381,7 @@
     DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
     // protect against null IDs from failed server call
     if(!self.leftUserId || !self.rightUserId) {
+      DLog(@"FMVC left or right userId is null, left: %@, right: %@, response: %@", self.leftUserId, self.rightUserId, [request responseString]);
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
@@ -444,11 +447,13 @@
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
-  [_recentOpponentsArray release];
-  [_gender release];
-  [_leftUserId release];
-  [_rightUserId release];
+  if(_networkQueue) [_networkQueue release];
+  if(_recentOpponentsArray) [_recentOpponentsArray release];
+  if(_gender) [_gender release];
+  if(_leftUserId) [_leftUserId release];
+  if(_rightUserId) [_rightUserId release];
+  if(_resultsRequest) [_resultsRequest release];
+  if(_bothRequest) [_bothRequest release];
   [super dealloc];
 }
 

@@ -65,6 +65,7 @@ typedef enum {
 @property (nonatomic, assign) UIToolbar *toolbar;
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) BOOL isAnimating;
+@property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 @property (retain) ASINetworkQueue *networkQueue;
 

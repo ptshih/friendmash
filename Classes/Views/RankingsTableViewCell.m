@@ -17,18 +17,24 @@
 #define PROFILE_IMAGE_SIZE 50.0
 
 static UIImage *_starImage;
+static UIImage *_likeImage;
+static UIImage *_bulletImage;
 
 @implementation RankingsTableViewCell
 
 @synthesize profileImageView = _profileImageView;
+@synthesize likeImageView = _likeImageView;
+@synthesize bulletImageView = _bulletImageView;
 @synthesize nameLabel = _nameLabel;
 @synthesize rankLabel = _rankLabel;
-@synthesize scoreLabel = _scoreLabel;
-@synthesize winLossLabel = _winLossLabel;
+@synthesize likeLabel = _likeLabel;
+@synthesize streakLabel = _streakLabel;
 @synthesize rankView = _rankView;
 
 + (void)initialize {
   _starImage = [[UIImage imageNamed:@"favorite_star.png"] retain];
+  _likeImage = [[UIImage imageNamed:@"like.png"] retain];
+  _bulletImage = [[UIImage imageNamed:@"bullet.png"] retain];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -38,24 +44,27 @@ static UIImage *_starImage;
     // self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PROFILE_IMAGE_MARGIN_X, PROFILE_IMAGE_MARGIN_Y, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE)];
+    _likeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    _bulletImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    self.likeImageView.image = _likeImage;
+    self.bulletImageView.image = _bulletImage;
+    self.bulletImageView.contentMode = UIViewContentModeCenter;
     self.profileImageView.layer.cornerRadius = 5.0;
     self.profileImageView.layer.masksToBounds = YES;
     _nameLabel = [[UILabel alloc] init];
     _rankLabel = [[UILabel alloc] init];
-    _scoreLabel = [[UILabel alloc] init];
-    _winLossLabel = [[UILabel alloc] init];
+    _likeLabel = [[UILabel alloc] init];
+    _streakLabel = [[UILabel alloc] init];
     _rankView = [[UIView alloc] init];
     
     self.nameLabel.backgroundColor = [UIColor clearColor];
     self.rankLabel.backgroundColor = [UIColor clearColor];
-    self.scoreLabel.backgroundColor = [UIColor clearColor];
-    self.winLossLabel.backgroundColor = [UIColor clearColor];
+    self.likeLabel.backgroundColor = [UIColor clearColor];
+    self.streakLabel.backgroundColor = [UIColor clearColor];
     
     self.nameLabel.font = [UIFont boldSystemFontOfSize:17.0];
-    
     self.rankLabel.textAlignment = UITextAlignmentCenter;
     self.rankLabel.font = [UIFont boldSystemFontOfSize:17.0];
-//    self.rankLabel.font = [UIFont fontWithName:@"Lucida Grande" size:18.0];
 
     self.rankView.backgroundColor = [UIColor clearColor];
     self.rankView.frame = CGRectMake(0, 0, 52, 50);
@@ -67,9 +76,11 @@ static UIImage *_starImage;
     [rankStarView release];
     
     [self.contentView addSubview:self.profileImageView];
+    [self.contentView addSubview:self.likeImageView];
+    [self.contentView addSubview:self.bulletImageView];
     [self.contentView addSubview:self.nameLabel];
-//    [self.contentView addSubview:self.scoreLabel];
-    [self.contentView addSubview:self.winLossLabel];
+    [self.contentView addSubview:self.likeLabel];
+    [self.contentView addSubview:self.streakLabel];
     [self.contentView addSubview:self.rankView];
     
   }
@@ -81,8 +92,8 @@ static UIImage *_starImage;
   self.profileImageView.image = nil;
   self.nameLabel.text = nil;
   self.rankLabel.text = nil;
-  self.scoreLabel.text = nil;
-  self.winLossLabel.text = nil;
+  self.likeLabel.text = nil;
+  self.streakLabel.text = nil;
 }
 
 - (void)layoutSubviews {
@@ -99,46 +110,52 @@ static UIImage *_starImage;
   
   self.nameLabel.left = leftTop;
   self.rankLabel.left = leftTop;
-  self.winLossLabel.left = leftBot;
-  self.scoreLabel.left = leftBot;
-  
   self.nameLabel.top = topY;
   self.rankLabel.top = topY;
-  self.winLossLabel.top = botY;
-  self.scoreLabel.top = botY;
+  
   
   CGFloat textWidthTop = self.contentView.width - leftTop - 10;
   CGSize textSizeTop = CGSizeMake(textWidthTop, INT_MAX);
-  
-  CGFloat textWidthBot = self.contentView.width - leftBot - 10;
-  CGSize textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
   // Top
   CGSize nameSize = [self.nameLabel.text sizeWithFont:self.nameLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
   self.nameLabel.height = nameSize.height;
   self.nameLabel.width = nameSize.width;
-//  leftTop += self.nameLabel.width + 10;
-//  textWidthTop -= self.nameLabel.width + 10;
-//  textSizeTop = CGSizeMake(textWidthTop, INT_MAX);
   
-//  CGSize rankSize = [self.rankLabel.text sizeWithFont:self.rankLabel.font constrainedToSize:textSizeTop lineBreakMode:UILineBreakModeWordWrap];
-//  self.rankLabel.height = rankSize.height;
-//  self.rankLabel.width = rankSize.width;
-//  self.rankLabel.left = self.contentView.width - 10.0 - self.rankLabel.width;
+  // Like Button
+  self.likeImageView.left = leftBot - 5.0;
+  self.likeImageView.top = botY;
   
+  leftBot = self.likeImageView.right + 5.0;
+  
+  self.likeLabel.left = leftBot;
+  self.likeLabel.top = botY;
+  
+  CGFloat textWidthBot = self.contentView.width - leftBot - 10;
+  CGSize textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
   // Bottom
-  CGSize winLossSize = [self.winLossLabel.text sizeWithFont:self.winLossLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
-  self.winLossLabel.height = winLossSize.height;
-  self.winLossLabel.width = winLossSize.width;
-//  leftBot += self.winLossLabel.width + 10;
-//  textWidthBot -= self.nameLabel.width + 10;
-//  textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
+  CGSize likeSize = [self.likeLabel.text sizeWithFont:self.likeLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
+  self.likeLabel.height = likeSize.height;
+  self.likeLabel.width = likeSize.width;
   
-//  CGSize scoreSize = [self.scoreLabel.text sizeWithFont:self.scoreLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
-//  self.scoreLabel.height = scoreSize.height;
-//  self.scoreLabel.width = scoreSize.width;
-//  self.scoreLabel.left = self.contentView.width - 10.0 - self.scoreLabel.width;
+  leftBot = self.likeLabel.right;
+  
+  // Bullet Button
+  self.bulletImageView.left = leftBot;
+  self.bulletImageView.top = botY;
+  
+  leftBot = self.bulletImageView.right;
+  
+  textWidthBot = self.contentView.width - leftBot - 10;
+  textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
+  
+  self.streakLabel.left = leftBot;
+  self.streakLabel.top = botY;
+  
+  CGSize streakSize = [self.streakLabel.text sizeWithFont:self.streakLabel.font constrainedToSize:textSizeBot lineBreakMode:UILineBreakModeWordWrap];
+  self.streakLabel.height = streakSize.height;
+  self.streakLabel.width = streakSize.width;
   
   // Star
   self.rankView.left = self.contentView.width - 10.0 - self.rankView.width;
@@ -155,12 +172,8 @@ static UIImage *_starImage;
   cell.profileImageView.image = profileImage;
   cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
-//  cell.scoreLabel.text = [NSString stringWithFormat:@"Score: %@", [[dictionary objectForKey:@"score"] stringValue]];
-#ifdef DEBUG
-  cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@  Score: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue], [[dictionary objectForKey:@"score"] stringValue]];
-#else
-  cell.winLossLabel.text = [NSString stringWithFormat:@"Likes: %@  Dislikes: %@", [[dictionary objectForKey:@"wins"] stringValue], [[dictionary objectForKey:@"losses"] stringValue]];
-#endif
+  cell.likeLabel.text = [NSString stringWithFormat:@"%@ Likes", [[dictionary objectForKey:@"wins"] stringValue]];
+  cell.streakLabel.text = [NSString stringWithFormat:@"%@ Likes in a Row", [[dictionary objectForKey:@"win_streak"] stringValue]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    
@@ -169,13 +182,14 @@ static UIImage *_starImage;
   // Configure the view for the selected state.
 }
 
-
 - (void)dealloc {
   [_profileImageView release];
+  [_likeImageView release];
+  [_bulletImageView release];
   [_nameLabel release];
   [_rankLabel release];
-  [_scoreLabel release];
-  [_winLossLabel release];
+  [_likeLabel release];
+  [_streakLabel release];
   [_rankView release];
   [super dealloc];
 }

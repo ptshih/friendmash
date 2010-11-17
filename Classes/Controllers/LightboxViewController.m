@@ -131,7 +131,7 @@
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
+  if(_networkQueue) [_networkQueue release];
   if(_facebookId) [_facebookId release];
   [super dealloc];
 }

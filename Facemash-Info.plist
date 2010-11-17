@@ -24,7 +24,7 @@
 	<key>UILaunchImageFile</key>
 	<string>Default</string>
 	<key>UILaunchImageFile~ipad</key>
-	<string>Default~iPad</string>
+	<string>Default_iPad</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sevenminuteapps.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

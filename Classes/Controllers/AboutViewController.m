@@ -171,8 +171,8 @@
 
 
 - (void)dealloc {
-  [_howToPlay release];
-  [_aboutFacemash release];
+  if(_howToPlay) [_howToPlay release];
+  if(_aboutFacemash) [_aboutFacemash release];
   [super dealloc];
 }
 

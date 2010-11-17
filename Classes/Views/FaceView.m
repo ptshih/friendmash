@@ -37,9 +37,14 @@
 - (BOOL)wasFlicked:(UITouch *)touch;
 
 /**
+ This gets an ad from FM servers instead of FB picture
+ */
+- (void)getAd;
+
+/**
  This fires an OAuth request to the FB graph API to retrieve a profile picture for the given facebookId
  */
-- (void)getPictureForFacebookId:(NSString *)facebookId;
+- (void)getPicture;
 
 /**
  This calls the delegate (FacemashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to NO
@@ -61,6 +66,7 @@
 @synthesize toolbar = _toolbar;
 @synthesize isLeft = _isLeft;
 @synthesize isAnimating = _isAnimating;
+@synthesize facebookId = _facebookId;
 @synthesize delegate = _delegate;
 @synthesize networkQueue = _networkQueue;
 
@@ -68,9 +74,9 @@
   _retryCount = 0;
   currentAnimationType = 0;
   _imageLoaded = NO;
-  _facebookId = 0;
   self.isAnimating = NO;
   _touchAllowed = YES;
+  _facebookId = [[NSString alloc] init];
   
   _networkQueue = [[ASINetworkQueue queue] retain];
   [[self networkQueue] setDelegate:self];
@@ -84,14 +90,28 @@
 }
 
 - (void)prepareFaceViewWithFacebookId:(NSString *)facebookId {
-  _facebookId = facebookId;
+  self.facebookId = facebookId;
   myCenter = self.center;
   defaultOrigin = self.center;
-  [self getPictureForFacebookId:_facebookId];
+  NSString *adFlag = [self.facebookId substringToIndex:5];
+  if([adFlag isEqualToString:@"fmad_"]) {
+    [self getAd];
+  } else {
+    [self getPicture];
+  }
 }
 
-- (void)getPictureForFacebookId:(NSString *)facebookId {
-  ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:facebookId andType:@"large" withDelegate:nil];
+- (void)getAd {
+  // This fetches an ad from FM servers instead of FB
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/serve_ad/%@", FACEMASH_BASE_URL, self.facebookId];
+  ASIHTTPRequest *adRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
+  [self.networkQueue addOperation:adRequest];
+  [self.networkQueue go];
+}
+
+- (void)getPicture {
+  DLog(@"getPicture called with facebookId: %@", self.facebookId);
+  ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
   [self.networkQueue addOperation:pictureRequest];
   [self.networkQueue go];
 }
@@ -102,10 +122,13 @@
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
+    DLog(@"FaceView status code not 200 in request finished, response: %@", [request responseString]);
     if(statusCode == 400) {
+      DLog(@"FaceView status code is 400 in request finished, response: %@", [request responseString]);
       NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
       [self.delegate faceViewDidFailWithError:errorDict];
     } else {
+      DLog(@"FaceView status code not 200 or 400 in request finished, response: %@", [request responseString]);
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
@@ -118,6 +141,9 @@
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
   DLog(@"Request Failed with Error: %@", [request error]);
+  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
+  [_networkErrorAlert show];
+  [_networkErrorAlert autorelease];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -131,7 +157,7 @@
       case 0:
         break;
       case 1:
-        [self getPictureForFacebookId:_facebookId];
+        [self getPicture];
         break;
       default:
         break;
@@ -360,7 +386,8 @@
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
+  if(_networkQueue) [_networkQueue release];
+  if(_facebookId) [_facebookId release];
   if(_faceImageView) [_faceImageView release];
   [super dealloc];
 }

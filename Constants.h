@@ -14,6 +14,8 @@
  tagline:
  facemash: settings standards one swipe at a time
  
+ overlay getting started in facemash view controller
+ 
  Stuff TODO for v2:
  
  Profile picture slider (paging) for rankings on the bottom of the screem. Then when the user stops on a picture the top half of the screen will show profile info.

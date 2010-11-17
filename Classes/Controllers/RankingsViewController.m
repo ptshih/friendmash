@@ -45,13 +45,14 @@ static UIImage *_placeholderImage;
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
     
-    self.selectedGender = @"male";
+    self.selectedGender = [@"male" retain];
     _selectedMode = 0;
   }
   return self;
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
   // Call initial rankings
   // Read from userdefaults for sticky tab
   if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {
@@ -77,11 +78,8 @@ static UIImage *_placeholderImage;
   [self getTopRankings];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-  
-}
-
 - (IBAction)getTopRankings {
+  [_activityIndicator startAnimating];
   [self.imageCache resetCache]; // reset the cache
   
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", self.selectedGender, _selectedMode, FM_RANKINGS_COUNT];
@@ -90,7 +88,6 @@ static UIImage *_placeholderImage;
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];
   [self.networkQueue go];
-  [APP_DELEGATE showLoadingOverlay];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -106,7 +103,7 @@ static UIImage *_placeholderImage;
     self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
     [_tableView reloadData];
   }
-  [APP_DELEGATE hideLoadingOverlay];
+  [_activityIndicator stopAnimating];
   DLog(@"rankings request finished successfully");
 }
 
@@ -116,7 +113,7 @@ static UIImage *_placeholderImage;
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
-  [APP_DELEGATE hideLoadingOverlay];
+  [_activityIndicator stopAnimating];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
@@ -275,9 +272,10 @@ static UIImage *_placeholderImage;
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
-  [_imageCache release];
-  [_rankingsArray release];
+  if(_networkQueue) [_networkQueue release];
+  if(_imageCache) [_imageCache release];
+  if(_rankingsArray) [_rankingsArray release];
+  if(_selectedGender) [_selectedGender release];
   [super dealloc];
 }
 

@@ -290,7 +290,7 @@ static UIImage *_dislikeImage;
       return 4;
       break;
     case 1: // stats
-      return 7;
+      return 5;
       break;
     default:
       return 0;
@@ -350,37 +350,37 @@ static UIImage *_dislikeImage;
       }
       switch (indexPath.row) {
         case 0:
-          cell.textLabel.text = @"Facemash Title";
+          cell.textLabel.text = @"Achieved Title Based on Rank";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"score"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"score"] integerValue]] : nil;
           break;
         case 1:
-          cell.textLabel.text = @"Ranking Overall";
+          cell.textLabel.text = @"Ranking within Facemash";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 2:
-          cell.textLabel.text = @"Ranking with Friends";
+          cell.textLabel.text = @"Ranking within Your Social Network";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total_network"] stringValue]] : nil;
           break;
         case 3:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes";
+          cell.textLabel.text = @"Likes Received from Other Players";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
           break;
         case 4:
-          cell.imageView.image = _dislikeImage;
-          cell.textLabel.text = @"Dislikes";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
-          break;
-        case 5:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes in a row";
+          cell.textLabel.text = @"Most Likes Received in a Row";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
           break;
-        case 6:
-          cell.imageView.image = _dislikeImage;
-          cell.textLabel.text = @"Dislikes in a row";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
-          break;
+//        case 4:
+//          cell.imageView.image = _dislikeImage;
+//          cell.textLabel.text = @"Dislikes";
+//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
+//          break;
+//        case 6:
+//          cell.imageView.image = _dislikeImage;
+//          cell.textLabel.text = @"Dislikes in a row";
+//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
+//          break;
         default:
           break;
       }
@@ -414,7 +414,7 @@ static UIImage *_dislikeImage;
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
+  if(_networkQueue) [_networkQueue release];
   if(_profileDict) [_profileDict release];
   if(_profileId) [_profileId release];
   [super dealloc];
