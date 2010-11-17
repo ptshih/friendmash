@@ -187,25 +187,25 @@ static UIImage *_dislikeImage;
 - (float)getProgressForVotes:(NSInteger)votes {
   int k = 100;
   if(votes < k) {
-    return (float)votes / k;
+    return (float)(votes / k);
   } else if(votes < 2*k) {
-    return (float)(votes - k) / k;
+    return (float)((votes - k) / k);
   } else if(votes < 4*k) {
-    return (float)(votes - 2*k) / k;
+    return (float)((votes - 2*k) / (2*k));
   } else if(votes < 8*k) {
-    return (float)(votes - 4*k) / k;
+    return (float)((votes - 4*k) / (4*k));
   } else if(votes < 16*k) {
-    return (float)(votes - 8*k) / k;
+    return (float)((votes - 8*k) / (8*k));
   } else if(votes < 32*k) {
-    return (float)(votes - 16*k) / k;
+    return (float)((votes - 16*k) / (16*k));
   } else if(votes < 64*k) {
-    return (float)(votes - 32*k) / k;
+    return (float)((votes - 32*k) / (32*k));
   } else if(votes < 128*k) {
-    return (float)(votes - 64*k) / k;
+    return (float)((votes - 64*k) / (64*k));
   } else if(votes < 256*k) {
-    return (float)(votes - 128*k) / k;
+    return (float)((votes - 128*k) / (128*k));
   } else if(votes < 512*k) {
-    return (float)(votes - 256*k) / k;
+    return (float)((votes - 256*k) / (256*k));
   } else {
     return 1.0;
   }
