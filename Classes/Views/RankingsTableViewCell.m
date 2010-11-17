@@ -173,7 +173,7 @@ static UIImage *_bulletImage;
   cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
   cell.likeLabel.text = [NSString stringWithFormat:@"%@ Likes", [[dictionary objectForKey:@"wins"] stringValue]];
-  cell.streakLabel.text = [NSString stringWithFormat:@"%@ Likes in a Row", [[dictionary objectForKey:@"win_streak"] stringValue]];
+  cell.streakLabel.text = [NSString stringWithFormat:@"%@ Like Streak", [[dictionary objectForKey:@"win_streak"] stringValue]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    

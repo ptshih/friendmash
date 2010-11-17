@@ -7,6 +7,7 @@
 //
 
 #import "AboutViewController.h"
+#import "Constants.h"
 
 @implementation AboutViewController
 
@@ -70,7 +71,12 @@
   UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)] autorelease];
   headerView.backgroundColor = [UIColor clearColor];
   
-  UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 460, 44)];
+  UILabel *headerLabel;
+  if(isDeviceIPad() || __IPHONE_OS_VERSION_MAX_ALLOWED <= 30200) {
+    headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 400, 44)];
+  } else {
+    headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 440, 44)];
+  }
   headerLabel.backgroundColor = [UIColor clearColor];
   
   switch (section) {

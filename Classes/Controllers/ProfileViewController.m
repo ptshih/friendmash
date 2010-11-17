@@ -149,7 +149,12 @@ static UIImage *_dislikeImage;
   UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 44)] autorelease];
   headerView.backgroundColor = [UIColor clearColor];
   
-  UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 460, 44)];
+  UILabel *headerLabel;
+  if(isDeviceIPad() || __IPHONE_OS_VERSION_MAX_ALLOWED <= 30200) {
+    headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 400, 44)];
+  } else {
+    headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 440, 44)];
+  }
   headerLabel.backgroundColor = [UIColor clearColor];
   
   switch (section) {
@@ -368,7 +373,7 @@ static UIImage *_dislikeImage;
           break;
         case 4:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Most Likes Received in a Row";
+          cell.textLabel.text = @"Like Streak";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak"] notNil] ? [[self.profileDict objectForKey:@"win_streak"] stringValue] : nil;
           break;
 //        case 4:
