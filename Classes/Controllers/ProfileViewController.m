@@ -51,10 +51,12 @@ static UIImage *_dislikeImage;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  
+  [super viewWillAppear:animated];
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
+  
   // Display logout button if this is current user's profile
   if(self.profileId == [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
     UIBarButtonItem *logoutButton = [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logout)] autorelease];

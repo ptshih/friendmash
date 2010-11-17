@@ -25,6 +25,8 @@
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
+  
   // Display logout button if this is current user's profile
   
   UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];

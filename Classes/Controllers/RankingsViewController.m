@@ -53,6 +53,7 @@ static UIImage *_placeholderImage;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
   // Call initial rankings
   // Read from userdefaults for sticky tab
   if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {

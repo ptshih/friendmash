@@ -44,6 +44,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
 //  self.navigationController.navigationBar.hidden = YES;
 //  [self displayLauncher];
 }
@@ -127,7 +128,6 @@
     default:
       break;
   }
-  
 }
 
 #pragma mark Memory Management
@@ -146,7 +146,6 @@
 - (void)viewDidUnload {
   [super viewDidUnload];
 }
-
 
 - (void)dealloc {
   if(_launcherView) [_launcherView release];

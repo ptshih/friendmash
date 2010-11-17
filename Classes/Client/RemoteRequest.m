@@ -8,6 +8,7 @@
 
 #import "RemoteRequest.h"
 #import "ASIHTTPRequest.h"
+#import "NSString+Util.h"
 #import "Constants.h"
 
 @implementation RemoteRequest

@@ -8,7 +8,6 @@
  */
 
 #import "FacemashAppDelegate.h"
-#import "NSString+Util.h"
 
 /*
  tagline:

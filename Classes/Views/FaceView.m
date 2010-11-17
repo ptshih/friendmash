@@ -394,9 +394,6 @@
   } 
 }
 
-- (void)viewDidUnload {
-}
-
 - (void)dealloc {
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
