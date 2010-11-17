@@ -61,7 +61,6 @@
 		253E985B1267FC300037CB2D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* ProfileViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
-		25560139128DF7BA00E6C482 /* LoadingOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 25560138128DF7BA00E6C482 /* LoadingOverlay.m */; };
 		25560152128DF84E00E6C482 /* loading_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 25560151128DF84E00E6C482 /* loading_bg.png */; };
 		2556FE03128D6F5400E6C482 /* RankingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */; };
 		2556FE6E128D753A00E6C482 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE6D128D753A00E6C482 /* UIView+Additions.m */; };
@@ -77,7 +76,6 @@
 		255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */; };
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
-		25698466128B327B00B2466B /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25698464128B327B00B2466B /* WebViewController.m */; };
 		2569846E128B34CD00B2466B /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846C128B34CD00B2466B /* left.png */; };
 		2569846F128B34CD00B2466B /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 2569846D128B34CD00B2466B /* right.png */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
@@ -200,8 +198,6 @@
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
-		25560137128DF7BA00E6C482 /* LoadingOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingOverlay.h; sourceTree = "<group>"; };
-		25560138128DF7BA00E6C482 /* LoadingOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingOverlay.m; sourceTree = "<group>"; };
 		25560151128DF84E00E6C482 /* loading_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_bg.png; sourceTree = "<group>"; };
 		2556FE01128D6F5400E6C482 /* RankingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsTableViewCell.h; sourceTree = "<group>"; };
 		2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsTableViewCell.m; sourceTree = "<group>"; };
@@ -223,8 +219,6 @@
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
 		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
-		25698463128B327B00B2466B /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		25698464128B327B00B2466B /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		2569846C128B34CD00B2466B /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
 		2569846D128B34CD00B2466B /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -608,8 +602,6 @@
 				253E98D4126805B70037CB2D /* RankingsViewController.m */,
 				25646E9E128C165800FF534C /* LoginViewController.h */,
 				25646E9F128C165800FF534C /* LoginViewController.m */,
-				25698463128B327B00B2466B /* WebViewController.h */,
-				25698464128B327B00B2466B /* WebViewController.m */,
 				25B94A02128FA4DC00016322 /* AboutViewController.h */,
 				25B94A03128FA4DC00016322 /* AboutViewController.m */,
 				2513CB79129283E0002E79EF /* LightboxViewController.h */,
@@ -630,8 +622,6 @@
 			children = (
 				25E05176125FCB8F00CA6AC1 /* FaceView.h */,
 				25E05177125FCB8F00CA6AC1 /* FaceView.m */,
-				25560137128DF7BA00E6C482 /* LoadingOverlay.h */,
-				25560138128DF7BA00E6C482 /* LoadingOverlay.m */,
 				2556FE01128D6F5400E6C482 /* RankingsTableViewCell.h */,
 				2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */,
 			);
@@ -902,13 +892,11 @@
 				25BDF0C7128A3A60004F046A /* ASIDataDecompressor.m in Sources */,
 				25BDF3DD128A8666004F046A /* ImageCache.m in Sources */,
 				2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */,
-				25698466128B327B00B2466B /* WebViewController.m in Sources */,
 				25646EA1128C165800FF534C /* LoginViewController.m in Sources */,
 				2556FE03128D6F5400E6C482 /* RankingsTableViewCell.m in Sources */,
 				2556FE6E128D753A00E6C482 /* UIView+Additions.m in Sources */,
 				2556FED9128D784E00E6C482 /* NSObject+ConvenienceMethods.m in Sources */,
 				2556FEDA128D784E00E6C482 /* NSString+ConvenienceMethods.m in Sources */,
-				25560139128DF7BA00E6C482 /* LoadingOverlay.m in Sources */,
 				25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */,
 				2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */,
 			);

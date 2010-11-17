@@ -13,7 +13,6 @@
 @class LauncherViewController;
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
-@class LoadingOverlay;
 
 @interface FacemashAppDelegate : NSObject <UIApplicationDelegate, FacebookLoginDelegate, UIPopoverControllerDelegate> {
   UIWindow *window;
@@ -28,7 +27,6 @@
   NSString *_currentUserId;
   NSData *_currentUser;
 
-  LoadingOverlay *_loadingOverlay;
   BOOL _touchActive;
   BOOL _isShowingLogin;
   
@@ -49,14 +47,11 @@
 @property (nonatomic, retain) NSString *fbAccessToken;
 @property (nonatomic, retain) NSString *currentUserId;
 @property (nonatomic, retain) NSData *currentUser;
-@property (nonatomic, retain) LoadingOverlay *loadingOverlay;
 @property (nonatomic, assign) BOOL touchActive;
 
 - (void)authenticateWithFacebook:(BOOL)animated;
 - (void)logoutFacebook;
 - (void)fbDidLogout;
-- (void)showLoadingOverlay;
-- (void)hideLoadingOverlay;
   
 @end
 

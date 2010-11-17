@@ -8,9 +8,7 @@
 
 #import "LoadingOverlay.h"
 
-
 @implementation LoadingOverlay
-
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -34,9 +32,9 @@
 }
 
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
+//- (void)drawRect:(CGRect)rect {
+//    // Drawing code
+//}
 
 
 - (void)dealloc {

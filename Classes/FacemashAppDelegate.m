@@ -8,7 +8,7 @@
 
 #import "FacemashAppDelegate.h"
 #import "LauncherViewController.h"
-#import "LoadingOverlay.h"
+#import "NSString+Util.h"
 #import "Constants.h"
 #import "ASINetworkQueue.h"
 #import "ASIHTTPRequest.h"
@@ -34,7 +34,6 @@
 @synthesize fbAccessToken = _fbAccessToken;
 @synthesize currentUserId = _currentUserId;
 @synthesize currentUser = _currentUser;
-@synthesize loadingOverlay = _loadingOverlay;
 @synthesize touchActive = _touchActive;
 
 #pragma mark -
@@ -329,7 +328,6 @@
   _tokenRetryCount = 0;
   _isShowingLogin = NO;
   _touchActive = NO; // FaceView state stuff
-  _loadingOverlay = [[LoadingOverlay alloc] initWithFrame:self.window.frame];
   
   _networkQueue = [[ASINetworkQueue queue] retain];
   
@@ -394,22 +392,13 @@
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-#pragma mark LoadingOverlay
-- (void)showLoadingOverlay {
-	[self.window addSubview:self.loadingOverlay];
-}
-
-- (void)hideLoadingOverlay {
-	[self.loadingOverlay removeFromSuperview];
-}
-
 #pragma mark -
 #pragma mark Memory management
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-    /*
-     Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
-     */
+  /*
+   Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
+   */
 }
 
 
@@ -421,7 +410,6 @@
   if(_networkQueue) [_networkQueue release];
   if(_loginViewController) [_loginViewController release];
   if(_loginPopoverController) [_loginPopoverController release];
-  if(_loadingOverlay) [_loadingOverlay release];
   if(_fbAccessToken) [_fbAccessToken release];
   if(_currentUserId) [_currentUserId release];
   if(_currentUser) [_currentUser release];
