@@ -76,8 +76,6 @@
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
 		256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */; };
-		256F636112952BF400B31AC7 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256F635F12952BF400B31AC7 /* WelcomeViewController.m */; };
-		256F636212952BF400B31AC7 /* WelcomeViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
 		2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5071285859A004EBEBB /* SystemConfiguration.framework */; };
 		2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E509128585A4004EBEBB /* MobileCoreServices.framework */; };
@@ -221,9 +219,6 @@
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
 		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
 		256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help_overlay_iPad.png; sourceTree = "<group>"; };
-		256F635E12952BF400B31AC7 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
-		256F635F12952BF400B31AC7 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
-		256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeViewController_iPhone.xib; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2573E5071285859A004EBEBB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2573E509128585A4004EBEBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -604,8 +599,6 @@
 				25B94A03128FA4DC00016322 /* AboutViewController.m */,
 				2513CB79129283E0002E79EF /* LightboxViewController.h */,
 				2513CB7A129283E0002E79EF /* LightboxViewController.m */,
-				256F635E12952BF400B31AC7 /* WelcomeViewController.h */,
-				256F635F12952BF400B31AC7 /* WelcomeViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -657,7 +650,6 @@
 				25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */,
 				2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */,
 				25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */,
-				256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -852,7 +844,6 @@
 				25A669FA129509DD00D70CBA /* help_overlay.png in Resources */,
 				25A669FC129509E400D70CBA /* help_overlay@2x.png in Resources */,
 				256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */,
-				256F636212952BF400B31AC7 /* WelcomeViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,7 +891,6 @@
 				2556FEDA128D784E00E6C482 /* NSString+ConvenienceMethods.m in Sources */,
 				25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */,
 				2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */,
-				256F636112952BF400B31AC7 /* WelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
