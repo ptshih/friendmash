@@ -71,11 +71,13 @@
 		255BD026128CD2AE00DB5363 /* RankingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */; };
 		255BD02B128CD2DA00DB5363 /* LoginViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */; };
 		255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */; };
-		255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */; };
 		255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */; };
 		255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */; };
 		25646EA1128C165800FF534C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25646E9F128C165800FF534C /* LoginViewController.m */; };
 		2569838B128AB1DE00B2466B /* RemoteRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2569838A128AB1DE00B2466B /* RemoteRequest.m */; };
+		256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */; };
+		256F636112952BF400B31AC7 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256F635F12952BF400B31AC7 /* WelcomeViewController.m */; };
+		256F636212952BF400B31AC7 /* WelcomeViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
 		2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5071285859A004EBEBB /* SystemConfiguration.framework */; };
 		2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E509128585A4004EBEBB /* MobileCoreServices.framework */; };
@@ -98,6 +100,10 @@
 		2573EA5812861A08004EBEBB /* CJSONScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4C12861A08004EBEBB /* CJSONScanner.m */; };
 		2573EA5912861A08004EBEBB /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA4E12861A08004EBEBB /* CJSONSerializer.m */; };
 		2573EA5A12861A08004EBEBB /* CSerializedJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2573EA5012861A08004EBEBB /* CSerializedJSONData.m */; };
+		25A669AF1294FC7400D70CBA /* friends_only_deselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 25A669AD1294FC7400D70CBA /* friends_only_deselected.png */; };
+		25A669B01294FC7400D70CBA /* friends_only_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 25A669AE1294FC7400D70CBA /* friends_only_selected.png */; };
+		25A669FA129509DD00D70CBA /* help_overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 25A669F9129509DD00D70CBA /* help_overlay.png */; };
+		25A669FC129509E400D70CBA /* help_overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25A669FB129509E400D70CBA /* help_overlay@2x.png */; };
 		25B1B8341292C04300BB6D6C /* LightboxViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */; };
 		25B7D51012935CB90089185E /* bullet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B7D50F12935CB90089185E /* bullet@2x.png */; };
 		25B7D52212935CBC0089185E /* bullet.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B7D52112935CBC0089185E /* bullet.png */; };
@@ -208,13 +214,16 @@
 		255BD025128CD2AE00DB5363 /* RankingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPad.xib; sourceTree = "<group>"; };
 		255BD028128CD2DA00DB5363 /* LoginViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPad.xib; sourceTree = "<group>"; };
 		255BD029128CD2DA00DB5363 /* LoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController_iPhone.xib; sourceTree = "<group>"; };
-		255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
 		255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_cell_bg_selected.png; sourceTree = "<group>"; };
 		255BD0BE128CD43B00DB5363 /* ProfileViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController_iPad.xib; sourceTree = "<group>"; };
 		25646E9E128C165800FF534C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		25646E9F128C165800FF534C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		25698389128AB1DE00B2466B /* RemoteRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteRequest.h; sourceTree = "<group>"; };
 		2569838A128AB1DE00B2466B /* RemoteRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteRequest.m; sourceTree = "<group>"; };
+		256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help_overlay_iPad.png; sourceTree = "<group>"; };
+		256F635E12952BF400B31AC7 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		256F635F12952BF400B31AC7 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeViewController_iPhone.xib; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2573E5071285859A004EBEBB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2573E509128585A4004EBEBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -259,6 +268,10 @@
 		2573EA4E12861A08004EBEBB /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
 		2573EA4F12861A08004EBEBB /* CSerializedJSONData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSerializedJSONData.h; sourceTree = "<group>"; };
 		2573EA5012861A08004EBEBB /* CSerializedJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSerializedJSONData.m; sourceTree = "<group>"; };
+		25A669AD1294FC7400D70CBA /* friends_only_deselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends_only_deselected.png; sourceTree = "<group>"; };
+		25A669AE1294FC7400D70CBA /* friends_only_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends_only_selected.png; sourceTree = "<group>"; };
+		25A669F9129509DD00D70CBA /* help_overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help_overlay.png; sourceTree = "<group>"; };
+		25A669FB129509E400D70CBA /* help_overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help_overlay@2x.png"; sourceTree = "<group>"; };
 		25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController_iPad.xib; sourceTree = "<group>"; };
 		25B7D50F12935CB90089185E /* bullet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet@2x.png"; sourceTree = "<group>"; };
 		25B7D52112935CBC0089185E /* bullet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet.png; sourceTree = "<group>"; };
@@ -407,6 +420,9 @@
 		253E97F71267F4750037CB2D /* @1x */ = {
 			isa = PBXGroup;
 			children = (
+				25A669F9129509DD00D70CBA /* help_overlay.png */,
+				25A669AD1294FC7400D70CBA /* friends_only_deselected.png */,
+				25A669AE1294FC7400D70CBA /* friends_only_selected.png */,
 				2513CCA11292935D002E79EF /* like.png */,
 				2513CC8F1292933D002E79EF /* unlike.png */,
 				25B7D52112935CBC0089185E /* bullet.png */,
@@ -430,6 +446,7 @@
 		253E97FE1267F4750037CB2D /* @2x */ = {
 			isa = PBXGroup;
 			children = (
+				25A669FB129509E400D70CBA /* help_overlay@2x.png */,
 				2513CCA312929364002E79EF /* like@2x.png */,
 				2513CC9F12929347002E79EF /* unlike@2x.png */,
 				25B7D50F12935CB90089185E /* bullet@2x.png */,
@@ -453,6 +470,7 @@
 		253E98051267F4750037CB2D /* ipad */ = {
 			isa = PBXGroup;
 			children = (
+				256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */,
 				253E98391267F86B0037CB2D /* btn_back_iPad.png */,
 				253E983A1267F86B0037CB2D /* btn_ranks_iPad.png */,
 				253E983B1267F86B0037CB2D /* btn_settings_iPad.png */,
@@ -586,6 +604,8 @@
 				25B94A03128FA4DC00016322 /* AboutViewController.m */,
 				2513CB79129283E0002E79EF /* LightboxViewController.h */,
 				2513CB7A129283E0002E79EF /* LightboxViewController.m */,
+				256F635E12952BF400B31AC7 /* WelcomeViewController.h */,
+				256F635F12952BF400B31AC7 /* WelcomeViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -637,7 +657,7 @@
 				25B94AEB128FE57300016322 /* AboutViewController_iPad.xib */,
 				2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */,
 				25B1B8331292C04300BB6D6C /* LightboxViewController_iPad.xib */,
-				255BD02A128CD2DA00DB5363 /* WebViewController_iPhone.xib */,
+				256F636012952BF400B31AC7 /* WelcomeViewController_iPhone.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -791,7 +811,6 @@
 				255BD026128CD2AE00DB5363 /* RankingsViewController_iPad.xib in Resources */,
 				255BD02B128CD2DA00DB5363 /* LoginViewController_iPad.xib in Resources */,
 				255BD02C128CD2DA00DB5363 /* LoginViewController_iPhone.xib in Resources */,
-				255BD02D128CD2DA00DB5363 /* WebViewController_iPhone.xib in Resources */,
 				255BD0B8128CD3F900DB5363 /* table_cell_bg_selected.png in Resources */,
 				255BD0BF128CD43B00DB5363 /* ProfileViewController_iPad.xib in Resources */,
 				2556FFD0128DD1CE00E6C482 /* favorite_star.png in Resources */,
@@ -828,6 +847,12 @@
 				25B1B8341292C04300BB6D6C /* LightboxViewController_iPad.xib in Resources */,
 				25B7D51012935CB90089185E /* bullet@2x.png in Resources */,
 				25B7D52212935CBC0089185E /* bullet.png in Resources */,
+				25A669AF1294FC7400D70CBA /* friends_only_deselected.png in Resources */,
+				25A669B01294FC7400D70CBA /* friends_only_selected.png in Resources */,
+				25A669FA129509DD00D70CBA /* help_overlay.png in Resources */,
+				25A669FC129509E400D70CBA /* help_overlay@2x.png in Resources */,
+				256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */,
+				256F636212952BF400B31AC7 /* WelcomeViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,6 +900,7 @@
 				2556FEDA128D784E00E6C482 /* NSString+ConvenienceMethods.m in Sources */,
 				25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */,
 				2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */,
+				256F636112952BF400B31AC7 /* WelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

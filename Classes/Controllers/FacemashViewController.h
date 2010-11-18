@@ -45,6 +45,8 @@ typedef enum {
   UIAlertView *_fbPictureErrorAlert;
   
   BOOL _faceViewDidError;
+  
+  UIView *_helpView;
 }
 
 @property (nonatomic,assign) FaceView *leftView;
