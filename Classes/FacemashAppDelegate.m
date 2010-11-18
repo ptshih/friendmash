@@ -35,6 +35,9 @@
 @synthesize currentUserId = _currentUserId;
 @synthesize currentUser = _currentUser;
 @synthesize touchActive = _touchActive;
+@synthesize hostReach = _hostReach;
+@synthesize netStatus = _netStatus;
+@synthesize reachabilityAlertView = _reachabilityAlertView;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -118,7 +121,6 @@
 }
 
 - (void)checkLastExitDate {
-  self.launcherViewController.launcherView.hidden = YES;
   self.launcherViewController.splashView.hidden = NO;
   
   // Check if we even have a valid token
@@ -141,7 +143,6 @@
       // Reuse our token from last time
       self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
       self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      self.launcherViewController.launcherView.hidden = NO;
       self.launcherViewController.splashView.hidden = YES;
     }
   } else { // this is the first time we launched the app, or we just logged off and tried to login again
@@ -206,7 +207,6 @@
       [_tokenFailedAlert autorelease];
     } else {
       // Remove the splash screen now
-      self.launcherViewController.launcherView.hidden = NO;
       self.launcherViewController.splashView.hidden = YES;
     }
   }
@@ -305,6 +305,8 @@
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentUserId"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownHelp"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownWelcome"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self authenticateWithFacebook:NO];
 }
@@ -361,6 +363,12 @@
   [window addSubview:self.navigationController.view];
   [window makeKeyAndVisible];
   
+  // Reachability
+  _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to use Facemash." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+	_hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
+  _netStatus = 0; // default netstatus to 0
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+  
 	return YES;
 }
 
@@ -370,7 +378,9 @@
 
 // Coming back from a locked phone or call
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  [self checkLastExitDate];
+//  [self checkLastExitDate];
+  self.launcherViewController.splashView.hidden = NO;
+  [self.hostReach startNotifier];
 }
 
 // Someone received a call or hit the lock button
@@ -381,14 +391,35 @@
 
 // iOS4 ONLY
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+  [self.hostReach stopNotifier];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS3 ONLY
 - (void)applicationWillTerminate:(UIApplication *)application {
+  [self.hostReach stopNotifier];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark Reachability
+//Called by Reachability whenever status changes.
+- (void)reachabilityChanged:(NSNotification *)note
+{
+	Reachability *curReach = [note object];
+	self.netStatus = [curReach currentReachabilityStatus];
+	
+	if(curReach == self.hostReach) {
+		if(self.netStatus > kNotReachable) {
+      if(self.reachabilityAlertView && self.reachabilityAlertView.visible) {
+        [self.reachabilityAlertView dismissWithClickedButtonIndex:0 animated:YES];
+      }
+      [self checkLastExitDate];
+		} else {
+      [self.reachabilityAlertView show];
+    }
+	}
 }
 
 #pragma mark -
@@ -413,6 +444,8 @@
   if(_currentUser) [_currentUser release];
   if(_launcherViewController) [_launcherViewController release];
   if(_navigationController) [_navigationController release];
+  if(_hostReach) [_hostReach release];
+  if(_reachabilityAlertView) [_reachabilityAlertView release];
   [window release];
   [super dealloc];
 }

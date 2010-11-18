@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
+#import "Reachability.h"
 
 @class FacemashViewController;
 @class LauncherViewController;
@@ -34,6 +35,10 @@
   UIAlertView *_loginFailedAlert;
   UIAlertView *_tokenFailedAlert;
   NSInteger _tokenRetryCount;
+  
+  Reachability *_hostReach;
+	NetworkStatus _netStatus;
+  UIAlertView *_reachabilityAlertView;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -48,6 +53,10 @@
 @property (nonatomic, retain) NSString *currentUserId;
 @property (nonatomic, retain) NSData *currentUser;
 @property (nonatomic, assign) BOOL touchActive;
+
+@property (nonatomic, retain) Reachability *hostReach;
+@property (nonatomic, assign) NetworkStatus netStatus;
+@property (nonatomic, retain) UIAlertView *reachabilityAlertView;
 
 - (void)authenticateWithFacebook:(BOOL)animated;
 - (void)logoutFacebook;
