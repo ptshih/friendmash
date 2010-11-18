@@ -11,8 +11,9 @@
 
 @interface LauncherViewController : UIViewController <ProfileDelegate> {
   IBOutlet UIView *_launcherView;
-  IBOutlet UISwitch *_gameModeSwitch;
   IBOutlet UIView *_splashView;
+  IBOutlet UIButton *_modeButton;
+  IBOutlet UILabel *_friendsOnlyLabel;
 }
 
 @property (nonatomic, assign) UIView *launcherView;
@@ -36,5 +37,7 @@
 - (IBAction)rankings;
 
 - (IBAction)about;
+
+- (IBAction)modeSelect:(UIButton *)modeButton;
 
 @end

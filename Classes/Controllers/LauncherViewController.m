@@ -41,11 +41,26 @@
   
   self.title = NSLocalizedString(@"facemash", @"facemash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
+  if(_modeButton.selected) {
+    _friendsOnlyLabel.alpha = 1.0;
+  } else {
+    _friendsOnlyLabel.alpha = 0.4;
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 //  self.navigationController.navigationBar.hidden = YES;
+}
+
+- (IBAction)modeSelect:(UIButton *)modeButton {
+  if(modeButton.selected == NO) {
+    modeButton.selected = YES;
+    _friendsOnlyLabel.alpha = 1.0;
+  } else {
+    modeButton.selected = NO;
+    _friendsOnlyLabel.alpha = 0.4;
+  }
 }
 
 - (IBAction)male {
@@ -103,7 +118,7 @@
     fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
   }
   fvc.gender = gender;
-  fvc.gameMode = _gameModeSwitch.on;
+  fvc.gameMode = _modeButton.selected;
   [self.navigationController pushViewController:fvc animated:YES];
   [fvc release];
 }
@@ -148,8 +163,9 @@
 
 - (void)dealloc {
   if(_launcherView) [_launcherView release];
-  if(_gameModeSwitch) [_gameModeSwitch release];
   if(_splashView) [_splashView release];
+  if(_modeButton) [_modeButton release];
+  if(_friendsOnlyLabel) [_friendsOnlyLabel release];
   [super dealloc];
 }
 
