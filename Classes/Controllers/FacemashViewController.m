@@ -282,8 +282,8 @@
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
-  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d, isAd: %d",winnerId, loserId, isLeft);
-  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, isLeft, self.gameMode];
+  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, !isLeft);
+  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, !isLeft, self.gameMode];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
