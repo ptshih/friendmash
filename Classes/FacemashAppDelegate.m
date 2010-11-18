@@ -368,6 +368,7 @@
 	_hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
   _netStatus = 0; // default netstatus to 0
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+  [self.hostReach startNotifier];
   
 	return YES;
 }
@@ -378,9 +379,7 @@
 
 // Coming back from a locked phone or call
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-//  [self checkLastExitDate];
-  self.launcherViewController.splashView.hidden = NO;
-  [self.hostReach startNotifier];
+  [self checkLastExitDate];
 }
 
 // Someone received a call or hit the lock button
@@ -391,14 +390,12 @@
 
 // iOS4 ONLY
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-  [self.hostReach stopNotifier];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS3 ONLY
 - (void)applicationWillTerminate:(UIApplication *)application {
-  [self.hostReach stopNotifier];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -415,7 +412,6 @@
       if(self.reachabilityAlertView && self.reachabilityAlertView.visible) {
         [self.reachabilityAlertView dismissWithClickedButtonIndex:0 animated:YES];
       }
-      [self checkLastExitDate];
 		} else {
       [self.reachabilityAlertView show];
     }
