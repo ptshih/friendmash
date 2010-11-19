@@ -17,7 +17,7 @@
 #import "NSObject+ConvenienceMethods.h"
 
 static UIImage *_likeImage;
-static UIImage *_dislikeImage;
+//static UIImage *_dislikeImage;
 
 @interface ProfileViewController (Private)
 - (void)getProfileForCurrentUser;
@@ -32,8 +32,8 @@ static UIImage *_dislikeImage;
 @synthesize delegate;
 
 + (void)initialize {
-  _likeImage = [[UIImage imageNamed:@"like.png"] retain];
-  _dislikeImage = [[UIImage imageNamed:@"unlike.png"] retain];
+  _likeImage = [[UIImage imageNamed:@"likes.png"] retain];
+//  _dislikeImage = [[UIImage imageNamed:@"unlike.png"] retain];
 }
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -319,7 +319,6 @@ static UIImage *_dislikeImage;
       switch (indexPath.row) {
         case 0:
           cell.textLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [NSString stringWithFormat:@"%@", [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]] : @"Loading...";
-//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]] : nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
             rankView.frame = CGRectMake(cell.contentView.frame.size.width - 40, 2, 36, 36);
