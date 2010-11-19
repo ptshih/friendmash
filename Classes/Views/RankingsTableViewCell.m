@@ -33,7 +33,7 @@ static UIImage *_bulletImage;
 
 + (void)initialize {
   _starImage = [[UIImage imageNamed:@"favorite_star.png"] retain];
-  _likeImage = [[UIImage imageNamed:@"like.png"] retain];
+  _likeImage = [[UIImage imageNamed:@"likes.png"] retain];
   _bulletImage = [[UIImage imageNamed:@"bullet.png"] retain];
 }
 
@@ -44,8 +44,8 @@ static UIImage *_bulletImage;
     // self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(PROFILE_IMAGE_MARGIN_X, PROFILE_IMAGE_MARGIN_Y, PROFILE_IMAGE_SIZE, PROFILE_IMAGE_SIZE)];
-    _likeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
-    _bulletImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    _likeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 18)];
+    _bulletImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 18)];
     self.likeImageView.image = _likeImage;
     self.bulletImageView.image = _bulletImage;
     self.bulletImageView.contentMode = UIViewContentModeCenter;
@@ -123,15 +123,15 @@ static UIImage *_bulletImage;
   self.nameLabel.width = nameSize.width;
   
   // Like Button
-  self.likeImageView.left = leftBot - 5.0;
+  self.likeImageView.left = leftBot;
   self.likeImageView.top = botY;
   
-  leftBot = self.likeImageView.right + 5.0;
+  leftBot = self.likeImageView.right + 7.0;
   
   self.likeLabel.left = leftBot;
   self.likeLabel.top = botY;
   
-  CGFloat textWidthBot = self.contentView.width - leftBot - 10;
+  CGFloat textWidthBot = self.contentView.width - leftBot - 10.0;
   CGSize textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
   // Bottom
@@ -143,11 +143,11 @@ static UIImage *_bulletImage;
   
   // Bullet Button
   self.bulletImageView.left = leftBot;
-  self.bulletImageView.top = botY;
+  self.bulletImageView.top = botY + 2.0;
   
-  leftBot = self.bulletImageView.right;
+  leftBot = self.bulletImageView.right + 3.0;
   
-  textWidthBot = self.contentView.width - leftBot - 10;
+  textWidthBot = self.contentView.width - leftBot - 10.0;
   textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
   
   self.streakLabel.left = leftBot;
