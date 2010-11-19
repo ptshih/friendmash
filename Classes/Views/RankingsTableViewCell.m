@@ -142,10 +142,10 @@ static UIImage *_bulletImage;
   leftBot = self.likeLabel.right;
   
   // Bullet Button
-  self.bulletImageView.left = leftBot;
+  self.bulletImageView.left = leftBot - 2.0;
   self.bulletImageView.top = botY + 2.0;
   
-  leftBot = self.bulletImageView.right + 3.0;
+  leftBot = self.bulletImageView.right;
   
   textWidthBot = self.contentView.width - leftBot - 10.0;
   textSizeBot = CGSizeMake(textWidthBot, INT_MAX);
@@ -183,7 +183,7 @@ static UIImage *_bulletImage;
 //  cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
   cell.likeLabel.text = [NSString stringWithFormat:@"%@ Likes", [[dictionary objectForKey:@"wins"] stringValue]];
-  cell.streakLabel.text = [NSString stringWithFormat:@"Longest Like Streak: %@", [[dictionary objectForKey:@"win_streak_max"] stringValue]];
+  cell.streakLabel.text = [NSString stringWithFormat:@"Longest Streak: %@", [[dictionary objectForKey:@"win_streak_max"] stringValue]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    

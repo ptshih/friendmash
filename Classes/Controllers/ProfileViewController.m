@@ -358,7 +358,7 @@ static UIImage *_likeImage;
       }
       switch (indexPath.row) {
         case 0:
-          cell.textLabel.text = @"Achieved Title Based on Rank";
+          cell.textLabel.text = @"Awarded Title";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"score"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"score"] integerValue]] : nil;
           break;
         case 1:
@@ -371,22 +371,22 @@ static UIImage *_likeImage;
           break;
         case 3:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes Received from Other Players";
+          cell.textLabel.text = @"Received from Other Players";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
           break;
         case 4:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes Received from Friends";
+          cell.textLabel.text = @"Received from Friends";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins_network"] notNil] ? [[self.profileDict objectForKey:@"wins_network"] stringValue] : nil;
           break;
         case 5:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Like Streak";
+          cell.textLabel.text = @"Longest Streak";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max"] stringValue] : nil;
           break;
         case 6:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Like Streak among Friends";
+          cell.textLabel.text = @"Longest Streak among Friends";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max_network"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max_network"] stringValue] : nil;
           break;
 //        case 4:

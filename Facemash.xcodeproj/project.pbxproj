@@ -40,6 +40,7 @@
 		252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FE3126083CD0008BD55 /* Icon-Small-50.png */; };
 		25312DDA12968BCA0057D4A0 /* btn_login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25312DD912968BCA0057D4A0 /* btn_login@2x.png */; };
 		25312DDC12968BD30057D4A0 /* btn_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 25312DDB12968BD30057D4A0 /* btn_login.png */; };
+		25312F0212969A0D0057D4A0 /* loading_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 25312F0112969A0D0057D4A0 /* loading_bg.png */; };
 		253E98071267F4750037CB2D /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E97F81267F4750037CB2D /* bg.png */; };
 		253E98081267F4750037CB2D /* btn_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E97F91267F4750037CB2D /* btn_back.png */; };
 		253E98091267F4750037CB2D /* btn_ranks.png in Resources */ = {isa = PBXBuildFile; fileRef = 253E97FA1267F4750037CB2D /* btn_ranks.png */; };
@@ -78,8 +79,6 @@
 		256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */; };
 		256F65C51295F6F100B31AC7 /* likes.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F65C41295F6F100B31AC7 /* likes.png */; };
 		256F65D71295F81400B31AC7 /* likes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F65D61295F81400B31AC7 /* likes@2x.png */; };
-		256F65EC1295FB4800B31AC7 /* bg_portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F65EB1295FB4800B31AC7 /* bg_portrait@2x.png */; };
-		256F65EE1295FB5100B31AC7 /* bg_portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F65ED1295FB5100B31AC7 /* bg_portrait.png */; };
 		256F66B9129605B100B31AC7 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256F66B8129605B100B31AC7 /* WebViewController.m */; };
 		256F66BB129605BC00B31AC7 /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256F66BA129605BC00B31AC7 /* WebViewController_iPhone.xib */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
@@ -181,6 +180,7 @@
 		252E0FE3126083CD0008BD55 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		25312DD912968BCA0057D4A0 /* btn_login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_login@2x.png"; sourceTree = "<group>"; };
 		25312DDB12968BD30057D4A0 /* btn_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_login.png; sourceTree = "<group>"; };
+		25312F0112969A0D0057D4A0 /* loading_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading_bg.png; sourceTree = "<group>"; };
 		253E97F81267F4750037CB2D /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		253E97F91267F4750037CB2D /* btn_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_back.png; sourceTree = "<group>"; };
 		253E97FA1267F4750037CB2D /* btn_ranks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_ranks.png; sourceTree = "<group>"; };
@@ -227,8 +227,6 @@
 		256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help_overlay_iPad.png; sourceTree = "<group>"; };
 		256F65C41295F6F100B31AC7 /* likes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = likes.png; sourceTree = "<group>"; };
 		256F65D61295F81400B31AC7 /* likes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "likes@2x.png"; sourceTree = "<group>"; };
-		256F65EB1295FB4800B31AC7 /* bg_portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_portrait@2x.png"; sourceTree = "<group>"; };
-		256F65ED1295FB5100B31AC7 /* bg_portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_portrait.png; sourceTree = "<group>"; };
 		256F66B7129605B100B31AC7 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		256F66B8129605B100B31AC7 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		256F66BA129605BC00B31AC7 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
@@ -419,6 +417,7 @@
 				252E0FE3126083CD0008BD55 /* Icon-Small-50.png */,
 				252E0FC0126083390008BD55 /* Icon-72.png */,
 				255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */,
+				25312F0112969A0D0057D4A0 /* loading_bg.png */,
 				256F6736129607E000B31AC7 /* WebView */,
 			);
 			name = Assets;
@@ -429,7 +428,6 @@
 			isa = PBXGroup;
 			children = (
 				25312DDB12968BD30057D4A0 /* btn_login.png */,
-				256F65ED1295FB5100B31AC7 /* bg_portrait.png */,
 				256F65C41295F6F100B31AC7 /* likes.png */,
 				25A669F9129509DD00D70CBA /* help_overlay.png */,
 				25A669AD1294FC7400D70CBA /* friends_only_deselected.png */,
@@ -456,7 +454,6 @@
 			isa = PBXGroup;
 			children = (
 				25312DD912968BCA0057D4A0 /* btn_login@2x.png */,
-				256F65EB1295FB4800B31AC7 /* bg_portrait@2x.png */,
 				256F65D61295F81400B31AC7 /* likes@2x.png */,
 				25A669FB129509E400D70CBA /* help_overlay@2x.png */,
 				25B7D50F12935CB90089185E /* bullet@2x.png */,
@@ -869,14 +866,13 @@
 				256F623F12950ECF00B31AC7 /* help_overlay_iPad.png in Resources */,
 				256F65C51295F6F100B31AC7 /* likes.png in Resources */,
 				256F65D71295F81400B31AC7 /* likes@2x.png in Resources */,
-				256F65EC1295FB4800B31AC7 /* bg_portrait@2x.png in Resources */,
-				256F65EE1295FB5100B31AC7 /* bg_portrait.png in Resources */,
 				256F66BB129605BC00B31AC7 /* WebViewController_iPhone.xib in Resources */,
 				25296FCD1296082000844528 /* left.png in Resources */,
 				25296FCE1296082000844528 /* right.png in Resources */,
 				25296FDE1296088A00844528 /* WebViewController_iPad.xib in Resources */,
 				25312DDA12968BCA0057D4A0 /* btn_login@2x.png in Resources */,
 				25312DDC12968BD30057D4A0 /* btn_login.png in Resources */,
+				25312F0212969A0D0057D4A0 /* loading_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
