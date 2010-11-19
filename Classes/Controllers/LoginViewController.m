@@ -51,11 +51,6 @@
   _normalButton.hidden = NO;
   _splashLabel.text = nil;
   [_splashActivity stopAnimating];
-  
-  UIDevice *device = [UIDevice currentDevice];
-  if(![device respondsToSelector:@selector(isMultitaskingSupported)]) {
-    _ssoButton.hidden = YES;
-  }
 }
 
 - (void)webViewWithURL:(NSString *)url andTitle:(NSString *)title {
@@ -116,20 +111,18 @@
   
   BOOL didOpenOtherApp = NO;
   UIDevice *device = [UIDevice currentDevice];
-  if(![device respondsToSelector:@selector(isMultitaskingSupported)]) {
-    if([device isMultitaskingSupported]) {
-      if (tryFBAppAuth) {
-        NSString *fbAppUrl = [RemoteRequest serializeURL:@"fbauth://authorize" params:params];
-        didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
-      }
+  if([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
+    if (tryFBAppAuth) {
+      NSString *fbAppUrl = [RemoteRequest serializeURL:@"fbauth://authorize" params:params];
+      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+    }
+    
+    if (trySafariAuth && !didOpenOtherApp) {
+      NSString *nextUrl = [NSString stringWithFormat:@"fb%@://authorize", FB_APP_ID];
+      [params setValue:nextUrl forKey:@"redirect_uri"];
       
-      if (trySafariAuth && !didOpenOtherApp) {
-        NSString *nextUrl = [NSString stringWithFormat:@"fb%@://authorize", FB_APP_ID];
-        [params setValue:nextUrl forKey:@"redirect_uri"];
-        
-        NSString *fbAppUrl = [RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params];
-        didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
-      }
+      NSString *fbAppUrl = [RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params];
+      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
     }
   }
   
