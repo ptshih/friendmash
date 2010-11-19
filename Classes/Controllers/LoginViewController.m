@@ -37,9 +37,24 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  if(isDeviceIPad()) {
+    [UIView beginAnimations:@"LauncherViewFadeOut" context:nil];
+//			[UIView setAnimationDelegate:self];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+    [UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
+    [[APP_DELEGATE launcherViewController] view].alpha = 0.0;
+    [UIView commitAnimations];
+  }
+  
+  _ssoButton.hidden = NO;
+  _normalButton.hidden = NO;
+  _splashLabel.text = nil;
+  [_splashActivity stopAnimating];
+  
   UIDevice *device = [UIDevice currentDevice];
-  if(![device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
-    [self authorizeWithFBAppAuth:NO safariAuth:NO];
+  if(![device respondsToSelector:@selector(isMultitaskingSupported)]) {
+    _ssoButton.hidden = YES;
   }
 }
 
@@ -65,10 +80,18 @@
 }
 
 - (IBAction)ssoLogin {
+  _ssoButton.hidden = YES;
+  _normalButton.hidden = YES;
+  _splashLabel.text = @"Logging in to Facebook";
+  [_splashActivity startAnimating];
   [self authorizeWithFBAppAuth:YES safariAuth:YES];
 }
 
 - (IBAction)normalLogin {
+  _ssoButton.hidden = YES;
+  _normalButton.hidden = YES;
+  _splashLabel.text = @"Logging in to Facebook";
+  [_splashActivity startAnimating];
   [self authorizeWithFBAppAuth:NO safariAuth:NO];
 }
 
@@ -93,25 +116,26 @@
   
   BOOL didOpenOtherApp = NO;
   UIDevice *device = [UIDevice currentDevice];
-  if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
-    if (tryFBAppAuth) {
-      NSString *fbAppUrl = [RemoteRequest serializeURL:@"fbauth://authorize" params:params];
-      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
-    }
-    
-    if (trySafariAuth && !didOpenOtherApp) {
-      NSString *nextUrl = [NSString stringWithFormat:@"fb%@://authorize", FB_APP_ID];
-      [params setValue:nextUrl forKey:@"redirect_uri"];
+  if(![device respondsToSelector:@selector(isMultitaskingSupported)]) {
+    if([device isMultitaskingSupported]) {
+      if (tryFBAppAuth) {
+        NSString *fbAppUrl = [RemoteRequest serializeURL:@"fbauth://authorize" params:params];
+        didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+      }
       
-      NSString *fbAppUrl = [RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params];
-      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+      if (trySafariAuth && !didOpenOtherApp) {
+        NSString *nextUrl = [NSString stringWithFormat:@"fb%@://authorize", FB_APP_ID];
+        [params setValue:nextUrl forKey:@"redirect_uri"];
+        
+        NSString *fbAppUrl = [RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params];
+        didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+      }
     }
   }
   
   // If single sign-on failed, open an inline login dialog. This will require the user to
   // enter his or her credentials.
   if (!didOpenOtherApp) {
-    _splashView.hidden = NO;
     self.authorizeURL = [NSURL URLWithString:[RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params]];
     NSMutableURLRequest *authorizeRequest = [NSMutableURLRequest requestWithURL:self.authorizeURL];
     [_fbWebView loadRequest:authorizeRequest];
@@ -151,9 +175,17 @@
   if ((token == (NSString *) [NSNull null]) || (token.length == 0)) {
     [self.delegate fbDidNotLoginWithError:nil];
   } else {
+    if(isDeviceIPad()) {
+      [UIView beginAnimations:@"LauncherViewFadeIn" context:nil];
+//			[UIView setAnimationDelegate:self];
+			[UIView setAnimationBeginsFromCurrentState:YES];
+			[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+			[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
+      [[APP_DELEGATE launcherViewController] view].alpha = 1.0;
+			[UIView commitAnimations];
+    }
     [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
-  _splashLabel.text = nil;
 }
 
 
@@ -227,6 +259,9 @@
   if(_fbWebView) [_fbWebView release];
   if(_splashView) [_splashView release];
   if(_splashLabel) [_splashLabel release];
+  if(_ssoButton) [_ssoButton release];
+  if(_normalButton) [_normalButton release];
+  if(_splashActivity) [_splashActivity release];
   [super dealloc];
 }
 

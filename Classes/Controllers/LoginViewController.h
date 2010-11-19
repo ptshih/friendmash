@@ -18,6 +18,9 @@
   IBOutlet UIWebView *_fbWebView;
   IBOutlet UIView *_splashView;
   IBOutlet UILabel *_splashLabel;
+  IBOutlet UIButton *_ssoButton;
+  IBOutlet UIButton *_normalButton;
+  IBOutlet UIActivityIndicatorView *_splashActivity;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> delegate;
 }

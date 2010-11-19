@@ -18,7 +18,7 @@
 @interface FacemashAppDelegate (Private)
 - (NSDictionary*)parseURLParams:(NSString *)query;
 - (void)sendFacebookAccessToken;
-- (void)checkLastExitDate;
+- (void)tryLogin;
 @end
 
 @implementation FacemashAppDelegate
@@ -120,31 +120,33 @@
   return params;
 }
 
-- (void)checkLastExitDate {
+- (void)tryLogin {
   // Check if we even have a valid token
   if(![[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
     [self authenticateWithFacebook:NO]; // authenticate
-    return;
+  } else {
+    self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
+    self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
   }
-  
-  // Authenticate with Facebook IF it has been more than 24 hours
-  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
-  
-  if(lastExitDate) {
-    NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
-    
-    // If greater than 24hrs, re-authenticate
-    // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID
-    if(lastExitInterval > INT_MAX) {
-      [self authenticateWithFacebook:NO]; // authenticate
-    } else {
-      // Reuse our token from last time
-      self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
-      self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-    }
-  } else { // this is the first time we launched the app, or we just logged off and tried to login again
-    [self authenticateWithFacebook:NO]; // authenticate
-  }
+
+//  // Authenticate with Facebook IF it has been more than 24 hours
+//  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
+//  
+//  if(lastExitDate) {
+//    NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
+//    
+//    // If greater than 24hrs, re-authenticate
+//    // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID
+//    if(lastExitInterval > INT_MAX) {
+//      [self authenticateWithFacebook:NO]; // authenticate
+//    } else {
+//      // Reuse our token from last time
+//      self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
+//      self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+//    }
+//  } else { // this is the first time we launched the app, or we just logged off and tried to login again
+//    [self authenticateWithFacebook:NO]; // authenticate
+//  }
 }
 
 - (void)dismissLoginView:(BOOL)animated {
@@ -374,7 +376,7 @@
 
 // Coming back from a locked phone or call
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  [self checkLastExitDate];
+  [self tryLogin];
 }
 
 // Someone received a call or hit the lock button
