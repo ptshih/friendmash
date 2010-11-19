@@ -320,8 +320,7 @@
   }
   
   // Use when fetching text data
-  NSString *responseString = [request responseString];
-  DLog(@"Raw response string from request: %@ => %@",request, responseString);
+  DLog(@"Raw response string from request: %@ => %@",request, [request responseString]);
   
   if([request isEqual:self.resultsRequest]) {
     DLog(@"send results request finished");

@@ -46,7 +46,10 @@
     [[APP_DELEGATE launcherViewController] view].alpha = 0.0;
     [UIView commitAnimations];
   }
-  
+  [self resetLoginState];
+}
+
+- (void)resetLoginState {
   _ssoButton.hidden = NO;
   _normalButton.hidden = NO;
   _splashLabel.text = nil;
@@ -166,7 +169,7 @@
   } 
   
   if ((token == (NSString *) [NSNull null]) || (token.length == 0)) {
-    [self.delegate fbDidNotLoginWithError:nil];
+    [self.delegate fbDidNotLoginWithError:nil userDidCancel:NO];
   } else {
     if(isDeviceIPad()) {
       [UIView beginAnimations:@"LauncherViewFadeIn" context:nil];
@@ -195,9 +198,9 @@
       if (errorCode) {
         NSDictionary *errorData = [NSDictionary dictionaryWithObject:errorStr forKey:@"error_msg"];
         NSError *error = [NSError errorWithDomain:@"facebookErrDomain" code:[errorCode intValue] userInfo:errorData];
-        [self.delegate fbDidNotLoginWithError:error];
+        [self.delegate fbDidNotLoginWithError:error userDidCancel:NO];
       } else {
-        [self.delegate fbDidNotLoginWithError:nil];
+        [self.delegate fbDidNotLoginWithError:nil userDidCancel:NO];
       }
     } else {
       [self authorizeDidSucceed:url];
@@ -221,7 +224,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
   if (!(([error.domain isEqualToString:@"NSURLErrorDomain"] && error.code == -999) ||
         ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102))) {
-    [self.delegate fbDidNotLoginWithError:error];
+    [self.delegate fbDidNotLoginWithError:error userDidCancel:NO];
   }
 }
 

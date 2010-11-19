@@ -82,12 +82,10 @@
     // The facebook app may return an error_code parameter in case it
     // encounters a UIWebViewDelegate error. This should not be treated
     // as a cancel.
-//    NSString *errorCode = [params valueForKey:@"error_code"];
-    
-//    BOOL userDidCancel =
-//    !errorCode && (!errorReason || [errorReason isEqualToString:@"access_denied"]);
-//    [self fbDialogNotLogin:userDidCancel];
-    [self fbDidNotLoginWithError:nil];
+    NSString *errorCode = [params valueForKey:@"error_code"];    
+    BOOL userDidCancel =
+    !errorCode && (!errorReason || [errorReason isEqualToString:@"access_denied"]);
+    [self fbDidNotLoginWithError:nil userDidCancel:userDidCancel];
     return YES;
   }
   
@@ -245,10 +243,19 @@
   [self getCurrentUserRequest];
 }
 
-- (void)fbDidNotLoginWithError:(NSError *)error {
-  [self dismissLoginView:NO];
-  DLog(@"Login failed with error: %@",error);
-  _loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Facebook failed." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+- (void)fbDidNotLoginWithError:(NSError *)error userDidCancel:(BOOL)userDidCancel {
+  DLog(@"Login failed with error: %@, user did cancel: %d",error, userDidCancel);
+  NSString *errorTitle;
+  NSString *errorMessage;
+  if(userDidCancel) {
+    errorTitle = @"Permissions Error";
+    errorMessage = @"Facemash was unable to request permissions from Facebook. Please try again.";
+  } else {
+    errorTitle = @"Login Error";
+    errorMessage = @"There seems to have been a problem when logging in to Facebook. Please try again.";
+  }
+
+  _loginFailedAlert = [[UIAlertView alloc] initWithTitle:errorTitle message:errorMessage delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [_loginFailedAlert show];
   [_loginFailedAlert autorelease];
 }
@@ -256,6 +263,7 @@
 #pragma mark Authentication Display
 - (void)authenticateWithFacebook:(BOOL)animated {
   if(_isShowingLogin) {
+    [self.loginViewController resetLoginState];
     return;
   }
   

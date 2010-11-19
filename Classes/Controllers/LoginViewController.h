@@ -11,7 +11,7 @@
 @protocol FacebookLoginDelegate <NSObject>
 @optional
 - (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration;
-- (void)fbDidNotLoginWithError:(NSError *)error;
+- (void)fbDidNotLoginWithError:(NSError *)error userDidCancel:(BOOL)userDidCancel;
 @end
 
 @interface LoginViewController : UIViewController {
@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSURL *authorizeURL;
 @property (nonatomic, assign) id <FacebookLoginDelegate> delegate;
 
+- (void)resetLoginState;
 - (IBAction)ssoLogin;
 - (IBAction)normalLogin;
 - (IBAction)terms;
