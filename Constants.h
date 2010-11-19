@@ -33,8 +33,12 @@
 
 #ifdef STAGING
   #define FACEMASH_BASE_URL @"http://localhost:3000"
+  #define FACEMASH_TERMS_URL @"http://localhost:3000/terms"
+  #define FACEMASH_PRIVACY_URL @"http://localhost:3000/privacy"
 #else
   #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
+  #define FACEMASH_TERMS_URL @"http://facemash.heroku.com/terms"
+  #define FACEMASH_PRIVACY_URL @"http://facemash.heroku.com/privacy"
 #endif
 
 #define FB_GRAPH_FRIENDS @"https://graph.facebook.com/me/friends"

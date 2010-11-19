@@ -57,11 +57,11 @@
 }
 
 - (IBAction)terms {
-  [self webViewWithURL:@"http://twitter.com/tos" andTitle:@"Terms of Service"];
+  [self webViewWithURL:FACEMASH_TERMS_URL andTitle:@"Terms of Service"];
 }
 
 - (IBAction)privacy {
-  [self webViewWithURL:@"http://twitter.com/privacy" andTitle:@"Privacy Policy"];  
+  [self webViewWithURL:FACEMASH_PRIVACY_URL andTitle:@"Privacy Policy"];  
 }
 
 - (IBAction)ssoLogin {
