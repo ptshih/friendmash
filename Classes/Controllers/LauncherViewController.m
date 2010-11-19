@@ -25,7 +25,6 @@
 @implementation LauncherViewController
 
 @synthesize launcherView = _launcherView;
-@synthesize splashView = _splashView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
@@ -163,7 +162,6 @@
 
 - (void)dealloc {
   if(_launcherView) [_launcherView release];
-  if(_splashView) [_splashView release];
   if(_modeButton) [_modeButton release];
   if(_friendsOnlyLabel) [_friendsOnlyLabel release];
   [super dealloc];

@@ -11,13 +11,11 @@
 
 @interface LauncherViewController : UIViewController <ProfileDelegate> {
   IBOutlet UIView *_launcherView;
-  IBOutlet UIView *_splashView;
   IBOutlet UIButton *_modeButton;
   IBOutlet UILabel *_friendsOnlyLabel;
 }
 
 @property (nonatomic, assign) UIView *launcherView;
-@property (nonatomic, assign) UIView *splashView;
 
 
 /**

@@ -121,8 +121,6 @@
 }
 
 - (void)checkLastExitDate {
-  self.launcherViewController.splashView.hidden = NO;
-  
   // Check if we even have a valid token
   if(![[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
     [self authenticateWithFacebook:NO]; // authenticate
@@ -143,7 +141,6 @@
       // Reuse our token from last time
       self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
       self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-      self.launcherViewController.splashView.hidden = YES;
     }
   } else { // this is the first time we launched the app, or we just logged off and tried to login again
     [self authenticateWithFacebook:NO]; // authenticate
@@ -207,7 +204,6 @@
       [_tokenFailedAlert autorelease];
     } else {
       // Remove the splash screen now
-      self.launcherViewController.splashView.hidden = YES;
     }
   }
 }
@@ -258,7 +254,6 @@
 #pragma mark Authentication Display
 - (void)authenticateWithFacebook:(BOOL)animated {
   if(_isShowingLogin) {
-    [self.loginViewController showLogin];
     return;
   }
   
