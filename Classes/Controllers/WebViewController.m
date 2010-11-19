@@ -155,8 +155,11 @@
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) return YES;
-  else return NO;
+  if(isDeviceIPad()) {
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+  } else {
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+  }
 }
 
 - (void)didReceiveMemoryWarning {

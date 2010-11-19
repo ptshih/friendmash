@@ -53,6 +53,9 @@
 // interested_in
 // meeting_for
 
+#define WEBVIEW_LEFT @"left.png"
+#define WEBVIEW_RIGHT @"right.png"
+
 #define FM_RANKINGS_COUNT 99
 
 // ERROR STRINGS

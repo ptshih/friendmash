@@ -20,13 +20,15 @@
   IBOutlet UILabel *_splashLabel;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> delegate;
-  BOOL _alertIsVisible;
 }
 
 @property (nonatomic, retain) NSURL *authorizeURL;
 @property (nonatomic, assign) id <FacebookLoginDelegate> delegate;
 
-- (void)showLogin;
+- (IBAction)ssoLogin;
+- (IBAction)normalLogin;
+- (IBAction)terms;
+- (IBAction)privacy;
 - (void)authorizeWithFBAppAuth:(BOOL)tryFBAppAuth safariAuth:(BOOL)trySafariAuth;;
 
 @end

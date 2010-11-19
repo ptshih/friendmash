@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "WebViewController.h"
 #import "RemoteRequest.h"
 #import "Constants.h"
 
@@ -25,7 +26,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    _alertIsVisible = NO;
   }
   return self;
 }
@@ -37,38 +37,39 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [self showLogin];
-}
-
-- (void)showLogin {
-  if(_alertIsVisible) return;
-  _splashLabel.text = NSLocalizedString(@"authenticating with facebook", @"authenticating with facebook");
   UIDevice *device = [UIDevice currentDevice];
-  if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
-    UIAlertView *fbAlertView = [[UIAlertView alloc] initWithTitle:@"Single Sign-On" message:@"Use Facebook Single Sign-On?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Yes", @"No", nil];
-    [fbAlertView show];
-    [fbAlertView autorelease];
-    _alertIsVisible = YES;
-  } else {
+  if(![device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
     [self authorizeWithFBAppAuth:NO safariAuth:NO];
   }
 }
 
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
-    case 0:
-      [self performSelector:@selector(authWithSingleSignOn:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.1];
-//      [self authorizeWithFBAppAuth:YES safariAuth:YES];
-      break;
-    case 1:
-      [self performSelector:@selector(authWithSingleSignOn:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
-//      [self authorizeWithFBAppAuth:NO safariAuth:NO];
-      break;
-    default:
-      break;
+- (void)webViewWithURL:(NSString *)url andTitle:(NSString *)title {
+  WebViewController *wvc;
+  if(isDeviceIPad()) {
+    wvc = [[WebViewController alloc] initWithNibName:@"WebViewController_iPad" bundle:nil];
+  } else {
+    wvc = [[WebViewController alloc] initWithNibName:@"WebViewController_iPhone" bundle:nil];
   }
-  _alertIsVisible = NO;
+  [self presentModalViewController:wvc animated:YES];
+  [wvc setWebViewTitle:title];
+  [wvc loadURL:url];
+  [wvc release];
+}
+
+- (IBAction)terms {
+  [self webViewWithURL:@"http://twitter.com/tos" andTitle:@"Terms of Service"];
+}
+
+- (IBAction)privacy {
+  [self webViewWithURL:@"http://twitter.com/privacy" andTitle:@"Privacy Policy"];  
+}
+
+- (IBAction)ssoLogin {
+  [self authorizeWithFBAppAuth:YES safariAuth:YES];
+}
+
+- (IBAction)normalLogin {
+  [self authorizeWithFBAppAuth:NO safariAuth:NO];
 }
 
 - (void)authWithSingleSignOn:(NSNumber *)trySingleSignOn {
