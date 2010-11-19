@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="10"/>
+			<integer value="18"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -74,7 +74,7 @@
 							<object class="IBUILabel" id="580741392">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 205}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 220}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -82,9 +82,9 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText"/>
-								<object class="NSFont" key="IBUIFont" id="237636947">
+								<object class="NSFont" key="IBUIFont" id="712880398">
 									<string key="NSName">LucidaGrande</string>
-									<double key="NSSize">20</double>
+									<double key="NSSize">18</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="933440694">
@@ -99,7 +99,7 @@
 							<object class="IBUIButton" id="105473143">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 146}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 156}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="105672731">
 									<int key="NSColorSpace">3</int>
@@ -109,8 +109,8 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIFont" ref="237636947"/>
-								<string key="IBUINormalTitle">Login</string>
+								<reference key="IBUIFont" ref="712880398"/>
+								<string key="IBUINormalTitle">Login with Facebook</string>
 								<reference key="IBUIHighlightedTitleColor" ref="933440694"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -128,15 +128,15 @@
 							<object class="IBUIButton" id="675495837">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 205}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 220}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<reference key="IBUIBackgroundColor" ref="105672731"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIFont" ref="237636947"/>
-								<string key="IBUINormalTitle">Guest Login</string>
+								<reference key="IBUIFont" ref="712880398"/>
+								<string key="IBUINormalTitle">Guest Login with Facebook</string>
 								<reference key="IBUIHighlightedTitleColor" ref="933440694"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -148,7 +148,7 @@
 							<object class="IBUIButton" id="542204143">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{140, 262}, {80, 18}}</string>
+								<string key="NSFrame">{{140, 272}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -170,7 +170,7 @@
 							<object class="IBUIButton" id="751826653">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{260, 262}, {80, 18}}</string>
+								<string key="NSFrame">{{260, 272}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -185,7 +185,7 @@
 							<object class="IBUIActivityIndicatorView" id="798335908">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">-2147483356</int>
-								<string key="NSFrame">{{221, 146}, {37, 37}}</string>
+								<string key="NSFrame">{{221, 156}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -442,7 +442,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>LoginViewController</string>
 					<string>UIResponder</string>
-					<string>{{26, 675}, {480, 300}}</string>
+					<string>{{35, 675}, {480, 300}}</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBCocoaTouchFramework</string>
 						<integer value="2" key="NS.object.0"/>
