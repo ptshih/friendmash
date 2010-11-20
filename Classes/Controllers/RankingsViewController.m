@@ -24,7 +24,8 @@ static UIImage *_placeholderImage;
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
 @synthesize networkQueue = _networkQueue;
-@synthesize selectedGender = _selectedGender;
+@synthesize selectedMode = _selectedMode;
+@synthesize gameMode = _gameMode;
 
 + (void)initialize {
   _placeholderImage = [[UIImage imageNamed:@"picture_loading.png"] retain];
@@ -45,8 +46,8 @@ static UIImage *_placeholderImage;
     [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
     [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
     
-    self.selectedGender = [@"male" retain];
     _selectedMode = 0;
+    _gameMode = 0;
   }
   return self;
 }
@@ -54,36 +55,91 @@ static UIImage *_placeholderImage;
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+//  // Tab bar gradient
+//  CGRect frame = CGRectMake(0, 0, 480, 49);
+//  UIView *v = [[UIView alloc] initWithFrame:frame];
+//  UIImage *i = [UIImage imageNamed:@"tab_gradient.png"];
+//  UIColor *c = [[UIColor alloc] initWithPatternImage:i];
+//  v.backgroundColor = c;
+//  [c release];
+//  [_tabBar insertSubview:v atIndex:0];
+//  [v release];
+  
   // Call initial rankings
   // Read from userdefaults for sticky tab
-  if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {
-    self.selectedGender = [[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsStickyGender"]) {
-      _selectedMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"rankingsStickyMode"];
-      if(_selectedMode == 0) {
-        if([self.selectedGender isEqualToString:@"male"]) {
-          [_segmentedControl setSelectedSegmentIndex:0];
-        } else {
-          [_segmentedControl setSelectedSegmentIndex:1];
-        }
-      } else {
-        if([self.selectedGender isEqualToString:@"male"]) {
-          [_segmentedControl setSelectedSegmentIndex:2];
-        } else {
-          [_segmentedControl setSelectedSegmentIndex:3];
-        }
-      }
+  if([[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsModeSticky"]) {
+    self.selectedMode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsModeSticky"] integerValue];
+    switch (self.selectedMode) {
+      case RankingsModeTop:
+        _tabBar.selectedItem = _tabBarItemTop;
+        break;
+      case RankingsModeMale:
+        _tabBar.selectedItem = _tabBarItemMale;
+        break;
+      case RankingsModeFemale:
+        _tabBar.selectedItem = _tabBarItemFemale;
+        break;
+      default:
+        break;
     }
+  } else {
+    self.selectedMode = RankingsModeTop;
+    _tabBar.selectedItem = _tabBarItemTop;
   }
   
-  [self getTopRankings];
+  if(self.selectedMode == RankingsModeTop) {
+    [self getTopPlayers];
+  } else {
+    [self getTopRankings];
+  }
 }
 
-- (IBAction)getTopRankings {
+#pragma mark  UITabBarDelegate
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+  if([item isEqual:_tabBarItemTop]) {
+    self.selectedMode = RankingsModeTop;    
+  } else if([item isEqual:_tabBarItemMale]) {
+    self.selectedMode = RankingsModeMale;
+  } else if([item isEqual:_tabBarItemFemale]) {
+    self.selectedMode = RankingsModeFemale;
+  }
+  
+  [[NSUserDefaults standardUserDefaults] setInteger:self.selectedMode forKey:@"rankingsModeSticky"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  if(self.selectedMode == RankingsModeTop) {
+    [self getTopPlayers];
+  } else {
+    [self getTopRankings];
+  }
+}
+
+- (void)getTopPlayers {
   _loadingView.hidden = NO;
   [self.imageCache resetCache]; // reset the cache
   
-  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", self.selectedGender, _selectedMode, FM_RANKINGS_COUNT];
+  // Mode selection
+  NSString *params = [NSString stringWithFormat:@"count=%d", FM_RANKINGS_COUNT];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/topplayers/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  
+  ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  [self.networkQueue addOperation:rankingsRequest];
+  [self.networkQueue go];
+}
+
+- (void)getTopRankings {
+  _loadingView.hidden = NO;
+  [self.imageCache resetCache]; // reset the cache
+  
+  // Mode selection
+  NSString *selectedGender;
+  if(self.selectedMode == RankingsModeMale) {
+    selectedGender = @"male";
+  } else if(self.selectedMode == RankingsModeFemale) {
+    selectedGender = @"female";
+  }
+
+  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", selectedGender, self.gameMode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
@@ -127,43 +183,15 @@ static UIImage *_placeholderImage;
     case 0:
       break;
     case 1:
-      [self getTopRankings];
+      if(self.selectedMode == RankingsModeTop) {
+        [self getTopPlayers];
+      } else {
+        [self getTopRankings];
+      }
       break;
     default:
       break;
   }
-}
-
-- (IBAction)selectMode:(UISegmentedControl *)segmentedControl {
-  DLog(@"selected section: %d", segmentedControl.selectedSegmentIndex);
-  [self.imageCache resetCache]; // reset the cache when switching segments
-  switch (segmentedControl.selectedSegmentIndex) {
-    case 0:
-      self.selectedGender = @"male";
-      _selectedMode = 0;
-      break;
-    case 1:
-      self.selectedGender = @"female";
-      _selectedMode = 0;
-      break;
-    case 2:
-      self.selectedGender = @"male";
-      _selectedMode = 1;
-      break;
-    case 3:
-      self.selectedGender = @"female";
-      _selectedMode = 1;
-      break;
-    default:
-      self.selectedGender = @"male";
-      _selectedMode = 0;
-      break;
-  }
-  [[NSUserDefaults standardUserDefaults] setObject:self.selectedGender forKey:@"rankingsStickyGender"];
-  [[NSUserDefaults standardUserDefaults] setInteger:_selectedMode forKey:@"rankingsStickyMode"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  [self getTopRankings];
 }
 
 - (IBAction)dismissRankings {
@@ -210,7 +238,11 @@ static UIImage *_placeholderImage;
     profilePic = _placeholderImage;
   }
   
-  [RankingsTableViewCell fillCell:cell withDictionary:[self.rankingsArray objectAtIndex:indexPath.row] andImage:profilePic];
+  if(self.selectedMode == RankingsModeTop) {
+    [RankingsTableViewCell fillCell:cell withDictionary:[self.rankingsArray objectAtIndex:indexPath.row] andImage:profilePic forTopPlayers:YES];
+  } else {
+    [RankingsTableViewCell fillCell:cell withDictionary:[self.rankingsArray objectAtIndex:indexPath.row] andImage:profilePic forTopPlayers:NO];
+  }
   return cell;
 }
 
@@ -282,9 +314,11 @@ static UIImage *_placeholderImage;
   if(_networkQueue) [_networkQueue release];
   if(_imageCache) [_imageCache release];
   if(_rankingsArray) [_rankingsArray release];
-  if(_selectedGender) [_selectedGender release];
   if(_tableView) [_tableView release];
-  if(_segmentedControl) [_segmentedControl release];
+  if(_tabBar) [_tabBar release];
+  if(_tabBarItemTop) [_tabBarItemTop release];
+  if(_tabBarItemMale) [_tabBarItemMale release];
+  if(_tabBarItemFemale) [_tabBarItemFemale release];
   if(_loadingView) [_loadingView release];
   [super dealloc];
 }

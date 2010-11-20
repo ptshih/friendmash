@@ -29,6 +29,6 @@
 @property (nonatomic, retain) UILabel *streakLabel;
 @property (nonatomic, retain) UIView *rankView;
 
-+ (void)fillCell:(RankingsTableViewCell *)cell withDictionary:(NSDictionary *)dictionary andImage:(UIImage *)profileImage;
++ (void)fillCell:(RankingsTableViewCell *)cell withDictionary:(NSDictionary *)dictionary andImage:(UIImage *)profileImage forTopPlayers:(BOOL)forTopPlayers;
 
 @end

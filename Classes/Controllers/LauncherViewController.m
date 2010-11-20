@@ -105,6 +105,7 @@
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPhone" bundle:nil];
   }
   rvc.launcherViewController = self;
+  rvc.gameMode = _modeButton.selected;
   [self presentModalViewController:rvc animated:YES];
   [rvc release];
 }

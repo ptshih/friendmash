@@ -168,7 +168,7 @@ static UIImage *_bulletImage;
   
 }
 
-+ (void)fillCell:(RankingsTableViewCell *)cell withDictionary:(NSDictionary *)dictionary andImage:(UIImage *)profileImage {
++ (void)fillCell:(RankingsTableViewCell *)cell withDictionary:(NSDictionary *)dictionary andImage:(UIImage *)profileImage forTopPlayers:(BOOL)forTopPlayers {
   cell.profileImageView.image = profileImage;
   if([[dictionary objectForKey:@"first_name"] notNil]) {
     NSString *lastInitial = [[dictionary objectForKey:@"last_name"] substringToIndex:1];
@@ -180,10 +180,16 @@ static UIImage *_bulletImage;
     cell.nameLabel.text = @"Anonymous";
   }
 
-//  cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
+  //  cell.nameLabel.text = [[dictionary objectForKey:@"full_name"] notNil] ? [dictionary objectForKey:@"full_name"] : @"Anonymous";
   cell.rankLabel.text = [NSString stringWithFormat:@"%@", [[dictionary objectForKey:@"rank"] stringValue]];
-  cell.likeLabel.text = [NSString stringWithFormat:@"%@ Likes", [[dictionary objectForKey:@"wins"] stringValue]];
-  cell.streakLabel.text = [NSString stringWithFormat:@"Longest Streak: %@", [[dictionary objectForKey:@"win_streak_max"] stringValue]];
+  
+  if(forTopPlayers) {
+    cell.likeLabel.text = [NSString stringWithFormat:@"%@ Mashes", [[dictionary objectForKey:@"votes"] stringValue]];
+    cell.streakLabel.text = [NSString stringWithFormat:@"Friends Mashed: %@", [[dictionary objectForKey:@"votes_network"] stringValue]];
+  } else {
+    cell.likeLabel.text = [NSString stringWithFormat:@"%@ Likes", [[dictionary objectForKey:@"wins"] stringValue]];
+    cell.streakLabel.text = [NSString stringWithFormat:@"Longest Streak: %@", [[dictionary objectForKey:@"win_streak_max"] stringValue]];
+  }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {    
