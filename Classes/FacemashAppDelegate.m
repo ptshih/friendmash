@@ -14,6 +14,11 @@
 #import "ASIHTTPRequest.h"
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
+#import "FlurryAPI.h"
+
+void uncaughtExceptionHandler(NSException *exception) {
+  [FlurryAPI logError:@"Uncaught" message:@"Crash!" exception:exception];
+}
 
 @interface FacemashAppDelegate (Private)
 - (NSDictionary*)parseURLParams:(NSString *)query;
@@ -190,6 +195,9 @@
       
       self.currentUser = [request responseData];
       self.currentUserId = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"id"];
+      
+      [FlurryAPI setUserID:self.currentUserId];
+      
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
       
@@ -249,10 +257,10 @@
   NSString *errorMessage;
   if(userDidCancel) {
     errorTitle = @"Permissions Error";
-    errorMessage = @"Facemash was unable to request permissions from Facebook. Please try again.";
+    errorMessage = @"Facemash was unable to login to Facebook. Please try again.";
   } else {
     errorTitle = @"Login Error";
-    errorMessage = @"There seems to have been a problem when logging in to Facebook. Please try again.";
+    errorMessage = @"Facemash is having trouble logging in to Facebook. Please try again.";
   }
 
   _loginFailedAlert = [[UIAlertView alloc] initWithTitle:errorTitle message:errorMessage delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -335,6 +343,14 @@
 #pragma mark Application resume/suspend/exit stuff
 // Called when app launches fresh NOT backgrounded
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  // Flurry
+  NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+  [FlurryAPI startSession:@"LD5P2EGIERGR2TTEZLCE"];
+  
+  if([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+    [FlurryAPI setUserID:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
+  }
+  
   _tokenRetryCount = 0;
   _isShowingLogin = NO;
   _touchActive = NO; // FaceView state stuff

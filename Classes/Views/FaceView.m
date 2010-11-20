@@ -15,6 +15,7 @@
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
+#import "FlurryAPI.h"
 
 #define IPAD_FRAME_WIDTH 1024.0
 #define IPHONE_FRAME_WIDTH 480.0
@@ -106,10 +107,12 @@
   if(statusCode > 200) {
     DLog(@"FaceView status code not 200 in request finished, response length: %d", [[request responseData] length]);
     if(statusCode == 400) {
+      [FlurryAPI logEvent:@"errorFaceView400"];
       DLog(@"FaceView status code is 400 in request finished, response length: %d", [[request responseData] length]);
       NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
       [self.delegate faceViewDidFailWithError:errorDict];
     } else {
+      [FlurryAPI logEvent:@"errorFaceViewFailedPicture"];
       DLog(@"FaceView status code not 200 or 400 in request finished, response length: %d", [[request responseData] length]);
       // There is apparently a change where FB will return null response because their CDN is down
       // For now we're just gonna throw an error and pop out to Launcher
@@ -126,8 +129,8 @@
   }
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
+- (void)requestFailed:(ASIHTTPRequest *)request {
+  [FlurryAPI logEvent:@"errorFaceViewRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
   _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [_networkErrorAlert show];

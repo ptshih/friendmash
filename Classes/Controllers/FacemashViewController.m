@@ -13,6 +13,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "FlurryAPI.h"
 
 @interface FacemashViewController (Private)
 
@@ -29,6 +30,8 @@
 /**
  Load and Show just performs the load method and then animates an addToSubview
  */
+
+- (void)prepareMash;
 
 - (void)showHelp;
 
@@ -78,6 +81,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  [FlurryAPI logEvent:@"facemashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
+  
   self.title = NSLocalizedString(@"facemash", @"facemash");
   _toolbar.tintColor = RGBCOLOR(59,89,152);
 
@@ -85,7 +90,7 @@
     [self showHelp];
   }
   
-  [self remash];
+  [self prepareMash];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -149,16 +154,23 @@
 }
 
 - (IBAction)back {
+  [FlurryAPI logEvent:@"facemashBack"];
   [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)remash {
+  [FlurryAPI logEvent:@"facemashRemash"];
+  [self prepareMash];
+}
+
+- (void)prepareMash {
   _remashButton.enabled = NO;
   _isLeftLoaded = NO;
   _isRightLoaded = NO;
   [self.leftView removeFromSuperview];
   [self.rightView removeFromSuperview];
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
+  
 }
 
 - (void)prepareBothFaceViews {
@@ -278,7 +290,7 @@
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
   }
 
-  [self remash];
+  [self prepareMash];
 }
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
@@ -306,11 +318,13 @@
     DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
     // Check for a not-implemented (did not find opponents) response
     if(statusCode == 501) {
+      [FlurryAPI logEvent:@"errorFacemashNoOpponents"];
       DLog(@"FMVC status code is 501 in request finished, response: %@", [request responseString]);
       _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
       [_noContentAlert show];
       [_noContentAlert autorelease];
     } else {
+      [FlurryAPI logEvent:@"errorFacemashNetworkError"];
       DLog(@"FMVC status code not 200 or 501 in request finished, response: %@", [request responseString]);
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
@@ -347,6 +361,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+  [FlurryAPI logEvent:@"errorFacemashRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
 
   _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];

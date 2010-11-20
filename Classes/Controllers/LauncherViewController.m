@@ -12,6 +12,7 @@
 #import "RankingsViewController.h"
 #import "AboutViewController.h"
 #import "Constants.h"
+#import "FlurryAPI.h"
 
 @interface LauncherViewController (Private)
 
@@ -63,13 +64,16 @@
 }
 
 - (IBAction)male {
+  [FlurryAPI logEvent:@"launcherMale"];
   [self launchFacemashWithGender:@"male"];
 }
 - (IBAction)female {
+  [FlurryAPI logEvent:@"launcherFemale"];
   [self launchFacemashWithGender:@"female"];
 }
 
 - (IBAction)about {
+  [FlurryAPI logEvent:@"launcherAbout"];
   AboutViewController *avc;
   if(isDeviceIPad()) {
     avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController_iPad" bundle:nil];
@@ -82,6 +86,7 @@
 }
 
 - (IBAction)profile {
+  [FlurryAPI logEvent:@"launcherProfile"];
   ProfileViewController *pvc;
   if(isDeviceIPad()) {
     pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController_iPad" bundle:nil];

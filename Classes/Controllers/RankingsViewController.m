@@ -15,6 +15,7 @@
 #import "RemoteRequest.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
+#import "FlurryAPI.h"
 
 static UIImage *_placeholderImage;
 
@@ -54,6 +55,9 @@ static UIImage *_placeholderImage;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  // Flurry
+  [FlurryAPI logEvent:@"rankingsViewLoaded"];
   
 //  // Tab bar gradient
 //  CGRect frame = CGRectMake(0, 0, 480, 49);
@@ -97,10 +101,13 @@ static UIImage *_placeholderImage;
 #pragma mark  UITabBarDelegate
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
   if([item isEqual:_tabBarItemTop]) {
+    [FlurryAPI logEvent:@"rankingsTabTop"];
     self.selectedMode = RankingsModeTop;    
   } else if([item isEqual:_tabBarItemMale]) {
+    [FlurryAPI logEvent:@"rankingsTabMale"];
     self.selectedMode = RankingsModeMale;
   } else if([item isEqual:_tabBarItemFemale]) {
+    [FlurryAPI logEvent:@"rankingsTabFemale"];
     self.selectedMode = RankingsModeFemale;
   }
   
@@ -253,6 +260,8 @@ static UIImage *_placeholderImage;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
+  [FlurryAPI logEvent:@"rankingsTapped" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], @"facebookId", [NSNumber numberWithInteger:self.selectedMode], @"selectedMode", nil]];
+   
   // Popup a lightbox view with full sized image
   LightboxViewController *lvc;
   if(isDeviceIPad()) {
