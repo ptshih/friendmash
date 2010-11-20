@@ -37,15 +37,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  if(isDeviceIPad()) {
-    [UIView beginAnimations:@"LauncherViewFadeOut" context:nil];
-//			[UIView setAnimationDelegate:self];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-    [UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
-    [[APP_DELEGATE launcherViewController] view].alpha = 0.5;
-    [UIView commitAnimations];
-  }
+
   [self resetLoginState];
 }
 
@@ -171,15 +163,6 @@
   if ((token == (NSString *) [NSNull null]) || (token.length == 0)) {
     [self.delegate fbDidNotLoginWithError:nil userDidCancel:NO];
   } else {
-    if(isDeviceIPad()) {
-      [UIView beginAnimations:@"LauncherViewFadeIn" context:nil];
-//			[UIView setAnimationDelegate:self];
-			[UIView setAnimationBeginsFromCurrentState:YES];
-			[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-			[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
-      [[APP_DELEGATE launcherViewController] view].alpha = 1.0;
-			[UIView commitAnimations];
-    }
     [self.delegate fbDidLoginWithToken:token andExpiration:expirationDate];
   }
 }

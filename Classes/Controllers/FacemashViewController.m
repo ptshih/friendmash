@@ -84,12 +84,12 @@
   
   self.title = NSLocalizedString(@"facemash", @"facemash");
   _toolbar.tintColor = RGBCOLOR(59,89,152);
-
+  
+  [self prepareMash];
+  
   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
     [self showHelp];
   }
-  
-  [self prepareMash];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -105,11 +105,11 @@
   UIView *helpBackgroundView;
   
   if(isDeviceIPad()) {
-    _helpView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
-    helpBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
+    _helpView = [[UIView alloc] initWithFrame:self.view.frame];
+    helpBackgroundView = [[UIView alloc] initWithFrame:_helpView.frame];
   } else {
-    _helpView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 320)];
-    helpBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 480, 320)];
+    _helpView = [[UIView alloc] initWithFrame:self.view.frame];
+    helpBackgroundView = [[UIView alloc] initWithFrame:_helpView.frame];
   }
   
   helpBackgroundView.backgroundColor = [UIColor blackColor];
@@ -131,16 +131,16 @@
   UIButton *dismissButton;
   
   if(isDeviceIPad()) {
-    dismissButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
+    dismissButton = [[UIButton alloc] initWithFrame:self.view.frame];
   } else {
-    dismissButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 480, 320)];
+    dismissButton = [[UIButton alloc] initWithFrame:self.view.frame];
   }
   
   [dismissButton addTarget:self action:@selector(dismissHelp) forControlEvents:UIControlEventTouchUpInside];
   [_helpView addSubview:dismissButton];
   [dismissButton release];
   
-  [self.navigationController.view addSubview:_helpView];
+  [self.view addSubview:_helpView];
   [_helpView release]; 
 }
 
