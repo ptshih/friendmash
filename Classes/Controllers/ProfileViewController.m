@@ -188,97 +188,97 @@ static UIImage *_likeImage;
 }
 
 - (float)getProgressForVotes:(NSInteger)votes {
-  int k = 50;
+  int k = 100;
   if(votes < k) {
     return (float)votes / k;
-  } else if(votes < 5*k) {
+  } else if(votes < 2*k) {
     return (float)(votes - k) / k;
+  } else if(votes < 4*k) {
+    return (float)(votes - 2*k) / (2*k);
+  } else if(votes < 6*k) {
+    return (float)(votes - 4*k) / (4*k);
+  } else if(votes < 8*k) {
+    return (float)(votes - 6*k) / (6*k);
   } else if(votes < 10*k) {
-    return (float)(votes - 5*k) / (5*k);
-  } else if(votes < 15*k) {
+    return (float)(votes - 8*k) / (8*k);
+  } else if(votes < 14*k) {
     return (float)(votes - 10*k) / (10*k);
-  } else if(votes < 20*k) {
-    return (float)(votes - 15*k) / (15*k);
-  } else if(votes < 25*k) {
-    return (float)(votes - 20*k) / (20*k);
+  } else if(votes < 18*k) {
+    return (float)(votes - 14*k) / (14*k);
+  } else if(votes < 22*k) {
+    return (float)(votes - 18*k) / (18*k);
+  } else if(votes < 26*k) {
+    return (float)(votes - 22*k) / (22*k);
   } else if(votes < 30*k) {
-    return (float)(votes - 25*k) / (25*k);
-  } else if(votes < 35*k) {
-    return (float)(votes - 30*k) / (30*k);
+    return (float)(votes - 26*k) / (26*k);
   } else if(votes < 40*k) {
-    return (float)(votes - 35*k) / (35*k);
-  } else if(votes < 45*k) {
-    return (float)(votes - 40*k) / (40*k);
+    return (float)(votes - 30*k) / (30*k);
   } else if(votes < 50*k) {
-    return (float)(votes - 45*k) / (45*k);
-  } else if(votes < 55*k) {
-    return (float)(votes - 50*k) / (50*k);
+    return (float)(votes - 40*k) / (40*k);
   } else if(votes < 60*k) {
-    return (float)(votes - 55*k) / (55*k);
-  } else if(votes < 65*k) {
-    return (float)(votes - 60*k) / (60*k);
+    return (float)(votes - 50*k) / (50*k);
   } else if(votes < 70*k) {
-    return (float)(votes - 65*k) / (65*k);
-  } else if(votes < 75*k) {
-    return (float)(votes - 70*k) / (70*k);
+    return (float)(votes - 60*k) / (60*k);
   } else if(votes < 80*k) {
-    return (float)(votes - 75*k) / (75*k);
-  } else if(votes < 85*k) {
-    return (float)(votes - 80*k) / (80*k);
-  } else if(votes < 90*k) {
-    return (float)(votes - 85*k) / (85*k);
-  } else if(votes < 95*k) {
-    return (float)(votes - 90*k) / (90*k);
+    return (float)(votes - 70*k) / (70*k);
   } else if(votes < 100*k) {
-    return (float)(votes - 95*k) / (95*k);
+    return (float)(votes - 80*k) / (80*k);
+  } else if(votes < 120*k) {
+    return (float)(votes - 100*k) / (100*k);
+  } else if(votes < 140*k) {
+    return (float)(votes - 120*k) / (120*k);
+  } else if(votes < 160*k) {
+    return (float)(votes - 140*k) / (140*k);
+  } else if(votes < 180*k) {
+    return (float)(votes - 160*k) / (160*k);
   } else {
     return 1.0;
   }
 }
 
 - (UIImage *)getIconForVotes:(NSInteger)votes {
-  int k = 50;
+  int k = 100;
   if(votes < k) {
     return [UIImage imageNamed:@"recruit.png"];
-  } else if(votes < 5*k) {
+  } else if(votes < 2*k) {
     return [UIImage imageNamed:@"apprentice.png"];
-  } else if(votes < 10*k) {
+  } else if(votes < 4*k) {
     return [UIImage imageNamed:@"private.png"];
-  } else if(votes < 15*k) {
+  } else if(votes < 6*k) {
     return [UIImage imageNamed:@"corporal.png"];
-  } else if(votes < 20*k) {
+  } else if(votes < 8*k) {
     return [UIImage imageNamed:@"sergeant.png"];
-  } else if(votes < 25*k) {
+  } else if(votes < 10*k) {
     return [UIImage imageNamed:@"first_sergeant.png"];
-  } else if(votes < 30*k) {
+  } else if(votes < 14*k) {
     return [UIImage imageNamed:@"lieutenant.png"];
-  } else if(votes < 35*k) {
+  } else if(votes < 18*k) {
     return [UIImage imageNamed:@"first_lieutenant.png"];
-  } else if(votes < 40*k) {
+  } else if(votes < 22*k) {
     return [UIImage imageNamed:@"captain.png"];
-  } else if(votes < 45*k) {
+  } else if(votes < 26*k) {
     return [UIImage imageNamed:@"staff_captain.png"];
-  } else if(votes < 50*k) {
+  } else if(votes < 30*k) {
     return [UIImage imageNamed:@"major.png"];
-  } else if(votes < 55*k) {
+  } else if(votes < 40*k) {
     return [UIImage imageNamed:@"major_payne.png"];
-  } else if(votes < 60*k) {
+  } else if(votes < 50*k) {
     return [UIImage imageNamed:@"commander.png"];
-  } else if(votes < 65*k) {
+  } else if(votes < 60*k) {
     return [UIImage imageNamed:@"strike_commander.png"];
   } else if(votes < 70*k) {
     return [UIImage imageNamed:@"colonel.png"];
-  } else if(votes < 75*k) {
-    return [UIImage imageNamed:@"force_colonel.png"];
   } else if(votes < 80*k) {
-    return [UIImage imageNamed:@"brigadier.png"];
-  } else if(votes < 85*k) {
-    return [UIImage imageNamed:@"brigadier_general.png"];
-  } else if(votes < 90*k) {
-    return [UIImage imageNamed:@"general.png"];
-  } else if(votes < 95*k) {
-    return [UIImage imageNamed:@"three_star_general.png"];
+    return [UIImage imageNamed:@"force_colonel.png"];
   } else if(votes < 100*k) {
+    return [UIImage imageNamed:@"brigadier.png"];
+  } else if(votes < 120*k) {
+    return [UIImage imageNamed:@"brigadier_general.png"];
+  } else if(votes < 140*k) {
+    return [UIImage imageNamed:@"general.png"];
+  } else if(votes < 160*k) {
+    return [UIImage imageNamed:@"three_star_general.png"];
+  } else if(votes < 180*k) {
     return [UIImage imageNamed:@"four_star_general.png"];
   } else {
     return [UIImage imageNamed:@"five_star_general.png"];
@@ -286,49 +286,49 @@ static UIImage *_likeImage;
 }
 
 - (NSString *)getRankForVotes:(NSInteger)votes {
-  int k = 50;
+  int k = 100;
   // Calculate Rank Label based on number of votes
   if(votes < k) {
     return @"Recruit";
-  } else if(votes < 5*k) {
+  } else if(votes < 2*k) {
     return @"Apprentice";
-  } else if(votes < 10*k) {
+  } else if(votes < 4*k) {
     return @"Private";
-  } else if(votes < 15*k) {
+  } else if(votes < 6*k) {
     return @"Corporal";
-  } else if(votes < 20*k) {
+  } else if(votes < 8*k) {
     return @"Sergeant";
-  } else if(votes < 25*k) {
+  } else if(votes < 10*k) {
     return @"First Sergeant";
-  } else if(votes < 30*k) {
+  } else if(votes < 14*k) {
     return @"Lieutenant";
-  } else if(votes < 35*k) {
+  } else if(votes < 18*k) {
     return @"First Lieutenant";
-  } else if(votes < 40*k) {
+  } else if(votes < 22*k) {
     return @"Captain";
-  } else if(votes < 45*k) {
+  } else if(votes < 26*k) {
     return @"Captain America";
-  } else if(votes < 50*k) {
+  } else if(votes < 30*k) {
     return @"Major";
-  } else if(votes < 55*k) {
+  } else if(votes < 40*k) {
     return @"Major Payne";
-  } else if(votes < 60*k) {
+  } else if(votes < 50*k) {
     return @"Commander";
-  } else if(votes < 65*k) {
+  } else if(votes < 60*k) {
     return @"Strike Commander";
   } else if(votes < 70*k) {
     return @"Colonel";
-  } else if(votes < 75*k) {
-    return @"Colonel Sanders";
   } else if(votes < 80*k) {
-    return @"Brigadier";
-  } else if(votes < 85*k) {
-    return @"Brigadier General";
-  } else if(votes < 90*k) {
-    return @"General";
-  } else if(votes < 95*k) {
-    return @"3-Star General";
+    return @"Colonel Sanders";
   } else if(votes < 100*k) {
+    return @"Brigadier";
+  } else if(votes < 120*k) {
+    return @"Brigadier General";
+  } else if(votes < 140*k) {
+    return @"General";
+  } else if(votes < 160*k) {
+    return @"3-Star General";
+  } else if(votes < 180*k) {
     return @"4-Star General";
   } else {
     return @"5-Star General";
