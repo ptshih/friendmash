@@ -14,7 +14,6 @@
 #import "ASIHTTPRequest.h"
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
-#import "FlurryAPI.h"
 
 void uncaughtExceptionHandler(NSException *exception) {
   [FlurryAPI logError:@"Uncaught" message:@"Crash!" exception:exception];
@@ -188,11 +187,11 @@ void uncaughtExceptionHandler(NSException *exception) {
   if([request isEqual:self.currentUserRequest]) {
     DLog(@"current user request finished");
     if(statusCode > 200) {
+      [FlurryAPI logEvent:@"errorCurrentUserRequestError"];
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     } else {
-      
       self.currentUser = [request responseData];
       self.currentUserId = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"id"];
       
@@ -207,23 +206,23 @@ void uncaughtExceptionHandler(NSException *exception) {
   } else if([request isEqual:self.tokenRequest]) {
     DLog(@"token request finished");
     if(statusCode >= 500) {
+      [FlurryAPI logEvent:@"errorTokenRequestError"];
       _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_tokenFailedAlert show];
       [_tokenFailedAlert autorelease];
-    } else {
-      // Remove the splash screen now
     }
   }
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
+- (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
   if([request isEqual:self.currentUserRequest]) {
+    [FlurryAPI logEvent:@"errorCurrentUserRequestFailed"];
     _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [_networkErrorAlert show];
     [_networkErrorAlert autorelease];
   } else if([request isEqual:self.tokenRequest]) {
+    [FlurryAPI logEvent:@"errorTokenRequestFailed"];
     _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [_tokenFailedAlert show];
     [_tokenFailedAlert autorelease];

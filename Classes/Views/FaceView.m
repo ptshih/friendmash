@@ -15,7 +15,6 @@
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
-#import "FlurryAPI.h"
 
 #define IPAD_FRAME_WIDTH 1024.0
 #define IPHONE_FRAME_WIDTH 480.0

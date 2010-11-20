@@ -96,6 +96,7 @@ static UIImage *_likeImage;
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
+    [FlurryAPI logEvent:@"errorProfileRequestError"];
     UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
@@ -109,8 +110,8 @@ static UIImage *_likeImage;
   DLog(@"profile dict: %@", self.profileDict);
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
+- (void)requestFailed:(ASIHTTPRequest *)request {
+  [FlurryAPI logEvent:@"errorProfileRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];

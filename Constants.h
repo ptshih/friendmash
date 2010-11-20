@@ -8,6 +8,7 @@
  */
 
 #import "FacemashAppDelegate.h"
+#import "FlurryAPI.h"
 
 /*
  tagline:

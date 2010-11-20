@@ -13,7 +13,6 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
-#import "FlurryAPI.h"
 
 @interface FacemashViewController (Private)
 
@@ -174,6 +173,7 @@
 }
 
 - (void)prepareBothFaceViews {
+  [FlurryAPI logEvent:@"facemashPreparedFaceViews" withParameters:[NSDictionary dictionaryWithObject:self.gender forKey:@"gender"]];
   [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
   [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }

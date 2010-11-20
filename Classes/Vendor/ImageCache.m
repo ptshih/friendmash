@@ -83,8 +83,7 @@
   DLog(@"Request finished successfully");
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
+- (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
 }
 

@@ -12,7 +12,6 @@
 #import "RankingsViewController.h"
 #import "AboutViewController.h"
 #import "Constants.h"
-#import "FlurryAPI.h"
 
 @interface LauncherViewController (Private)
 
