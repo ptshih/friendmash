@@ -188,84 +188,150 @@ static UIImage *_likeImage;
 }
 
 - (float)getProgressForVotes:(NSInteger)votes {
-  int k = 100;
+  int k = 50;
   if(votes < k) {
     return (float)votes / k;
-  } else if(votes < 2*k) {
+  } else if(votes < 5*k) {
     return (float)(votes - k) / k;
-  } else if(votes < 4*k) {
-    return (float)(votes - 2*k) / (2*k);
-  } else if(votes < 8*k) {
-    return (float)(votes - 4*k) / (4*k);
-  } else if(votes < 16*k) {
-    return (float)(votes - 8*k) / (8*k);
-  } else if(votes < 32*k) {
-    return (float)(votes - 16*k) / (16*k);
-  } else if(votes < 64*k) {
-    return (float)(votes - 32*k) / (32*k);
-  } else if(votes < 128*k) {
-    return (float)(votes - 64*k) / (64*k);
-  } else if(votes < 256*k) {
-    return (float)(votes - 128*k) / (128*k);
-  } else if(votes < 512*k) {
-    return (float)(votes - 256*k) / (256*k);
+  } else if(votes < 10*k) {
+    return (float)(votes - 5*k) / (5*k);
+  } else if(votes < 15*k) {
+    return (float)(votes - 10*k) / (10*k);
+  } else if(votes < 20*k) {
+    return (float)(votes - 15*k) / (15*k);
+  } else if(votes < 25*k) {
+    return (float)(votes - 20*k) / (20*k);
+  } else if(votes < 30*k) {
+    return (float)(votes - 25*k) / (25*k);
+  } else if(votes < 35*k) {
+    return (float)(votes - 30*k) / (30*k);
+  } else if(votes < 40*k) {
+    return (float)(votes - 35*k) / (35*k);
+  } else if(votes < 45*k) {
+    return (float)(votes - 40*k) / (40*k);
+  } else if(votes < 50*k) {
+    return (float)(votes - 45*k) / (45*k);
+  } else if(votes < 55*k) {
+    return (float)(votes - 50*k) / (50*k);
+  } else if(votes < 60*k) {
+    return (float)(votes - 55*k) / (55*k);
+  } else if(votes < 65*k) {
+    return (float)(votes - 60*k) / (60*k);
+  } else if(votes < 70*k) {
+    return (float)(votes - 65*k) / (65*k);
+  } else if(votes < 75*k) {
+    return (float)(votes - 70*k) / (70*k);
+  } else if(votes < 80*k) {
+    return (float)(votes - 75*k) / (75*k);
+  } else if(votes < 85*k) {
+    return (float)(votes - 80*k) / (80*k);
+  } else if(votes < 90*k) {
+    return (float)(votes - 85*k) / (85*k);
+  } else if(votes < 95*k) {
+    return (float)(votes - 90*k) / (90*k);
+  } else if(votes < 100*k) {
+    return (float)(votes - 95*k) / (95*k);
   } else {
     return 1.0;
   }
 }
 
 - (UIImage *)getIconForVotes:(NSInteger)votes {
-  int k = 100;
+  int k = 50;
   if(votes < k) {
+    return [UIImage imageNamed:@"recruit.png"];
+  } else if(votes < 5*k) {
+    return [UIImage imageNamed:@"apprentice.png"];
+  } else if(votes < 10*k) {
     return [UIImage imageNamed:@"private.png"];
-  } else if(votes < 2*k) {
-    return [UIImage imageNamed:@"private_first_class.png"];
-  } else if(votes < 4*k) {
+  } else if(votes < 15*k) {
     return [UIImage imageNamed:@"corporal.png"];
-  } else if(votes < 8*k) {
+  } else if(votes < 20*k) {
     return [UIImage imageNamed:@"sergeant.png"];
-  } else if(votes < 16*k) {
-    return [UIImage imageNamed:@"staff_sergeant.png"];
-  } else if(votes < 32*k) {
-    return [UIImage imageNamed:@"sergeant_first_class.png"];
-  } else if(votes < 64*k) {
-    return [UIImage imageNamed:@"master_sergeant.png"];
-  } else if(votes < 128*k) {
+  } else if(votes < 25*k) {
     return [UIImage imageNamed:@"first_sergeant.png"];
-  } else if(votes < 256*k) {
-    return [UIImage imageNamed:@"sergeant_major.png"];
-  } else if(votes < 512*k) {
-    return [UIImage imageNamed:@"command_sergeant_major.png"];
+  } else if(votes < 30*k) {
+    return [UIImage imageNamed:@"lieutenant.png"];
+  } else if(votes < 35*k) {
+    return [UIImage imageNamed:@"first_lieutenant.png"];
+  } else if(votes < 40*k) {
+    return [UIImage imageNamed:@"captain.png"];
+  } else if(votes < 45*k) {
+    return [UIImage imageNamed:@"staff_captain.png"];
+  } else if(votes < 50*k) {
+    return [UIImage imageNamed:@"major.png"];
+  } else if(votes < 55*k) {
+    return [UIImage imageNamed:@"major_payne.png"];
+  } else if(votes < 60*k) {
+    return [UIImage imageNamed:@"commander.png"];
+  } else if(votes < 65*k) {
+    return [UIImage imageNamed:@"strike_commander.png"];
+  } else if(votes < 70*k) {
+    return [UIImage imageNamed:@"colonel.png"];
+  } else if(votes < 75*k) {
+    return [UIImage imageNamed:@"force_colonel.png"];
+  } else if(votes < 80*k) {
+    return [UIImage imageNamed:@"brigadier.png"];
+  } else if(votes < 85*k) {
+    return [UIImage imageNamed:@"brigadier_general.png"];
+  } else if(votes < 90*k) {
+    return [UIImage imageNamed:@"general.png"];
+  } else if(votes < 95*k) {
+    return [UIImage imageNamed:@"three_star_general.png"];
+  } else if(votes < 100*k) {
+    return [UIImage imageNamed:@"four_star_general.png"];
   } else {
-    return [UIImage imageNamed:@"sergeant_major_army.png"];
+    return [UIImage imageNamed:@"five_star_general.png"];
   }
 }
 
 - (NSString *)getRankForVotes:(NSInteger)votes {
-  int k = 100;
+  int k = 50;
   // Calculate Rank Label based on number of votes
   if(votes < k) {
+    return @"Recruit";
+  } else if(votes < 5*k) {
+    return @"Apprentice";
+  } else if(votes < 10*k) {
     return @"Private";
-  } else if(votes < 2*k) {
-    return @"Private First Class";
-  } else if(votes < 4*k) {
+  } else if(votes < 15*k) {
     return @"Corporal";
-  } else if(votes < 8*k) {
+  } else if(votes < 20*k) {
     return @"Sergeant";
-  } else if(votes < 16*k) {
-    return @"Staff Sergeant";
-  } else if(votes < 32*k) {
-    return @"Sergeant First Class";
-  } else if(votes < 64*k) {
-    return @"Master Sergeant";
-  } else if(votes < 128*k) {
+  } else if(votes < 25*k) {
     return @"First Sergeant";
-  } else if(votes < 256*k) {
-    return @"Sergeant Major";
-  } else if(votes < 512*k) {
-    return @"Command Sergeant Major";
+  } else if(votes < 30*k) {
+    return @"Lieutenant";
+  } else if(votes < 35*k) {
+    return @"First Lieutenant";
+  } else if(votes < 40*k) {
+    return @"Captain";
+  } else if(votes < 45*k) {
+    return @"Captain America";
+  } else if(votes < 50*k) {
+    return @"Major";
+  } else if(votes < 55*k) {
+    return @"Major Payne";
+  } else if(votes < 60*k) {
+    return @"Commander";
+  } else if(votes < 65*k) {
+    return @"Strike Commander";
+  } else if(votes < 70*k) {
+    return @"Colonel";
+  } else if(votes < 75*k) {
+    return @"Colonel Sanders";
+  } else if(votes < 80*k) {
+    return @"Brigadier";
+  } else if(votes < 85*k) {
+    return @"Brigadier General";
+  } else if(votes < 90*k) {
+    return @"General";
+  } else if(votes < 95*k) {
+    return @"3-Star General";
+  } else if(votes < 100*k) {
+    return @"4-Star General";
   } else {
-    return @"High Warlord";
+    return @"5-Star General";
   }
 }
 
@@ -312,23 +378,25 @@ static UIImage *_likeImage;
   // Cell Customization
   switch (indexPath.section) {
     case 0:
-      cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell"];
+      cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
       if(cell == nil) { 
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SettingsCell"] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProfileCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
       }
       switch (indexPath.row) {
         case 0:
           cell.textLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [NSString stringWithFormat:@"%@", [self getRankForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]] : @"Loading...";
+          cell.detailTextLabel.text = nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIImageView *rankView = [[UIImageView alloc] initWithImage:[self getIconForVotes:[[self.profileDict objectForKey:@"votes"] integerValue]]];
-            rankView.frame = CGRectMake(cell.contentView.frame.size.width - 40, 2, 36, 36);
+            rankView.frame = CGRectMake(cell.contentView.frame.size.width - 39, 0, 29, 44);
             [cell.contentView addSubview:rankView];
             [rankView release];
           }
           break;
         case 1: {
           cell.textLabel.text = @"Mashes to Next Rank";
+          cell.detailTextLabel.text = nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
             progressView.frame = CGRectMake(cell.contentView.frame.size.width - 225, 17, 215, 9);
@@ -352,9 +420,9 @@ static UIImage *_likeImage;
       
       break;
     case 1:
-      cell = [tableView dequeueReusableCellWithIdentifier:@"BottomCell"];
+      cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileStatsCell"];
       if(cell == nil) { 
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BottomCell"] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProfileStatsCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
       }
       switch (indexPath.row) {

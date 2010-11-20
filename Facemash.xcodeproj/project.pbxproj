@@ -12,18 +12,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2513C74612902A62002E79EF /* Default_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C74512902A62002E79EF /* Default_iPad.png */; };
-		2513C9311291CABC002E79EF /* command_sergeant_major.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9261291CABC002E79EF /* command_sergeant_major.png */; };
-		2513C9321291CABC002E79EF /* corporal.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9271291CABC002E79EF /* corporal.png */; };
-		2513C9331291CABC002E79EF /* master_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9281291CABC002E79EF /* master_sergeant.png */; };
-		2513C9341291CABC002E79EF /* private.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9291291CABC002E79EF /* private.png */; };
-		2513C9351291CABC002E79EF /* private_first_class.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92A1291CABC002E79EF /* private_first_class.png */; };
-		2513C9361291CABC002E79EF /* sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92B1291CABC002E79EF /* sergeant.png */; };
-		2513C9371291CABC002E79EF /* sergeant_first_class.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92C1291CABC002E79EF /* sergeant_first_class.png */; };
-		2513C9381291CABC002E79EF /* sergeant_major.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92D1291CABC002E79EF /* sergeant_major.png */; };
-		2513C9391291CABC002E79EF /* sergeant_major_army.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92E1291CABC002E79EF /* sergeant_major_army.png */; };
-		2513C93A1291CABC002E79EF /* specialist.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C92F1291CABC002E79EF /* specialist.png */; };
-		2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C9301291CABC002E79EF /* staff_sergeant.png */; };
-		2513C999129232FF002E79EF /* first_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 2513C998129232FF002E79EF /* first_sergeant.png */; };
 		2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2513CB7A129283E0002E79EF /* LightboxViewController.m */; };
 		2513CB7D129283E0002E79EF /* LightboxViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */; };
 		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
@@ -140,6 +128,50 @@
 		25D80A41129772E70095154D /* tab_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A3F129772E70095154D /* tab_male.png */; };
 		25D80AB81297C7770095154D /* bg_login_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80AB71297C7770095154D /* bg_login_iPad.png */; };
 		25D80AD01297CCB90095154D /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D80ACF1297CCB90095154D /* libFlurry.a */; };
+		25D80C5812988EC50095154D /* apprentice.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2C12988EC50095154D /* apprentice.png */; };
+		25D80C5912988EC50095154D /* apprentice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2D12988EC50095154D /* apprentice@2x.png */; };
+		25D80C5A12988EC50095154D /* brigadier.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2E12988EC50095154D /* brigadier.png */; };
+		25D80C5B12988EC50095154D /* brigadier@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2F12988EC50095154D /* brigadier@2x.png */; };
+		25D80C5C12988EC50095154D /* brigadier_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3012988EC50095154D /* brigadier_general.png */; };
+		25D80C5D12988EC50095154D /* brigadier_general@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3112988EC50095154D /* brigadier_general@2x.png */; };
+		25D80C5E12988EC50095154D /* captain.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3212988EC50095154D /* captain.png */; };
+		25D80C5F12988EC50095154D /* captain@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3312988EC50095154D /* captain@2x.png */; };
+		25D80C6012988EC50095154D /* colonel.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3412988EC50095154D /* colonel.png */; };
+		25D80C6112988EC50095154D /* colonel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3512988EC50095154D /* colonel@2x.png */; };
+		25D80C6212988EC50095154D /* commander.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3612988EC50095154D /* commander.png */; };
+		25D80C6312988EC50095154D /* commander@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3712988EC50095154D /* commander@2x.png */; };
+		25D80C6412988EC50095154D /* corporal.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3812988EC50095154D /* corporal.png */; };
+		25D80C6512988EC50095154D /* corporal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3912988EC50095154D /* corporal@2x.png */; };
+		25D80C6612988EC50095154D /* first_lieutenant.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3A12988EC50095154D /* first_lieutenant.png */; };
+		25D80C6712988EC50095154D /* first_lieutenant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3B12988EC50095154D /* first_lieutenant@2x.png */; };
+		25D80C6812988EC50095154D /* first_sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3C12988EC50095154D /* first_sergeant.png */; };
+		25D80C6912988EC50095154D /* first_sergeant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3D12988EC50095154D /* first_sergeant@2x.png */; };
+		25D80C6A12988EC50095154D /* five_star_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3E12988EC50095154D /* five_star_general.png */; };
+		25D80C6B12988EC50095154D /* five_star_general@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C3F12988EC50095154D /* five_star_general@2x.png */; };
+		25D80C6C12988EC50095154D /* force_colonel.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4012988EC50095154D /* force_colonel.png */; };
+		25D80C6D12988EC50095154D /* force_colonel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4112988EC50095154D /* force_colonel@2x.png */; };
+		25D80C6E12988EC50095154D /* four_star_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4212988EC50095154D /* four_star_general.png */; };
+		25D80C6F12988EC50095154D /* four_star_general@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4312988EC50095154D /* four_star_general@2x.png */; };
+		25D80C7012988EC50095154D /* general.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4412988EC50095154D /* general.png */; };
+		25D80C7112988EC50095154D /* general@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4512988EC50095154D /* general@2x.png */; };
+		25D80C7212988EC50095154D /* lieutenant.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4612988EC50095154D /* lieutenant.png */; };
+		25D80C7312988EC50095154D /* lieutenant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4712988EC50095154D /* lieutenant@2x.png */; };
+		25D80C7412988EC50095154D /* major.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4812988EC50095154D /* major.png */; };
+		25D80C7512988EC50095154D /* major@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4912988EC50095154D /* major@2x.png */; };
+		25D80C7612988EC50095154D /* major_payne.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4A12988EC50095154D /* major_payne.png */; };
+		25D80C7712988EC50095154D /* major_payne@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4B12988EC50095154D /* major_payne@2x.png */; };
+		25D80C7812988EC50095154D /* private.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4C12988EC50095154D /* private.png */; };
+		25D80C7912988EC50095154D /* private@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4D12988EC50095154D /* private@2x.png */; };
+		25D80C7A12988EC50095154D /* recruit.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4E12988EC50095154D /* recruit.png */; };
+		25D80C7B12988EC50095154D /* recruit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C4F12988EC50095154D /* recruit@2x.png */; };
+		25D80C7C12988EC50095154D /* sergeant.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5012988EC50095154D /* sergeant.png */; };
+		25D80C7D12988EC50095154D /* sergeant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5112988EC50095154D /* sergeant@2x.png */; };
+		25D80C7E12988EC50095154D /* staff_captain.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5212988EC50095154D /* staff_captain.png */; };
+		25D80C7F12988EC50095154D /* staff_captain@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5312988EC50095154D /* staff_captain@2x.png */; };
+		25D80C8012988EC50095154D /* strike_commander.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5412988EC50095154D /* strike_commander.png */; };
+		25D80C8112988EC50095154D /* strike_commander@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5512988EC50095154D /* strike_commander@2x.png */; };
+		25D80C8212988EC50095154D /* three_star_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5612988EC50095154D /* three_star_general.png */; };
+		25D80C8312988EC50095154D /* three_star_general@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C5712988EC50095154D /* three_star_general@2x.png */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
 		25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */; };
@@ -161,18 +193,6 @@
 		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2513C74512902A62002E79EF /* Default_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default_iPad.png; sourceTree = "<group>"; };
-		2513C9261291CABC002E79EF /* command_sergeant_major.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = command_sergeant_major.png; sourceTree = "<group>"; };
-		2513C9271291CABC002E79EF /* corporal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corporal.png; sourceTree = "<group>"; };
-		2513C9281291CABC002E79EF /* master_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = master_sergeant.png; sourceTree = "<group>"; };
-		2513C9291291CABC002E79EF /* private.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = private.png; sourceTree = "<group>"; };
-		2513C92A1291CABC002E79EF /* private_first_class.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = private_first_class.png; sourceTree = "<group>"; };
-		2513C92B1291CABC002E79EF /* sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sergeant.png; sourceTree = "<group>"; };
-		2513C92C1291CABC002E79EF /* sergeant_first_class.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sergeant_first_class.png; sourceTree = "<group>"; };
-		2513C92D1291CABC002E79EF /* sergeant_major.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sergeant_major.png; sourceTree = "<group>"; };
-		2513C92E1291CABC002E79EF /* sergeant_major_army.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sergeant_major_army.png; sourceTree = "<group>"; };
-		2513C92F1291CABC002E79EF /* specialist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specialist.png; sourceTree = "<group>"; };
-		2513C9301291CABC002E79EF /* staff_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = staff_sergeant.png; sourceTree = "<group>"; };
-		2513C998129232FF002E79EF /* first_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first_sergeant.png; sourceTree = "<group>"; };
 		2513CB79129283E0002E79EF /* LightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightboxViewController.h; sourceTree = "<group>"; };
 		2513CB7A129283E0002E79EF /* LightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightboxViewController.m; sourceTree = "<group>"; };
 		2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController_iPhone.xib; sourceTree = "<group>"; };
@@ -327,6 +347,50 @@
 		25D80ACD1297CCB80095154D /* FlurryAdDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAdDelegate.h; sourceTree = "<group>"; };
 		25D80ACE1297CCB80095154D /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
 		25D80ACF1297CCB90095154D /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
+		25D80C2C12988EC50095154D /* apprentice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apprentice.png; sourceTree = "<group>"; };
+		25D80C2D12988EC50095154D /* apprentice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apprentice@2x.png"; sourceTree = "<group>"; };
+		25D80C2E12988EC50095154D /* brigadier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brigadier.png; sourceTree = "<group>"; };
+		25D80C2F12988EC50095154D /* brigadier@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brigadier@2x.png"; sourceTree = "<group>"; };
+		25D80C3012988EC50095154D /* brigadier_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brigadier_general.png; sourceTree = "<group>"; };
+		25D80C3112988EC50095154D /* brigadier_general@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brigadier_general@2x.png"; sourceTree = "<group>"; };
+		25D80C3212988EC50095154D /* captain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = captain.png; sourceTree = "<group>"; };
+		25D80C3312988EC50095154D /* captain@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "captain@2x.png"; sourceTree = "<group>"; };
+		25D80C3412988EC50095154D /* colonel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colonel.png; sourceTree = "<group>"; };
+		25D80C3512988EC50095154D /* colonel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "colonel@2x.png"; sourceTree = "<group>"; };
+		25D80C3612988EC50095154D /* commander.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commander.png; sourceTree = "<group>"; };
+		25D80C3712988EC50095154D /* commander@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commander@2x.png"; sourceTree = "<group>"; };
+		25D80C3812988EC50095154D /* corporal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corporal.png; sourceTree = "<group>"; };
+		25D80C3912988EC50095154D /* corporal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "corporal@2x.png"; sourceTree = "<group>"; };
+		25D80C3A12988EC50095154D /* first_lieutenant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first_lieutenant.png; sourceTree = "<group>"; };
+		25D80C3B12988EC50095154D /* first_lieutenant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first_lieutenant@2x.png"; sourceTree = "<group>"; };
+		25D80C3C12988EC50095154D /* first_sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first_sergeant.png; sourceTree = "<group>"; };
+		25D80C3D12988EC50095154D /* first_sergeant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first_sergeant@2x.png"; sourceTree = "<group>"; };
+		25D80C3E12988EC50095154D /* five_star_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = five_star_general.png; sourceTree = "<group>"; };
+		25D80C3F12988EC50095154D /* five_star_general@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "five_star_general@2x.png"; sourceTree = "<group>"; };
+		25D80C4012988EC50095154D /* force_colonel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = force_colonel.png; sourceTree = "<group>"; };
+		25D80C4112988EC50095154D /* force_colonel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "force_colonel@2x.png"; sourceTree = "<group>"; };
+		25D80C4212988EC50095154D /* four_star_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = four_star_general.png; sourceTree = "<group>"; };
+		25D80C4312988EC50095154D /* four_star_general@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "four_star_general@2x.png"; sourceTree = "<group>"; };
+		25D80C4412988EC50095154D /* general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = general.png; sourceTree = "<group>"; };
+		25D80C4512988EC50095154D /* general@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "general@2x.png"; sourceTree = "<group>"; };
+		25D80C4612988EC50095154D /* lieutenant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lieutenant.png; sourceTree = "<group>"; };
+		25D80C4712988EC50095154D /* lieutenant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lieutenant@2x.png"; sourceTree = "<group>"; };
+		25D80C4812988EC50095154D /* major.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = major.png; sourceTree = "<group>"; };
+		25D80C4912988EC50095154D /* major@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "major@2x.png"; sourceTree = "<group>"; };
+		25D80C4A12988EC50095154D /* major_payne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = major_payne.png; sourceTree = "<group>"; };
+		25D80C4B12988EC50095154D /* major_payne@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "major_payne@2x.png"; sourceTree = "<group>"; };
+		25D80C4C12988EC50095154D /* private.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = private.png; sourceTree = "<group>"; };
+		25D80C4D12988EC50095154D /* private@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "private@2x.png"; sourceTree = "<group>"; };
+		25D80C4E12988EC50095154D /* recruit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recruit.png; sourceTree = "<group>"; };
+		25D80C4F12988EC50095154D /* recruit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recruit@2x.png"; sourceTree = "<group>"; };
+		25D80C5012988EC50095154D /* sergeant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sergeant.png; sourceTree = "<group>"; };
+		25D80C5112988EC50095154D /* sergeant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sergeant@2x.png"; sourceTree = "<group>"; };
+		25D80C5212988EC50095154D /* staff_captain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = staff_captain.png; sourceTree = "<group>"; };
+		25D80C5312988EC50095154D /* staff_captain@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "staff_captain@2x.png"; sourceTree = "<group>"; };
+		25D80C5412988EC50095154D /* strike_commander.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = strike_commander.png; sourceTree = "<group>"; };
+		25D80C5512988EC50095154D /* strike_commander@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "strike_commander@2x.png"; sourceTree = "<group>"; };
+		25D80C5612988EC50095154D /* three_star_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = three_star_general.png; sourceTree = "<group>"; };
+		25D80C5712988EC50095154D /* three_star_general@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "three_star_general@2x.png"; sourceTree = "<group>"; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashViewController.h; sourceTree = "<group>"; };
 		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
@@ -393,25 +457,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2513C9251291CABC002E79EF /* ranks */ = {
-			isa = PBXGroup;
-			children = (
-				2513C9261291CABC002E79EF /* command_sergeant_major.png */,
-				2513C9271291CABC002E79EF /* corporal.png */,
-				2513C9281291CABC002E79EF /* master_sergeant.png */,
-				2513C9291291CABC002E79EF /* private.png */,
-				2513C92A1291CABC002E79EF /* private_first_class.png */,
-				2513C998129232FF002E79EF /* first_sergeant.png */,
-				2513C92B1291CABC002E79EF /* sergeant.png */,
-				2513C92C1291CABC002E79EF /* sergeant_first_class.png */,
-				2513C92D1291CABC002E79EF /* sergeant_major.png */,
-				2513C92E1291CABC002E79EF /* sergeant_major_army.png */,
-				2513C92F1291CABC002E79EF /* specialist.png */,
-				2513C9301291CABC002E79EF /* staff_sergeant.png */,
-			);
-			path = ranks;
-			sourceTree = "<group>";
-		};
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,7 +475,7 @@
 		252E0FBF126083390008BD55 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				2513C9251291CABC002E79EF /* ranks */,
+				25D80C2B12988EC50095154D /* fmranks */,
 				253E97F71267F4750037CB2D /* @1x */,
 				253E97FE1267F4750037CB2D /* @2x */,
 				253E98051267F4750037CB2D /* ipad */,
@@ -644,6 +689,57 @@
 				25D80ACF1297CCB90095154D /* libFlurry.a */,
 			);
 			path = FlurryLib;
+			sourceTree = "<group>";
+		};
+		25D80C2B12988EC50095154D /* fmranks */ = {
+			isa = PBXGroup;
+			children = (
+				25D80C2C12988EC50095154D /* apprentice.png */,
+				25D80C2D12988EC50095154D /* apprentice@2x.png */,
+				25D80C2E12988EC50095154D /* brigadier.png */,
+				25D80C2F12988EC50095154D /* brigadier@2x.png */,
+				25D80C3012988EC50095154D /* brigadier_general.png */,
+				25D80C3112988EC50095154D /* brigadier_general@2x.png */,
+				25D80C3212988EC50095154D /* captain.png */,
+				25D80C3312988EC50095154D /* captain@2x.png */,
+				25D80C3412988EC50095154D /* colonel.png */,
+				25D80C3512988EC50095154D /* colonel@2x.png */,
+				25D80C3612988EC50095154D /* commander.png */,
+				25D80C3712988EC50095154D /* commander@2x.png */,
+				25D80C3812988EC50095154D /* corporal.png */,
+				25D80C3912988EC50095154D /* corporal@2x.png */,
+				25D80C3A12988EC50095154D /* first_lieutenant.png */,
+				25D80C3B12988EC50095154D /* first_lieutenant@2x.png */,
+				25D80C3C12988EC50095154D /* first_sergeant.png */,
+				25D80C3D12988EC50095154D /* first_sergeant@2x.png */,
+				25D80C3E12988EC50095154D /* five_star_general.png */,
+				25D80C3F12988EC50095154D /* five_star_general@2x.png */,
+				25D80C4012988EC50095154D /* force_colonel.png */,
+				25D80C4112988EC50095154D /* force_colonel@2x.png */,
+				25D80C4212988EC50095154D /* four_star_general.png */,
+				25D80C4312988EC50095154D /* four_star_general@2x.png */,
+				25D80C4412988EC50095154D /* general.png */,
+				25D80C4512988EC50095154D /* general@2x.png */,
+				25D80C4612988EC50095154D /* lieutenant.png */,
+				25D80C4712988EC50095154D /* lieutenant@2x.png */,
+				25D80C4812988EC50095154D /* major.png */,
+				25D80C4912988EC50095154D /* major@2x.png */,
+				25D80C4A12988EC50095154D /* major_payne.png */,
+				25D80C4B12988EC50095154D /* major_payne@2x.png */,
+				25D80C4C12988EC50095154D /* private.png */,
+				25D80C4D12988EC50095154D /* private@2x.png */,
+				25D80C4E12988EC50095154D /* recruit.png */,
+				25D80C4F12988EC50095154D /* recruit@2x.png */,
+				25D80C5012988EC50095154D /* sergeant.png */,
+				25D80C5112988EC50095154D /* sergeant@2x.png */,
+				25D80C5212988EC50095154D /* staff_captain.png */,
+				25D80C5312988EC50095154D /* staff_captain@2x.png */,
+				25D80C5412988EC50095154D /* strike_commander.png */,
+				25D80C5512988EC50095154D /* strike_commander@2x.png */,
+				25D80C5612988EC50095154D /* three_star_general.png */,
+				25D80C5712988EC50095154D /* three_star_general@2x.png */,
+			);
+			path = fmranks;
 			sourceTree = "<group>";
 		};
 		25E0516E125FCB7500CA6AC1 /* Controllers */ = {
@@ -886,18 +982,6 @@
 				25F0310E1290216C003155D6 /* Default.png in Resources */,
 				25F0311012902174003155D6 /* Default@2x.png in Resources */,
 				2513C74612902A62002E79EF /* Default_iPad.png in Resources */,
-				2513C9311291CABC002E79EF /* command_sergeant_major.png in Resources */,
-				2513C9321291CABC002E79EF /* corporal.png in Resources */,
-				2513C9331291CABC002E79EF /* master_sergeant.png in Resources */,
-				2513C9341291CABC002E79EF /* private.png in Resources */,
-				2513C9351291CABC002E79EF /* private_first_class.png in Resources */,
-				2513C9361291CABC002E79EF /* sergeant.png in Resources */,
-				2513C9371291CABC002E79EF /* sergeant_first_class.png in Resources */,
-				2513C9381291CABC002E79EF /* sergeant_major.png in Resources */,
-				2513C9391291CABC002E79EF /* sergeant_major_army.png in Resources */,
-				2513C93A1291CABC002E79EF /* specialist.png in Resources */,
-				2513C93B1291CABC002E79EF /* staff_sergeant.png in Resources */,
-				2513C999129232FF002E79EF /* first_sergeant.png in Resources */,
 				2513CB7D129283E0002E79EF /* LightboxViewController_iPhone.xib in Resources */,
 				25B1B8341292C04300BB6D6C /* LightboxViewController_iPad.xib in Resources */,
 				25B7D51012935CB90089185E /* bullet@2x.png in Resources */,
@@ -925,6 +1009,50 @@
 				25D80A40129772E70095154D /* tab_female.png in Resources */,
 				25D80A41129772E70095154D /* tab_male.png in Resources */,
 				25D80AB81297C7770095154D /* bg_login_iPad.png in Resources */,
+				25D80C5812988EC50095154D /* apprentice.png in Resources */,
+				25D80C5912988EC50095154D /* apprentice@2x.png in Resources */,
+				25D80C5A12988EC50095154D /* brigadier.png in Resources */,
+				25D80C5B12988EC50095154D /* brigadier@2x.png in Resources */,
+				25D80C5C12988EC50095154D /* brigadier_general.png in Resources */,
+				25D80C5D12988EC50095154D /* brigadier_general@2x.png in Resources */,
+				25D80C5E12988EC50095154D /* captain.png in Resources */,
+				25D80C5F12988EC50095154D /* captain@2x.png in Resources */,
+				25D80C6012988EC50095154D /* colonel.png in Resources */,
+				25D80C6112988EC50095154D /* colonel@2x.png in Resources */,
+				25D80C6212988EC50095154D /* commander.png in Resources */,
+				25D80C6312988EC50095154D /* commander@2x.png in Resources */,
+				25D80C6412988EC50095154D /* corporal.png in Resources */,
+				25D80C6512988EC50095154D /* corporal@2x.png in Resources */,
+				25D80C6612988EC50095154D /* first_lieutenant.png in Resources */,
+				25D80C6712988EC50095154D /* first_lieutenant@2x.png in Resources */,
+				25D80C6812988EC50095154D /* first_sergeant.png in Resources */,
+				25D80C6912988EC50095154D /* first_sergeant@2x.png in Resources */,
+				25D80C6A12988EC50095154D /* five_star_general.png in Resources */,
+				25D80C6B12988EC50095154D /* five_star_general@2x.png in Resources */,
+				25D80C6C12988EC50095154D /* force_colonel.png in Resources */,
+				25D80C6D12988EC50095154D /* force_colonel@2x.png in Resources */,
+				25D80C6E12988EC50095154D /* four_star_general.png in Resources */,
+				25D80C6F12988EC50095154D /* four_star_general@2x.png in Resources */,
+				25D80C7012988EC50095154D /* general.png in Resources */,
+				25D80C7112988EC50095154D /* general@2x.png in Resources */,
+				25D80C7212988EC50095154D /* lieutenant.png in Resources */,
+				25D80C7312988EC50095154D /* lieutenant@2x.png in Resources */,
+				25D80C7412988EC50095154D /* major.png in Resources */,
+				25D80C7512988EC50095154D /* major@2x.png in Resources */,
+				25D80C7612988EC50095154D /* major_payne.png in Resources */,
+				25D80C7712988EC50095154D /* major_payne@2x.png in Resources */,
+				25D80C7812988EC50095154D /* private.png in Resources */,
+				25D80C7912988EC50095154D /* private@2x.png in Resources */,
+				25D80C7A12988EC50095154D /* recruit.png in Resources */,
+				25D80C7B12988EC50095154D /* recruit@2x.png in Resources */,
+				25D80C7C12988EC50095154D /* sergeant.png in Resources */,
+				25D80C7D12988EC50095154D /* sergeant@2x.png in Resources */,
+				25D80C7E12988EC50095154D /* staff_captain.png in Resources */,
+				25D80C7F12988EC50095154D /* staff_captain@2x.png in Resources */,
+				25D80C8012988EC50095154D /* strike_commander.png in Resources */,
+				25D80C8112988EC50095154D /* strike_commander@2x.png in Resources */,
+				25D80C8212988EC50095154D /* three_star_general.png in Resources */,
+				25D80C8312988EC50095154D /* three_star_general@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
