@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1040</int>
+		<int key="IBDocument.SystemTarget">1056</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
 		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
@@ -74,7 +74,7 @@
 							<object class="IBUILabel" id="294016982">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 375}, {280, 37}}</string>
+								<string key="NSFrame">{{20, 390}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -99,7 +99,7 @@
 							<object class="IBUIButton" id="18630392">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 316}, {280, 37}}</string>
+								<string key="NSFrame">{{20, 338}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="464794785">
 									<int key="NSColorSpace">3</int>
@@ -128,7 +128,7 @@
 							<object class="IBUIButton" id="188751225">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 375}, {280, 37}}</string>
+								<string key="NSFrame">{{20, 390}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<reference key="IBUIBackgroundColor" ref="464794785"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -148,7 +148,7 @@
 							<object class="IBUIButton" id="45911590">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{60, 432}, {80, 18}}</string>
+								<string key="NSFrame">{{60, 434}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -170,7 +170,7 @@
 							<object class="IBUIButton" id="943627995">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{180, 432}, {80, 18}}</string>
+								<string key="NSFrame">{{180, 434}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -185,7 +185,7 @@
 							<object class="IBUIActivityIndicatorView" id="350751521">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">-2147483356</int>
-								<string key="NSFrame">{{141, 316}, {37, 37}}</string>
+								<string key="NSFrame">{{141, 338}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -807,6 +807,13 @@
 					<string key="className">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">UIKit.framework/Headers/UIPrintFormatter.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextField.h</string>
 					</object>
 				</object>
@@ -868,7 +875,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<integer value="1040" key="NS.object.0"/>
+			<integer value="1056" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>

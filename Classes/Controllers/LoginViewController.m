@@ -43,7 +43,7 @@
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
     [UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
-    [[APP_DELEGATE launcherViewController] view].alpha = 0.0;
+    [[APP_DELEGATE launcherViewController] view].alpha = 0.5;
     [UIView commitAnimations];
   }
   [self resetLoginState];

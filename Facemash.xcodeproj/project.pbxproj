@@ -138,6 +138,8 @@
 		25D80A1612976E200095154D /* tab_male@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A1412976E200095154D /* tab_male@2x.png */; };
 		25D80A40129772E70095154D /* tab_female.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A3E129772E70095154D /* tab_female.png */; };
 		25D80A41129772E70095154D /* tab_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A3F129772E70095154D /* tab_male.png */; };
+		25D80AB81297C7770095154D /* bg_login_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80AB71297C7770095154D /* bg_login_iPad.png */; };
+		25D80AD01297CCB90095154D /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D80ACF1297CCB90095154D /* libFlurry.a */; };
 		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
 		25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */; };
@@ -321,6 +323,10 @@
 		25D80A1412976E200095154D /* tab_male@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_male@2x.png"; sourceTree = "<group>"; };
 		25D80A3E129772E70095154D /* tab_female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_female.png; sourceTree = "<group>"; };
 		25D80A3F129772E70095154D /* tab_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_male.png; sourceTree = "<group>"; };
+		25D80AB71297C7770095154D /* bg_login_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_login_iPad.png; sourceTree = "<group>"; };
+		25D80ACD1297CCB80095154D /* FlurryAdDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAdDelegate.h; sourceTree = "<group>"; };
+		25D80ACE1297CCB80095154D /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
+		25D80ACF1297CCB90095154D /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashViewController.h; sourceTree = "<group>"; };
 		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
@@ -357,6 +363,7 @@
 				2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */,
 				2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */,
 				2573E50C128585B1004EBEBB /* libz.1.2.3.dylib in Frameworks */,
+				25D80AD01297CCB90095154D /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +415,7 @@
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				25D80ACC1297CCB80095154D /* FlurryLib */,
 				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 				2573EA3A12861A08004EBEBB /* TouchJSON */,
 				2573E541128589CF004EBEBB /* Reachability */,
@@ -501,6 +509,7 @@
 		253E98051267F4750037CB2D /* ipad */ = {
 			isa = PBXGroup;
 			children = (
+				25D80AB71297C7770095154D /* bg_login_iPad.png */,
 				256F623E12950ECF00B31AC7 /* help_overlay_iPad.png */,
 				253E98391267F86B0037CB2D /* btn_back_iPad.png */,
 				253E983A1267F86B0037CB2D /* btn_ranks_iPad.png */,
@@ -625,6 +634,16 @@
 				2573EA5012861A08004EBEBB /* CSerializedJSONData.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		25D80ACC1297CCB80095154D /* FlurryLib */ = {
+			isa = PBXGroup;
+			children = (
+				25D80ACD1297CCB80095154D /* FlurryAdDelegate.h */,
+				25D80ACE1297CCB80095154D /* FlurryAPI.h */,
+				25D80ACF1297CCB90095154D /* libFlurry.a */,
+			);
+			path = FlurryLib;
 			sourceTree = "<group>";
 		};
 		25E0516E125FCB7500CA6AC1 /* Controllers */ = {
@@ -905,6 +924,7 @@
 				25D80A1612976E200095154D /* tab_male@2x.png in Resources */,
 				25D80A40129772E70095154D /* tab_female.png in Resources */,
 				25D80A41129772E70095154D /* tab_male.png in Resources */,
+				25D80AB81297C7770095154D /* bg_login_iPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,6 +991,10 @@
 				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
 				INFOPLIST_FILE = "Facemash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
+				);
 				PRODUCT_NAME = Facemash;
 				SDKROOT = iphoneos4.2;
 			};
@@ -986,6 +1010,10 @@
 				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
 				INFOPLIST_FILE = "Facemash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
+				);
 				PRODUCT_NAME = Facemash;
 				SDKROOT = iphoneos4.1;
 				VALIDATE_PRODUCT = NO;
@@ -1023,6 +1051,10 @@
 				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
 				INFOPLIST_FILE = "Facemash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
+				);
 				PRODUCT_NAME = Facemash;
 				SDKROOT = iphoneos4.1;
 				VALIDATE_PRODUCT = YES;
