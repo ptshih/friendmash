@@ -107,11 +107,15 @@ static UIImage *_placeholderImage;
   [[NSUserDefaults standardUserDefaults] setInteger:self.selectedMode forKey:@"rankingsModeSticky"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
+  [self refreshRankings];
+}
+
+- (IBAction)refreshRankings {
   if(self.selectedMode == RankingsModeTop) {
     [self getTopPlayers];
   } else {
     [self getTopRankings];
-  }
+  } 
 }
 
 - (void)getTopPlayers {

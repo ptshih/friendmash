@@ -43,6 +43,7 @@ typedef enum {
 - (void)loadImagesForOnscreenRows;
 - (void)getTopPlayers;
 - (void)getTopRankings;
+- (IBAction)refreshRankings;
 - (IBAction)dismissRankings;
 
 @end
