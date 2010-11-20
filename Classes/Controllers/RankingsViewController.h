@@ -25,6 +25,7 @@ typedef enum {
   IBOutlet UITabBarItem *_tabBarItemMale;
   IBOutlet UITabBarItem *_tabBarItemFemale;
   IBOutlet UIView *_loadingView;
+  IBOutlet UINavigationItem *_navItem;
   LauncherViewController *_launcherViewController;
   NSArray *_rankingsArray;
   ImageCache *_imageCache;

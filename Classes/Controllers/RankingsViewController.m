@@ -126,6 +126,7 @@ static UIImage *_placeholderImage;
 
 - (void)getTopPlayers {
   _loadingView.hidden = NO;
+  _navItem.title = @"Top Players";
   [self.imageCache resetCache]; // reset the cache
   
   // Mode selection
@@ -144,8 +145,10 @@ static UIImage *_placeholderImage;
   // Mode selection
   NSString *selectedGender;
   if(self.selectedMode == RankingsModeMale) {
+    _navItem.title = @"Top Men";
     selectedGender = @"male";
   } else if(self.selectedMode == RankingsModeFemale) {
+    _navItem.title = @"Top Women";
     selectedGender = @"female";
   }
 
@@ -333,6 +336,7 @@ static UIImage *_placeholderImage;
   if(_tabBarItemMale) [_tabBarItemMale release];
   if(_tabBarItemFemale) [_tabBarItemFemale release];
   if(_loadingView) [_loadingView release];
+  if(_navItem) [_navItem release];
   [super dealloc];
 }
 
