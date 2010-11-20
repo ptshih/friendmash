@@ -27,7 +27,7 @@
     self.statistics = [@"Facemash uses the Elo Rating System (Google it!).\n\nWhen players mash profile pictures, a score is calculated for each picture. Over time you may be awarded with a special Facemash Title reflecting your accomplishments.\n\n\"Ranking within Facemash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
     self.leaderboards = [@"The leaderboards show you the Top 99 profile pictures.\n\nThe \"All Male\" and \"All Female\" tabs show the top 99 men and women globally.\n\nThe \"Male Friends\" and \"Female Friends\" tabs show the top 99 profile pictures when playing in Friend Mode.\n\nIf you want to see a larger image of a specific person, simply tap his or her cell for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
     self.privacy = [@"We take privacy very seriously. We do not store any copies of profile pictures. We also do not store any information that is not publicly accessible on Facebook ©. We only use information you have explicitly allowed us to use. If there are any questions or concerns about your privacy, please feel free to contact us." retain];
-    self.aboutFacemash = [@"Follow us on Twitter: @sevenminuteapps" retain];
+    self.aboutFacemash = [@"Developed by Seven Minute Apps.\nFollow us on Twitter: @sevenminuteapps" retain];
   }
   return self;
 }
@@ -149,9 +149,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  return;
-  
-  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark UITableViewDataSource

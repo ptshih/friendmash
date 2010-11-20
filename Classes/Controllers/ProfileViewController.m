@@ -371,22 +371,22 @@ static UIImage *_likeImage;
           break;
         case 3:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Received from Other Players";
+          cell.textLabel.text = @"Likes Received from Other Players";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
           break;
         case 4:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Received from Friends";
+          cell.textLabel.text = @"Likes Received from Friends";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins_network"] notNil] ? [[self.profileDict objectForKey:@"wins_network"] stringValue] : nil;
           break;
         case 5:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Streak";
+          cell.textLabel.text = @"Longest Like Streak";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max"] stringValue] : nil;
           break;
         case 6:
           cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Streak among Friends";
+          cell.textLabel.text = @"Longest Like Streak from Friends";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max_network"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max_network"] stringValue] : nil;
           break;
 //        case 4:
