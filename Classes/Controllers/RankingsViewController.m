@@ -87,11 +87,7 @@ static UIImage *_placeholderImage;
     _tabBar.selectedItem = _tabBarItemTop;
   }
   
-  if(self.selectedMode == RankingsModeTop) {
-    [self getTopPlayers];
-  } else {
-    [self getTopRankings];
-  }
+  [self refreshRankings];
 }
 
 #pragma mark  UITabBarDelegate
@@ -114,6 +110,14 @@ static UIImage *_placeholderImage;
 }
 
 - (IBAction)refreshRankings {
+  if(self.gameMode == 0) {
+    _tabBarItemMale.title = @"Top Male";
+    _tabBarItemFemale.title = @"Top Female";
+  } else {
+    _tabBarItemMale.title = @"Top Male Friends";
+    _tabBarItemFemale.title = @"Top Female Friends";
+  }
+  
   if(self.selectedMode == RankingsModeTop) {
     [self getTopPlayers];
   } else {
@@ -138,14 +142,6 @@ static UIImage *_placeholderImage;
 - (void)getTopRankings {
   _loadingView.hidden = NO;
   [self.imageCache resetCache]; // reset the cache
-
-  if(self.gameMode == 0) {
-    _tabBarItemMale.title = @"Top Male";
-    _tabBarItemFemale.title = @"Top Female";
-  } else {
-    _tabBarItemMale.title = @"Top Male Friends";
-    _tabBarItemFemale.title = @"Top Female Friends";
-  }
 
   // Mode selection
   NSString *selectedGender;
