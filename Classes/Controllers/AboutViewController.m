@@ -50,12 +50,7 @@
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  CGSize textSize;
-  if(isDeviceIPad()) {
-    textSize = CGSizeMake(400, INT_MAX);
-  } else {
-    textSize = CGSizeMake(440, INT_MAX);
-  }
+  CGSize textSize = CGSizeMake(440, INT_MAX);
 
   switch (indexPath.section) {
     case 0: {
