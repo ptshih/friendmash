@@ -95,7 +95,7 @@
 								<reference key="IBUITabBar" ref="906694035"/>
 							</object>
 							<object class="IBUITabBarItem" id="157566242">
-								<string key="IBUITitle">Top Men</string>
+								<string key="IBUITitle">Top Male</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">tab_male.png</string>
@@ -104,7 +104,7 @@
 								<reference key="IBUITabBar" ref="906694035"/>
 							</object>
 							<object class="IBUITabBarItem" id="873599616">
-								<string key="IBUITitle">Top Women</string>
+								<string key="IBUITitle">Top Female</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">tab_female.png</string>

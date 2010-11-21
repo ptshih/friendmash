@@ -138,14 +138,30 @@ static UIImage *_placeholderImage;
 - (void)getTopRankings {
   _loadingView.hidden = NO;
   [self.imageCache resetCache]; // reset the cache
-  
+
+  if(self.gameMode == 0) {
+    _tabBarItemMale.title = @"Top Male";
+    _tabBarItemFemale.title = @"Top Female";
+  } else {
+    _tabBarItemMale.title = @"Top Male Friends";
+    _tabBarItemFemale.title = @"Top Female Friends";
+  }
+
   // Mode selection
   NSString *selectedGender;
   if(self.selectedMode == RankingsModeMale) {
-    _navItem.title = @"Top Men";
+    if(self.gameMode == 0) {
+      _navItem.title = @"Top Male";
+    } else {
+      _navItem.title = @"Top Male Friends";
+    }
     selectedGender = @"male";
   } else if(self.selectedMode == RankingsModeFemale) {
-    _navItem.title = @"Top Women";
+    if(self.gameMode == 0) {
+      _navItem.title = @"Top Female";
+    } else {
+      _navItem.title = @"Top Female Friends";
+    }
     selectedGender = @"female";
   }
 

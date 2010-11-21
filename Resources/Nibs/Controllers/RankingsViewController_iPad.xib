@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="41"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -95,7 +95,7 @@
 								<reference key="IBUITabBar" ref="25573264"/>
 							</object>
 							<object class="IBUITabBarItem" id="306821651">
-								<string key="IBUITitle">Top Men</string>
+								<string key="IBUITitle">Top Male</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">tab_male.png</string>
@@ -104,7 +104,7 @@
 								<reference key="IBUITabBar" ref="25573264"/>
 							</object>
 							<object class="IBUITabBarItem" id="604962157">
-								<string key="IBUITitle">Top Women</string>
+								<string key="IBUITitle">Top Female</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">tab_female.png</string>
