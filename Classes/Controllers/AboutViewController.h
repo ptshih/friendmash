@@ -14,14 +14,12 @@
   IBOutlet UITableView *_tableView;
   NSString *_howToPlay;
   NSString *_profile;
-  NSString *_statistics;
   NSString *_leaderboards;
   NSString *_aboutFacemash;
 }
 
 @property (nonatomic, retain) NSString *howToPlay;
 @property (nonatomic, retain) NSString *profile;
-@property (nonatomic, retain) NSString *statistics;
 @property (nonatomic, retain) NSString *leaderboards;
 @property (nonatomic, retain) NSString *aboutFacemash;
 

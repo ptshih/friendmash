@@ -13,7 +13,6 @@
 
 @synthesize howToPlay = _howToPlay;
 @synthesize profile = _profile;
-@synthesize statistics = _statistics;
 @synthesize leaderboards = _leaderboards;
 @synthesize aboutFacemash = _aboutFacemash;
 
@@ -21,11 +20,13 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    self.howToPlay = [@"Facemash is a fun, new, and exciting way to view Facebook © profile pictures on your mobile device.\n\nNormally Facemash will show profiles pictures from all around the world. In \"Friends Only Mode\" we will only show profile pictures of your friends and their friends.\n\nTo start mashing, choose a gender and two profile pictures will be shown. You can begin mashing by swiping the picture you like less off the screen.\n\nIn the rare case of an infinite loading wheel or an impossible decision (trust us, they will come up), just hit the refresh button in the top right corner to show two new profile pictures." retain];
-    self.profile = [@"Your ranking, represented by military ranks, will be determined by how many faces you have mashed. The more you play, the faster you will fill the progress bar and thereby raise your rank.\n\nThe number of faces you have mashed will be separated into Global Mode and Friend Mode to help you keep track of your progress." retain];
-    self.statistics = [@"Facemash uses the Elo Rating System (Google it!).\n\nWhen players mash profile pictures, a score is calculated for each picture. Over time you may be awarded with a special Facemash Title reflecting your accomplishments.\n\n\"Ranking within Facemash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
-    self.leaderboards = [@"The leaderboards show you the Top 99 profile pictures.\n\nThe \"All Male\" and \"All Female\" tabs show the top 99 men and women globally.\n\nThe \"Male Friends\" and \"Female Friends\" tabs show the top 99 profile pictures when playing in Friend Mode.\n\nIf you want to see a larger image of a specific person, simply tap his or her cell for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
-    self.aboutFacemash = [@"Developed by Seven Minute Apps.\nFollow us on Twitter: @sevenminuteapps" retain];
+    self.howToPlay = [@"Facemash is a fun, new, and exciting way to view Facebook profile pictures on your mobile device.\n\nNormally, Facemash will show profiles pictures from all around the world. In \"Friends Only Mode\" we will only show profile pictures of your friends and their friends.\n\nTo start mashing, choose a gender and two profile pictures will be shown. You can begin mashing by swiping the picture you like less off the screen.\n\nIn the rare case of an infinite loading wheel or an impossible decision (trust us, they will come up), just hit the refresh button in the top right corner to show two new pictures." retain];
+    
+    self.profile = [@"Your ranking is determined by how many faces you have mashed. The more you play, the faster you will fill the progress bar and thereby raise your rank.\n\nOver time you may also be awarded with a special Facemash Title reflecting your accomplishments.\n\n\"Ranking within Facemash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
+    
+    self.leaderboards = [@"The leaderboards show you fun facts about the Facemash community. The \"Top Players\" tab will show the top 99 mashers whereas the \"Top Men\" and \"Top Women\" tabs will show the top 99 male and female profile pictures as rated by you and other players.\n\nIf you want to see a larger image of a particular person, simply tap his/her row for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
+    
+    self.aboutFacemash = [@"Follow us on Twitter: @sevenminuteapps\nFacebook is a registered trademark of Facebook, Inc." retain];
   }
   return self;
 }
@@ -68,16 +69,11 @@
       break;
     }
     case 2: {
-      CGSize statisticsSize = [self.statistics sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
-      return statisticsSize.height + 20;
-      break;
-    }
-    case 3: {
       CGSize leaderboardsSize = [self.leaderboards sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
       return leaderboardsSize.height + 20;
       break;
     }
-    case 4: {
+    case 3: {
       CGSize aboutFacemashSize = [self.aboutFacemash sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
       return aboutFacemashSize.height + 20;
       break;
@@ -116,12 +112,9 @@
       headerLabel.text = @"About Your Profile";
       break;
     case 2:
-      headerLabel.text = @"About Your Statistics";
+      headerLabel.text = @"The Leaderboards";
       break;
     case 3:
-      headerLabel.text = @"About Your Statistics";
-      break;
-    case 4:
       headerLabel.text = @"About Facemash";
       break;
     default:
@@ -148,7 +141,7 @@
 //}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 5;
+  return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -172,12 +165,9 @@
       cell.textLabel.text = self.profile;
       break;
     case 2:
-      cell.textLabel.text = self.statistics;
-      break;
-    case 3:
       cell.textLabel.text = self.leaderboards;
       break;
-    case 4:
+    case 3:
       cell.textLabel.text = self.aboutFacemash;
       break;
     default:
@@ -207,7 +197,6 @@
 - (void)dealloc {
   if(_howToPlay) [_howToPlay release];
   if(_profile) [_profile release];
-  if(_statistics) [_statistics release];
   if(_leaderboards) [_leaderboards release];
   if(_aboutFacemash) [_aboutFacemash release];
   if(_navBarItem) [_navBarItem release];
