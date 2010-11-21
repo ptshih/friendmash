@@ -101,6 +101,7 @@
 }
 
 - (IBAction)rankings {
+  [FlurryAPI logEvent:@"launcherRankings"];
   RankingsViewController *rvc;
   if(isDeviceIPad()) {
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPad" bundle:nil];

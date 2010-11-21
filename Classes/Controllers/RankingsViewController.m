@@ -55,9 +55,6 @@ static UIImage *_placeholderImage;
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  // Flurry
-  [FlurryAPI logEvent:@"rankingsViewLoaded"];
-  
 //  // Tab bar gradient
 //  CGRect frame = CGRectMake(0, 0, 480, 49);
 //  UIView *v = [[UIView alloc] initWithFrame:frame];
