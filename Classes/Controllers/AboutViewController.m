@@ -15,7 +15,6 @@
 @synthesize profile = _profile;
 @synthesize statistics = _statistics;
 @synthesize leaderboards = _leaderboards;
-@synthesize privacy = _privacy;
 @synthesize aboutFacemash = _aboutFacemash;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -26,7 +25,6 @@
     self.profile = [@"Your ranking, represented by military ranks, will be determined by how many faces you have mashed. The more you play, the faster you will fill the progress bar and thereby raise your rank.\n\nThe number of faces you have mashed will be separated into Global Mode and Friend Mode to help you keep track of your progress." retain];
     self.statistics = [@"Facemash uses the Elo Rating System (Google it!).\n\nWhen players mash profile pictures, a score is calculated for each picture. Over time you may be awarded with a special Facemash Title reflecting your accomplishments.\n\n\"Ranking within Facemash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
     self.leaderboards = [@"The leaderboards show you the Top 99 profile pictures.\n\nThe \"All Male\" and \"All Female\" tabs show the top 99 men and women globally.\n\nThe \"Male Friends\" and \"Female Friends\" tabs show the top 99 profile pictures when playing in Friend Mode.\n\nIf you want to see a larger image of a specific person, simply tap his or her cell for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
-    self.privacy = [@"We take privacy very seriously. We do not store any copies of profile pictures. We also do not store any information that is not publicly accessible on Facebook ©. We only use information you have explicitly allowed us to use. If there are any questions or concerns about your privacy, please feel free to contact us." retain];
     self.aboutFacemash = [@"Developed by Seven Minute Apps.\nFollow us on Twitter: @sevenminuteapps" retain];
   }
   return self;
@@ -80,11 +78,6 @@
       break;
     }
     case 4: {
-      CGSize privacySize = [self.privacy sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
-      return privacySize.height + 20;
-      break;
-    }
-    case 5: {
       CGSize aboutFacemashSize = [self.aboutFacemash sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
       return aboutFacemashSize.height + 20;
       break;
@@ -129,9 +122,6 @@
       headerLabel.text = @"About Your Statistics";
       break;
     case 4:
-      headerLabel.text = @"About Your Privacy";
-      break;
-    case 5:
       headerLabel.text = @"About Facemash";
       break;
     default:
@@ -158,7 +148,7 @@
 //}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 6;
+  return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -188,9 +178,6 @@
       cell.textLabel.text = self.leaderboards;
       break;
     case 4:
-      cell.textLabel.text = self.privacy;
-      break;
-    case 5:
       cell.textLabel.text = self.aboutFacemash;
       break;
     default:
@@ -222,7 +209,6 @@
   if(_profile) [_profile release];
   if(_statistics) [_statistics release];
   if(_leaderboards) [_leaderboards release];
-  if(_privacy) [_privacy release];
   if(_aboutFacemash) [_aboutFacemash release];
   if(_navBarItem) [_navBarItem release];
   if(_tableView) [_tableView release];

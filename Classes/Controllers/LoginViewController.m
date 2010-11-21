@@ -62,11 +62,11 @@
 }
 
 - (IBAction)terms {
-  [self webViewWithURL:FACEMASH_TERMS_URL andTitle:@"Terms of Service"];
+  [self webViewWithURL:FACEMASH_TERMS_URL andTitle:@"Seven Minute Apps"];
 }
 
 - (IBAction)privacy {
-  [self webViewWithURL:FACEMASH_PRIVACY_URL andTitle:@"Privacy Policy"];  
+  [self webViewWithURL:FACEMASH_PRIVACY_URL andTitle:@"Seven Minute Apps"];  
 }
 
 - (IBAction)ssoLogin {
