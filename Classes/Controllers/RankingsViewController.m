@@ -110,6 +110,10 @@ static UIImage *_placeholderImage;
 }
 
 - (IBAction)refreshRankings {
+  _refreshButton.enabled = NO;
+  _tabBarItemTop.enabled = NO;
+  _tabBarItemMale.enabled = NO;
+  _tabBarItemFemale.enabled = NO;
   if(self.gameMode == 0) {
     _tabBarItemMale.title = @"Top Male";
     _tabBarItemFemale.title = @"Top Female";
@@ -180,6 +184,10 @@ static UIImage *_placeholderImage;
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
   } else {  
+    _refreshButton.enabled = YES;
+    _tabBarItemTop.enabled = YES;
+    _tabBarItemMale.enabled = YES;
+    _tabBarItemFemale.enabled = YES;
     self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
     [_tableView reloadData];
   }
@@ -346,6 +354,7 @@ static UIImage *_placeholderImage;
   if(_tabBarItemFemale) [_tabBarItemFemale release];
   if(_loadingView) [_loadingView release];
   if(_navItem) [_navItem release];
+  if(_refreshButton) [_refreshButton release];
   [super dealloc];
 }
 
