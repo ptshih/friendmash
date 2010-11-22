@@ -28,19 +28,27 @@
   #include "TargetConditionals.h"
 #endif
 
+// If this is defined, we will hit the staging server instead of prod
+#ifdef DEBUG
+//#define STAGING
+#endif
+
 #if TARGET_IPHONE_SIMULATOR
-  #define STAGING
+  #define USE_LOCALHOST
 #endif
 
 #ifdef STAGING
-  #define FACEMASH_BASE_URL @"http://localhost:3000"
-  #define FACEMASH_TERMS_URL @"http://localhost:3000/terms"
-  #define FACEMASH_PRIVACY_URL @"http://localhost:3000/privacy"
+  #ifdef USE_LOCALHOST
+    #define FACEMASH_BASE_URL @"http://localhost:3000"
+  #else
+    #define FACEMASH_BASE_URL @"http://facemash-staging.heroku.com"
+  #endif
 #else
   #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
-  #define FACEMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
-  #define FACEMASH_PRIVACY_URL @"http://www.sevenminuteapps.com/privacy"
 #endif
+
+#define FACEMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
+#define FACEMASH_PRIVACY_URL @"http://www.sevenminuteapps.com/privacy"
 
 #define FB_GRAPH_FRIENDS @"https://graph.facebook.com/me/friends"
 #define FB_GRAPH_ME @"https://graph.facebook.com/me"
