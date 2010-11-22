@@ -148,7 +148,7 @@ static UIImage *_placeholderImage;
   [self.imageCache resetCache]; // reset the cache
 
   // Mode selection
-  NSString *selectedGender;
+  NSString *selectedGender = nil;
   if(self.selectedMode == RankingsModeMale) {
     if(self.gameMode == 0) {
       _navItem.title = @"Top Male";
