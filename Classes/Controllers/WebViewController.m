@@ -24,7 +24,7 @@
 @synthesize activityView = _activityView;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil /*withURL:(NSString*)urlString*/ {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Custom initialization
 		_isRefreshState = NO;
@@ -64,9 +64,9 @@
 	_navBarItem.rightBarButtonItem = actButton;
 	[actButton release];
 	
-	self.backButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:WEBVIEW_LEFT] style:UIBarButtonItemStylePlain target:_myWebView action:@selector(goBack)] autorelease];
+	self.backButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tb_icon_prev.png"] style:UIBarButtonItemStylePlain target:_myWebView action:@selector(goBack)] autorelease];
 	UIBarButtonItem *flexibleItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	self.forwardButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:WEBVIEW_RIGHT] style:UIBarButtonItemStylePlain target:_myWebView action:@selector(goForward)] autorelease];
+	self.forwardButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tb_icon_next.png"] style:UIBarButtonItemStylePlain target:_myWebView action:@selector(goForward)] autorelease];
 	UIBarButtonItem *flexibleItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 	self.stopButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:_myWebView action:@selector(stopLoading)] autorelease];
 	UIBarButtonItem *flexibleItem3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];	
@@ -99,8 +99,6 @@
 	//stopButton.enabled = YES;
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//	AppDelegate_Phone *appDelegate = [[UIApplication sharedApplication] delegate];
-//	[appDelegate hideNetworkActivity];
 	[self.activityView stopAnimating];
 	self.backButton.enabled = [_myWebView canGoBack];
 	self.forwardButton.enabled = [_myWebView canGoForward];
@@ -112,8 +110,6 @@
 	//stopButton.enabled = NO;
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-//	AppDelegate_Phone *appDelegate = [[UIApplication sharedApplication] delegate];
-//	[appDelegate hideNetworkActivity];
 	[self.activityView stopAnimating];
 	self.backButton.enabled = [_myWebView canGoBack];
 	self.forwardButton.enabled = [_myWebView canGoForward];
@@ -129,7 +125,6 @@
 #pragma mark Action Button Functions
 
 - (void)moreActions {
-//	DealWatchAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	UIActionSheet *styleAlert =[[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
 																							otherButtonTitles:@"Open in Safari", @"Copy link", nil] autorelease];
 	styleAlert.actionSheetStyle = UIActionSheetStyleBlackOpaque;
@@ -137,8 +132,7 @@
 	[styleAlert showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
-{	
+- (void)actionSheet:(UIActionSheet *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex {	
   switch (buttonIndex) {
 		// opening URL in Safari
     case 0: [[UIApplication sharedApplication] openURL:[[_myWebView request] URL]]; break;

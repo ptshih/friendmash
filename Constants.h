@@ -29,11 +29,10 @@
 #endif
 
 // If this is defined, we will hit the staging server instead of prod
-#ifdef DEBUG
-//#define STAGING
-#endif
+// #define STAGING
 
 #if TARGET_IPHONE_SIMULATOR
+  #define STAGING
   #define USE_LOCALHOST
 #endif
 
@@ -65,9 +64,6 @@
 // Unused, FB doesn't seem to return these
 // interested_in
 // meeting_for
-
-#define WEBVIEW_LEFT @"left.png"
-#define WEBVIEW_RIGHT @"right.png"
 
 #define FM_RANKINGS_COUNT 99
 
