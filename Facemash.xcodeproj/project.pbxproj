@@ -21,8 +21,6 @@
 		251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3611262CB680055CFD2 /* Icon-Small@2x.png */; };
 		251EA3661262CB680055CFD2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3621262CB680055CFD2 /* Icon.png */; };
 		251EA3671262CB680055CFD2 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3631262CB680055CFD2 /* Icon@2x.png */; };
-		25296FCD1296082000844528 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 25296FCB1296082000844528 /* left.png */; };
-		25296FCE1296082000844528 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 25296FCC1296082000844528 /* right.png */; };
 		25296FDE1296088A00844528 /* WebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25296FDD1296088A00844528 /* WebViewController_iPad.xib */; };
 		252E0FC1126083390008BD55 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FC0126083390008BD55 /* Icon-72.png */; };
 		252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 252E0FE3126083CD0008BD55 /* Icon-Small-50.png */; };
@@ -51,6 +49,8 @@
 		253E985B1267FC300037CB2D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E985A1267FC300037CB2D /* ProfileViewController.m */; };
 		253E98D11268057D0037CB2D /* RankingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */; };
 		253E98D5126805B70037CB2D /* RankingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253E98D4126805B70037CB2D /* RankingsViewController.m */; };
+		2542E6F0129B42120071DB18 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 2542E6EE129B42120071DB18 /* left.png */; };
+		2542E6F1129B42120071DB18 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 2542E6EF129B42120071DB18 /* right.png */; };
 		2556FE03128D6F5400E6C482 /* RankingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */; };
 		2556FE6E128D753A00E6C482 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FE6D128D753A00E6C482 /* UIView+Additions.m */; };
 		2556FED9128D784E00E6C482 /* NSObject+ConvenienceMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 2556FED6128D784E00E6C482 /* NSObject+ConvenienceMethods.m */; };
@@ -205,8 +205,6 @@
 		251EA3611262CB680055CFD2 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		251EA3621262CB680055CFD2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		251EA3631262CB680055CFD2 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		25296FCB1296082000844528 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = left.png; path = ../wikinvest/iPhone/Images/left.png; sourceTree = SOURCE_ROOT; };
-		25296FCC1296082000844528 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = right.png; path = ../wikinvest/iPhone/Images/right.png; sourceTree = SOURCE_ROOT; };
 		25296FDD1296088A00844528 /* WebViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPad.xib; sourceTree = "<group>"; };
 		252E0FC0126083390008BD55 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		252E0FE3126083CD0008BD55 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -237,6 +235,8 @@
 		253E98D01268057D0037CB2D /* RankingsViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RankingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		253E98D3126805B70037CB2D /* RankingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsViewController.h; sourceTree = "<group>"; };
 		253E98D4126805B70037CB2D /* RankingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsViewController.m; sourceTree = "<group>"; };
+		2542E6EE129B42120071DB18 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
+		2542E6EF129B42120071DB18 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
 		2556FE01128D6F5400E6C482 /* RankingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingsTableViewCell.h; sourceTree = "<group>"; };
 		2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingsTableViewCell.m; sourceTree = "<group>"; };
 		2556FE6C128D753A00E6C482 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
@@ -491,7 +491,8 @@
 				252E0FC0126083390008BD55 /* Icon-72.png */,
 				255BD0B7128CD3F900DB5363 /* table_cell_bg_selected.png */,
 				25312F0112969A0D0057D4A0 /* loading_bg.png */,
-				256F6736129607E000B31AC7 /* WebView */,
+				2542E6EE129B42120071DB18 /* left.png */,
+				2542E6EF129B42120071DB18 /* right.png */,
 			);
 			name = Assets;
 			path = Resources/Assets;
@@ -582,15 +583,6 @@
 				2569838A128AB1DE00B2466B /* RemoteRequest.m */,
 			);
 			path = Client;
-			sourceTree = "<group>";
-		};
-		256F6736129607E000B31AC7 /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-				25296FCB1296082000844528 /* left.png */,
-				25296FCC1296082000844528 /* right.png */,
-			);
-			name = WebView;
 			sourceTree = "<group>";
 		};
 		2573E51112858874004EBEBB /* ASIHTTPRequest */ = {
@@ -998,8 +990,6 @@
 				256F65C51295F6F100B31AC7 /* likes.png in Resources */,
 				256F65D71295F81400B31AC7 /* likes@2x.png in Resources */,
 				256F66BB129605BC00B31AC7 /* WebViewController_iPhone.xib in Resources */,
-				25296FCD1296082000844528 /* left.png in Resources */,
-				25296FCE1296082000844528 /* right.png in Resources */,
 				25296FDE1296088A00844528 /* WebViewController_iPad.xib in Resources */,
 				25312DDA12968BCA0057D4A0 /* btn_login@2x.png in Resources */,
 				25312DDC12968BD30057D4A0 /* btn_login.png in Resources */,
@@ -1061,6 +1051,8 @@
 				25D80CF312989A0F0095154D /* unchecked_button.png in Resources */,
 				25D80CF812989A430095154D /* checked_button@2x.png in Resources */,
 				25D80CF912989A430095154D /* unchecked_button@2x.png in Resources */,
+				2542E6F0129B42120071DB18 /* left.png in Resources */,
+				2542E6F1129B42120071DB18 /* right.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
