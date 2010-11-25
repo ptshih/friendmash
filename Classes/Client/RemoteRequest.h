@@ -3,7 +3,7 @@
 //  Facemash
 //
 //  Created by Peter Shih on 11/10/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

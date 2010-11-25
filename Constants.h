@@ -3,7 +3,7 @@
  *  Facemash
  *
  *  Created by Peter Shih on 10/8/10.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Copyright 2010 Seven Minute Apps. All rights reserved.
  *
  */
 
@@ -33,7 +33,7 @@
 
 #if TARGET_IPHONE_SIMULATOR
   #define STAGING
-  #define USE_LOCALHOST
+//  #define USE_LOCALHOST
 #endif
 
 #ifdef STAGING

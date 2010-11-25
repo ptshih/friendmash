@@ -3,7 +3,7 @@
 //  Facemash
 //
 //  Created by Peter Shih on 10/11/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
 #import "ImageManipulator.h"
