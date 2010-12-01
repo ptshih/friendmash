@@ -40,10 +40,10 @@
   #ifdef USE_LOCALHOST
     #define FACEMASH_BASE_URL @"http://localhost:3000"
   #else
-    #define FACEMASH_BASE_URL @"http://facemash-staging.heroku.com"
+    #define FACEMASH_BASE_URL @"http://friendmash-staging.heroku.com"
   #endif
 #else
-  #define FACEMASH_BASE_URL @"http://facemash.heroku.com"
+  #define FACEMASH_BASE_URL @"http://friendmash.heroku.com"
 #endif
 
 #define FACEMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
@@ -52,8 +52,9 @@
 #define FB_GRAPH_FRIENDS @"https://graph.facebook.com/me/friends"
 #define FB_GRAPH_ME @"https://graph.facebook.com/me"
 
-#define FB_APP_ID @"147806651932979"
-#define FB_APP_SECRET @"587e59801ee014c9fdea54ad17e626c6"
+// Friendmash App
+#define FB_APP_ID @"145264018857264"
+#define FB_APP_SECRET @"c70b7f16bdc77f32f160a275b68d5304"
 #define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_photos",@"friends_photos",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
 #define FB_PARAMS @"id,first_name,last_name,name,gender,education,work,locale"
 #define FB_AUTHORIZE_URL @"https://www.facebook.com/dialog/oauth"

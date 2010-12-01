@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>facemash</string>
+	<string>friendmash</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
@@ -26,7 +26,7 @@
 	<key>UILaunchImageFile~ipad</key>
 	<string>Default_iPad</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sevenminuteapps.facemash</string>
+	<string>com.sevenminuteapps.friendmash</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -64,7 +64,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb147806651932979</string>
+				<string>fb145264018857264</string>
 			</array>
 			<key>CFBundleURLName</key>
 			<string></string>

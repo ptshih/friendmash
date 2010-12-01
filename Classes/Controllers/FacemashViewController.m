@@ -303,6 +303,9 @@
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
+  // NOTE:
+  // Add a 50 size limit to recents before clearing it.
+  //
   DLog(@"sending mash request for both face views");
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
