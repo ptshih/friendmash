@@ -45,7 +45,7 @@ static NSString *_secretString = nil;
   return getRequest;
 }
 
-+ (ASIHTTPRequest *)postRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params andPostData:(NSData *)postData withDelegate:(id)delegate {
++ (ASIHTTPRequest *)postRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params andPostData:(NSData *)postData isGzip:(BOOL)isGzip withDelegate:(id)delegate {
   
   NSString *postURLString = params ? [NSString stringWithFormat:@"%@?%@", baseURLString, params] : baseURLString;
   NSURL *postURL = [NSURL URLWithString:postURLString];
@@ -55,7 +55,7 @@ static NSString *_secretString = nil;
   [postRequest setDelegate:delegate];
   [postRequest setNumberOfTimesToRetryOnTimeout:2];
   [postRequest setRequestMethod:@"POST"];
-  [postRequest setShouldCompressRequestBody:NO]; // GZIP the postData
+  [postRequest setShouldCompressRequestBody:isGzip]; // GZIP the postData
   [postRequest addRequestHeader:@"Content-Type" value:@"application/json"];
   [postRequest addRequestHeader:@"Accept" value:@"application/json"];
   [postRequest addRequestHeader:@"X-UDID" value:[[UIDevice currentDevice] uniqueIdentifier]];

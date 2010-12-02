@@ -295,17 +295,20 @@
 
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
   DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, !isLeft);
-  NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, !isLeft, self.gameMode];
+  NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:!isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
+  NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
-  self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
 }
 
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
-  // NOTE:
   // Add a 50 size limit to recents before clearing it.
-  //
+  if([self.recentOpponentsArray count] >= 50) {
+    [self.recentOpponentsArray removeAllObjects];
+  }
+  
   DLog(@"sending mash request for both face views");
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];

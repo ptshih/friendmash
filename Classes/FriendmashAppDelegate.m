@@ -174,7 +174,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FRIENDMASH_BASE_URL, self.currentUserId];
 //  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser withDelegate:nil];
+  self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser isGzip:NO withDelegate:nil];
   [self.networkQueue addOperation:self.tokenRequest];
   [self.networkQueue go];
 }
