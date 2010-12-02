@@ -1,6 +1,6 @@
 //
 //  LauncherViewController.h
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/11/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -20,13 +20,13 @@
 
 /**
  Start mashing with gender = male
- This will launch FacemashViewController and set the gender iVar to male for retrieving the first set
+ This will launch FriendmashViewController and set the gender iVar to male for retrieving the first set
  */
 - (IBAction)male;
 
 /**
  Start mashing with gender = female
- This will launch FacemashViewController and set the gender iVar to female for retrieving the first set
+ This will launch FriendmashViewController and set the gender iVar to female for retrieving the first set
  */
 - (IBAction)female;
 

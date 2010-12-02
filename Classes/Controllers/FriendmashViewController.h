@@ -1,6 +1,6 @@
 //
-//  FacemashViewController.h
-//  Facemash
+//  FriendmashViewController.h
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -14,14 +14,14 @@
  */
 
 typedef enum {
-  FacemashGameModeNormal = 0,
-  FacemashGameModeNetwork = 1
-} FacemashGameMode;
+  FriendmashGameModeNormal = 0,
+  FriendmashGameModeNetwork = 1
+} FriendmashGameMode;
 
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface FacemashViewController : UIViewController <FaceViewDelegate> {
+@interface FriendmashViewController : UIViewController <FaceViewDelegate> {
   IBOutlet UIToolbar *_toolbar;
   IBOutlet UIButton *_remashButton;
   ASINetworkQueue *_networkQueue;

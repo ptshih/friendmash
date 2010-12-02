@@ -1,13 +1,13 @@
     //
 //  LauncherViewController.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/11/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
 #import "LauncherViewController.h"
-#import "FacemashViewController.h"
+#import "FriendmashViewController.h"
 #import "ProfileViewController.h"
 #import "RankingsViewController.h"
 #import "AboutViewController.h"
@@ -16,9 +16,9 @@
 @interface LauncherViewController (Private)
 
 /**
- This method creates and pushes the FacemashViewController and sets it's iVar to the designated gender
+ This method creates and pushes the FriendmashViewController and sets it's iVar to the designated gender
  */
-- (void)launchFacemashWithGender:(NSString *)gender;
+- (void)launchFriendmashWithGender:(NSString *)gender;
 
 @end
 
@@ -38,7 +38,7 @@
   
   self.navigationController.navigationBar.hidden = YES;
   
-  self.title = NSLocalizedString(@"facemash", @"facemash");
+  self.title = NSLocalizedString(@"friendmash", @"friendmash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
   if(_modeButton.selected) {
     _friendsOnlyLabel.alpha = 1.0;
@@ -64,11 +64,11 @@
 
 - (IBAction)male {
   [FlurryAPI logEvent:@"launcherMale"];
-  [self launchFacemashWithGender:@"male"];
+  [self launchFriendmashWithGender:@"male"];
 }
 - (IBAction)female {
   [FlurryAPI logEvent:@"launcherFemale"];
-  [self launchFacemashWithGender:@"female"];
+  [self launchFriendmashWithGender:@"female"];
 }
 
 - (IBAction)about {
@@ -115,12 +115,12 @@
   [rvc release];
 }
 
-- (void)launchFacemashWithGender:(NSString *)gender {
-  FacemashViewController *fvc;
+- (void)launchFriendmashWithGender:(NSString *)gender {
+  FriendmashViewController *fvc;
   if(isDeviceIPad()) {
-    fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPad" bundle:nil];
+    fvc = [[FriendmashViewController alloc] initWithNibName:@"FriendmashViewController_iPad" bundle:nil];
   } else {
-    fvc = [[FacemashViewController alloc] initWithNibName:@"FacemashViewController_iPhone" bundle:nil];
+    fvc = [[FriendmashViewController alloc] initWithNibName:@"FriendmashViewController_iPhone" bundle:nil];
   }
   fvc.gender = gender;
   fvc.gameMode = _modeButton.selected;

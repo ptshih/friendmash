@@ -1,6 +1,6 @@
 //
 //  RemoteRequest.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 11/10/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -9,9 +9,18 @@
 #import "RemoteRequest.h"
 #import "ASIHTTPRequest.h"
 #import "NSString+Util.h"
+#import "HashValue.h"
 #import "Constants.h"
 
+static NSString *_secretString = nil;
+
 @implementation RemoteRequest
+
++ (void)initialize {
+  // Calculate SHA256 hash for secret
+  HashValue *secretHash = [HashValue sha256HashWithData:[@"omgwtfbbqflylikeag6" dataUsingEncoding:NSUTF8StringEncoding]];
+  _secretString = [secretHash description];
+}
 
 + (ASIHTTPRequest *)getRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params withDelegate:(id)delegate {
 //  [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
@@ -31,7 +40,7 @@
   [getRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
   [getRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
   [getRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
-  [getRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
+  [getRequest addRequestHeader:@"X-Friendmash-Secret" value:_secretString];
   
   return getRequest;
 }
@@ -54,7 +63,7 @@
   [postRequest addRequestHeader:@"X-App-Version" value:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
   [postRequest addRequestHeader:@"X-System-Name" value:[[UIDevice currentDevice] systemName]];
   [postRequest addRequestHeader:@"X-System-Version" value:[[UIDevice currentDevice] systemVersion]];
-  [postRequest addRequestHeader:@"X-Facemash-Secret" value:@"omgwtfbbq"];
+  [postRequest addRequestHeader:@"X-Friendmash-Secret" value:_secretString];
 //  [postRequest setPostLength:[postData length]];
   [postRequest setPostBody:(NSMutableData *)postData];
   

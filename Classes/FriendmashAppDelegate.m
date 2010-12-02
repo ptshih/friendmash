@@ -1,12 +1,12 @@
 //
-//  FacemashAppDelegate.m
-//  Facemash
+//  FriendmashAppDelegate.m
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
-#import "FacemashAppDelegate.h"
+#import "FriendmashAppDelegate.h"
 #import "LauncherViewController.h"
 #import "NSString+Util.h"
 #import "Constants.h"
@@ -19,13 +19,13 @@ void uncaughtExceptionHandler(NSException *exception) {
   [FlurryAPI logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
 
-@interface FacemashAppDelegate (Private)
+@interface FriendmashAppDelegate (Private)
 - (NSDictionary*)parseURLParams:(NSString *)query;
 - (void)sendFacebookAccessToken;
 - (void)tryLogin;
 @end
 
-@implementation FacemashAppDelegate
+@implementation FriendmashAppDelegate
 
 @synthesize window;
 @synthesize navigationController = _navigationController;
@@ -168,11 +168,11 @@ void uncaughtExceptionHandler(NSException *exception) {
 }
 
 - (void)sendFacebookAccessToken {
-  // Send the newly acquired FB access token to the facemash server
-  // The facemash server should then use this token to get the user's information and friends list
+  // Send the newly acquired FB access token to the friendmash server
+  // The friendmash server should then use this token to get the user's information and friends list
   NSString *token = [self.fbAccessToken stringWithPercentEscape];
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FACEMASH_BASE_URL, self.currentUserId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FRIENDMASH_BASE_URL, self.currentUserId];
 //  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser withDelegate:nil];
   [self.networkQueue addOperation:self.tokenRequest];
@@ -200,7 +200,7 @@ void uncaughtExceptionHandler(NSException *exception) {
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
       
-      // Fire off the server request to facemash with auth token and userid
+      // Fire off the server request to friendmash with auth token and userid
       [self sendFacebookAccessToken];
     }
   } else if([request isEqual:self.tokenRequest]) {
@@ -256,10 +256,10 @@ void uncaughtExceptionHandler(NSException *exception) {
   NSString *errorMessage;
   if(userDidCancel) {
     errorTitle = @"Permissions Error";
-    errorMessage = @"Facemash was unable to login to Facebook. Please try again.";
+    errorMessage = @"Friendmash was unable to login to Facebook. Please try again.";
   } else {
     errorTitle = @"Login Error";
-    errorMessage = @"Facemash is having trouble logging in to Facebook. Please try again.";
+    errorMessage = @"Friendmash is having trouble logging in to Facebook. Please try again.";
   }
 
   _loginFailedAlert = [[UIAlertView alloc] initWithTitle:errorTitle message:errorMessage delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -384,7 +384,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   [window makeKeyAndVisible];
   
   // Reachability
-  _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to use Facemash." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to use Friendmash." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
 	_hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
   _netStatus = 0; // default netstatus to 0
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];

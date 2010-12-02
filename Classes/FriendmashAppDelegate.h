@@ -1,6 +1,6 @@
 //
-//  FacemashAppDelegate.h
-//  Facemash
+//  FriendmashAppDelegate.h
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -10,12 +10,12 @@
 #import "LoginViewController.h"
 #import "Reachability.h"
 
-@class FacemashViewController;
+@class FriendmashViewController;
 @class LauncherViewController;
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface FacemashAppDelegate : NSObject <UIApplicationDelegate, FacebookLoginDelegate, UIPopoverControllerDelegate> {
+@interface FriendmashAppDelegate : NSObject <UIApplicationDelegate, FacebookLoginDelegate, UIPopoverControllerDelegate> {
   UIWindow *window;
   UINavigationController *_navigationController;
   LoginViewController *_loginViewController;

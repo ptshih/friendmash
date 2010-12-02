@@ -1,6 +1,6 @@
 //
 //  FaceView.h
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -17,7 +17,7 @@
  API: graph.facebook.com/{userId}/picture?type=large
  */
 @class FaceView;
-@class FacemashViewController;
+@class FriendmashViewController;
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
@@ -40,7 +40,7 @@ typedef enum {
   IBOutlet UIImageView *_faceImageView;
   IBOutlet UIActivityIndicatorView *_spinner;
   IBOutlet UIView *_loadingView;
-  FacemashViewController *_facemashViewController;
+  FriendmashViewController *_friendmashViewController;
   UIView *_canvas;
   UIToolbar *_toolbar;
   CGPoint defaultOrigin;
@@ -60,7 +60,7 @@ typedef enum {
   UIAlertView *_networkErrorAlert;
 }
 
-@property (nonatomic, assign) FacemashViewController *facemashViewController;
+@property (nonatomic, assign) FriendmashViewController *friendmashViewController;
 @property (nonatomic, retain) UIImageView *faceImageView;
 @property (nonatomic, assign) UIView *canvas;
 @property (nonatomic, assign) UIToolbar *toolbar;

@@ -1,6 +1,6 @@
 //
 //  ImageManipulator.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/11/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.

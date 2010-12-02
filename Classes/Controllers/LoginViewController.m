@@ -1,6 +1,6 @@
 //
 //  LoginViewController.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 11/11/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -62,11 +62,11 @@
 }
 
 - (IBAction)terms {
-  [self webViewWithURL:FACEMASH_TERMS_URL andTitle:@"Seven Minute Apps"];
+  [self webViewWithURL:FRIENDMASH_TERMS_URL andTitle:@"Seven Minute Apps"];
 }
 
 - (IBAction)privacy {
-  [self webViewWithURL:FACEMASH_PRIVACY_URL andTitle:@"Seven Minute Apps"];  
+  [self webViewWithURL:FRIENDMASH_PRIVACY_URL andTitle:@"Seven Minute Apps"];  
 }
 
 - (IBAction)ssoLogin {

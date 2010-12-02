@@ -1,13 +1,13 @@
 //
 //  FaceView.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
 #import "FaceView.h"
-#import "FacemashViewController.h"
+#import "FriendmashViewController.h"
 #import "ImageManipulator.h"
 #import "Constants.h"
 #import "ASIHTTPRequest.h"
@@ -42,12 +42,12 @@
 - (void)getPicture;
 
 /**
- This calls the delegate (FacemashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to NO
+ This calls the delegate (FriendmashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to NO
  */
 - (void)faceViewDidUnload;
 
 /**
- This calls the delegate (FacemashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to YES
+ This calls the delegate (FriendmashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to YES
  */
 - (void)faceViewDidFinishLoading;
 
@@ -55,7 +55,7 @@
 
 @implementation FaceView
 
-@synthesize facemashViewController = _facemashViewController;
+@synthesize friendmashViewController = _friendmashViewController;
 @synthesize faceImageView = _faceImageView;
 @synthesize canvas = _canvas;
 @synthesize toolbar = _toolbar;
@@ -174,7 +174,7 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  if(!self.facemashViewController.isLeftLoaded || !self.facemashViewController.isRightLoaded) return;
+  if(!self.friendmashViewController.isLeftLoaded || !self.friendmashViewController.isRightLoaded) return;
   if(!APP_DELEGATE.touchActive) {
     APP_DELEGATE.touchActive = YES;
     _touchAllowed = YES;

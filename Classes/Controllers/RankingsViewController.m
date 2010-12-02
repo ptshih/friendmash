@@ -1,6 +1,6 @@
 //
 //  RankingsViewController.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/14/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -136,7 +136,7 @@ static UIImage *_placeholderImage;
   
   // Mode selection
   NSString *params = [NSString stringWithFormat:@"count=%d", FM_RANKINGS_COUNT];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/topplayers/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/topplayers/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];
@@ -166,7 +166,7 @@ static UIImage *_placeholderImage;
   }
 
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", selectedGender, self.gameMode, FM_RANKINGS_COUNT];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
   ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:rankingsRequest];

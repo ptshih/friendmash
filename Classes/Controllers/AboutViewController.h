@@ -1,6 +1,6 @@
 //
 //  AboutViewController.h
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 11/13/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -15,12 +15,12 @@
   NSString *_howToPlay;
   NSString *_profile;
   NSString *_leaderboards;
-  NSString *_aboutFacemash;
+  NSString *_aboutFriendmash;
 }
 
 @property (nonatomic, retain) NSString *howToPlay;
 @property (nonatomic, retain) NSString *profile;
 @property (nonatomic, retain) NSString *leaderboards;
-@property (nonatomic, retain) NSString *aboutFacemash;
+@property (nonatomic, retain) NSString *aboutFriendmash;
 
 @end

@@ -1,6 +1,6 @@
 //
 //  AboutViewController.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 11/13/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -14,19 +14,19 @@
 @synthesize howToPlay = _howToPlay;
 @synthesize profile = _profile;
 @synthesize leaderboards = _leaderboards;
-@synthesize aboutFacemash = _aboutFacemash;
+@synthesize aboutFriendmash = _aboutFriendmash;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    self.howToPlay = [@"Facemash is a fun, new, and exciting way to view Facebook profile pictures on your mobile device.\n\nNormally, Facemash will show profiles pictures from all around the world. In \"Friends Only Mode\" we will only show profile pictures of your friends and their friends.\n\nTo start mashing, choose a gender and two profile pictures will be shown. You can begin mashing by swiping the picture you like less off the screen.\n\nIn the rare case of an infinite loading wheel or an impossible decision (trust us, they will come up), just hit the refresh button in the top right corner to show two new pictures." retain];
+    self.howToPlay = [@"Friendmash is a fun, new, and exciting way to view Facebook profile pictures on your mobile device.\n\nNormally, Friendmash will show profiles pictures from all around the world. In \"Friends Only Mode\" we will only show profile pictures of your friends and their friends.\n\nTo start mashing, choose a gender and two profile pictures will be shown. You can begin mashing by swiping the picture you like less off the screen.\n\nIn the rare case of an infinite loading wheel or an impossible decision (trust us, they will come up), just hit the refresh button in the top right corner to show two new pictures." retain];
     
-    self.profile = [@"Your ranking is determined by how many faces you have mashed. The more you play, the faster you will fill the progress bar and thereby raise your rank.\n\nOver time you may also be awarded with a special Facemash Title reflecting your accomplishments.\n\n\"Ranking within Facemash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
+    self.profile = [@"Your ranking is determined by how many faces you have mashed. The more you play, the faster you will fill the progress bar and thereby raise your rank.\n\nOver time you may also be awarded with a special Friendmash Title reflecting your accomplishments.\n\n\"Ranking within Friendmash\" is your rank globally whereas \"Ranking among Friends\" shows how well you're doing among your friends and their friends." retain];
     
-    self.leaderboards = [@"The leaderboards show you fun facts about the Facemash community. The \"Top Players\" tab will show the top 99 mashers whereas the \"Top Men\" and \"Top Women\" tabs will show the top 99 male and female profile pictures as rated by you and other players.\n\nIf you want to see a larger image of a particular person, simply tap his/her row for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
+    self.leaderboards = [@"The leaderboards show you fun facts about the Friendmash community. The \"Top Players\" tab will show the top 99 mashers whereas the \"Top Men\" and \"Top Women\" tabs will show the top 99 male and female profile pictures as rated by you and other players.\n\nIf you want to see a larger image of a particular person, simply tap his/her row for a larger view. Tap the image when you’re done to return to the leaderboards." retain];
     
-    self.aboutFacemash = [@"Follow us on Twitter: @sevenminuteapps\nFacebook is a registered trademark of Facebook, Inc." retain];
+    self.aboutFriendmash = [@"Follow us on Twitter: @sevenminuteapps\nFacebook is a registered trademark of Facebook, Inc." retain];
   }
   return self;
 }
@@ -69,8 +69,8 @@
       break;
     }
     case 3: {
-      CGSize aboutFacemashSize = [self.aboutFacemash sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
-      return aboutFacemashSize.height + 20;
+      CGSize aboutFriendmashSize = [self.aboutFriendmash sizeWithFont:[UIFont systemFontOfSize:17.0] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+      return aboutFriendmashSize.height + 20;
       break;
     }
     default:
@@ -101,7 +101,7 @@
   
   switch (section) {
     case 0:
-      headerLabel.text = @"How to Play Facemash";
+      headerLabel.text = @"How to Play Friendmash";
       break;
     case 1:
       headerLabel.text = @"About Your Profile";
@@ -110,7 +110,7 @@
       headerLabel.text = @"The Leaderboards";
       break;
     case 3:
-      headerLabel.text = @"About Facemash";
+      headerLabel.text = @"About Friendmash";
       break;
     default:
       break;
@@ -163,7 +163,7 @@
       cell.textLabel.text = self.leaderboards;
       break;
     case 3:
-      cell.textLabel.text = self.aboutFacemash;
+      cell.textLabel.text = self.aboutFriendmash;
       break;
     default:
       break;
@@ -193,7 +193,7 @@
   if(_howToPlay) [_howToPlay release];
   if(_profile) [_profile release];
   if(_leaderboards) [_leaderboards release];
-  if(_aboutFacemash) [_aboutFacemash release];
+  if(_aboutFriendmash) [_aboutFriendmash release];
   if(_navBarItem) [_navBarItem release];
   if(_tableView) [_tableView release];
   [super dealloc];

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* FacemashAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* FriendmashAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* FriendmashAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -15,7 +15,7 @@
 		2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2513CB7A129283E0002E79EF /* LightboxViewController.m */; };
 		2513CB7D129283E0002E79EF /* LightboxViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */; };
 		251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */; };
-		251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */; };
+		251EA2E31262C4BA0055CFD2 /* FriendmashViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2E21262C4BA0055CFD2 /* FriendmashViewController_iPhone.xib */; };
 		251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */; };
 		251EA3641262CB680055CFD2 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3601262CB680055CFD2 /* Icon-Small.png */; };
 		251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 251EA3611262CB680055CFD2 /* Icon-Small@2x.png */; };
@@ -176,9 +176,9 @@
 		25D80CF312989A0F0095154D /* unchecked_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80CF112989A0F0095154D /* unchecked_button.png */; };
 		25D80CF812989A430095154D /* checked_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80CF612989A430095154D /* checked_button@2x.png */; };
 		25D80CF912989A430095154D /* unchecked_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80CF712989A430095154D /* unchecked_button@2x.png */; };
-		25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FacemashViewController.m */; };
+		25E05173125FCB7500CA6AC1 /* FriendmashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05170125FCB7500CA6AC1 /* FriendmashViewController.m */; };
 		25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E05177125FCB8F00CA6AC1 /* FaceView.m */; };
-		25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */; };
+		25E05186125FCBD000CA6AC1 /* FriendmashViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05183125FCBD000CA6AC1 /* FriendmashViewController_iPad.xib */; };
 		25E05187125FCBD000CA6AC1 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */; };
 		25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */; };
 		25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E1C35D1263092D0052BE93 /* LauncherViewController.m */; };
@@ -187,21 +187,22 @@
 		25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EB5DD912643DE000619ECE /* ImageManipulator.m */; };
 		25F0310E1290216C003155D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310D1290216C003155D6 /* Default.png */; };
 		25F0311012902174003155D6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310F12902174003155D6 /* Default@2x.png */; };
+		25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FAEB4712A71C2E00E2D6E8 /* HashValue.m */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* FacemashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* FacemashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* Facemash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facemash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D3623240D0F684500981E51 /* FriendmashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendmashAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* FriendmashAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendmashAppDelegate.m; sourceTree = "<group>"; };
+		1D6058910D05DD3D006BFB54 /* Friendmash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friendmash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2513C74512902A62002E79EF /* Default_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default_iPad.png; sourceTree = "<group>"; };
 		2513CB79129283E0002E79EF /* LightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightboxViewController.h; sourceTree = "<group>"; };
 		2513CB7A129283E0002E79EF /* LightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightboxViewController.m; sourceTree = "<group>"; };
 		2513CB7B129283E0002E79EF /* LightboxViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightboxViewController_iPhone.xib; sourceTree = "<group>"; };
 		251EA2C71262C3E50055CFD2 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
-		251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPhone.xib; sourceTree = "<group>"; };
+		251EA2E21262C4BA0055CFD2 /* FriendmashViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendmashViewController_iPhone.xib; sourceTree = "<group>"; };
 		251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPhone.xib; sourceTree = "<group>"; };
 		251EA3601262CB680055CFD2 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		251EA3611262CB680055CFD2 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
@@ -400,11 +401,11 @@
 		25D80CF612989A430095154D /* checked_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked_button@2x.png"; sourceTree = "<group>"; };
 		25D80CF712989A430095154D /* unchecked_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked_button@2x.png"; sourceTree = "<group>"; };
 		25E050E9125FC04800CA6AC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacemashViewController.h; sourceTree = "<group>"; };
-		25E05170125FCB7500CA6AC1 /* FacemashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacemashViewController.m; sourceTree = "<group>"; };
+		25E0516F125FCB7500CA6AC1 /* FriendmashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendmashViewController.h; sourceTree = "<group>"; };
+		25E05170125FCB7500CA6AC1 /* FriendmashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendmashViewController.m; sourceTree = "<group>"; };
 		25E05176125FCB8F00CA6AC1 /* FaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceView.h; sourceTree = "<group>"; };
 		25E05177125FCB8F00CA6AC1 /* FaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceView.m; sourceTree = "<group>"; };
-		25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FacemashViewController_iPad.xib; sourceTree = "<group>"; };
+		25E05183125FCBD000CA6AC1 /* FriendmashViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendmashViewController_iPad.xib; sourceTree = "<group>"; };
 		25E05184125FCBD000CA6AC1 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPad.xib; sourceTree = "<group>"; };
 		25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FaceView_iPad.xib; sourceTree = "<group>"; };
 		25E1C35C1263092D0052BE93 /* LauncherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LauncherViewController.h; sourceTree = "<group>"; };
@@ -415,10 +416,12 @@
 		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		25F0310D1290216C003155D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		25F0310F12902174003155D6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		25FAEB4612A71C2E00E2D6E8 /* HashValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashValue.h; sourceTree = "<group>"; };
+		25FAEB4712A71C2E00E2D6E8 /* HashValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashValue.m; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* Facemash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facemash_Prefix.pch; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Facemash-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Facemash-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* Friendmash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friendmash_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Friendmash-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Friendmash-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,8 +454,8 @@
 				25E0516E125FCB7500CA6AC1 /* Controllers */,
 				25E05171125FCB7500CA6AC1 /* Models */,
 				25E05172125FCB7500CA6AC1 /* Views */,
-				1D3623240D0F684500981E51 /* FacemashAppDelegate.h */,
-				1D3623250D0F684500981E51 /* FacemashAppDelegate.m */,
+				1D3623240D0F684500981E51 /* FriendmashAppDelegate.h */,
+				1D3623250D0F684500981E51 /* FriendmashAppDelegate.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -460,7 +463,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Facemash.app */,
+				1D6058910D05DD3D006BFB54 /* Friendmash.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				25FAEB4512A71C2E00E2D6E8 /* HashValue */,
 				25D80ACC1297CCB80095154D /* FlurryLib */,
 				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 				2573EA3A12861A08004EBEBB /* TouchJSON */,
@@ -749,8 +753,8 @@
 		25E0516E125FCB7500CA6AC1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				25E0516F125FCB7500CA6AC1 /* FacemashViewController.h */,
-				25E05170125FCB7500CA6AC1 /* FacemashViewController.m */,
+				25E0516F125FCB7500CA6AC1 /* FriendmashViewController.h */,
+				25E05170125FCB7500CA6AC1 /* FriendmashViewController.m */,
 				25E1C35C1263092D0052BE93 /* LauncherViewController.h */,
 				25E1C35D1263092D0052BE93 /* LauncherViewController.m */,
 				253E98591267FC300037CB2D /* ProfileViewController.h */,
@@ -802,8 +806,8 @@
 		25E05182125FCBD000CA6AC1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				251EA2E21262C4BA0055CFD2 /* FacemashViewController_iPhone.xib */,
-				25E05183125FCBD000CA6AC1 /* FacemashViewController_iPad.xib */,
+				251EA2E21262C4BA0055CFD2 /* FriendmashViewController_iPhone.xib */,
+				25E05183125FCBD000CA6AC1 /* FriendmashViewController_iPad.xib */,
 				25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */,
 				25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */,
 				253E98561267FB980037CB2D /* ProfileViewController_iPhone.xib */,
@@ -831,6 +835,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		25FAEB4512A71C2E00E2D6E8 /* HashValue */ = {
+			isa = PBXGroup;
+			children = (
+				25FAEB4612A71C2E00E2D6E8 /* HashValue.h */,
+				25FAEB4712A71C2E00E2D6E8 /* HashValue.m */,
+			);
+			path = HashValue;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -846,7 +859,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32CA4F630368D1EE00C91783 /* Facemash_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* Friendmash_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				25E050E9125FC04800CA6AC1 /* Constants.h */,
 			);
@@ -858,7 +871,7 @@
 			children = (
 				252E0FBF126083390008BD55 /* Assets */,
 				25E05181125FCBD000CA6AC1 /* Nibs */,
-				8D1107310486CEB800E47090 /* Facemash-Info.plist */,
+				8D1107310486CEB800E47090 /* Friendmash-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -882,9 +895,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Facemash */ = {
+		1D6058900D05DD3D006BFB54 /* Friendmash */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Facemash" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Friendmash" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -894,9 +907,9 @@
 			);
 			dependencies = (
 			);
-			name = Facemash;
+			name = Friendmash;
 			productName = Facemash;
-			productReference = 1D6058910D05DD3D006BFB54 /* Facemash.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Friendmash.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -907,7 +920,7 @@
 			attributes = {
 				ORGANIZATIONNAME = "Seven Minute Apps";
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Facemash" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Friendmash" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -921,7 +934,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Facemash */,
+				1D6058900D05DD3D006BFB54 /* Friendmash */,
 			);
 		};
 /* End PBXProject section */
@@ -931,13 +944,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25E05186125FCBD000CA6AC1 /* FacemashViewController_iPad.xib in Resources */,
+				25E05186125FCBD000CA6AC1 /* FriendmashViewController_iPad.xib in Resources */,
 				25E05187125FCBD000CA6AC1 /* MainWindow_iPad.xib in Resources */,
 				25E05189125FCBE300CA6AC1 /* FaceView_iPad.xib in Resources */,
 				252E0FC1126083390008BD55 /* Icon-72.png in Resources */,
 				252E0FE4126083CD0008BD55 /* Icon-Small-50.png in Resources */,
 				251EA2C81262C3E50055CFD2 /* MainWindow_iPhone.xib in Resources */,
-				251EA2E31262C4BA0055CFD2 /* FacemashViewController_iPhone.xib in Resources */,
+				251EA2E31262C4BA0055CFD2 /* FriendmashViewController_iPhone.xib in Resources */,
 				251EA2F61262C5890055CFD2 /* FaceView_iPhone.xib in Resources */,
 				251EA3641262CB680055CFD2 /* Icon-Small.png in Resources */,
 				251EA3651262CB680055CFD2 /* Icon-Small@2x.png in Resources */,
@@ -1075,8 +1088,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* FacemashAppDelegate.m in Sources */,
-				25E05173125FCB7500CA6AC1 /* FacemashViewController.m in Sources */,
+				1D3623260D0F684500981E51 /* FriendmashAppDelegate.m in Sources */,
+				25E05173125FCB7500CA6AC1 /* FriendmashViewController.m in Sources */,
 				25E05178125FCB8F00CA6AC1 /* FaceView.m in Sources */,
 				25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */,
 				25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */,
@@ -1112,6 +1125,7 @@
 				25B94A05128FA4DC00016322 /* AboutViewController.m in Sources */,
 				2513CB7C129283E0002E79EF /* LightboxViewController.m in Sources */,
 				256F66B9129605B100B31AC7 /* WebViewController.m in Sources */,
+				25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1127,14 +1141,14 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
-				INFOPLIST_FILE = "Facemash-Info.plist";
+				GCC_PREFIX_HEADER = Friendmash_Prefix.pch;
+				INFOPLIST_FILE = "Friendmash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
 				);
-				PRODUCT_NAME = Facemash;
+				PRODUCT_NAME = Friendmash;
 				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
@@ -1146,14 +1160,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
-				INFOPLIST_FILE = "Facemash-Info.plist";
+				GCC_PREFIX_HEADER = Friendmash_Prefix.pch;
+				INFOPLIST_FILE = "Friendmash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
 				);
-				PRODUCT_NAME = Facemash;
+				PRODUCT_NAME = Friendmash;
 				SDKROOT = iphoneos4.2;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1187,14 +1201,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Facemash_Prefix.pch;
-				INFOPLIST_FILE = "Facemash-Info.plist";
+				GCC_PREFIX_HEADER = Friendmash_Prefix.pch;
+				INFOPLIST_FILE = "Friendmash-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Vendor/FlurryLib\"",
 				);
-				PRODUCT_NAME = Facemash;
+				PRODUCT_NAME = Friendmash;
 				SDKROOT = iphoneos4.2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1243,7 +1257,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Facemash" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Friendmash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1253,7 +1267,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Facemash" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Friendmash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

@@ -1,12 +1,12 @@
 //
-//  FacemashViewController.m
-//  Facemash
+//  FriendmashViewController.m
+//  Friendmash
 //
 //  Created by Peter Shih on 10/8/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
 //
 
-#import "FacemashViewController.h"
+#import "FriendmashViewController.h"
 #import "Constants.h"
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
@@ -14,7 +14,7 @@
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
 
-@interface FacemashViewController (Private)
+@interface FriendmashViewController (Private)
 
 /**
  Loads a FaceView from NIB and configures:
@@ -41,7 +41,7 @@
 
 @end
 
-@implementation FacemashViewController
+@implementation FriendmashViewController
 
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
@@ -60,7 +60,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
-    _gameMode = FacemashGameModeNormal; // ALL game mode by default
+    _gameMode = FriendmashGameModeNormal; // ALL game mode by default
     _isLeftLoaded = NO;
     _isRightLoaded = NO;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
@@ -80,9 +80,9 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [FlurryAPI logEvent:@"facemashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
+  [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
   
-  self.title = NSLocalizedString(@"facemash", @"facemash");
+  self.title = NSLocalizedString(@"friendmash", @"friendmash");
   _toolbar.tintColor = RGBCOLOR(59,89,152);
   
   [self prepareMash];
@@ -153,12 +153,12 @@
 }
 
 - (IBAction)back {
-  [FlurryAPI logEvent:@"facemashBack"];
+  [FlurryAPI logEvent:@"friendmashBack"];
   [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)remash {
-  [FlurryAPI logEvent:@"facemashRemash"];
+  [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
 }
 
@@ -173,7 +173,7 @@
 }
 
 - (void)prepareBothFaceViews {
-  [FlurryAPI logEvent:@"facemashPreparedFaceViews" withParameters:[NSDictionary dictionaryWithObject:self.gender forKey:@"gender"]];
+  [FlurryAPI logEvent:@"friendmashPreparedFaceViews" withParameters:[NSDictionary dictionaryWithObject:self.gender forKey:@"gender"]];
   [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
   [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
 }
@@ -185,7 +185,7 @@
     _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
   }
 
-  self.leftView.facemashViewController = self;
+  self.leftView.friendmashViewController = self;
   self.leftView.canvas = self.view;
   self.leftView.toolbar = _toolbar;
   self.leftView.isLeft = YES;
@@ -204,7 +204,7 @@
     _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
   }
   
-  self.rightView.facemashViewController = self;
+  self.rightView.friendmashViewController = self;
   self.rightView.canvas = self.view;
   self.rightView.toolbar = _toolbar;
   self.rightView.isLeft = NO;
@@ -296,7 +296,7 @@
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
   DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, !isLeft);
   NSString *params = [NSString stringWithFormat:@"w=%@&l=%@&left=%d&mode=%d", winnerId, loserId, !isLeft, self.gameMode];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.resultsRequest];
   [self.networkQueue go];
@@ -308,7 +308,7 @@
   //
   DLog(@"sending mash request for both face views");
   NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FACEMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.bothRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
   [self.networkQueue addOperation:self.bothRequest];
   [self.networkQueue go];
@@ -321,13 +321,13 @@
     DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
     // Check for a not-implemented (did not find opponents) response
     if(statusCode == 501) {
-      [FlurryAPI logEvent:@"errorFacemashNoOpponents"];
+      [FlurryAPI logEvent:@"errorFriendmashNoOpponents"];
       DLog(@"FMVC status code is 501 in request finished, response: %@", [request responseString]);
       _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
       [_noContentAlert show];
       [_noContentAlert autorelease];
     } else {
-      [FlurryAPI logEvent:@"errorFacemashNetworkError"];
+      [FlurryAPI logEvent:@"errorFriendmashNetworkError"];
       DLog(@"FMVC status code not 200 or 501 in request finished, response: %@", [request responseString]);
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
       [_networkErrorAlert show];
@@ -364,7 +364,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  [FlurryAPI logEvent:@"errorFacemashRequestFailed"];
+  [FlurryAPI logEvent:@"errorFriendmashRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
 
   _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];

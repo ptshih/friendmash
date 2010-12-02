@@ -1,6 +1,6 @@
 //
 //  ProfileViewController.m
-//  Facemash
+//  Friendmash
 //
 //  Created by Peter Shih on 10/14/10.
 //  Copyright 2010 Seven Minute Apps. All rights reserved.
@@ -83,7 +83,7 @@ static UIImage *_likeImage;
 
 - (void)getProfileForCurrentUser {
 //  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", gender, mode, FM_RANKINGS_COUNT];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/profile/%@", FACEMASH_BASE_URL, self.profileId];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/profile/%@", FRIENDMASH_BASE_URL, self.profileId];
   
   ASIHTTPRequest *profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
   [self.networkQueue addOperation:profileRequest];
@@ -431,7 +431,7 @@ static UIImage *_likeImage;
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"score"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"score"] integerValue]] : nil;
           break;
         case 1:
-          cell.textLabel.text = @"Ranking within Facemash";
+          cell.textLabel.text = @"Ranking within Friendmash";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
           break;
         case 2:

@@ -1,20 +1,20 @@
 /*
  *  Constants.h
- *  Facemash
+ *  Friendmash
  *
  *  Created by Peter Shih on 10/8/10.
  *  Copyright 2010 Seven Minute Apps. All rights reserved.
  *
  */
 
-#import "FacemashAppDelegate.h"
+#import "FriendmashAppDelegate.h"
 #import "FlurryAPI.h"
 
 /*
  tagline:
- facemash: settings standards one swipe at a time
+ friendmash: settings standards one swipe at a time
  
- overlay getting started in facemash view controller
+ overlay getting started in friendmash view controller
  
  Stuff TODO for v2:
  
@@ -33,21 +33,21 @@
 
 #if TARGET_IPHONE_SIMULATOR
   #define STAGING
-//  #define USE_LOCALHOST
+  #define USE_LOCALHOST
 #endif
 
 #ifdef STAGING
   #ifdef USE_LOCALHOST
-    #define FACEMASH_BASE_URL @"http://localhost:3000"
+    #define FRIENDMASH_BASE_URL @"http://localhost:3000"
   #else
-    #define FACEMASH_BASE_URL @"http://friendmash-staging.heroku.com"
+    #define FRIENDMASH_BASE_URL @"http://friendmash-staging.heroku.com"
   #endif
 #else
-  #define FACEMASH_BASE_URL @"http://friendmash.heroku.com"
+  #define FRIENDMASH_BASE_URL @"http://friendmash.heroku.com"
 #endif
 
-#define FACEMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
-#define FACEMASH_PRIVACY_URL @"http://www.sevenminuteapps.com/privacy"
+#define FRIENDMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
+#define FRIENDMASH_PRIVACY_URL @"http://www.sevenminuteapps.com/privacy"
 
 #define FB_GRAPH_FRIENDS @"https://graph.facebook.com/me/friends"
 #define FB_GRAPH_ME @"https://graph.facebook.com/me"
@@ -69,7 +69,7 @@
 #define FM_RANKINGS_COUNT 99
 
 // ERROR STRINGS
-#define FM_NETWORK_ERROR @"Facemash has encountered a network error. Please check your network connection and try again."
+#define FM_NETWORK_ERROR @"Friendmash has encountered a network error. Please check your network connection and try again."
 
 //#define OAUTH_TOKEN @"151779758183785|2.mlbpS5_RD5Ao_hTpWQtBVg__.3600.1289080800-548430564|es6q1fc8hb7pSL2UpwFegiF1F8c"
 
@@ -77,7 +77,7 @@
 #define RGBACOLOR(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
 
 // App Delegate Macro
-#define APP_DELEGATE ((FacemashAppDelegate *)[[UIApplication sharedApplication] delegate])
+#define APP_DELEGATE ((FriendmashAppDelegate *)[[UIApplication sharedApplication] delegate])
 
 // Logging Macros
 #ifdef DEBUG
