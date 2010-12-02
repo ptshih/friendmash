@@ -74,7 +74,7 @@
 							<object class="IBUILabel" id="580741392">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 255}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 244}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -99,7 +99,7 @@
 							<object class="IBUIButton" id="105473143">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 210}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 192}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="105672731">
 									<int key="NSColorSpace">3</int>
@@ -128,7 +128,7 @@
 							<object class="IBUIButton" id="675495837">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{100, 255}, {280, 37}}</string>
+								<string key="NSFrame">{{100, 244}, {280, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<reference key="IBUIBackgroundColor" ref="105672731"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -148,7 +148,7 @@
 							<object class="IBUIButton" id="542204143">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 264}, {80, 18}}</string>
+								<string key="NSFrame">{{10, 253}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -159,7 +159,7 @@
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<string key="IBUINormalTitle">Terms</string>
+								<string key="IBUINormalTitle">terms</string>
 								<reference key="IBUIHighlightedTitleColor" ref="933440694"/>
 								<object class="NSColor" key="IBUINormalTitleColor" id="346459231">
 									<int key="NSColorSpace">3</int>
@@ -170,14 +170,14 @@
 							<object class="IBUIButton" id="751826653">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{390, 264}, {80, 18}}</string>
+								<string key="NSFrame">{{390, 253}, {80, 18}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIFont" ref="769784797"/>
-								<string key="IBUINormalTitle">Privacy</string>
+								<string key="IBUINormalTitle">privacy</string>
 								<reference key="IBUIHighlightedTitleColor" ref="933440694"/>
 								<reference key="IBUINormalTitleColor" ref="346459231"/>
 								<reference key="IBUINormalTitleShadowColor" ref="671183832"/>
@@ -185,7 +185,7 @@
 							<object class="IBUIActivityIndicatorView" id="798335908">
 								<reference key="NSNextResponder" ref="816887183"/>
 								<int key="NSvFlags">-2147483356</int>
-								<string key="NSFrame">{{221, 210}, {37, 37}}</string>
+								<string key="NSFrame">{{221, 192}, {37, 37}}</string>
 								<reference key="NSSuperview" ref="816887183"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -885,7 +885,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../../Facemash.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../../Friendmash.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>
