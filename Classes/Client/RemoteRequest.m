@@ -16,10 +16,12 @@ static NSString *_secretString = nil;
 
 @implementation RemoteRequest
 
-+ (void)initialize {
++ (void)load {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   // Calculate SHA256 hash for secret
   HashValue *secretHash = [HashValue sha256HashWithData:[@"omgwtfbbqflylikeag6" dataUsingEncoding:NSUTF8StringEncoding]];
-  _secretString = [secretHash description];
+  _secretString = [[secretHash description] retain];
+  [pool drain];
 }
 
 + (ASIHTTPRequest *)getRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params withDelegate:(id)delegate {
