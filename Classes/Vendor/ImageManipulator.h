@@ -14,4 +14,6 @@
 
 + (UIImage *)roundCornerImageWithImage:(UIImage*)img withCornerWidth:(NSUInteger)cornerWidth withCornerHeight:(NSUInteger)cornerHeight;
 
++ (UIImage *)imageWithBorderFromImage:(UIImage *)source;
+
 @end

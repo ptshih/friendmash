@@ -28,6 +28,7 @@
 - (void)faceViewDidFailPictureDoesNotExist;
 - (void)faceViewWillAnimateOffScreen:(BOOL)isLeft;
 - (void)faceViewDidAnimateOffScreen:(BOOL)isLeft;
+- (void)faceViewDidSelect:(BOOL)isLeft;
 @end
 
 typedef enum {
@@ -43,16 +44,15 @@ typedef enum {
   FriendmashViewController *_friendmashViewController;
   UIView *_canvas;
   UIToolbar *_toolbar;
-  CGPoint defaultOrigin;
-  CGPoint myCenter;
-  CGPoint touchOrigin;
+  CGPoint _touchOrigin;
   BOOL _isLeft;
   BOOL _isAnimating;
   BOOL _imageLoaded;
   id <FaceViewDelegate> _delegate;
   NSUInteger currentAnimationType;
   NSString *_facebookId;
-  BOOL _touchAllowed;
+  BOOL _isTouchActive;
+  BOOL _isTouchCancelled;
   
   ASINetworkQueue *_networkQueue;
   NSUInteger _retryCount;

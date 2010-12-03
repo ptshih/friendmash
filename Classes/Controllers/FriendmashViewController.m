@@ -13,6 +13,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface FriendmashViewController (Private)
 
@@ -47,6 +48,7 @@
 @synthesize rightView = _rightView;
 @synthesize isLeftLoaded = _isLeftLoaded;
 @synthesize isRightLoaded = _isRightLoaded;
+@synthesize isTouchActive = _isTouchActive;
 @synthesize networkQueue = _networkQueue;
 @synthesize resultsRequest = _resultsRequest;
 @synthesize bothRequest = _bothRequest;
@@ -55,6 +57,8 @@
 @synthesize rightUserId = _rightUserId;
 @synthesize gameMode = _gameMode;
 @synthesize recentOpponentsArray = _recentOpponentsArray;
+@synthesize leftContainerView = _leftContainerView;
+@synthesize rightContainerView = _rightContainerView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -63,9 +67,26 @@
     _gameMode = FriendmashGameModeNormal; // ALL game mode by default
     _isLeftLoaded = NO;
     _isRightLoaded = NO;
+    _isTouchActive = NO;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
     _networkQueue = [[ASINetworkQueue queue] retain];
     _faceViewDidError = NO;
+    
+//    if(isDeviceIPad()) {
+//      self.leftView.frame = CGRectMake(48, 175, self.leftView.frame.size.width, self.leftView.frame.size.height);
+//    } else {
+//      self.leftView.frame = CGRectMake(25, 75, self.leftView.frame.size.width, self.leftView.frame.size.height);
+//    }
+    
+    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
+    
+//    if(isDeviceIPad()) {
+//      self.rightView.frame = CGRectMake(536, 175, self.rightView.frame.size.width, self.rightView.frame.size.height);
+//    } else {
+//      self.rightView.frame = CGRectMake(255, 75, self.rightView.frame.size.width, self.rightView.frame.size.height);
+//    }
+    
+    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
     
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
@@ -79,6 +100,18 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  [self.view addSubview:self.leftContainerView];
+  [self.view addSubview:self.rightContainerView];
+  _leftLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
+  _leftLoadingView.layer.cornerRadius = 10.0;
+  _leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  [self.leftContainerView addSubview:_leftLoadingView];
+  
+  _rightLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
+  _rightLoadingView.layer.cornerRadius = 10.0;
+  _rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  [self.rightContainerView addSubview:_rightLoadingView];
   
   [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
   
@@ -166,8 +199,6 @@
   _remashButton.enabled = NO;
   _isLeftLoaded = NO;
   _isRightLoaded = NO;
-  [self.leftView removeFromSuperview];
-  [self.rightView removeFromSuperview];
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
   
 }
@@ -179,10 +210,11 @@
 }
 
 - (void)loadLeftFaceView {
+  _tmpLeftView = self.leftView;
   if(isDeviceIPad()) {
-    _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0];
+    _leftView = [[[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0] retain];
   } else {
-    _leftView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
+    _leftView = [[[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0] retain];
   }
 
   self.leftView.friendmashViewController = self;
@@ -190,18 +222,14 @@
   self.leftView.toolbar = _toolbar;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
-  if(isDeviceIPad()) {
-    self.leftView.frame = CGRectMake(48, 175, self.leftView.frame.size.width, self.leftView.frame.size.height);
-  } else {
-    self.leftView.frame = CGRectMake(20, 70, self.leftView.frame.size.width, self.leftView.frame.size.height);
-  }
 }
 
 - (void)loadRightFaceView {
+  _tmpRightView = self.rightView;
   if(isDeviceIPad()) {
-    _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0];
+    _rightView = [[[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPad" owner:self options:nil] objectAtIndex:0] retain];
   } else {
-    _rightView = [[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0];
+    _rightView = [[[[NSBundle mainBundle] loadNibNamed:@"FaceView_iPhone" owner:self options:nil] objectAtIndex:0] retain];
   }
   
   self.rightView.friendmashViewController = self;
@@ -209,42 +237,56 @@
   self.rightView.toolbar = _toolbar;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
-  if(isDeviceIPad()) {
-    self.rightView.frame = CGRectMake(536, 175, self.rightView.frame.size.width, self.rightView.frame.size.height);
-  } else {
-    self.rightView.frame = CGRectMake(250, 70, self.rightView.frame.size.width, self.rightView.frame.size.height);
-  }
 }
 
+//  [self.leftView removeFromSuperview];
+//  [self.rightView removeFromSuperview];
+
 - (void)showLeftFaceView {
-  self.leftView.alpha = 0.0;
-  [self.view addSubview:self.leftView];
-  [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
+//  self.leftView.alpha = 0.0;
+  [UIView beginAnimations:@"LeftFlip" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.leftContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
-	self.leftView.alpha = 1.0f;
+  [self.leftContainerView addSubview:self.leftView];
+  if(!_tmpLeftView) {
+    [_leftLoadingView removeFromSuperview];
+  } else {
+    [_tmpLeftView removeFromSuperview];
+  }
+//	self.leftView.alpha = 1.0f;
 	[UIView commitAnimations];
+  [_tmpLeftView release];
 }
 
 - (void)showRightFaceView {
-  self.rightView.alpha = 0.0;
-  [self.view addSubview:self.rightView];
-  [UIView beginAnimations:@"FaceViewFadeIn" context:nil];
+//  self.rightView.alpha = 0.0;
+  [UIView beginAnimations:@"RightFlip" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.rightContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
-	self.rightView.alpha = 1.0f;
+  [self.rightContainerView addSubview:self.rightView];
+  if(!_tmpRightView) {
+    [_rightLoadingView removeFromSuperview];
+  } else {
+    [_tmpRightView removeFromSuperview];
+  }
+//	self.rightView.alpha = 1.0f;
 	[UIView commitAnimations];
+  [_tmpRightView release];
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+  _remashButton.enabled = YES;
 }
 
 - (void)loadBothFaceViews {
   [self loadLeftFaceView];
-  [self showLeftFaceView];
   [self loadRightFaceView];
-  [self showRightFaceView];
 
   if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
   if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
@@ -260,7 +302,10 @@
     _isRightLoaded = YES;
   }
   
-  if(_isLeftLoaded && _isRightLoaded) _remashButton.enabled = YES;
+  if(_isLeftLoaded && _isRightLoaded) {
+    [self showLeftFaceView];
+    [self showRightFaceView];
+  }
 }
 
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict {
@@ -279,17 +324,13 @@
   [_fbPictureErrorAlert autorelease];  
 }
 
-- (void)faceViewWillAnimateOffScreen:(BOOL)isLeft {
-
-}
-
-- (void)faceViewDidAnimateOffScreen:(BOOL)isLeft {
+- (void)faceViewDidSelect:(BOOL)isLeft {
   if(isLeft) {
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   } else {
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
   }
-
+  
   [self prepareMash];
 }
 
@@ -384,6 +425,7 @@
   if([alertView isEqual:_networkErrorAlert]) {
     switch (buttonIndex) {
       case 0:
+        _remashButton.enabled = YES;
         break;
       case 1:
         [self sendMashRequestForBothFaceViewsWithDelegate:self];
@@ -434,6 +476,10 @@
   if(_bothRequest) [_bothRequest release];
   if(_toolbar) [_toolbar release];
   if(_remashButton) [_remashButton release];
+  if(_leftContainerView) [_leftContainerView release];
+  if(_rightContainerView) [_rightContainerView release];
+  if(_leftView) [_leftView release];
+  if(_rightView) [_rightView release];
   [super dealloc];
 }
 

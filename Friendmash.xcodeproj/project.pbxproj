@@ -187,6 +187,7 @@
 		25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EB5DD912643DE000619ECE /* ImageManipulator.m */; };
 		25F0310E1290216C003155D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310D1290216C003155D6 /* Default.png */; };
 		25F0311012902174003155D6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310F12902174003155D6 /* Default@2x.png */; };
+		25F63A5D12A8C3E800901A59 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F63A5C12A8C3E800901A59 /* LoadingView.xib */; };
 		25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FAEB4712A71C2E00E2D6E8 /* HashValue.m */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
@@ -416,6 +417,7 @@
 		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		25F0310D1290216C003155D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		25F0310F12902174003155D6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		25F63A5C12A8C3E800901A59 /* LoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		25FAEB4612A71C2E00E2D6E8 /* HashValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashValue.h; sourceTree = "<group>"; };
 		25FAEB4712A71C2E00E2D6E8 /* HashValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashValue.m; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -831,6 +833,7 @@
 			children = (
 				251EA2F51262C5890055CFD2 /* FaceView_iPhone.xib */,
 				25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */,
+				25F63A5C12A8C3E800901A59 /* LoadingView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1077,6 +1080,7 @@
 				25D251BF129B5CFB00BBE82A /* tb_icon_prev.png in Resources */,
 				25D251C2129B5D0400BBE82A /* tb_icon_next@2x.png in Resources */,
 				25D251C3129B5D0400BBE82A /* tb_icon_prev@2x.png in Resources */,
+				25F63A5D12A8C3E800901A59 /* LoadingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

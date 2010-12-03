@@ -60,4 +60,18 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWi
   return newImage;
 }
 
++ (UIImage *)imageWithBorderFromImage:(UIImage *)source {
+  CGSize size = [source size];
+  UIGraphicsBeginImageContext(size);
+  CGRect rect = CGRectMake(0, 0, size.width, size.height);
+  [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+  
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetRGBStrokeColor(context, 1.0, 0.5, 1.0, 1.0); 
+  CGContextStrokeRect(context, rect);
+  UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return testImg;
+}
+
 @end

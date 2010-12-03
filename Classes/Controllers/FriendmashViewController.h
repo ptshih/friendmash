@@ -34,8 +34,11 @@ typedef enum {
   
   FaceView *_leftView;
   FaceView *_rightView;
+  FaceView *_tmpLeftView;
+  FaceView *_tmpRightView;
   BOOL _isLeftLoaded;
   BOOL _isRightLoaded;
+  BOOL _isTouchActive;
   
   NSMutableArray *_recentOpponentsArray;
   
@@ -47,12 +50,19 @@ typedef enum {
   BOOL _faceViewDidError;
   
   UIView *_helpView;
+  
+  UIView *_leftContainerView;
+  UIView *_rightContainerView;
+  
+  UIView *_leftLoadingView;
+  UIView *_rightLoadingView;
 }
 
-@property (nonatomic,assign) FaceView *leftView;
-@property (nonatomic,assign) FaceView *rightView;
+@property (nonatomic,retain) FaceView *leftView;
+@property (nonatomic,retain) FaceView *rightView;
 @property (nonatomic,assign) BOOL isLeftLoaded;
 @property (nonatomic,assign) BOOL isRightLoaded;
+@property (nonatomic,assign) BOOL isTouchActive;
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic,retain) ASIHTTPRequest *resultsRequest;
 @property (nonatomic,retain) ASIHTTPRequest *bothRequest;
@@ -61,6 +71,9 @@ typedef enum {
 @property (nonatomic,retain) NSString *rightUserId;
 @property (nonatomic,assign) NSUInteger gameMode;
 @property (nonatomic,retain) NSMutableArray *recentOpponentsArray;
+
+@property (nonatomic, retain) UIView *leftContainerView;
+@property (nonatomic, retain) UIView *rightContainerView;
 
 - (IBAction)back;
 - (IBAction)remash;
