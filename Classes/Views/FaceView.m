@@ -190,6 +190,26 @@
 }
 
 #pragma mark Touches
+- (void)startTouchTimer {
+  _touchTimer = [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(touchesHeld:) userInfo:nil repeats:NO];
+}
+
+- (void)touchesHeld:(NSTimer*)timer {
+  if(_isTouchActive) {
+    self.friendmashViewController.isTouchActive = NO;
+    _isTouchActive = NO;
+    [self animateCollapse];
+    
+    if(self.delegate) {
+      [self.delegate retain];
+      if([self.delegate respondsToSelector:@selector(faceViewDidZoom:)]) {
+        [self.delegate faceViewDidZoom:self.isLeft];
+      }
+      [self.delegate release];
+    } 
+  }
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
   if(!self.friendmashViewController.isLeftLoaded || !self.friendmashViewController.isRightLoaded || self.friendmashViewController.isTouchActive) {
     // Either left/right is not done loading or one faceview is actively being touched
@@ -197,6 +217,8 @@
   } else {
     //    [self.canvas bringSubviewToFront:self];
     //    [self.canvas bringSubviewToFront:self.toolbar];
+    
+    [self startTouchTimer];
     self.friendmashViewController.isTouchActive = YES;
     _isTouchActive = YES;
     _touchOrigin = [[touches anyObject] locationInView:self];
@@ -240,6 +262,7 @@
   // Only execute codepath if this faceView is currently active
   NSLog(@"touch was cancelled");
   if(_isTouchActive) {
+    if ([_touchTimer isValid]) [_touchTimer invalidate];
     self.friendmashViewController.isTouchActive = NO;
     _isTouchActive = NO;
     [self animateCollapse];

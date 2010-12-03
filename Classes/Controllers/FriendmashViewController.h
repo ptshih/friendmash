@@ -74,6 +74,8 @@ typedef enum {
 
 @property (nonatomic, retain) UIView *leftContainerView;
 @property (nonatomic, retain) UIView *rightContainerView;
+@property (nonatomic, retain) UIView *leftLoadingView;
+@property (nonatomic, retain) UIView *rightLoadingView;
 
 - (IBAction)back;
 - (IBAction)remash;

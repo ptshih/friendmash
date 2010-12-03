@@ -13,6 +13,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "LightboxViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface FriendmashViewController (Private)
@@ -37,6 +38,8 @@
 
 - (void)loadBothFaceViews;
 
+- (void)animateFadeOutWithView:(UIView *)theView withAlpha:(CGFloat)alpha;
+
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 
@@ -59,6 +62,8 @@
 @synthesize recentOpponentsArray = _recentOpponentsArray;
 @synthesize leftContainerView = _leftContainerView;
 @synthesize rightContainerView = _rightContainerView;
+@synthesize leftLoadingView = _leftLoadingView;
+@synthesize rightLoadingView = _rightLoadingView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -99,24 +104,24 @@
   
   [self.view addSubview:self.leftContainerView];
   [self.view addSubview:self.rightContainerView];
-  _leftLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
-  _leftLoadingView.layer.cornerRadius = 10.0;
+  _leftLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
+  self.leftLoadingView.layer.cornerRadius = 10.0;
   if (isDeviceIPad()) {
-    _leftLoadingView.frame = CGRectMake(180, 170, 80, 100);
+    self.leftLoadingView.frame = CGRectMake(180, 170, 80, 100);
   } else {
-    _leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
+    self.leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
   }
 
-  [self.leftContainerView addSubview:_leftLoadingView];
+  [self.leftContainerView addSubview:self.leftLoadingView];
   
-  _rightLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
-  _rightLoadingView.layer.cornerRadius = 10.0;
+  _rightLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
+  self.rightLoadingView.layer.cornerRadius = 10.0;
   if (isDeviceIPad()) {
-    _rightLoadingView.frame = CGRectMake(180, 170, 80, 100);
+    self.rightLoadingView.frame = CGRectMake(180, 170, 80, 100);
   } else {
-    _rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
+    self.rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
   }
-  [self.rightContainerView addSubview:_rightLoadingView];
+  [self.rightContainerView addSubview:self.rightLoadingView];
   
   [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
   
@@ -196,6 +201,10 @@
 }
 
 - (IBAction)remash {
+  self.leftLoadingView.hidden = NO;
+  self.rightLoadingView.hidden = NO;
+  [self animateFadeOutWithView:self.leftView withAlpha:0.6];
+  [self animateFadeOutWithView:self.rightView withAlpha:0.6];
   [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
 }
@@ -244,11 +253,7 @@
   self.rightView.delegate = self;
 }
 
-//  [self.leftView removeFromSuperview];
-//  [self.rightView removeFromSuperview];
-
 - (void)showLeftFaceView {
-//  self.leftView.alpha = 0.0;
   [UIView beginAnimations:@"LeftFlip" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -256,18 +261,19 @@
   [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.leftContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
   [self.leftContainerView addSubview:self.leftView];
-  if(!_tmpLeftView) {
-    [_leftLoadingView removeFromSuperview];
-  } else {
+  if(!self.leftLoadingView.hidden) {
+    self.leftLoadingView.hidden = YES;
+  }
+  
+  if(_tmpLeftView) {
     [_tmpLeftView removeFromSuperview];
   }
-//	self.leftView.alpha = 1.0f;
+
 	[UIView commitAnimations];
   [_tmpLeftView release];
 }
 
 - (void)showRightFaceView {
-//  self.rightView.alpha = 0.0;
   [UIView beginAnimations:@"RightFlip" context:nil];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -275,12 +281,12 @@
   [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.rightContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
   [self.rightContainerView addSubview:self.rightView];
-  if(!_tmpRightView) {
-    [_rightLoadingView removeFromSuperview];
-  } else {
+  if(!self.rightLoadingView.hidden) {
+    self.rightLoadingView.hidden = YES;
+  }
+  if(_tmpRightView) {
     [_tmpRightView removeFromSuperview];
   }
-//	self.rightView.alpha = 1.0f;
 	[UIView commitAnimations];
   [_tmpRightView release];
 }
@@ -300,6 +306,19 @@
 }
 
 #pragma mark FaceViewDelegate
+- (void)faceViewDidZoom:(BOOL)isLeft {
+  // Popup a lightbox view with full sized image
+  LightboxViewController *lvc;
+  if(isDeviceIPad()) {
+    lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController_iPad" bundle:nil];
+  } else {
+    lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController_iPhone" bundle:nil];
+  }
+  lvc.facebookId = isLeft ? self.leftUserId : self.rightUserId;
+  [self presentModalViewController:lvc animated:YES];
+  [lvc release];  
+}
+
 - (void)faceViewDidFinishLoading:(BOOL)isLeft {
   if(isLeft) {
     _isLeftLoaded = YES;
@@ -331,17 +350,29 @@
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
   if(isLeft) {
-    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
-  } else {
+    [self animateFadeOutWithView:self.rightView withAlpha:0.6];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
+  } else {
+    [self animateFadeOutWithView:self.leftView withAlpha:0.6];
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   }
   
   [self prepareMash];
 }
 
+- (void)animateFadeOutWithView:(UIView *)theView withAlpha:(CGFloat)alpha {
+  [UIView beginAnimations:@"FadeOutAlpha" context:nil];
+  [UIView setAnimationDelegate:nil];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
+  theView.alpha = alpha;
+  [UIView commitAnimations];
+}
+
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
-  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, !isLeft);
-  NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:!isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
+  DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, isLeft);
+  NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:nil];
@@ -486,6 +517,8 @@
   if(_rightContainerView) [_rightContainerView release];
   if(_leftView) [_leftView release];
   if(_rightView) [_rightView release];
+  if(_leftLoadingView) [_leftLoadingView release];
+  if(_rightLoadingView) [_rightLoadingView release];
   [super dealloc];
 }
 

@@ -27,6 +27,7 @@
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
 - (void)faceViewDidFailPictureDoesNotExist;
 - (void)faceViewDidSelect:(BOOL)isLeft;
+- (void)faceViewDidZoom:(BOOL)isLeft;
 @end
 
 @interface FaceView : UIView {
@@ -50,6 +51,7 @@
   UIAlertView *_networkErrorAlert;
   
   BOOL _shouldBounce;
+  NSTimer *_touchTimer;
 }
 
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;
