@@ -74,7 +74,7 @@
 
 - (NSString *)description
 {
-	NSInteger byteLength;
+	NSInteger byteLength = 0;
 	if (type == HASH_VALUE_MD5_TYPE)
 	{
 		byteLength = sizeof(HashValueMD5Hash);
@@ -84,8 +84,7 @@
 		byteLength = sizeof(HashValueShaHash);
 	}
 
-	NSMutableString *stringValue =
-		[NSMutableString stringWithCapacity:byteLength * 2];
+	NSMutableString *stringValue = [NSMutableString stringWithCapacity:byteLength * 2];
 	NSInteger i;
 	for (i = 0; i < byteLength; i++)
 	{

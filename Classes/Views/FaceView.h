@@ -26,21 +26,11 @@
 - (void)faceViewDidFinishLoading:(BOOL)isLeft;
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
 - (void)faceViewDidFailPictureDoesNotExist;
-- (void)faceViewWillAnimateOffScreen:(BOOL)isLeft;
-- (void)faceViewDidAnimateOffScreen:(BOOL)isLeft;
 - (void)faceViewDidSelect:(BOOL)isLeft;
 @end
 
-typedef enum {
-  FaceViewAnimationNone = 0,
-  FaceViewAnimationCenter = 1,
-  FaceViewAnimationOffScreen = 2
-} FaceViewAnimationType;
-
 @interface FaceView : UIView {
   IBOutlet UIImageView *_faceImageView;
-  IBOutlet UIActivityIndicatorView *_spinner;
-  IBOutlet UIView *_loadingView;
   FriendmashViewController *_friendmashViewController;
   UIView *_canvas;
   UIToolbar *_toolbar;
@@ -58,6 +48,8 @@ typedef enum {
   NSUInteger _retryCount;
   
   UIAlertView *_networkErrorAlert;
+  
+  BOOL _shouldBounce;
 }
 
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;

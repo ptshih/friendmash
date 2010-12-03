@@ -72,22 +72,18 @@
     _networkQueue = [[ASINetworkQueue queue] retain];
     _faceViewDidError = NO;
     
-//    if(isDeviceIPad()) {
-//      self.leftView.frame = CGRectMake(48, 175, self.leftView.frame.size.width, self.leftView.frame.size.height);
-//    } else {
-//      self.leftView.frame = CGRectMake(25, 75, self.leftView.frame.size.width, self.leftView.frame.size.height);
-//    }
+    if (isDeviceIPad()) {
+      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(48, 175, 440, 440)];
+    } else {
+      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
+    }
     
-    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
-    
-//    if(isDeviceIPad()) {
-//      self.rightView.frame = CGRectMake(536, 175, self.rightView.frame.size.width, self.rightView.frame.size.height);
-//    } else {
-//      self.rightView.frame = CGRectMake(255, 75, self.rightView.frame.size.width, self.rightView.frame.size.height);
-//    }
-    
-    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
-    
+    if (isDeviceIPad()) {
+      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(536, 175, 440, 440)];
+    } else {
+      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
+    }
+
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
@@ -105,12 +101,21 @@
   [self.view addSubview:self.rightContainerView];
   _leftLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
   _leftLoadingView.layer.cornerRadius = 10.0;
-  _leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  if (isDeviceIPad()) {
+    _leftLoadingView.frame = CGRectMake(180, 170, 80, 100);
+  } else {
+    _leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  }
+
   [self.leftContainerView addSubview:_leftLoadingView];
   
   _rightLoadingView = [[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0];
   _rightLoadingView.layer.cornerRadius = 10.0;
-  _rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  if (isDeviceIPad()) {
+    _rightLoadingView.frame = CGRectMake(180, 170, 80, 100);
+  } else {
+    _rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  }
   [self.rightContainerView addSubview:_rightLoadingView];
   
   [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
@@ -410,10 +415,11 @@
 {
   [FlurryAPI logEvent:@"errorFriendmashRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
-
-  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-  [_networkErrorAlert show];
-  [_networkErrorAlert autorelease];
+  if(![request isEqual:self.resultsRequest]) {
+    _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
+    [_networkErrorAlert show];
+    [_networkErrorAlert autorelease];
+  }
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue {
