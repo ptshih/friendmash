@@ -50,7 +50,6 @@
   
   UIAlertView *_networkErrorAlert;
   
-  BOOL _shouldBounce;
   NSTimer *_touchTimer;
 }
 

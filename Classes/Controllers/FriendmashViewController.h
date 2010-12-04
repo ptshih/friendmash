@@ -18,6 +18,7 @@ typedef enum {
   FriendmashGameModeNetwork = 1
 } FriendmashGameMode;
 
+@class ThumbsView;
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
@@ -56,6 +57,9 @@ typedef enum {
   
   UIView *_leftLoadingView;
   UIView *_rightLoadingView;
+  
+  ThumbsView *_leftThumbsView;
+  ThumbsView *_rightThumbsView;
 }
 
 @property (nonatomic,retain) FaceView *leftView;
@@ -76,6 +80,8 @@ typedef enum {
 @property (nonatomic, retain) UIView *rightContainerView;
 @property (nonatomic, retain) UIView *leftLoadingView;
 @property (nonatomic, retain) UIView *rightLoadingView;
+@property (nonatomic, retain) ThumbsView *leftThumbsView;
+@property (nonatomic, retain) ThumbsView *rightThumbsView;
 
 - (IBAction)back;
 - (IBAction)remash;

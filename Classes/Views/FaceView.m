@@ -74,7 +74,6 @@
 @synthesize networkQueue = _networkQueue;
 
 - (void)awakeFromNib {
-  _shouldBounce = NO;
   _retryCount = 0;
   currentAnimationType = 0;
   _imageLoaded = NO;
@@ -285,7 +284,7 @@
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-	[UIView setAnimationDuration:0.15]; // Fade out is configurable in seconds (FLOAT)
+	[UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.frame = CGRectMake(self.frame.origin.x - 15, self.frame.origin.y - 15, self.frame.size.width + 30, self.frame.size.height + 30);
 	[UIView commitAnimations];
 }
@@ -295,7 +294,7 @@
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-	[UIView setAnimationDuration:0.15]; // Fade out is configurable in seconds (FLOAT)
+	[UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.frame = CGRectMake(self.frame.origin.x + 15, self.frame.origin.y + 15, self.frame.size.width - 30, self.frame.size.height - 30);
 	[UIView commitAnimations];
 }
@@ -303,10 +302,9 @@
 - (void)animateCollapseSelected {
   [UIView beginAnimations:@"FaceViewCollapseSelected" context:nil];
 	[UIView setAnimationDelegate:self];
-  [UIView setAnimationDidStopSelector:@selector(collapseSelectedFinished)];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-	[UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+	[UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.frame = CGRectMake(self.frame.origin.x + 15, self.frame.origin.y + 15, self.frame.size.width - 30, self.frame.size.height - 30);
 	[UIView commitAnimations];
 }
@@ -317,7 +315,6 @@
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
 	[UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
-  [UIView setAnimationDidStopSelector:@selector(animateExpandFinished)];
   self.frame = CGRectMake(self.frame.origin.x - 15, self.frame.origin.y - 15, self.frame.size.width + 30, self.frame.size.height + 30);
 	[UIView commitAnimations];
 }
@@ -328,27 +325,8 @@
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
 	[UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
-  [UIView setAnimationDidStopSelector:@selector(animateCollapseFinished)];
   self.frame = CGRectMake(self.frame.origin.x + 15, self.frame.origin.y + 15, self.frame.size.width - 30, self.frame.size.height - 30);
 	[UIView commitAnimations];
-}
-
-- (void)collapseSelectedFinished {
-  // Call delegate that this view was selected
-  _shouldBounce = YES;
-  [self animateBounceExpand];
-}
-
-- (void)animateExpandFinished {
-  if(_shouldBounce) {
-    [self animateBounceCollapse];
-  }
-}
-
-- (void)animateCollapseFinished {
-  if(_shouldBounce) {
-    [self animateBounceExpand];
-  }
 }
 
 - (void)dealloc {

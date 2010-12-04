@@ -13,6 +13,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "ThumbsView.h"
 #import "LightboxViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -40,6 +41,8 @@
 
 - (void)animateFadeOutWithView:(UIView *)theView withAlpha:(CGFloat)alpha;
 
+- (void)animateThumbsAndWinnerIsLeft:(BOOL)isLeft;
+
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 
@@ -64,6 +67,8 @@
 @synthesize rightContainerView = _rightContainerView;
 @synthesize leftLoadingView = _leftLoadingView;
 @synthesize rightLoadingView = _rightLoadingView;
+@synthesize leftThumbsView = _leftThumbsView;
+@synthesize rightThumbsView = _rightThumbsView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -122,6 +127,23 @@
     self.rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
   }
   [self.rightContainerView addSubview:self.rightLoadingView];
+  
+  // Thumbs Up/Down views
+  _leftThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
+  self.leftThumbsView.alpha = 0.0;
+  if (isDeviceIPad()) {
+    self.leftThumbsView.frame = CGRectMake(0, 0, 110, 100);
+  }
+  self.leftThumbsView.center = CGPointMake(self.leftContainerView.frame.size.width / 2, self.leftContainerView.frame.size.height / 2);
+  [self.leftContainerView addSubview:self.leftThumbsView];
+
+  _rightThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
+  self.rightThumbsView.alpha = 0.0;
+  if (isDeviceIPad()) {
+    self.rightThumbsView.frame = CGRectMake(0, 0, 110, 100);
+  }
+  self.rightThumbsView.center = CGPointMake(self.rightContainerView.frame.size.width / 2, self.rightContainerView.frame.size.height / 2);
+  [self.rightContainerView addSubview:self.rightThumbsView];
   
   [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
   
@@ -205,6 +227,8 @@
   self.rightLoadingView.hidden = NO;
   [self animateFadeOutWithView:self.leftView withAlpha:0.6];
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
+  [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
+  [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
   [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
 }
@@ -349,17 +373,21 @@
 }
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
+  [self animateThumbsAndWinnerIsLeft:isLeft];
   if(isLeft) {
+    [self animateFadeOutWithView:self.leftView withAlpha:0.6];
     [self animateFadeOutWithView:self.rightView withAlpha:0.6];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
   } else {
     [self animateFadeOutWithView:self.leftView withAlpha:0.6];
+    [self animateFadeOutWithView:self.rightView withAlpha:0.6];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   }
   
   [self prepareMash];
 }
 
+# pragma mark Animations
 - (void)animateFadeOutWithView:(UIView *)theView withAlpha:(CGFloat)alpha {
   [UIView beginAnimations:@"FadeOutAlpha" context:nil];
   [UIView setAnimationDelegate:nil];
@@ -370,6 +398,41 @@
   [UIView commitAnimations];
 }
 
+- (void)animateThumbsAndWinnerIsLeft:(BOOL)isLeft {
+  if(isLeft) {
+    [self.leftThumbsView setState:ThumbsLike];
+    [self.rightThumbsView setState:ThumbsDislike];
+  } else {
+    [self.leftThumbsView setState:ThumbsDislike];
+    [self.rightThumbsView setState:ThumbsLike];
+  }
+
+  [self.leftContainerView bringSubviewToFront:self.leftThumbsView];
+  [self.rightContainerView bringSubviewToFront:self.rightThumbsView];
+  
+  [UIView beginAnimations:@"ThumbsAnimationShow" context:nil];
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  self.leftThumbsView.alpha = 1.0;
+  self.rightThumbsView.alpha = 1.0;
+  [UIView commitAnimations];
+}
+
+- (void)animateThumbsFinished {
+  [UIView beginAnimations:@"ThumbsAnimationHide" context:nil];
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  self.leftThumbsView.alpha = 0.0;
+  self.rightThumbsView.alpha = 0.0;
+  [UIView commitAnimations];
+}
+
+#pragma mark Server Requests
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
   DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, isLeft);
   NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
@@ -519,6 +582,8 @@
   if(_rightView) [_rightView release];
   if(_leftLoadingView) [_leftLoadingView release];
   if(_rightLoadingView) [_rightLoadingView release];
+  if(_leftThumbsView) [_leftThumbsView release];
+  if(_rightThumbsView) [_rightThumbsView release];
   [super dealloc];
 }
 
