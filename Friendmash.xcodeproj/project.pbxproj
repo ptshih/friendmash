@@ -196,6 +196,9 @@
 		25F63D2212AA4C0900901A59 /* large_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F63D2012AA4C0900901A59 /* large_like@2x.png */; };
 		25F63D2B12AA4C5E00901A59 /* large_dislike_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F63D2912AA4C5E00901A59 /* large_dislike_iPad.png */; };
 		25F63D2C12AA4C5E00901A59 /* large_like_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F63D2A12AA4C5E00901A59 /* large_like_iPad.png */; };
+		25F63D6912AA581C00901A59 /* OverlayView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F63D6812AA581C00901A59 /* OverlayView_iPhone.xib */; };
+		25F63D6E12AA58F700901A59 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F63D6D12AA58F700901A59 /* OverlayView.m */; };
+		25F63D9212AA5E3E00901A59 /* OverlayView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F63D9112AA5E3E00901A59 /* OverlayView_iPad.xib */; };
 		25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25FAEB4712A71C2E00E2D6E8 /* HashValue.m */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
@@ -435,6 +438,10 @@
 		25F63D2012AA4C0900901A59 /* large_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_like@2x.png"; sourceTree = "<group>"; };
 		25F63D2912AA4C5E00901A59 /* large_dislike_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_dislike_iPad.png; sourceTree = "<group>"; };
 		25F63D2A12AA4C5E00901A59 /* large_like_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_like_iPad.png; sourceTree = "<group>"; };
+		25F63D6812AA581C00901A59 /* OverlayView_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverlayView_iPhone.xib; sourceTree = "<group>"; };
+		25F63D6C12AA58F700901A59 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		25F63D6D12AA58F700901A59 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		25F63D9112AA5E3E00901A59 /* OverlayView_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverlayView_iPad.xib; sourceTree = "<group>"; };
 		25FAEB4612A71C2E00E2D6E8 /* HashValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashValue.h; sourceTree = "<group>"; };
 		25FAEB4712A71C2E00E2D6E8 /* HashValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashValue.m; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -814,6 +821,8 @@
 				2556FE02128D6F5400E6C482 /* RankingsTableViewCell.m */,
 				25F63CC212AA257200901A59 /* ThumbsView.h */,
 				25F63CC312AA257200901A59 /* ThumbsView.m */,
+				25F63D6C12AA58F700901A59 /* OverlayView.h */,
+				25F63D6D12AA58F700901A59 /* OverlayView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -860,6 +869,8 @@
 				25E05188125FCBE300CA6AC1 /* FaceView_iPad.xib */,
 				25F63A5C12A8C3E800901A59 /* LoadingView.xib */,
 				25F63CAC12AA222E00901A59 /* ThumbsView.xib */,
+				25F63D6812AA581C00901A59 /* OverlayView_iPhone.xib */,
+				25F63D9112AA5E3E00901A59 /* OverlayView_iPad.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1114,6 +1125,8 @@
 				25F63D2212AA4C0900901A59 /* large_like@2x.png in Resources */,
 				25F63D2B12AA4C5E00901A59 /* large_dislike_iPad.png in Resources */,
 				25F63D2C12AA4C5E00901A59 /* large_like_iPad.png in Resources */,
+				25F63D6912AA581C00901A59 /* OverlayView_iPhone.xib in Resources */,
+				25F63D9212AA5E3E00901A59 /* OverlayView_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,6 +1177,7 @@
 				256F66B9129605B100B31AC7 /* WebViewController.m in Sources */,
 				25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */,
 				25F63CC412AA257200901A59 /* ThumbsView.m in Sources */,
+				25F63D6E12AA58F700901A59 /* OverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

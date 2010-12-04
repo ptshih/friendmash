@@ -18,6 +18,7 @@ typedef enum {
   FriendmashGameModeNetwork = 1
 } FriendmashGameMode;
 
+@class OverlayView;
 @class ThumbsView;
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
@@ -50,7 +51,7 @@ typedef enum {
   
   BOOL _faceViewDidError;
   
-  UIView *_helpView;
+  OverlayView *_helpView;
   
   UIView *_leftContainerView;
   UIView *_rightContainerView;
@@ -83,6 +84,7 @@ typedef enum {
 @property (nonatomic, retain) ThumbsView *leftThumbsView;
 @property (nonatomic, retain) ThumbsView *rightThumbsView;
 
+- (IBAction)showHelp;
 - (IBAction)back;
 - (IBAction)remash;
 

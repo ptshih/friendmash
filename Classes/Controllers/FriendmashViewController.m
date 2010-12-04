@@ -14,6 +14,7 @@
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
 #import "ThumbsView.h"
+#import "OverlayView.h"
 #import "LightboxViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -166,52 +167,21 @@
   [super viewWillDisappear:animated];
 }
 
-- (void)showHelp {
-  UIView *helpBackgroundView;
-  
-  if(isDeviceIPad()) {
-    _helpView = [[UIView alloc] initWithFrame:self.view.frame];
-    helpBackgroundView = [[UIView alloc] initWithFrame:_helpView.frame];
+- (IBAction)showHelp {
+  if (isDeviceIPad()) {
+    _helpView = [[[[NSBundle mainBundle] loadNibNamed:@"OverlayView_iPad" owner:self options:nil] objectAtIndex:0] retain];
   } else {
-    _helpView = [[UIView alloc] initWithFrame:self.view.frame];
-    helpBackgroundView = [[UIView alloc] initWithFrame:_helpView.frame];
+    _helpView = [[[[NSBundle mainBundle] loadNibNamed:@"OverlayView_iPhone" owner:self options:nil] objectAtIndex:0] retain];
   }
-  
-  helpBackgroundView.backgroundColor = [UIColor blackColor];
-  helpBackgroundView.alpha = 0.6;
-  [_helpView addSubview:helpBackgroundView];
-  [helpBackgroundView release];
-  
-  UIImageView *helpOverlay;
-  if(isDeviceIPad()) {
-    helpOverlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help_overlay_iPad.png"]];
-  } else {
-    helpOverlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help_overlay.png"]];
-  }
-  
-  [_helpView addSubview:helpOverlay];
-  [helpOverlay release];
-  _helpView.backgroundColor = [UIColor clearColor];
-  
-  UIButton *dismissButton;
-  
-  if(isDeviceIPad()) {
-    dismissButton = [[UIButton alloc] initWithFrame:self.view.frame];
-  } else {
-    dismissButton = [[UIButton alloc] initWithFrame:self.view.frame];
-  }
-  
-  [dismissButton addTarget:self action:@selector(dismissHelp) forControlEvents:UIControlEventTouchUpInside];
-  [_helpView addSubview:dismissButton];
-  [dismissButton release];
+  [_helpView.dismissButton addTarget:self action:@selector(dismissHelp) forControlEvents:UIControlEventTouchUpInside];
   
   [self.view addSubview:_helpView];
-  [_helpView release]; 
 }
 
 - (void)dismissHelp {
   if(_helpView) {
     [_helpView removeFromSuperview];
+    [_helpView release];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasShownHelp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
   }
