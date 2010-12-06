@@ -47,8 +47,10 @@
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _isVisible = NO;
     _isResume = NO;
+    _isAnimating = NO;
     _statsCounter = 0;
     _gameMode = FriendmashGameModeNormal;
+    _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
     
     _networkQueue = [[ASINetworkQueue queue] retain];
     [[self networkQueue] setDelegate:self];
@@ -83,8 +85,10 @@
   // Start Stats Animation
   // I use userdefaults here because when the app launches, APP_DELEGATE hasn't set it's currentUserId ivar yet
   // Because LauncherViewController gets shown before we even try to login
-  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
     [self sendStatsRequestWithDelegate:self];
+  } else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+    [self shouldStartStatsAnimation];
   }
 }
 
@@ -95,6 +99,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppWillEnterForeground object:nil];
   
   _isVisible = NO;
+  _isAnimating = NO;
   
   // Stop Stats Animation
   [self.statsLabel.layer removeAllAnimations];
@@ -134,25 +139,28 @@
 - (void)shouldStartStatsAnimation {
   if (_isResume) {
     _isResume = NO;
-  } else {
+  } else if (!_isAnimating) {
     [self startStatsAnimation];
   }
 }
 
 - (void)startStatsAnimation {
+  _isAnimating = YES;
 //  Random
 //  self.statsLabel.text = self.statsNextLabel.text ? self.statsNextLabel.text : [self.statsArray objectAtIndex:(arc4random() % [self.statsArray count])];
 //  self.statsNextLabel.text = [self.statsArray objectAtIndex:(arc4random() % [self.statsArray count])];
   if (self.statsNextLabel.text) {
     self.statsLabel.text = self.statsNextLabel.text;
   } else {
+    _statsCounter = 0;
     self.statsLabel.text = [self.statsArray objectAtIndex:_statsCounter];
     _statsCounter++;
   }
   if (_statsCounter == [self.statsArray count]) _statsCounter = 0;
   self.statsNextLabel.text = [self.statsArray objectAtIndex:_statsCounter];
-  DLog(@"next counter: %d", _statsCounter);
-  _statsCounter++;
+  if ([self.statsArray count] > 1) {
+    _statsCounter++;
+  }
   self.statsLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, STATS_SCROLL_OFFSET);
   self.statsNextLabel.frame = CGRectMake(0, -STATS_SCROLL_OFFSET, self.view.frame.size.width, STATS_SCROLL_OFFSET);
   
@@ -313,11 +321,19 @@
     DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
     
     // server error, create an empty stats array
+    if(_statsArray) {
+      [_statsArray release];
+      _statsArray = nil;
+    }
     _statsArray = [[NSArray arrayWithObject:@"Error Retrieving Server Statistics"] retain];
   } else {
     if([request isEqual:self.statsRequest]) {
       DLog(@"stats request finished");
       NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+      if(_statsArray) {
+        [_statsArray release];
+        _statsArray = nil;
+      }
       _statsArray = [responseArray retain];
       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedStats"];
       [[NSUserDefaults standardUserDefaults] synchronize];

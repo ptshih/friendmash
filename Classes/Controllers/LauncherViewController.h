@@ -22,6 +22,7 @@
   UILabel *_statsNextLabel;
   BOOL _isVisible;
   BOOL _isResume;
+  BOOL _isAnimating;
   NSInteger _gameMode;
   NSArray *_statsArray;
   NSInteger _statsCounter;
