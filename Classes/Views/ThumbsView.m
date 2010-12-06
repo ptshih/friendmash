@@ -16,11 +16,11 @@ static UIImage *_thumbDislikeImage = nil;
 
 + (void)initialize {
   if (isDeviceIPad()) {
-    _thumbLikeImage = [UIImage imageNamed:@"large_like_iPad.png"];
-    _thumbDislikeImage = [UIImage imageNamed:@"large_dislike_iPad.png"];
+    _thumbLikeImage = [[UIImage imageNamed:@"large_like_iPad.png"] retain];
+    _thumbDislikeImage = [[UIImage imageNamed:@"large_dislike_iPad.png"] retain];
   } else {
-    _thumbLikeImage = [UIImage imageNamed:@"large_like.png"];
-    _thumbDislikeImage = [UIImage imageNamed:@"large_dislike.png"];
+    _thumbLikeImage = [[UIImage imageNamed:@"large_like.png"] retain];
+    _thumbDislikeImage = [[UIImage imageNamed:@"large_dislike.png"] retain];
   }
 }
 
