@@ -189,7 +189,7 @@
 }
 
 - (IBAction)modeSelect:(UIButton *)modeButton {
-  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends Only", @"Show Friends of Friends", nil];
+  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends", @"Show Friends of Friends", nil];
   modeActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
   [modeActionSheet showInView:self.view];
   [modeActionSheet autorelease];
