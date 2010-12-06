@@ -233,7 +233,7 @@
     
     CGFloat diffX = fabsf(_touchOrigin.x - (location.x - 15.0));
     CGFloat diffY = fabsf(_touchOrigin.y - (location.y - 15.0));
-    NSLog(@"originX: %f, originY: %f, locX: %f, locY: %f, diffX: %f, diffY: %f", _touchOrigin.x, _touchOrigin.y, location.x, location.y, diffX, diffY);
+    DLog(@"originX: %f, originY: %f, locX: %f, locY: %f, diffX: %f, diffY: %f", _touchOrigin.x, _touchOrigin.y, location.x, location.y, diffX, diffY);
     // Frame for iPhone is 200x200, 230x230 (when expanded)
     // This means that from the center of the picture, its +/- 115 in the X and Y direction before the edge
     // So when the abs(diff) > ~115, we should cancel the touch
@@ -249,7 +249,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
   // Only execute codepath if this faceView is currently active
   if(_isTouchActive) {
-    NSLog(@"touch was ended");
+    DLog(@"touch was ended");
     self.friendmashViewController.isTouchActive = NO;
     _isTouchActive = NO;
     [self faceViewSelected];
@@ -259,7 +259,7 @@
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
   // Only execute codepath if this faceView is currently active
-  NSLog(@"touch was cancelled");
+  DLog(@"touch was cancelled");
   if(_isTouchActive) {
     if ([_touchTimer isValid]) [_touchTimer invalidate];
     self.friendmashViewController.isTouchActive = NO;

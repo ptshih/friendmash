@@ -12,6 +12,13 @@
 #import "RankingsViewController.h"
 #import "AboutViewController.h"
 #import "Constants.h"
+#import "ASIHTTPRequest.h"
+#import "ASINetworkQueue.h"
+#import "RemoteRequest.h"
+#import "CJSONDeserializer.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define STATS_SCROLL_OFFSET 20.0
 
 @interface LauncherViewController (Private)
 
@@ -20,14 +27,35 @@
  */
 - (void)launchFriendmashWithGender:(NSString *)gender;
 
+- (void)sendStatsRequestWithDelegate:(id)delegate;
+- (void)setupStatsScroll;
+- (void)startStatsAnimation;
+- (void)shouldStartStatsAnimation;
+
 @end
 
 @implementation LauncherViewController
 
 @synthesize launcherView = _launcherView;
+@synthesize statsLabel = _statsLabel;
+@synthesize statsNextLabel = _statsNextLabel;
+@synthesize networkQueue = _networkQueue;
+@synthesize statsRequest = _statsRequest;
+@synthesize statsArray = _statsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+    _isVisible = NO;
+    _isResume = NO;
+    _statsCounter = 0;
+    _gameMode = FriendmashGameModeNormal;
+    
+    _networkQueue = [[ASINetworkQueue queue] retain];
+    [[self networkQueue] setDelegate:self];
+    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
+    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
+    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
+    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   }
   return self;
 }
@@ -36,29 +64,149 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
   self.navigationController.navigationBar.hidden = YES;
   
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
   self.view.backgroundColor = RGBCOLOR(59,89,152);
-  if(_modeButton.selected) {
-    _friendsOnlyLabel.alpha = 1.0;
-  } else {
-    _friendsOnlyLabel.alpha = 0.4;
-  }
+  [self setupStatsScroll];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 //  self.navigationController.navigationBar.hidden = YES;
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendStatsRequestWithDelegate:) name:kRequestGlobalStats object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeFromBackground) name:kAppWillEnterForeground object:nil];  
+  _isVisible = YES;
+  
+  // Start Stats Animation
+  // I use userdefaults here because when the app launches, APP_DELEGATE hasn't set it's currentUserId ivar yet
+  // Because LauncherViewController gets shown before we even try to login
+  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+    [self sendStatsRequestWithDelegate:self];
+  }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kRequestGlobalStats object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppWillEnterForeground object:nil];
+  
+  _isVisible = NO;
+  
+  // Stop Stats Animation
+  [self.statsLabel.layer removeAllAnimations];
+  [self.statsNextLabel.layer removeAllAnimations];
+}
+
+- (void)resumeFromBackground {
+  if([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
+    _isResume = YES;
+    [self sendStatsRequestWithDelegate:self];
+  }
+}
+
+- (void)setupStatsScroll {
+  _statsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, STATS_SCROLL_OFFSET)];
+  _statsNextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -STATS_SCROLL_OFFSET, self.view.frame.size.width, STATS_SCROLL_OFFSET)];
+  self.statsLabel.backgroundColor = [UIColor clearColor];
+  self.statsLabel.textColor = [UIColor whiteColor];
+  self.statsLabel.textAlignment = UITextAlignmentCenter;
+  self.statsLabel.text = @"Welcome to Friendmash";
+  self.statsNextLabel.backgroundColor = [UIColor clearColor];
+  self.statsNextLabel.textColor = [UIColor whiteColor];
+  self.statsNextLabel.textAlignment = UITextAlignmentCenter;
+  
+  if (isDeviceIPad()) {
+    self.statsLabel.font = [UIFont systemFontOfSize:18.0];
+    self.statsNextLabel.font = [UIFont systemFontOfSize:18.0];
+  } else {
+    self.statsLabel.font = [UIFont systemFontOfSize:14.0];
+    self.statsNextLabel.font = [UIFont systemFontOfSize:14.0];
+  }
+  
+  [_statsView addSubview:self.statsLabel];
+  [_statsView addSubview:self.statsNextLabel];
+}
+
+- (void)shouldStartStatsAnimation {
+  if (_isResume) {
+    _isResume = NO;
+  } else {
+    [self startStatsAnimation];
+  }
+}
+
+- (void)startStatsAnimation {
+//  Random
+//  self.statsLabel.text = self.statsNextLabel.text ? self.statsNextLabel.text : [self.statsArray objectAtIndex:(arc4random() % [self.statsArray count])];
+//  self.statsNextLabel.text = [self.statsArray objectAtIndex:(arc4random() % [self.statsArray count])];
+  if (self.statsNextLabel.text) {
+    self.statsLabel.text = self.statsNextLabel.text;
+  } else {
+    self.statsLabel.text = [self.statsArray objectAtIndex:_statsCounter];
+    _statsCounter++;
+  }
+  if (_statsCounter == [self.statsArray count]) _statsCounter = 0;
+  self.statsNextLabel.text = [self.statsArray objectAtIndex:_statsCounter];
+  DLog(@"next counter: %d", _statsCounter);
+  _statsCounter++;
+  self.statsLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, STATS_SCROLL_OFFSET);
+  self.statsNextLabel.frame = CGRectMake(0, -STATS_SCROLL_OFFSET, self.view.frame.size.width, STATS_SCROLL_OFFSET);
+  
+  [UIView beginAnimations:@"StatsScroll" context:nil];
+	[UIView setAnimationDelegate:self];
+  [UIView setAnimationWillStartSelector:@selector(statsScrollStarted)];
+  [UIView setAnimationDidStopSelector:@selector(statsScrollFinished)];
+//	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDelay:3.0];
+	[UIView setAnimationDuration:1.0]; // Fade out is configurable in seconds (FLOAT)
+  self.statsLabel.frame = CGRectMake(0, STATS_SCROLL_OFFSET, self.view.frame.size.width, STATS_SCROLL_OFFSET);
+  self.statsNextLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, STATS_SCROLL_OFFSET);
+	[UIView commitAnimations];
+}
+
+- (void)statsScrollStarted {
+//  DLog(@"start");
+}
+
+- (void)statsScrollFinished {
+//  DLog(@"finished");
+  if(_isVisible) {
+    [self startStatsAnimation];
+  }
 }
 
 - (IBAction)modeSelect:(UIButton *)modeButton {
-  if(modeButton.selected == NO) {
-    modeButton.selected = YES;
-    _friendsOnlyLabel.alpha = 1.0;
-  } else {
-    modeButton.selected = NO;
-    _friendsOnlyLabel.alpha = 0.4;
+  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends Only", @"Show Friends of Friends", nil];
+  modeActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+  [modeActionSheet showInView:self.view];
+  [modeActionSheet autorelease];
+}
+
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  switch (buttonIndex) {
+    case 0:
+      _gameMode = FriendmashGameModeNormal;
+      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      DLog(@"everyone");
+      break;
+    case 1:
+      _gameMode = FriendmashGameModeFriends;
+      [_modeButton setTitle:@"Friends" forState:UIControlStateNormal];
+      DLog(@"friends");
+      break;
+    case 2:
+      _gameMode = FriendmashGameModeNetwork;
+      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      DLog(@"network");
+      break;
+    default:
+      break;
   }
 }
 
@@ -84,7 +232,7 @@
   [avc release]; 
 }
 
-- (IBAction)profile {
+- (IBAction)profile {  
   [FlurryAPI logEvent:@"launcherProfile"];
   ProfileViewController *pvc;
   if(isDeviceIPad()) {
@@ -110,7 +258,7 @@
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPhone" bundle:nil];
   }
   rvc.launcherViewController = self;
-  rvc.gameMode = _modeButton.selected;
+  rvc.gameMode = FriendmashGameModeNormal; // NOTE: force this to normal mode
   [self presentModalViewController:rvc animated:YES];
   [rvc release];
 }
@@ -123,7 +271,7 @@
     fvc = [[FriendmashViewController alloc] initWithNibName:@"FriendmashViewController_iPhone" bundle:nil];
   }
   fvc.gender = gender;
-  fvc.gameMode = _modeButton.selected;
+  fvc.gameMode = _gameMode;
   [self.navigationController pushViewController:fvc animated:YES];
   [fvc release];
 }
@@ -149,6 +297,46 @@
   }
 }
 
+#pragma mark Server Requests
+- (void)sendStatsRequestWithDelegate:(id)delegate {
+  DLog(@"sending stats request");
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/globalstats/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  self.statsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
+  [self.networkQueue addOperation:self.statsRequest];
+  [self.networkQueue go];
+}
+
+#pragma mark ASIHTTPRequestDelegate
+- (void)requestFinished:(ASIHTTPRequest *)request {
+  NSInteger statusCode = [request responseStatusCode];
+  if(statusCode > 200) {
+    DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
+    
+    // server error, create an empty stats array
+    _statsArray = [[NSArray arrayWithObject:@"Error Retrieving Server Statistics"] retain];
+  } else {
+    if([request isEqual:self.statsRequest]) {
+      DLog(@"stats request finished");
+      NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+      _statsArray = [responseArray retain];
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedStats"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      [self performSelectorOnMainThread:@selector(shouldStartStatsAnimation) withObject:nil waitUntilDone:YES];
+    }
+  }
+  
+//  [self startStatsAnimation];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+  DLog(@"Stats Request Failed with Error: %@", [request error]);
+}
+
+- (void)queueFinished:(ASINetworkQueue *)queue {
+  DLog(@"Queue finished");
+}
+
+
 #pragma mark Memory Management
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -167,9 +355,16 @@
 }
 
 - (void)dealloc {
+  self.networkQueue.delegate = nil;
+  [self.networkQueue cancelAllOperations];
+  if(_networkQueue) [_networkQueue release];
+  if(_statsRequest) [_statsRequest release];
+  if(_statsArray) [_statsArray release];
   if(_launcherView) [_launcherView release];
   if(_modeButton) [_modeButton release];
-  if(_friendsOnlyLabel) [_friendsOnlyLabel release];
+  if(_statsView) [_statsView release];
+  if(_statsLabel) [_statsLabel release];
+  if(_statsNextLabel) [_statsNextLabel release];
   [super dealloc];
 }
 

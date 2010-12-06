@@ -80,7 +80,6 @@
     _isRightLoaded = NO;
     _isTouchActive = NO;
     _recentOpponentsArray = [[NSMutableArray alloc] init];
-    _networkQueue = [[ASINetworkQueue queue] retain];
     _faceViewDidError = NO;
     
     if (isDeviceIPad()) {
@@ -94,7 +93,8 @@
     } else {
       _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
     }
-
+    
+    _networkQueue = [[ASINetworkQueue queue] retain];
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
     [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
@@ -475,8 +475,7 @@
   }
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
+- (void)requestFailed:(ASIHTTPRequest *)request {
   [FlurryAPI logEvent:@"errorFriendmashRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
   if(![request isEqual:self.resultsRequest]) {

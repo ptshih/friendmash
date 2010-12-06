@@ -33,17 +33,17 @@
 
 #if TARGET_IPHONE_SIMULATOR
   #define STAGING
-  #define USE_LOCALHOST
+//  #define USE_LOCALHOST
 #endif
 
 #ifdef STAGING
   #ifdef USE_LOCALHOST
     #define FRIENDMASH_BASE_URL @"http://localhost:3000"
   #else
-    #define FRIENDMASH_BASE_URL @"http://friendmash-staging.heroku.com"
+    #define FRIENDMASH_BASE_URL @"https://friendmash-staging.heroku.com"
   #endif
 #else
-  #define FRIENDMASH_BASE_URL @"http://friendmash.heroku.com"
+  #define FRIENDMASH_BASE_URL @"https://friendmash.heroku.com"
 #endif
 
 #define FRIENDMASH_TERMS_URL @"http://www.sevenminuteapps.com/terms"
@@ -65,6 +65,9 @@
 // Unused, FB doesn't seem to return these
 // interested_in
 // meeting_for
+
+#define kRequestGlobalStats @"RequestGlobalStatsNotification"
+#define kAppWillEnterForeground @"AppWillEnterForegroundNotification"
 
 #define FM_RANKINGS_COUNT 99
 

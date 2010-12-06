@@ -9,13 +9,30 @@
 #import <UIKit/UIKit.h>
 #import "ProfileViewController.h"
 
-@interface LauncherViewController : UIViewController <ProfileDelegate> {
+@class ASIHTTPRequest;
+@class ASINetworkQueue;
+
+@interface LauncherViewController : UIViewController <ProfileDelegate, UIActionSheetDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIButton *_modeButton;
-  IBOutlet UILabel *_friendsOnlyLabel;
+  IBOutlet UIScrollView *_statsView;
+  ASINetworkQueue *_networkQueue;
+  ASIHTTPRequest *_statsRequest;
+  UILabel *_statsLabel;
+  UILabel *_statsNextLabel;
+  BOOL _isVisible;
+  BOOL _isResume;
+  NSInteger _gameMode;
+  NSArray *_statsArray;
+  NSInteger _statsCounter;
 }
 
 @property (nonatomic, assign) UIView *launcherView;
+@property (nonatomic, retain) UILabel *statsLabel;
+@property (nonatomic, retain) UILabel *statsNextLabel;
+@property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic,retain) ASIHTTPRequest *statsRequest;
+@property (nonatomic, retain) NSArray *statsArray;
 
 
 /**

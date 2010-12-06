@@ -200,6 +200,9 @@ void uncaughtExceptionHandler(NSException *exception) {
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
       
+      // Fire a notification to load global stats
+      [[NSNotificationCenter defaultCenter] postNotificationName:kRequestGlobalStats object:nil];
+      
       // Fire off the server request to friendmash with auth token and userid
       [self sendFacebookAccessToken];
     }
@@ -350,6 +353,13 @@ void uncaughtExceptionHandler(NSException *exception) {
     [FlurryAPI setUserID:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
   }
   
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
+  } else {
+    // When recovering from a crash, wipe this
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
+  }
+  
   _tokenRetryCount = 0;
   _isShowingLogin = NO;
   _touchActive = NO; // FaceView state stuff
@@ -395,6 +405,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 // iOS4 ONLY, resuming from background
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kAppWillEnterForeground object:nil];
 }
 
 // Coming back from a locked phone or call
@@ -404,18 +415,21 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 // Someone received a call or hit the lock button
 - (void)applicationWillResignActive:(UIApplication *)application {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS4 ONLY
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS3 ONLY
 - (void)applicationWillTerminate:(UIApplication *)application {
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }

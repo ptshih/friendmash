@@ -132,7 +132,7 @@ static NSString *_secretString = nil;
     if (([[params valueForKey:key] isKindOfClass:[UIImage class]])
         ||([[params valueForKey:key] isKindOfClass:[NSData class]])) {
       if ([httpMethod isEqualToString:@"GET"]) {
-        NSLog(@"can not use GET to upload a file");
+        DLog(@"can not use GET to upload a file");
       }
       continue;
     }

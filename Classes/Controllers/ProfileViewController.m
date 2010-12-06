@@ -16,9 +16,6 @@
 #import "NSString+ConvenienceMethods.h"
 #import "NSObject+ConvenienceMethods.h"
 
-static UIImage *_likeImage;
-//static UIImage *_dislikeImage;
-
 @interface ProfileViewController (Private)
 - (void)getProfileForCurrentUser;
 @end
@@ -30,11 +27,6 @@ static UIImage *_likeImage;
 @synthesize profileDict = _profileDict;
 @synthesize profileId = _profileId;
 @synthesize delegate;
-
-+ (void)initialize {
-  _likeImage = [[UIImage imageNamed:@"likes.png"] retain];
-//  _dislikeImage = [[UIImage imageNamed:@"unlike.png"] retain];
-}
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -103,7 +95,7 @@ static UIImage *_likeImage;
     return;
   }
   
-  self.profileDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"user"];
+  self.profileDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
   
   [_tableView reloadData];
   DLog(@"rankings request finished successfully");
@@ -364,7 +356,7 @@ static UIImage *_likeImage;
       return 4;
       break;
     case 1: // stats
-      return 7;
+      return [[self.profileDict objectForKey:@"stats"] count];
       break;
     default:
       return 0;
@@ -395,7 +387,7 @@ static UIImage *_likeImage;
           }
           break;
         case 1: {
-          cell.textLabel.text = @"Mashes to Next Rank";
+          cell.textLabel.text = @"Progress to Next Rank";
           cell.detailTextLabel.text = nil;
           if([[self.profileDict objectForKey:@"votes"] notNil]) {
             UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
@@ -425,52 +417,9 @@ static UIImage *_likeImage;
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProfileStatsCell"] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
       }
-      switch (indexPath.row) {
-        case 0:
-          cell.textLabel.text = @"Awarded Title";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"score"] notNil] ? [self getTitleForScore:[[self.profileDict objectForKey:@"score"] integerValue]] : nil;
-          break;
-        case 1:
-          cell.textLabel.text = @"Ranking within Friendmash";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank"] stringValue],[[self.profileDict objectForKey:@"total"] stringValue]] : nil;
-          break;
-        case 2:
-          cell.textLabel.text = @"Ranking among Friends";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"rank_network"] notNil] ? [NSString stringWithFormat:@"%@ of %@",[[self.profileDict objectForKey:@"rank_network"] stringValue],[[self.profileDict objectForKey:@"total_network"] stringValue]] : nil;
-          break;
-        case 3:
-          cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes Received from Other Players";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins"] notNil] ? [[self.profileDict objectForKey:@"wins"] stringValue] : nil;
-          break;
-        case 4:
-          cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Likes Received from Friends";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"wins_network"] notNil] ? [[self.profileDict objectForKey:@"wins_network"] stringValue] : nil;
-          break;
-        case 5:
-          cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Like Streak";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max"] stringValue] : nil;
-          break;
-        case 6:
-          cell.imageView.image = _likeImage;
-          cell.textLabel.text = @"Longest Like Streak from Friends";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"win_streak_max_network"] notNil] ? [[self.profileDict objectForKey:@"win_streak_max_network"] stringValue] : nil;
-          break;
-//        case 4:
-//          cell.imageView.image = _dislikeImage;
-//          cell.textLabel.text = @"Dislikes";
-//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"losses"] notNil] ? [[self.profileDict objectForKey:@"losses"] stringValue] : nil;
-//          break;
-//        case 6:
-//          cell.imageView.image = _dislikeImage;
-//          cell.textLabel.text = @"Dislikes in a row";
-//          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"loss_streak"] notNil] ? [[self.profileDict objectForKey:@"loss_streak"] stringValue] : nil;
-//          break;
-        default:
-          break;
-      }
+      NSArray *profileStatsArray = [self.profileDict objectForKey:@"stats"];
+      cell.textLabel.text = [[profileStatsArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+      cell.detailTextLabel.text = [[profileStatsArray objectAtIndex:indexPath.row] objectForKey:@"value"];
       break;
     default:
       break;
