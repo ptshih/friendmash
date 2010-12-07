@@ -14,6 +14,7 @@
 @end
 
 @class ASINetworkQueue;
+@class ASIHTTPRequest;
 @class LauncherViewController;
 
 @interface ProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
@@ -21,6 +22,7 @@
   IBOutlet UITableView *_tableView;
   LauncherViewController *_launcherViewController;
   ASINetworkQueue *_networkQueue;
+  ASIHTTPRequest *_profileRequest;
   NSDictionary *_profileDict;
   NSString *_profileId;
   id <ProfileDelegate> delegate;
@@ -28,6 +30,7 @@
 
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
 @property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) ASIHTTPRequest *profileRequest;
 @property (nonatomic, retain) NSDictionary *profileDict;
 @property (nonatomic, retain) NSString *profileId;
 @property (nonatomic, assign) id <ProfileDelegate> delegate;

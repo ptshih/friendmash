@@ -16,6 +16,7 @@ typedef enum {
 } RankingsMode;
 
 @class ASINetworkQueue;
+@class ASIHTTPRequest;
 @class LauncherViewController;
 
 @interface RankingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, ImageCacheDelegate, UITabBarDelegate> {
@@ -31,6 +32,7 @@ typedef enum {
   NSArray *_rankingsArray;
   ImageCache *_imageCache;
   ASINetworkQueue *_networkQueue;
+  ASIHTTPRequest *_rankingsRequest;
   NSInteger _selectedMode;
   NSInteger _gameMode;
 }
@@ -39,6 +41,7 @@ typedef enum {
 @property (nonatomic, retain) NSArray *rankingsArray;
 @property (nonatomic, retain) ImageCache *imageCache;
 @property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) ASIHTTPRequest *rankingsRequest;
 @property (nonatomic, assign) NSInteger selectedMode;
 @property (nonatomic, assign) NSInteger gameMode;
 

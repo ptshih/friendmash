@@ -32,7 +32,7 @@
 @property (nonatomic, retain) UILabel *statsLabel;
 @property (nonatomic, retain) UILabel *statsNextLabel;
 @property (retain) ASINetworkQueue *networkQueue;
-@property (nonatomic,retain) ASIHTTPRequest *statsRequest;
+@property (nonatomic, retain) ASIHTTPRequest *statsRequest;
 @property (nonatomic, retain) NSArray *statsArray;
 
 

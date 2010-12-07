@@ -21,6 +21,7 @@
 
 @synthesize facebookId = _facebookId;
 @synthesize networkQueue = _networkQueue;
+@synthesize pictureRequest = _pictureRequest;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -50,8 +51,8 @@
 }
 
 - (void)getProfilePicture {
-  ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
-  [self.networkQueue addOperation:pictureRequest];
+  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
+  [self.networkQueue addOperation:self.pictureRequest];
   [self.networkQueue go];
 }
 
@@ -123,9 +124,15 @@
 }
 
 - (void)dealloc {
+  if(_pictureRequest) {
+    [_pictureRequest clearDelegatesAndCancel];
+    [_pictureRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
   if(_facebookId) [_facebookId release];
   if(_profileImageView) [_profileImageView release];
   if(_activityIndicator) [_activityIndicator release];

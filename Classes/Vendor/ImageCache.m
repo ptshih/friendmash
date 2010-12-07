@@ -92,6 +92,7 @@
 }
 
 - (void)dealloc {
+  [self resetCache];
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   [_networkQueue release];

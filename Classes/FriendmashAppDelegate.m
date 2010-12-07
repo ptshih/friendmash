@@ -462,11 +462,19 @@ void uncaughtExceptionHandler(NSException *exception) {
 }
 
 - (void)dealloc {
-  if(_tokenRequest) [_tokenRequest release];
-  if(_currentUserRequest) [_currentUserRequest release];
+  if(_tokenRequest) {
+    [_tokenRequest clearDelegatesAndCancel];
+    [_tokenRequest release];
+  }
+  if(_currentUserRequest) {
+    [_currentUserRequest clearDelegatesAndCancel];
+    [_currentUserRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
   if(_loginViewController) [_loginViewController release];
   if(_loginPopoverController) [_loginPopoverController release];
   if(_fbAccessToken) [_fbAccessToken release];

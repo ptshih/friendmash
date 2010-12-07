@@ -24,6 +24,7 @@ static UIImage *_placeholderImage;
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
 @synthesize networkQueue = _networkQueue;
+@synthesize rankingsRequest = _rankingsRequest;
 @synthesize selectedMode = _selectedMode;
 @synthesize gameMode = _gameMode;
 
@@ -168,8 +169,8 @@ static UIImage *_placeholderImage;
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", selectedGender, self.gameMode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
-  ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  [self.networkQueue addOperation:rankingsRequest];
+  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  [self.networkQueue addOperation:self.rankingsRequest];
   [self.networkQueue go];
 }
 
@@ -345,6 +346,12 @@ static UIImage *_placeholderImage;
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
+  if(_rankingsRequest) {
+    [_rankingsRequest clearDelegatesAndCancel];
+    [_rankingsRequest release];
+  }
+  
   if(_imageCache) [_imageCache release];
   if(_rankingsArray) [_rankingsArray release];
   if(_tableView) [_tableView release];

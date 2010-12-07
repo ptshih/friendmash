@@ -35,15 +35,12 @@
  */
 
 - (void)prepareMash;
-
 - (void)showHelp;
-
 - (void)loadBothFaceViews;
-
 - (void)animateFadeOutWithView:(UIView *)theView withAlpha:(CGFloat)alpha;
-
 - (void)animateThumbsAndWinnerIsLeft:(BOOL)isLeft;
-
+- (void)animateThumbsFinished;
+- (void)animateShowLoading;
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 
@@ -193,8 +190,7 @@
 }
 
 - (IBAction)remash {
-  self.leftLoadingView.hidden = NO;
-  self.rightLoadingView.hidden = NO;
+  [self animateShowLoading];
   [self animateFadeOutWithView:self.leftView withAlpha:0.6];
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
   [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
@@ -255,9 +251,7 @@
   [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.leftContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
   [self.leftContainerView addSubview:self.leftView];
-  if(!self.leftLoadingView.hidden) {
-    self.leftLoadingView.hidden = YES;
-  }
+  self.leftLoadingView.alpha = 0.0;
   
   if(_tmpLeftView) {
     [_tmpLeftView removeFromSuperview];
@@ -275,18 +269,13 @@
   [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.rightContainerView cache:YES];
 	[UIView setAnimationDuration:0.25f]; // Fade out is configurable in seconds (FLOAT)
   [self.rightContainerView addSubview:self.rightView];
-  if(!self.rightLoadingView.hidden) {
-    self.rightLoadingView.hidden = YES;
-  }
+  self.rightLoadingView.alpha = 0.0;
+
   if(_tmpRightView) {
     [_tmpRightView removeFromSuperview];
   }
 	[UIView commitAnimations];
   [_tmpRightView release];
-}
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-  _remashButton.enabled = YES;
 }
 
 - (void)loadBothFaceViews {
@@ -321,8 +310,10 @@
   }
   
   if(_isLeftLoaded && _isRightLoaded) {
+    [self animateThumbsFinished];
     [self showLeftFaceView];
     [self showRightFaceView];
+    _remashButton.enabled = YES;
   }
 }
 
@@ -343,6 +334,8 @@
 }
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
+  self.leftLoadingView.alpha = 0.0;
+  self.rightLoadingView.alpha = 0.0;
   [self animateThumbsAndWinnerIsLeft:isLeft];
   if(isLeft) {
     [self animateFadeOutWithView:self.leftView withAlpha:0.6];
@@ -382,12 +375,23 @@
   
   [UIView beginAnimations:@"ThumbsAnimationShow" context:nil];
   [UIView setAnimationDelegate:self];
-  [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
+  [UIView setAnimationDidStopSelector:@selector(animateThumbsHalfFinished)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.5]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 1.0;
   self.rightThumbsView.alpha = 1.0;
+  [UIView commitAnimations];
+}
+
+- (void)animateThumbsHalfFinished {
+  [UIView beginAnimations:@"ThumbsAnimationHide" context:nil];
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDuration:0.4]; // Fade out is configurable in seconds (FLOAT)
+  self.leftThumbsView.alpha = 0.4;
+  self.rightThumbsView.alpha = 0.4;
   [UIView commitAnimations];
 }
 
@@ -396,9 +400,22 @@
   [UIView setAnimationDelegate:self];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 0.0;
   self.rightThumbsView.alpha = 0.0;
+  [UIView commitAnimations];
+}
+
+- (void)animateShowLoading {
+  [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
+  [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
+  [UIView beginAnimations:@"ShowLoadingFadeIn" context:nil];
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
+  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  self.leftLoadingView.alpha = 1.0;
+  self.rightLoadingView.alpha = 1.0;
   [UIView commitAnimations];
 }
 
@@ -534,15 +551,23 @@
 
 
 - (void)dealloc {
+  if(_resultsRequest) {
+    [_resultsRequest clearDelegatesAndCancel];
+    [_resultsRequest release];
+  }
+  if(_bothRequest) {
+    [_bothRequest clearDelegatesAndCancel];
+    [_bothRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
   if(_recentOpponentsArray) [_recentOpponentsArray release];
   if(_gender) [_gender release];
   if(_leftUserId) [_leftUserId release];
   if(_rightUserId) [_rightUserId release];
-  if(_resultsRequest) [_resultsRequest release];
-  if(_bothRequest) [_bothRequest release];
   if(_toolbar) [_toolbar release];
   if(_remashButton) [_remashButton release];
   if(_leftContainerView) [_leftContainerView release];

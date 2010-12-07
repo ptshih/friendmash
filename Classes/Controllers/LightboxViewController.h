@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class ASIHTTPRequest;
+@class ASIHTTPRequest;
 @class ASINetworkQueue;
 
 @interface LightboxViewController : UIViewController {
@@ -15,12 +16,14 @@
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   NSString *_facebookId;
   ASINetworkQueue *_networkQueue;
+  ASIHTTPRequest *_pictureRequest;
   
   UIAlertView *_networkErrorAlert;
 }
 
 @property (nonatomic, retain) NSString *facebookId;
 @property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) ASIHTTPRequest *pictureRequest;
 
 - (IBAction)dismiss;
 

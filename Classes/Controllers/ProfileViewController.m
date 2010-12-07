@@ -24,6 +24,7 @@
 
 @synthesize launcherViewController = _launcherViewController;
 @synthesize networkQueue = _networkQueue;
+@synthesize profileRequest = _profileRequest;
 @synthesize profileDict = _profileDict;
 @synthesize profileId = _profileId;
 @synthesize delegate;
@@ -77,8 +78,8 @@
 //  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", gender, mode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/profile/%@", FRIENDMASH_BASE_URL, self.profileId];
   
-  ASIHTTPRequest *profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
-  [self.networkQueue addOperation:profileRequest];
+  self.profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
+  [self.networkQueue addOperation:self.profileRequest];
   [self.networkQueue go];
 }
 
@@ -448,9 +449,15 @@
 
 
 - (void)dealloc {
+  if(_profileRequest) {
+    [_profileRequest clearDelegatesAndCancel];
+    [_profileRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
   if(_profileDict) [_profileDict release];
   if(_profileId) [_profileId release];
   if(_navBarItem) [_navBarItem release];

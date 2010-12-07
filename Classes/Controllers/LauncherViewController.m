@@ -371,10 +371,15 @@
 }
 
 - (void)dealloc {
+  if(_statsRequest) {
+    [_statsRequest clearDelegatesAndCancel];
+    [_statsRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
-  if(_statsRequest) [_statsRequest release];
+  
   if(_statsArray) [_statsArray release];
   if(_launcherView) [_launcherView release];
   if(_modeButton) [_modeButton release];
