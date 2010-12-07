@@ -30,29 +30,9 @@
 - (void)faceViewSelected;
   
 /**
- This method performs an animation that bounces the FaceView back to it's original position
- */
-- (void)animateToCenter;
-
-/**
- This method performs an animation that slides the FaceView off the screen
- */
-- (void)animateOffScreen;
-
-/**
- This method tries to detect based on x,y touch coordinate changes if the user flicked a FaceView
- */
-- (BOOL)wasFlicked:(UITouch *)touch;
-
-/**
  This fires an OAuth request to the FB graph API to retrieve a profile picture for the given facebookId
  */
 - (void)getPicture;
-
-/**
- This calls the delegate (FriendmashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to NO
- */
-- (void)faceViewDidUnload;
 
 /**
  This calls the delegate (FriendmashViewController) and sets the isLeftLoaded/isRightLoaded BOOL to YES
@@ -72,6 +52,7 @@
 @synthesize facebookId = _facebookId;
 @synthesize delegate = _delegate;
 @synthesize networkQueue = _networkQueue;
+@synthesize pictureRequest = _pictureRequest;
 
 - (void)awakeFromNib {
   _retryCount = 0;
@@ -99,8 +80,8 @@
 
 - (void)getPicture {
   DLog(@"getPicture called with facebookId: %@", self.facebookId);
-  ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
-  [self.networkQueue addOperation:pictureRequest];
+  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
+  [self.networkQueue addOperation:self.pictureRequest];
   [self.networkQueue go];
 }
 
@@ -309,30 +290,16 @@
 	[UIView commitAnimations];
 }
 
-- (void)animateBounceExpand {
-  [UIView beginAnimations:@"BounceExpand" context:nil];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-	[UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
-  self.frame = CGRectMake(self.frame.origin.x - 15, self.frame.origin.y - 15, self.frame.size.width + 30, self.frame.size.height + 30);
-	[UIView commitAnimations];
-}
-
-- (void)animateBounceCollapse {
-  [UIView beginAnimations:@"BounceCollapse" context:nil];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-	[UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
-  self.frame = CGRectMake(self.frame.origin.x + 15, self.frame.origin.y + 15, self.frame.size.width - 30, self.frame.size.height - 30);
-	[UIView commitAnimations];
-}
-
 - (void)dealloc {
+  if(_pictureRequest) {
+    [_pictureRequest clearDelegatesAndCancel];
+    [_pictureRequest release];
+  }
+  
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
   if(_networkQueue) [_networkQueue release];
+  
   if(_facebookId) [_facebookId release];
   if(_faceImageView) [_faceImageView release];
   [super dealloc];

@@ -46,6 +46,7 @@
   BOOL _isTouchCancelled;
   
   ASINetworkQueue *_networkQueue;
+  ASIHTTPRequest *_pictureRequest;
   NSUInteger _retryCount;
   
   UIAlertView *_networkErrorAlert;
@@ -62,6 +63,7 @@
 @property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
 @property (retain) ASINetworkQueue *networkQueue;
+@property (nonatomic, retain) ASIHTTPRequest *pictureRequest;
 
 /**
  This method prepares the FaceView by setting the local iVar for _facebookId and the default origin for the FaceView
