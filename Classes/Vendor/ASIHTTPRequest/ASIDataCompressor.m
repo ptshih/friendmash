@@ -96,6 +96,7 @@
 		
 		if (status == Z_STREAM_END) {
 			theError = [self closeStream];
+			break;
 		} else if (status != Z_OK) {
 			if (err) {
 				*err = [[self class] deflateErrorWithCode:status];
@@ -135,8 +136,10 @@
 
 + (BOOL)compressDataFromFile:(NSString *)sourcePath toFile:(NSString *)destinationPath error:(NSError **)err
 {
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
 	// Create an empty file at the destination path
-	if (![[NSFileManager defaultManager] createFileAtPath:destinationPath contents:[NSData data] attributes:nil]) {
+	if (![fileManager createFileAtPath:destinationPath contents:[NSData data] attributes:nil]) {
 		if (err) {
 			*err = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASICompressionError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Compression of %@ failed because we were to create a file at %@",sourcePath,destinationPath],NSLocalizedDescriptionKey,nil]];
 		}
@@ -144,7 +147,7 @@
 	}
 	
 	// Ensure the source file exists
-	if (![[NSFileManager defaultManager] fileExistsAtPath:sourcePath]) {
+	if (![fileManager fileExistsAtPath:sourcePath]) {
 		if (err) {
 			*err = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASICompressionError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Compression of %@ failed the file does not exist",sourcePath],NSLocalizedDescriptionKey,nil]];
 		}
