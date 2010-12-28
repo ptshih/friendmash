@@ -16,6 +16,7 @@
 
 @interface LightboxViewController (Private)
 - (void)createGestureRecognizers;
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer;
 - (void)loadCachedImage;
 - (void)getProfilePicture;
 @end
@@ -81,14 +82,13 @@
   }
 }
 
-- (void)handlePinchGesture:(UIGestureRecognizer *)sender {
-  DLog(@"detected pinch gesture with state: %d", [sender state]);
-  if (sender.state == UIGestureRecognizerStateBegan) {
-    
-  } else if (sender.state == UIGestureRecognizerStateChanged) {
-    CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
-    _profileImageView.transform = CGAffineTransformMakeScale(factor, factor);
-  } else if (sender.state == UIGestureRecognizerStateEnded) {
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gestureRecognizer {
+  DLog(@"detected pinch gesture with state: %d", [gestureRecognizer state]);
+  [self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
+  
+  if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+    [gestureRecognizer view].transform = CGAffineTransformScale([[gestureRecognizer view] transform], [gestureRecognizer scale], [gestureRecognizer scale]);
+    [gestureRecognizer setScale:1];
   }
 }
 

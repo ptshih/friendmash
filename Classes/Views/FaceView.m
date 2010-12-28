@@ -42,6 +42,8 @@
 // 3.2 only
 - (void)createGestureRecognizers;
 
+- (void)endTouch;
+
 @end
 
 @implementation FaceView
