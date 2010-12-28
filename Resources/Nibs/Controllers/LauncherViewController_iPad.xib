@@ -50,7 +50,7 @@
 							<object class="IBUIImageView" id="847226194">
 								<reference key="NSNextResponder" ref="100455445"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{272, 53}, {480, 72}}</string>
+								<string key="NSFrame">{{232, 41}, {560, 96}}</string>
 								<reference key="NSSuperview" ref="100455445"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -553,7 +553,7 @@
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDiAAAwvYAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABDiAAAwxMAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -959,7 +959,7 @@
 				<string>{104, 72}</string>
 				<string>{104, 72}</string>
 				<string>{415, 375}</string>
-				<string>{480, 72}</string>
+				<string>{560, 96}</string>
 				<string>{415, 375}</string>
 				<string>{340, 64}</string>
 			</object>
