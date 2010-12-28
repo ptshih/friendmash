@@ -348,6 +348,13 @@ void uncaughtExceptionHandler(NSException *exception) {
 #pragma mark Application resume/suspend/exit stuff
 // Called when app launches fresh NOT backgrounded
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  
+  // Detect Upgrade
+  if (![[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersion"]]) {
+    [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownHelp"];
+  }
+      
   // Flurry
   NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
   [FlurryAPI startSession:@"LD5P2EGIERGR2TTEZLCE"];
