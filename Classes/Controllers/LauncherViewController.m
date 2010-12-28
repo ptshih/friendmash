@@ -209,9 +209,9 @@
 - (void)setupGameModeAtIndex:(NSInteger)index {
   switch (index) {
     case 0:
-      _gameMode = FriendmashGameModeNetwork;
-      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
-      DLog(@"network");
+      _gameMode = FriendmashGameModeNormal;
+      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      DLog(@"everyone");
       break;
     case 1:
       _gameMode = FriendmashGameModeFriends;
@@ -219,15 +219,16 @@
       DLog(@"friends");
       break;
     case 2:
+      _gameMode = FriendmashGameModeNetwork;
+      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      DLog(@"network");
+      break;
+    case 3:
       _gameMode = FriendmashGameModeSchool;
       [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
       DLog(@"school");
       break;
-    case 3:
-      _gameMode = FriendmashGameModeNormal;
-      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
-      DLog(@"everyone");
-      break;
+
     default:
       break;
   }
