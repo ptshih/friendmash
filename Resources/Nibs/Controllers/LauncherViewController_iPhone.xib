@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,20 +47,16 @@
 						<int key="NSvFlags">274</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="457000387">
+							<object class="IBUIImageView" id="815274918">
 								<reference key="NSNextResponder" ref="793705269"/>
-								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{480, 300}</string>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{120, 17}, {240, 36}}</string>
 								<reference key="NSSuperview" ref="793705269"/>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4yMzEzNzI1NDkgMC4zNDkwMTk2MDc4IDAuNTk2MDc4NDMxNAA</bytes>
-								</object>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">bg.png</string>
+									<string key="NSResourceName">friendmash.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="683786681">
@@ -385,7 +381,6 @@
 						<reference key="object" ref="793705269"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="457000387"/>
 							<reference ref="656986604"/>
 							<reference ref="130532155"/>
 							<reference ref="769886553"/>
@@ -393,14 +388,10 @@
 							<reference ref="697514583"/>
 							<reference ref="2069835"/>
 							<reference ref="683786681"/>
+							<reference ref="815274918"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">launcherView</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">21</int>
-						<reference key="object" ref="457000387"/>
-						<reference key="parent" ref="793705269"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">47</int>
@@ -452,6 +443,11 @@
 						<reference key="parent" ref="793705269"/>
 						<string key="objectName">modeButton</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">61</int>
+						<reference key="object" ref="815274918"/>
+						<reference key="parent" ref="793705269"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -462,8 +458,6 @@
 					<string>-2.CustomClassName</string>
 					<string>1.IBEditorWindowLastContentRect</string>
 					<string>1.IBPluginDependency</string>
-					<string>21.IBPluginDependency</string>
-					<string>21.IBViewBoundsToFrameTransform</string>
 					<string>22.IBPluginDependency</string>
 					<string>22.IBViewBoundsToFrameTransform</string>
 					<string>23.IBPluginDependency</string>
@@ -480,6 +474,8 @@
 					<string>57.IBViewBoundsToFrameTransform</string>
 					<string>6.IBPluginDependency</string>
 					<string>6.IBViewBoundsToFrameTransform</string>
+					<string>61.IBPluginDependency</string>
+					<string>61.IBViewBoundsToFrameTransform</string>
 					<string>8.IBPluginDependency</string>
 					<string>8.IBViewBoundsToFrameTransform</string>
 				</object>
@@ -489,10 +485,6 @@
 					<string>UIResponder</string>
 					<string>{{320, 219}, {480, 320}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw5UAAA</bytes>
-					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCCAAAwkgAAA</bytes>
@@ -550,6 +542,10 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABC8AAAwyYAAA</bytes>
+					</object>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDggAAw3IAAA</bytes>
 					</object>
 				</object>
@@ -570,7 +566,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">60</int>
+			<int key="maxID">61</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -934,21 +930,21 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>bg.png</string>
 				<string>btn_about.png</string>
 				<string>btn_profile.png</string>
 				<string>btn_ranks.png</string>
 				<string>f.png</string>
+				<string>friendmash.png</string>
 				<string>m.png</string>
 				<string>mode_select.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{480, 300}</string>
-				<string>{52, 36}</string>
+				<string>{52, 31}</string>
 				<string>{52, 36}</string>
 				<string>{52, 36}</string>
 				<string>{208, 188}</string>
+				<string>{240, 36}</string>
 				<string>{208, 188}</string>
 				<string>{170, 31}</string>
 			</object>
