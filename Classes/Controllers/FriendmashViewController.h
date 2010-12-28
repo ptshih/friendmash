@@ -16,7 +16,8 @@
 typedef enum {
   FriendmashGameModeNormal = 0,
   FriendmashGameModeFriends = 1,
-  FriendmashGameModeNetwork = 2
+  FriendmashGameModeNetwork = 2,
+  FriendmashGameModeSchool = 3
 } FriendmashGameMode;
 
 @class OverlayView;

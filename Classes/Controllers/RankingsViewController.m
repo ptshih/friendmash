@@ -118,10 +118,14 @@ static UIImage *_placeholderImage;
   if(self.gameMode == 0) {
     _tabBarItemMale.title = @"Top Male";
     _tabBarItemFemale.title = @"Top Female";
-  } else {
+  } else if (self.gameMode == 1) {
     _tabBarItemMale.title = @"Top Male Friends";
     _tabBarItemFemale.title = @"Top Female Friends";
+  } else {
+    _tabBarItemMale.title = @"Top Males in Network";
+    _tabBarItemFemale.title = @"Top Females in Network";
   }
+
   
   if(self.selectedMode == RankingsModeTop) {
     [self getTopPlayers];
@@ -153,15 +157,19 @@ static UIImage *_placeholderImage;
   if(self.selectedMode == RankingsModeMale) {
     if(self.gameMode == 0) {
       _navItem.title = @"Top Male";
-    } else {
+    } else if (self.gameMode == 1) {
       _navItem.title = @"Top Male Friends";
+    } else {
+      _navItem.title = @"Top Males in Network";
     }
     selectedGender = @"male";
   } else if(self.selectedMode == RankingsModeFemale) {
     if(self.gameMode == 0) {
       _navItem.title = @"Top Female";
-    } else {
+    } else if (self.gameMode == 1) {
       _navItem.title = @"Top Female Friends";
+    } else {
+      _navItem.title = @"Top Females in Network";
     }
     selectedGender = @"female";
   }

@@ -191,7 +191,7 @@
 }
 
 - (IBAction)modeSelect:(UIButton *)modeButton {
-  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends", @"Show Social Network", nil];
+  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Social Network", @"Show Only Friends", @"Show Classmates", @"Show Everyone", nil];
   modeActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
   [modeActionSheet showInView:self.view];
   [modeActionSheet autorelease];
@@ -209,9 +209,9 @@
 - (void)setupGameModeAtIndex:(NSInteger)index {
   switch (index) {
     case 0:
-      _gameMode = FriendmashGameModeNormal;
-      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
-      DLog(@"everyone");
+      _gameMode = FriendmashGameModeNetwork;
+      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      DLog(@"network");
       break;
     case 1:
       _gameMode = FriendmashGameModeFriends;
@@ -219,9 +219,14 @@
       DLog(@"friends");
       break;
     case 2:
-      _gameMode = FriendmashGameModeNetwork;
-      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
-      DLog(@"network");
+      _gameMode = FriendmashGameModeSchool;
+      [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
+      DLog(@"school");
+      break;
+    case 3:
+      _gameMode = FriendmashGameModeNormal;
+      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      DLog(@"everyone");
       break;
     default:
       break;
@@ -276,7 +281,8 @@
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPhone" bundle:nil];
   }
   rvc.launcherViewController = self;
-  rvc.gameMode = FriendmashGameModeNormal; // NOTE: force this to normal mode
+//  rvc.gameMode = FriendmashGameModeNormal; // NOTE: force this to normal mode
+  rvc.gameMode = _gameMode;
   [self presentModalViewController:rvc animated:YES];
   [rvc release];
 }
