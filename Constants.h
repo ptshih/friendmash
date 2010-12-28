@@ -55,10 +55,12 @@
 // Friendmash App
 #define FB_APP_ID @"145264018857264"
 #define FB_APP_SECRET @"c70b7f16bdc77f32f160a275b68d5304"
-#define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_photos",@"friends_photos",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
-#define FB_PARAMS @"id,first_name,last_name,name,gender,education,work,locale"
+#define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_education_history",@"friends_education_history",nil]
+#define FB_PARAMS @"id,first_name,last_name,name,gender,education,locale"
 #define FB_AUTHORIZE_URL @"https://www.facebook.com/dialog/oauth"
 //#define FB_AUTHORIZE_URL @"https://graph.facebook.com/oauth/authorize"
+
+// #define FB_PERMISSIONS [NSArray arrayWithObjects:@"offline_access",@"user_photos",@"friends_photos",@"user_education_history",@"friends_education_history",@"user_work_history",@"friends_work_history",nil]
 
 // #define FB_EXPIRE_TOKEN // if defined, will send a request to FB to expire a user's token
 
