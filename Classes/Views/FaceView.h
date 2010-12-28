@@ -27,10 +27,10 @@
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
 - (void)faceViewDidFailPictureDoesNotExist;
 - (void)faceViewDidSelect:(BOOL)isLeft;
-- (void)faceViewDidZoom:(BOOL)isLeft;
+- (void)faceViewDidZoom:(BOOL)isLeft withImage:(UIImage *)image;
 @end
 
-@interface FaceView : UIView {
+@interface FaceView : UIView <UIGestureRecognizerDelegate> {
   IBOutlet UIImageView *_faceImageView;
   FriendmashViewController *_friendmashViewController;
   UIView *_canvas;
@@ -50,8 +50,6 @@
   NSUInteger _retryCount;
   
   UIAlertView *_networkErrorAlert;
-  
-  NSTimer *_touchTimer;
 }
 
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;

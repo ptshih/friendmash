@@ -309,7 +309,7 @@
 }
 
 #pragma mark FaceViewDelegate
-- (void)faceViewDidZoom:(BOOL)isLeft {
+- (void)faceViewDidZoom:(BOOL)isLeft withImage:(UIImage *)image {
   // Popup a lightbox view with full sized image
   LightboxViewController *lvc;
   if(isDeviceIPad()) {
@@ -318,6 +318,7 @@
     lvc = [[LightboxViewController alloc] initWithNibName:@"LightboxViewController_iPhone" bundle:nil];
   }
   lvc.facebookId = isLeft ? self.leftUserId : self.rightUserId;
+  lvc.cachedImage = image;
   [self presentModalViewController:lvc animated:YES];
   [lvc release];  
 }

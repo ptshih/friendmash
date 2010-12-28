@@ -14,11 +14,13 @@
 #import "ImageManipulator.h"
 
 @interface LightboxViewController (Private)
+- (void)loadCachedImage;
 - (void)getProfilePicture;
 @end
 
 @implementation LightboxViewController
 
+@synthesize cachedImage = _cachedImage;
 @synthesize facebookId = _facebookId;
 @synthesize networkQueue = _networkQueue;
 @synthesize pictureRequest = _pictureRequest;
@@ -43,11 +45,21 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  [self getProfilePicture];
+  if (self.cachedImage) {
+    [self loadCachedImage];
+  } else {
+    [self getProfilePicture];
+  }
 }
 
 - (IBAction)dismiss {
   [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)loadCachedImage {
+  _profileImageView.image = self.cachedImage;
+  _profileImageView.backgroundColor = [UIColor clearColor];
+  [_activityIndicator stopAnimating];
 }
 
 - (void)getProfilePicture {
@@ -128,6 +140,8 @@
     [_pictureRequest clearDelegatesAndCancel];
     [_pictureRequest release];
   }
+  
+  if (_cachedImage) [_cachedImage release];
   
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];

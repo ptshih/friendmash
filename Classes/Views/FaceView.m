@@ -39,6 +39,9 @@
  */
 - (void)faceViewDidFinishLoading;
 
+// 3.2 only
+- (void)createGestureRecognizers;
+
 @end
 
 @implementation FaceView
@@ -69,6 +72,8 @@
   [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
   [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
   [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+  
+  [self createGestureRecognizers];
   
   self.userInteractionEnabled = NO;
 }
@@ -170,23 +175,63 @@
 }
 
 #pragma mark Touches
-- (void)startTouchTimer {
-  _touchTimer = [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(touchesHeld:) userInfo:nil repeats:NO];
+- (void)createGestureRecognizers {
+  UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+  singleFingerTap.numberOfTapsRequired = 1;
+  singleFingerTap.delegate = self;
+  [self addGestureRecognizer:singleFingerTap];
+  [singleFingerTap release];
+  
+  UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+  pinchGesture.delegate = self;
+  [self addGestureRecognizer:pinchGesture];
+  [pinchGesture release];
 }
 
-- (void)touchesHeld:(NSTimer*)timer {
-  if(_isTouchActive) {
-    self.friendmashViewController.isTouchActive = NO;
-    _isTouchActive = NO;
-    [self animateCollapse];
-    
+- (IBAction)handleSingleTap:(UIGestureRecognizer *)sender {
+  DLog(@"detected tap gesture with state: %d", [sender state]);
+  if (sender.state == UIGestureRecognizerStateBegan) {
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+    [self endTouch];
+    [self faceViewSelected];
+  }
+}
+
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
+  DLog(@"detected pinch gesture with state: %d", [sender state]);
+  if (sender.state == UIGestureRecognizerStateBegan) {
+
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
     if(self.delegate) {
       [self.delegate retain];
-      if([self.delegate respondsToSelector:@selector(faceViewDidZoom:)]) {
-        [self.delegate faceViewDidZoom:self.isLeft];
+      if([self.delegate respondsToSelector:@selector(faceViewDidZoom: withImage:)]) {
+        [self.delegate faceViewDidZoom:self.isLeft withImage:self.faceImageView.image];
       }
       [self.delegate release];
-    } 
+    }
+    [self endTouch];
+  }
+}
+
+- (void)endTouch {
+  if (_isTouchActive) {
+    _isTouchActive = NO;
+    self.friendmashViewController.isTouchActive = NO;
+    [self animateCollapse];
+  }
+}
+
+#pragma mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+  DLog(@"detected gesture should begin with state: %d", [gestureRecognizer state]);
+  if(!self.friendmashViewController.isLeftLoaded || !self.friendmashViewController.isRightLoaded || self.friendmashViewController.isTouchActive) {
+    if (_isTouchActive) {
+      return YES;
+    } else {
+      return NO;
+    }
+  } else {
+    return YES;
   }
 }
 
@@ -195,58 +240,16 @@
     // Either left/right is not done loading or one faceview is actively being touched
     return;
   } else {
-    //    [self.canvas bringSubviewToFront:self];
-    //    [self.canvas bringSubviewToFront:self.toolbar];
-    
-    [self startTouchTimer];
-    self.friendmashViewController.isTouchActive = YES;
     _isTouchActive = YES;
-    _touchOrigin = [[touches anyObject] locationInView:self];
+    self.friendmashViewController.isTouchActive = YES;
     [self animateExpand];
-  }
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  // Only execute codepath if this faceView is currently active
-  if(_isTouchActive) {
-    CGPoint location = [[touches anyObject] locationInView:self];
-    
-    
-    CGFloat diffX = fabsf(_touchOrigin.x - (location.x - 15.0));
-    CGFloat diffY = fabsf(_touchOrigin.y - (location.y - 15.0));
-    DLog(@"originX: %f, originY: %f, locX: %f, locY: %f, diffX: %f, diffY: %f", _touchOrigin.x, _touchOrigin.y, location.x, location.y, diffX, diffY);
-    // Frame for iPhone is 200x200, 230x230 (when expanded)
-    // This means that from the center of the picture, its +/- 115 in the X and Y direction before the edge
-    // So when the abs(diff) > ~115, we should cancel the touch
-    
-    if (diffX > 25.0 || diffY > 25.0) {
-      [self touchesCancelled:touches withEvent:event];
-    } else {
-      [super touchesMoved:touches withEvent:event];
-    }
   }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
   // Only execute codepath if this faceView is currently active
-  if(_isTouchActive) {
-    DLog(@"touch was ended");
-    self.friendmashViewController.isTouchActive = NO;
-    _isTouchActive = NO;
-    [self faceViewSelected];
-    [self animateCollapseSelected];
-  }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-  // Only execute codepath if this faceView is currently active
-  DLog(@"touch was cancelled");
-  if(_isTouchActive) {
-    if ([_touchTimer isValid]) [_touchTimer invalidate];
-    self.friendmashViewController.isTouchActive = NO;
-    _isTouchActive = NO;
-    [self animateCollapse];
-  }
+  DLog(@"touch was ended");
+  [self endTouch];
 }
 
 - (void)faceViewSelected {

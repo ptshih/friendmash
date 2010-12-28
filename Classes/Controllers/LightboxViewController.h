@@ -14,6 +14,7 @@
 @interface LightboxViewController : UIViewController {
   IBOutlet UIImageView *_profileImageView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
+  UIImage *_cachedImage;
   NSString *_facebookId;
   ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_pictureRequest;
@@ -21,6 +22,7 @@
   UIAlertView *_networkErrorAlert;
 }
 
+@property (nonatomic, retain) UIImage *cachedImage;
 @property (nonatomic, retain) NSString *facebookId;
 @property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic, retain) ASIHTTPRequest *pictureRequest;
