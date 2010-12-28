@@ -354,7 +354,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   switch (section) {
     case 0: // user profile
-      return 4;
+      return 3;
       break;
     case 1: // stats
       return [[self.profileDict objectForKey:@"stats"] count];
@@ -402,10 +402,6 @@
         case 2:
           cell.textLabel.text = @"Number of Faces Mashed";
           cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes"] notNil] ? [[self.profileDict objectForKey:@"votes"] stringValue] : nil;
-          break;
-        case 3:
-          cell.textLabel.text = @"Number of Friends Mashed";
-          cell.detailTextLabel.text = [[self.profileDict objectForKey:@"votes_network"] notNil] ? [[self.profileDict objectForKey:@"votes_network"] stringValue] : nil;
           break;
         default:
           break;

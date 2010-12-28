@@ -122,10 +122,14 @@ static UIImage *_placeholderImage;
   } else if (self.gameMode == 1) {
     _tabBarItemMale.title = @"Top Male Friends";
     _tabBarItemFemale.title = @"Top Female Friends";
-  } else {
+  } else if (self.gameMode == 2) {
     _tabBarItemMale.title = @"Top Males in Network";
     _tabBarItemFemale.title = @"Top Females in Network";
+  } else {
+    _tabBarItemMale.title = @"Top Male Classmates";
+    _tabBarItemFemale.title = @"Top Female Classmates";
   }
+
 
   
   if(self.selectedMode == RankingsModeTop) {
@@ -160,18 +164,24 @@ static UIImage *_placeholderImage;
       _navItem.title = @"Top Male";
     } else if (self.gameMode == 1) {
       _navItem.title = @"Top Male Friends";
-    } else {
+    } else if (self.gameMode == 2) {
       _navItem.title = @"Top Males in Network";
+    } else {
+      _navItem.title = @"Top Male Classmates";
     }
+
     selectedGender = @"male";
   } else if(self.selectedMode == RankingsModeFemale) {
     if(self.gameMode == 0) {
       _navItem.title = @"Top Female";
     } else if (self.gameMode == 1) {
       _navItem.title = @"Top Female Friends";
-    } else {
+    } else if (self.gameMode == 2) {
       _navItem.title = @"Top Females in Network";
+    } else {
+      _navItem.title = @"Top Female Classmates";
     }
+
     selectedGender = @"female";
   }
 
