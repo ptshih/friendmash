@@ -200,6 +200,9 @@ void uncaughtExceptionHandler(NSException *exception) {
       
       [FlurryAPI setUserID:self.currentUserId];
       
+      // dismiss the login view
+      [self dismissLoginView:YES];
+      
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
       
@@ -248,9 +251,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   self.fbAccessToken = token;
   [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  // dismiss the login view
-  [self dismissLoginView:YES];
   
   // We need to fire off a GET CURRENT USER request to FB GRAPH API
   [self getCurrentUserRequest];
