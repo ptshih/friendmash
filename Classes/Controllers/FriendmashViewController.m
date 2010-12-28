@@ -407,17 +407,6 @@
   [UIView commitAnimations];
 }
 
-- (void)animateThumbsHalfFinished {
-  [UIView beginAnimations:@"ThumbsAnimationHide" context:nil];
-  [UIView setAnimationDelegate:self];
-  [UIView setAnimationBeginsFromCurrentState:YES];
-  [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.4]; // Fade out is configurable in seconds (FLOAT)
-  self.leftThumbsView.alpha = 0.4;
-  self.rightThumbsView.alpha = 0.4;
-  [UIView commitAnimations];
-}
-
 - (void)animateThumbsFinished {
   [UIView beginAnimations:@"ThumbsAnimationHide" context:nil];
   [UIView setAnimationDelegate:self];
