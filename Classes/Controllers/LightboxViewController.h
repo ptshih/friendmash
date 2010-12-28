@@ -11,7 +11,7 @@
 @class ASIHTTPRequest;
 @class ASINetworkQueue;
 
-@interface LightboxViewController : UIViewController {
+@interface LightboxViewController : UIViewController <UIGestureRecognizerDelegate> {
   IBOutlet UIImageView *_profileImageView;
   IBOutlet UIActivityIndicatorView *_activityIndicator;
   UIImage *_cachedImage;

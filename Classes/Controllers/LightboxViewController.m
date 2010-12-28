@@ -12,8 +12,10 @@
 #import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
 #import "ImageManipulator.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface LightboxViewController (Private)
+- (void)createGestureRecognizers;
 - (void)loadCachedImage;
 - (void)getProfilePicture;
 @end
@@ -45,11 +47,79 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  [self createGestureRecognizers];
   if (self.cachedImage) {
     [self loadCachedImage];
   } else {
     [self getProfilePicture];
   }
+}
+
+- (void)createGestureRecognizers {
+  UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+  doubleTap.numberOfTapsRequired = 2;
+  doubleTap.delegate = self;
+  [_profileImageView addGestureRecognizer:doubleTap];
+  [doubleTap release];
+  
+  UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+  pinchGesture.delegate = self;
+  [_profileImageView addGestureRecognizer:pinchGesture];
+  [pinchGesture release];
+  
+  UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+  panGesture.maximumNumberOfTouches = 2;
+  [_profileImageView addGestureRecognizer:panGesture];
+  [panGesture release];
+}
+
+- (void)handleDoubleTap:(UIGestureRecognizer *)sender {
+  DLog(@"detected tap gesture with state: %d", [sender state]);
+  if (sender.state == UIGestureRecognizerStateBegan) {
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+    [self dismiss];
+  }
+}
+
+- (void)handlePinchGesture:(UIGestureRecognizer *)sender {
+  DLog(@"detected pinch gesture with state: %d", [sender state]);
+  if (sender.state == UIGestureRecognizerStateBegan) {
+    
+  } else if (sender.state == UIGestureRecognizerStateChanged) {
+    CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
+    _profileImageView.transform = CGAffineTransformMakeScale(factor, factor);
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+  }
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer {
+  UIView *piece = [gestureRecognizer view];
+  
+  [self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
+  
+  if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+    CGPoint translation = [gestureRecognizer translationInView:[piece superview]];
+    
+    [piece setCenter:CGPointMake([piece center].x + translation.x, [piece center].y + translation.y)];
+    [gestureRecognizer setTranslation:CGPointZero inView:[piece superview]];
+  }
+}
+
+// scale and rotation transforms are applied relative to the layer's anchor point
+// this method moves a gesture recognizer's view's anchor point between the user's fingers
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    UIView *piece = gestureRecognizer.view;
+    CGPoint locationInView = [gestureRecognizer locationInView:piece];
+    CGPoint locationInSuperview = [gestureRecognizer locationInView:piece.superview];
+    
+    piece.layer.anchorPoint = CGPointMake(locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
+    piece.center = locationInSuperview;
+  }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+  return YES;
 }
 
 - (IBAction)dismiss {
