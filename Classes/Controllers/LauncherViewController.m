@@ -31,6 +31,7 @@
 - (void)setupStatsScroll;
 - (void)startStatsAnimation;
 - (void)shouldStartStatsAnimation;
+- (void)setupGameModeAtIndex:(NSInteger)index;
 
 @end
 
@@ -66,7 +67,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+  [self setupGameModeAtIndex:[[[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"] integerValue]];
+  
   self.navigationController.navigationBar.hidden = YES;
   
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
@@ -189,7 +191,7 @@
 }
 
 - (IBAction)modeSelect:(UIButton *)modeButton {
-  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends", @"Show Friends of Friends", nil];
+  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends", @"Show Social Network", nil];
   modeActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
   [modeActionSheet showInView:self.view];
   [modeActionSheet autorelease];
@@ -197,7 +199,15 @@
 
 #pragma mark UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-  switch (buttonIndex) {
+  [self setupGameModeAtIndex:buttonIndex];
+  
+  // Remember the user's mode setting
+  [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:_gameMode] forKey:@"selectedGameMode"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setupGameModeAtIndex:(NSInteger)index {
+  switch (index) {
     case 0:
       _gameMode = FriendmashGameModeNormal;
       [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];

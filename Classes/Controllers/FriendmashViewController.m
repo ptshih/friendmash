@@ -41,8 +41,10 @@
 - (void)animateThumbsAndWinnerIsLeft:(BOOL)isLeft;
 - (void)animateThumbsFinished;
 - (void)animateShowLoading;
+- (void)animateRotateRefresh;
 - (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
+- (void)stopRotateRefresh;
 
 @end
 
@@ -91,6 +93,14 @@
       _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
     }
     
+    if (isDeviceIPad()) {
+      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_refresh_frame_iPad.png"]];
+      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
+    } else {
+      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_refresh_frame.png"]];
+      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
+    }
+    
     _networkQueue = [[ASINetworkQueue queue] retain];
     [[self networkQueue] setDelegate:self];
     [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
@@ -105,8 +115,15 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  _refreshFrame.center = _remashButton.center;
+  _refreshSpinner.center = _remashButton.center;
+  _refreshFrame.hidden = YES;
+  _refreshSpinner.hidden = YES;
+  [self.view addSubview:_refreshFrame];
+  [self.view addSubview:_refreshSpinner];
   [self.view addSubview:self.leftContainerView];
   [self.view addSubview:self.rightContainerView];
+  
   _leftLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
   self.leftLoadingView.layer.cornerRadius = 10.0;
   if (isDeviceIPad()) {
@@ -200,7 +217,10 @@
 }
 
 - (void)prepareMash {
-  _remashButton.enabled = NO;
+  [self animateRotateRefresh];
+  _remashButton.hidden = YES;
+  _refreshSpinner.hidden = NO;
+  _refreshFrame.hidden = NO;
   _isLeftLoaded = NO;
   _isRightLoaded = NO;
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
@@ -313,7 +333,10 @@
     [self animateThumbsFinished];
     [self showLeftFaceView];
     [self showRightFaceView];
-    _remashButton.enabled = YES;
+    _remashButton.hidden = NO;
+    _refreshSpinner.hidden = YES;
+    _refreshFrame.hidden = YES;
+    [self stopRotateRefresh];
   }
 }
 
@@ -338,12 +361,12 @@
   self.rightLoadingView.alpha = 0.0;
   [self animateThumbsAndWinnerIsLeft:isLeft];
   if(isLeft) {
-    [self animateFadeOutWithView:self.leftView withAlpha:0.6];
-    [self animateFadeOutWithView:self.rightView withAlpha:0.6];
+    [self animateFadeOutWithView:self.leftView withAlpha:1.0];
+    [self animateFadeOutWithView:self.rightView withAlpha:0.4];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
   } else {
-    [self animateFadeOutWithView:self.leftView withAlpha:0.6];
-    [self animateFadeOutWithView:self.rightView withAlpha:0.6];
+    [self animateFadeOutWithView:self.leftView withAlpha:0.4];
+    [self animateFadeOutWithView:self.rightView withAlpha:1.0];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   }
   
@@ -375,10 +398,10 @@
   
   [UIView beginAnimations:@"ThumbsAnimationShow" context:nil];
   [UIView setAnimationDelegate:self];
-  [UIView setAnimationDidStopSelector:@selector(animateThumbsHalfFinished)];
+  [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.5]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 1.0;
   self.rightThumbsView.alpha = 1.0;
   [UIView commitAnimations];
@@ -400,7 +423,7 @@
   [UIView setAnimationDelegate:self];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 0.0;
   self.rightThumbsView.alpha = 0.0;
   [UIView commitAnimations];
@@ -417,6 +440,22 @@
   self.leftLoadingView.alpha = 1.0;
   self.rightLoadingView.alpha = 1.0;
   [UIView commitAnimations];
+}
+
+- (void)animateRotateRefresh {
+  CABasicAnimation* rotationAnimation;
+  rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+  rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0];
+  rotationAnimation.duration = 1.0;
+  rotationAnimation.cumulative = YES;
+  rotationAnimation.repeatCount = INT_MAX;
+  rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+  
+  [_refreshSpinner.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
+- (void)stopRotateRefresh {
+  [_refreshSpinner.layer removeAllAnimations];
 }
 
 #pragma mark Server Requests
@@ -511,7 +550,10 @@
   if([alertView isEqual:_networkErrorAlert]) {
     switch (buttonIndex) {
       case 0:
-        _remashButton.enabled = YES;
+        _remashButton.hidden = NO;
+        _refreshSpinner.hidden = YES;
+        _refreshFrame.hidden = YES;
+        [self stopRotateRefresh];
         break;
       case 1:
         [self sendMashRequestForBothFaceViewsWithDelegate:self];
@@ -570,6 +612,8 @@
   if(_rightUserId) [_rightUserId release];
   if(_toolbar) [_toolbar release];
   if(_remashButton) [_remashButton release];
+  if(_refreshSpinner) [_refreshSpinner release];
+  if(_refreshFrame) [_refreshFrame release];
   if(_leftContainerView) [_leftContainerView release];
   if(_rightContainerView) [_rightContainerView release];
   if(_leftView) [_leftView release];

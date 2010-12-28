@@ -16,7 +16,7 @@
 typedef enum {
   FriendmashGameModeNormal = 0,
   FriendmashGameModeFriends = 1,
-  FriendmashGameModeNetwork
+  FriendmashGameModeNetwork = 2
 } FriendmashGameMode;
 
 @class OverlayView;
@@ -62,6 +62,9 @@ typedef enum {
   
   ThumbsView *_leftThumbsView;
   ThumbsView *_rightThumbsView;
+
+  UIImageView *_refreshSpinner;
+  UIImageView *_refreshFrame;
 }
 
 @property (nonatomic,retain) FaceView *leftView;

@@ -131,6 +131,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
   }
 
+// USER OVERRIDE
+//  self.currentUserId = @"3309147";
+
 //  // Authenticate with Facebook IF it has been more than 24 hours
 //  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
 //  
@@ -359,6 +362,13 @@ void uncaughtExceptionHandler(NSException *exception) {
     // When recovering from a crash, wipe this
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   }
+  
+  // Default new users to Social Network mode
+  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"]) {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2] forKey:@"selectedGameMode"];
+  }
+  
+  [[NSUserDefaults standardUserDefaults] synchronize];
   
   _tokenRetryCount = 0;
   _isShowingLogin = NO;

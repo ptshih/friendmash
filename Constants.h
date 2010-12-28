@@ -68,6 +68,8 @@
 // interested_in
 // meeting_for
 
+#define RADIANS(degrees) ((degrees * M_PI) / 180.0)
+
 #define kRequestGlobalStats @"RequestGlobalStatsNotification"
 #define kAppWillEnterForeground @"AppWillEnterForegroundNotification"
 
