@@ -94,8 +94,10 @@
     }
     
     if (isDeviceIPad()) {
+      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame_iPad.png"]];
       _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
     } else {
+      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame.png"]];
       _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
     }
     
@@ -113,8 +115,11 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  _refreshFrame.center = _remashButton.center;
   _refreshSpinner.center = _remashButton.center;
+  _refreshFrame.hidden = YES;
   _refreshSpinner.hidden = YES;
+  [self.view addSubview:_refreshFrame];
   [self.view addSubview:_refreshSpinner];
   [self.view addSubview:self.leftContainerView];
   [self.view addSubview:self.rightContainerView];
@@ -215,6 +220,7 @@
   [self animateRotateRefresh];
   _remashButton.hidden = YES;
   _refreshSpinner.hidden = NO;
+  _refreshFrame.hidden = NO;
   _isLeftLoaded = NO;
   _isRightLoaded = NO;
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
@@ -329,6 +335,7 @@
     [self showRightFaceView];
     _remashButton.hidden = NO;
     _refreshSpinner.hidden = YES;
+    _refreshFrame.hidden = YES;
     [self stopRotateRefresh];
   }
 }
@@ -545,6 +552,7 @@
       case 0:
         _remashButton.hidden = NO;
         _refreshSpinner.hidden = YES;
+        _refreshFrame.hidden = YES;
         [self stopRotateRefresh];
         break;
       case 1:
@@ -605,6 +613,7 @@
   if(_toolbar) [_toolbar release];
   if(_remashButton) [_remashButton release];
   if(_refreshSpinner) [_refreshSpinner release];
+  if(_refreshFrame) [_refreshFrame release];
   if(_leftContainerView) [_leftContainerView release];
   if(_rightContainerView) [_rightContainerView release];
   if(_leftView) [_leftView release];

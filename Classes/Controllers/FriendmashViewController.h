@@ -64,6 +64,7 @@ typedef enum {
   ThumbsView *_rightThumbsView;
 
   UIImageView *_refreshSpinner;
+  UIImageView *_refreshFrame;
 }
 
 @property (nonatomic,retain) FaceView *leftView;
