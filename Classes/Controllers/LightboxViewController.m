@@ -60,7 +60,7 @@
   UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
   doubleTap.numberOfTapsRequired = 2;
   doubleTap.delegate = self;
-  [_profileImageView addGestureRecognizer:doubleTap];
+  [self.view addGestureRecognizer:doubleTap];
   [doubleTap release];
   
   UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
