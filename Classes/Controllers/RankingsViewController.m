@@ -115,6 +115,7 @@ static UIImage *_placeholderImage;
   _tabBarItemTop.enabled = NO;
   _tabBarItemMale.enabled = NO;
   _tabBarItemFemale.enabled = NO;
+  _tableView.userInteractionEnabled = NO;
   if(self.gameMode == 0) {
     _tabBarItemMale.title = @"Top Male";
     _tabBarItemFemale.title = @"Top Female";
@@ -143,8 +144,8 @@ static UIImage *_placeholderImage;
   NSString *params = [NSString stringWithFormat:@"count=%d", FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/topplayers/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
-  ASIHTTPRequest *rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  [self.networkQueue addOperation:rankingsRequest];
+  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
+  [self.networkQueue addOperation:self.rankingsRequest];
   [self.networkQueue go];
 }
 
@@ -197,6 +198,7 @@ static UIImage *_placeholderImage;
     _tabBarItemTop.enabled = YES;
     _tabBarItemMale.enabled = YES;
     _tabBarItemFemale.enabled = YES;
+    _tableView.userInteractionEnabled = YES;
     self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
     [_tableView reloadData];
   }
