@@ -183,15 +183,15 @@
   doubleTap.delegate = self;
   [self addGestureRecognizer:doubleTap];
   
-  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-  longPress.delegate = self;
-  [self addGestureRecognizer:longPress];
+//  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+//  longPress.delegate = self;
+//  [self addGestureRecognizer:longPress];
   
   UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
   singleFingerTap.numberOfTapsRequired = 1;
   singleFingerTap.delegate = self;
   [singleFingerTap requireGestureRecognizerToFail:doubleTap];
-  [singleFingerTap requireGestureRecognizerToFail:longPress];
+//  [singleFingerTap requireGestureRecognizerToFail:longPress];
   [self addGestureRecognizer:singleFingerTap];
   
   UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
@@ -199,7 +199,7 @@
   [self addGestureRecognizer:pinchGesture];
   
   [singleFingerTap release];
-  [longPress release];
+//  [longPress release];
   [pinchGesture release];
   [doubleTap release];
 }
@@ -228,27 +228,27 @@
   }
 }
 
-- (void)handleLongPress:(UIGestureRecognizer *)gestureRecognizer {
-  DLog(@"detected long press gesture with state: %d", [gestureRecognizer state]);
-  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-  } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-    if(self.delegate) {
-      [self.delegate retain];
-      if([self.delegate respondsToSelector:@selector(faceViewDidZoom: withImage:)]) {
-        [self.delegate faceViewDidZoom:self.isLeft withImage:self.faceImageView.image];
-      }
-      [self.delegate release];
-    }
-    [self endTouch];
-  }
-}
+//- (void)handleLongPress:(UIGestureRecognizer *)gestureRecognizer {
+//  DLog(@"detected long press gesture with state: %d", [gestureRecognizer state]);
+//  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+//  } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+//    if(self.delegate) {
+//      [self.delegate retain];
+//      if([self.delegate respondsToSelector:@selector(faceViewDidZoom: withImage:)]) {
+//        [self.delegate faceViewDidZoom:self.isLeft withImage:self.faceImageView.image];
+//      }
+//      [self.delegate release];
+//    }
+//    [self endTouch];
+//  }
+//}
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)sender {
   DLog(@"detected pinch gesture with state: %d", [sender state]);
   if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateChanged) {
     CGFloat factor = [sender scale];
     DLog(@"scale: %f", [sender scale]);
-    if (factor > 1.25) {
+    if (factor > 1.5) {
       if(self.delegate) {
         [self.delegate retain];
         if (![self.delegate faceViewIsZoomed]) {
@@ -261,7 +261,7 @@
       [self endTouch];
     }
   } else if (sender.state == UIGestureRecognizerStateEnded) {
-    // Do nothing
+    [self endTouch];
   }
 }
 
