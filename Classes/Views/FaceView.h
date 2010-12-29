@@ -23,6 +23,7 @@
 
 @protocol FaceViewDelegate <NSObject>
 @optional
+- (BOOL)faceViewIsZoomed;
 - (void)faceViewDidFinishLoading:(BOOL)isLeft;
 - (void)faceViewDidFailWithError:(NSDictionary *)errorDict;
 - (void)faceViewDidFailPictureDoesNotExist;

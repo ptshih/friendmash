@@ -177,33 +177,46 @@
 }
 
 #pragma mark Touches
-- (void)createGestureRecognizers {
+- (void)createGestureRecognizers {  
+  UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+  doubleTap.numberOfTapsRequired = 2;
+  doubleTap.delegate = self;
+  [self addGestureRecognizer:doubleTap];
+  
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+  longPress.delegate = self;
+  [self addGestureRecognizer:longPress];
+  
   UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
   singleFingerTap.numberOfTapsRequired = 1;
   singleFingerTap.delegate = self;
+  [singleFingerTap requireGestureRecognizerToFail:doubleTap];
+  [singleFingerTap requireGestureRecognizerToFail:longPress];
   [self addGestureRecognizer:singleFingerTap];
-  [singleFingerTap release];
   
   UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
   pinchGesture.delegate = self;
   [self addGestureRecognizer:pinchGesture];
+  
+  [singleFingerTap release];
+  [longPress release];
   [pinchGesture release];
+  [doubleTap release];
 }
 
-- (IBAction)handleSingleTap:(UIGestureRecognizer *)sender {
-  DLog(@"detected tap gesture with state: %d", [sender state]);
-  if (sender.state == UIGestureRecognizerStateBegan) {
-  } else if (sender.state == UIGestureRecognizerStateEnded) {
+- (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer {
+  DLog(@"detected tap gesture with state: %d", [gestureRecognizer state]);
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+  } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
     [self endTouch];
     [self faceViewSelected];
   }
 }
 
-- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
-  DLog(@"detected pinch gesture with state: %d", [sender state]);
-  if (sender.state == UIGestureRecognizerStateBegan) {
-
-  } else if (sender.state == UIGestureRecognizerStateEnded) {
+- (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
+  DLog(@"detected double tap gesture with state: %d", [gestureRecognizer state]);
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+  } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
     if(self.delegate) {
       [self.delegate retain];
       if([self.delegate respondsToSelector:@selector(faceViewDidZoom: withImage:)]) {
@@ -212,6 +225,43 @@
       [self.delegate release];
     }
     [self endTouch];
+  }
+}
+
+- (void)handleLongPress:(UIGestureRecognizer *)gestureRecognizer {
+  DLog(@"detected long press gesture with state: %d", [gestureRecognizer state]);
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+  } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+    if(self.delegate) {
+      [self.delegate retain];
+      if([self.delegate respondsToSelector:@selector(faceViewDidZoom: withImage:)]) {
+        [self.delegate faceViewDidZoom:self.isLeft withImage:self.faceImageView.image];
+      }
+      [self.delegate release];
+    }
+    [self endTouch];
+  }
+}
+
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)sender {
+  DLog(@"detected pinch gesture with state: %d", [sender state]);
+  if (sender.state == UIGestureRecognizerStateBegan || sender.state == UIGestureRecognizerStateChanged) {
+    CGFloat factor = [sender scale];
+    DLog(@"scale: %f", [sender scale]);
+    if (factor > 1.25) {
+      if(self.delegate) {
+        [self.delegate retain];
+        if (![self.delegate faceViewIsZoomed]) {
+          if([self.delegate respondsToSelector:@selector(faceViewDidZoom:withImage:)]) {
+            [self.delegate faceViewDidZoom:self.isLeft withImage:self.faceImageView.image];
+          }
+        }
+        [self.delegate release];
+      }
+      [self endTouch];
+    }
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+    // Do nothing
   }
 }
 

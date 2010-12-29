@@ -309,6 +309,14 @@
 }
 
 #pragma mark FaceViewDelegate
+- (BOOL)faceViewIsZoomed {
+  if (self.modalViewController) {
+    return YES;
+  } else {
+    return NO;
+  }
+}
+
 - (void)faceViewDidZoom:(BOOL)isLeft withImage:(UIImage *)image {
   // Popup a lightbox view with full sized image
   LightboxViewController *lvc;

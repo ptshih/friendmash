@@ -83,12 +83,16 @@
 }
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)gestureRecognizer {
-  DLog(@"detected pinch gesture with state: %d", [gestureRecognizer state]);
+  DLog(@"detected pinch gesture with state: %d with scale: %f", [gestureRecognizer state], [gestureRecognizer scale]);
   [self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
-  
+  DLog(@"transform: %f %f", gestureRecognizer.view.transform.a, gestureRecognizer.view.transform.d);
   if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
-    [gestureRecognizer view].transform = CGAffineTransformScale([[gestureRecognizer view] transform], [gestureRecognizer scale], [gestureRecognizer scale]);
-    [gestureRecognizer setScale:1];
+    if (gestureRecognizer.view.transform.a < 0.75 || gestureRecognizer.view.transform.d < 0.75) {
+      [self dismiss];
+    } else {
+      [gestureRecognizer view].transform = CGAffineTransformScale([[gestureRecognizer view] transform], [gestureRecognizer scale], [gestureRecognizer scale]);
+      [gestureRecognizer setScale:1];
+    }
   }
 }
 
