@@ -28,6 +28,10 @@
   #include "TargetConditionals.h"
 #endif
 
+//#define FORCE_MASH
+#define FORCE_LEFT @"100000761003581"
+#define FORCE_RIGHT @"100000933803344"
+
 // If this is defined, we will hit the staging server instead of prod
 // #define STAGING
 

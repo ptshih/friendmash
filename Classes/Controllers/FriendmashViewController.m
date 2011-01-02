@@ -229,8 +229,13 @@
 
 - (void)prepareBothFaceViews {
   [FlurryAPI logEvent:@"friendmashPreparedFaceViews" withParameters:[NSDictionary dictionaryWithObject:self.gender forKey:@"gender"]];
+#ifdef FORCE_MASH
+  [self.leftView prepareFaceViewWithFacebookId:FORCE_LEFT];
+  [self.rightView prepareFaceViewWithFacebookId:FORCE_RIGHT];
+#else
   [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
   [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
+#endif
 }
 
 - (void)loadLeftFaceView {
