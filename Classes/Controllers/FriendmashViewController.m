@@ -81,25 +81,7 @@
     _recentOpponentsArray = [[NSMutableArray alloc] init];
     _faceViewDidError = NO;
     
-    if (isDeviceIPad()) {
-      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(48, 175, 440, 440)];
-    } else {
-      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
-    }
-    
-    if (isDeviceIPad()) {
-      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(536, 175, 440, 440)];
-    } else {
-      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
-    }
-    
-    if (isDeviceIPad()) {
-      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame_iPad.png"]];
-      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
-    } else {
-      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame.png"]];
-      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
-    }
+    [self setupViews];
     
     _networkQueue = [[ASINetworkQueue queue] retain];
     [[self networkQueue] setDelegate:self];
@@ -111,19 +93,30 @@
   return self;
 }
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-  [super viewDidLoad];
+- (void)setupViews {
+  // Faceview containers
+  if (isDeviceIPad()) {
+    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(48, 175, 440, 440)];
+  } else {
+    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
+  }
   
-  _refreshFrame.center = _remashButton.center;
-  _refreshSpinner.center = _remashButton.center;
-  _refreshFrame.hidden = YES;
-  _refreshSpinner.hidden = YES;
-  [self.view addSubview:_refreshFrame];
-  [self.view addSubview:_refreshSpinner];
-  [self.view addSubview:self.leftContainerView];
-  [self.view addSubview:self.rightContainerView];
+  if (isDeviceIPad()) {
+    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(536, 175, 440, 440)];
+  } else {
+    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
+  }
   
+  // Refresh rotating spinner views in top right
+  if (isDeviceIPad()) {
+    _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame_iPad.png"]];
+    _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
+  } else {
+    _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame.png"]];
+    _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
+  }
+  
+  // Loading Views overlayed on top of faceview
   _leftLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
   self.leftLoadingView.layer.cornerRadius = 10.0;
   if (isDeviceIPad()) {
@@ -131,8 +124,6 @@
   } else {
     self.leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
   }
-
-  [self.leftContainerView addSubview:self.leftLoadingView];
   
   _rightLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
   self.rightLoadingView.layer.cornerRadius = 10.0;
@@ -141,7 +132,6 @@
   } else {
     self.rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
   }
-  [self.rightContainerView addSubview:self.rightLoadingView];
   
   // Thumbs Up/Down views
   _leftThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
@@ -150,26 +140,13 @@
     self.leftThumbsView.frame = CGRectMake(0, 0, 110, 100);
   }
   self.leftThumbsView.center = CGPointMake(self.leftContainerView.frame.size.width / 2, self.leftContainerView.frame.size.height / 2);
-  [self.leftContainerView addSubview:self.leftThumbsView];
-
+  
   _rightThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
   self.rightThumbsView.alpha = 0.0;
   if (isDeviceIPad()) {
     self.rightThumbsView.frame = CGRectMake(0, 0, 110, 100);
   }
   self.rightThumbsView.center = CGPointMake(self.rightContainerView.frame.size.width / 2, self.rightContainerView.frame.size.height / 2);
-  [self.rightContainerView addSubview:self.rightThumbsView];
-  
-  [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
-  
-  self.title = NSLocalizedString(@"friendmash", @"friendmash");
-  _toolbar.tintColor = RGBCOLOR(59,89,152);
-  
-  [self prepareMash];
-  
-  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
-    [self showHelp];
-  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -181,6 +158,41 @@
   [super viewWillDisappear:animated];
 }
 
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  
+  [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
+  
+  self.title = NSLocalizedString(@"friendmash", @"friendmash");
+  _toolbar.tintColor = RGBCOLOR(59,89,152);
+  
+  // Setup SubViews
+  _refreshFrame.center = _remashButton.center;
+  _refreshSpinner.center = _remashButton.center;
+  _refreshFrame.hidden = YES;
+  _refreshSpinner.hidden = YES;
+  
+  [self.view addSubview:_refreshFrame];
+  [self.view addSubview:_refreshSpinner];
+  [self.view addSubview:self.leftContainerView];
+  [self.view addSubview:self.rightContainerView];
+  
+  [self.leftContainerView addSubview:self.leftLoadingView];
+  [self.rightContainerView addSubview:self.rightLoadingView];
+  [self.leftContainerView addSubview:self.leftThumbsView];
+  [self.rightContainerView addSubview:self.rightThumbsView];
+  
+  // Prepare first pair of mashes
+  [self prepareFirstMash];
+//  [self prepareMash];
+  
+  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
+    [self showHelp];
+  }
+}
+
+#pragma mark Help OverlayView
 - (IBAction)showHelp {
   if (isDeviceIPad()) {
     _helpView = [[[[NSBundle mainBundle] loadNibNamed:@"OverlayView_iPad" owner:self options:nil] objectAtIndex:0] retain];
@@ -206,6 +218,36 @@
   [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark Preparing for a Mash
+
+- (void)showLoading {
+  [self animateRotateRefresh];
+  _remashButton.hidden = YES;
+  _refreshSpinner.hidden = NO;
+  _refreshFrame.hidden = NO;
+  _isLeftLoaded = NO;
+  _isRightLoaded = NO;
+}
+
+- (void)hideLoading {
+}
+
+/**
+ This prepares 2 sets of mashes when the view is first loaded
+ It grabs two sets of mashes instead of just one mash
+ */
+- (void)prepareFirstMash {
+  [self showLoading];
+  [self loadFrontMash]; // Load first mash
+  [self loadBackMash]; // Load pre-cached back mash
+}
+
+- (void)prepareMash {
+  [self showLoading];
+  [self showCachedMash]; // Show the precached back mash
+  [self loadBackMash]; // Load next precached back pair
+}
+
 - (IBAction)remash {
   [self animateShowLoading];
   [self animateFadeOutWithView:self.leftView withAlpha:0.6];
@@ -214,17 +256,6 @@
   [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
   [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
-}
-
-- (void)prepareMash {
-  [self animateRotateRefresh];
-  _remashButton.hidden = YES;
-  _refreshSpinner.hidden = NO;
-  _refreshFrame.hidden = NO;
-  _isLeftLoaded = NO;
-  _isRightLoaded = NO;
-  [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
-  
 }
 
 - (void)prepareBothFaceViews {
