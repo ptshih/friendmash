@@ -154,10 +154,6 @@
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
   self.toolbar.tintColor = RGBCOLOR(59,89,152);
   
-  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
-    [self showHelp];
-  }
-  
   _refreshFrame.center = self.remashButton.center;
   _refreshSpinner.center = self.remashButton.center;
   _refreshFrame.hidden = YES;
@@ -171,6 +167,9 @@
   [self.leftContainerView addSubview:self.leftThumbsView];
   [self.rightContainerView addSubview:self.rightThumbsView];
   
+  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
+    [self showHelp];
+  }
 
   // Start populating the cache
   [self.mashCache checkMashCache];
