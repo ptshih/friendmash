@@ -42,6 +42,18 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIImageView" id="496557478">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{480, 300}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">bg.png</string>
+						</object>
+					</object>
 					<object class="IBUIButton" id="420465569">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
@@ -112,18 +124,6 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="388163833"/>
-					</object>
-					<object class="IBUIImageView" id="733040745">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{120, 17}, {240, 36}}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">friendmash.png</string>
-						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{480, 300}</string>
@@ -216,7 +216,7 @@
 							<reference ref="169098783"/>
 							<reference ref="295781291"/>
 							<reference ref="420465569"/>
-							<reference ref="733040745"/>
+							<reference ref="496557478"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -239,8 +239,8 @@
 						<string key="objectName">helpButton</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">32</int>
-						<reference key="object" ref="733040745"/>
+						<int key="objectID">33</int>
+						<reference key="object" ref="496557478"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 				</object>
@@ -260,14 +260,13 @@
 					<string>25.IBViewBoundsToFrameTransform</string>
 					<string>29.IBPluginDependency</string>
 					<string>29.IBViewBoundsToFrameTransform</string>
-					<string>32.IBPluginDependency</string>
-					<string>32.IBViewBoundsToFrameTransform</string>
+					<string>33.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>FriendmashViewController</string>
 					<string>UIResponder</string>
-					<string>{{118, 442}, {480, 320}}</string>
+					<string>{{78, 340}, {480, 320}}</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBIPadFramework</string>
 						<integer value="2" key="NS.object.0"/>
@@ -286,9 +285,6 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABD1AAAw46AAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">AULwAABBiAAAA</bytes>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -307,7 +303,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">33</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -643,15 +639,15 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>bg.png</string>
 				<string>btn_back.png</string>
 				<string>btn_refresh.png</string>
-				<string>friendmash.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{480, 300}</string>
 				<string>{52, 36}</string>
 				<string>{52, 36}</string>
-				<string>{240, 36}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">132</string>

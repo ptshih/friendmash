@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,16 +47,16 @@
 						<int key="NSvFlags">274</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="815274918">
+							<object class="IBUIImageView" id="560001619">
 								<reference key="NSNextResponder" ref="793705269"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{120, 17}, {240, 36}}</string>
+								<string key="NSFrameSize">{480, 300}</string>
 								<reference key="NSSuperview" ref="793705269"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">friendmash.png</string>
+									<string key="NSResourceName">bg.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="683786681">
@@ -388,7 +388,7 @@
 							<reference ref="697514583"/>
 							<reference ref="2069835"/>
 							<reference ref="683786681"/>
-							<reference ref="815274918"/>
+							<reference ref="560001619"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">launcherView</string>
@@ -444,8 +444,8 @@
 						<string key="objectName">modeButton</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">61</int>
-						<reference key="object" ref="815274918"/>
+						<int key="objectID">62</int>
+						<reference key="object" ref="560001619"/>
 						<reference key="parent" ref="793705269"/>
 					</object>
 				</object>
@@ -474,8 +474,8 @@
 					<string>57.IBViewBoundsToFrameTransform</string>
 					<string>6.IBPluginDependency</string>
 					<string>6.IBViewBoundsToFrameTransform</string>
-					<string>61.IBPluginDependency</string>
-					<string>61.IBViewBoundsToFrameTransform</string>
+					<string>62.IBPluginDependency</string>
+					<string>62.IBViewBoundsToFrameTransform</string>
 					<string>8.IBPluginDependency</string>
 					<string>8.IBViewBoundsToFrameTransform</string>
 				</object>
@@ -541,9 +541,7 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw3IAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABC8AAAwyYAAA</bytes>
-					</object>
+					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDggAAw3IAAA</bytes>
@@ -566,7 +564,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">61</int>
+			<int key="maxID">62</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -930,21 +928,21 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>bg.png</string>
 				<string>btn_about.png</string>
 				<string>btn_profile.png</string>
 				<string>btn_ranks.png</string>
 				<string>f.png</string>
-				<string>friendmash.png</string>
 				<string>m.png</string>
 				<string>mode_select.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{480, 300}</string>
 				<string>{52, 31}</string>
 				<string>{52, 36}</string>
 				<string>{52, 36}</string>
 				<string>{208, 188}</string>
-				<string>{240, 36}</string>
 				<string>{208, 188}</string>
 				<string>{170, 31}</string>
 			</object>
