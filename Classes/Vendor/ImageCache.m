@@ -35,6 +35,9 @@
 }
 
 - (void)resetCache {
+  for (ASIHTTPRequest *pendingRequest in [self.pendingRequests allValues]) {
+    [pendingRequest clearDelegatesAndCancel];
+  }
   [self.imageCache removeAllObjects];
   [self.pendingRequests removeAllObjects];
 }
