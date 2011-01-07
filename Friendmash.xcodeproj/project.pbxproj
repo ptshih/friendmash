@@ -196,6 +196,8 @@
 		25E1C35E1263092D0052BE93 /* LauncherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E1C35D1263092D0052BE93 /* LauncherViewController.m */; };
 		25E1C36012630A9B0052BE93 /* LauncherViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */; };
 		25E1C36212630AAF0052BE93 /* LauncherViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */; };
+		25E4C67012D6AA9E00F61AAB /* MashCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E4C66F12D6AA9E00F61AAB /* MashCache.m */; };
+		25E4C6A312D6ABD300F61AAB /* RemoteOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E4C6A212D6ABD300F61AAB /* RemoteOperation.m */; };
 		25EB5DDA12643DE000619ECE /* ImageManipulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EB5DD912643DE000619ECE /* ImageManipulator.m */; };
 		25F0310E1290216C003155D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310D1290216C003155D6 /* Default.png */; };
 		25F0311012902174003155D6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25F0310F12902174003155D6 /* Default@2x.png */; };
@@ -448,6 +450,11 @@
 		25E1C35D1263092D0052BE93 /* LauncherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LauncherViewController.m; sourceTree = "<group>"; };
 		25E1C35F12630A9B0052BE93 /* LauncherViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPhone.xib; sourceTree = "<group>"; };
 		25E1C36112630AAF0052BE93 /* LauncherViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherViewController_iPad.xib; sourceTree = "<group>"; };
+		25E4C66E12D6AA9E00F61AAB /* MashCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MashCache.h; sourceTree = "<group>"; };
+		25E4C66F12D6AA9E00F61AAB /* MashCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MashCache.m; sourceTree = "<group>"; };
+		25E4C6A112D6ABD300F61AAB /* RemoteOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteOperation.h; sourceTree = "<group>"; };
+		25E4C6A212D6ABD300F61AAB /* RemoteOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteOperation.m; sourceTree = "<group>"; };
+		25E4C6F112D6B1CD00F61AAB /* RemoteOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteOperationDelegate.h; sourceTree = "<group>"; };
 		25EB5DD812643DE000619ECE /* ImageManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulator.h; sourceTree = "<group>"; };
 		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		25F0310D1290216C003155D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -530,6 +537,8 @@
 				25EB5DD912643DE000619ECE /* ImageManipulator.m */,
 				25BDF3DB128A8666004F046A /* ImageCache.h */,
 				25BDF3DC128A8666004F046A /* ImageCache.m */,
+				25E4C66E12D6AA9E00F61AAB /* MashCache.h */,
+				25E4C66F12D6AA9E00F61AAB /* MashCache.m */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -659,6 +668,9 @@
 			children = (
 				25698389128AB1DE00B2466B /* RemoteRequest.h */,
 				2569838A128AB1DE00B2466B /* RemoteRequest.m */,
+				25E4C6A112D6ABD300F61AAB /* RemoteOperation.h */,
+				25E4C6A212D6ABD300F61AAB /* RemoteOperation.m */,
+				25E4C6F112D6B1CD00F61AAB /* RemoteOperationDelegate.h */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1226,6 +1238,8 @@
 				25FAEB4812A71C2E00E2D6E8 /* HashValue.m in Sources */,
 				25F63CC412AA257200901A59 /* ThumbsView.m in Sources */,
 				25F63D6E12AA58F700901A59 /* OverlayView.m in Sources */,
+				25E4C67012D6AA9E00F61AAB /* MashCache.m in Sources */,
+				25E4C6A312D6ABD300F61AAB /* RemoteOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

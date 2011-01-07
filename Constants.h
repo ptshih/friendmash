@@ -107,6 +107,13 @@
 // ALog always displays output regardless of the DEBUG setting
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 
+// Safe releases
+#define RELEASE_SAFELY(__POINTER) { [__POINTER release]; __POINTER = nil; }
+#define INVALIDATE_TIMER(__TIMER) { [__TIMER invalidate]; __TIMER = nil; }
+
+// Release a CoreFoundation object safely.
+#define RELEASE_CF_SAFELY(__REF) { if (nil != (__REF)) { CFRelease(__REF); __REF = nil; } }
+
 // Detect Device Type
 static BOOL isDeviceIPad() {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
