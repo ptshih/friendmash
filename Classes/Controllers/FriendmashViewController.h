@@ -89,6 +89,9 @@ typedef enum {
 @property (nonatomic, retain) ThumbsView *leftThumbsView;
 @property (nonatomic, retain) ThumbsView *rightThumbsView;
 
+@property (nonatomic, retain) UIImageView *refreshSpinner;
+@property (nonatomic, retain) UIImageView *refreshFrame;
+
 @property (nonatomic, retain) MashCache *mashCache;
 
 - (IBAction)showHelp;

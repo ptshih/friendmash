@@ -72,6 +72,8 @@
 @synthesize rightLoadingView = _rightLoadingView;
 @synthesize leftThumbsView = _leftThumbsView;
 @synthesize rightThumbsView = _rightThumbsView;
+@synthesize refreshSpinner = _refreshSpinner;
+@synthesize refreshFrame = _refreshFrame;
 
 @synthesize mashCache = _mashCache;
 
@@ -154,12 +156,12 @@
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
   self.toolbar.tintColor = RGBCOLOR(59,89,152);
   
-  _refreshFrame.center = self.remashButton.center;
-  _refreshSpinner.center = self.remashButton.center;
-  _refreshFrame.hidden = YES;
-  _refreshSpinner.hidden = YES;
-  [self.view addSubview:_refreshFrame];
-  [self.view addSubview:_refreshSpinner];
+  self.refreshFrame.center = self.remashButton.center;
+  self.refreshSpinner.center = self.remashButton.center;
+  self.refreshFrame.hidden = YES;
+  self.refreshSpinner.hidden = YES;
+  [self.view addSubview:self.refreshFrame];
+  [self.view addSubview:self.refreshSpinner];
   [self.view addSubview:self.leftContainerView];
   [self.view addSubview:self.rightContainerView];
   [self.leftContainerView addSubview:self.leftLoadingView];
@@ -224,10 +226,10 @@
 - (void)prepareMash {
   [self animateRotateRefresh];
   self.remashButton.hidden = YES;
-  _refreshSpinner.hidden = NO;
-  _refreshFrame.hidden = NO;
-  _isLeftLoaded = NO;
-  _isRightLoaded = NO;
+  self.refreshSpinner.hidden = NO;
+  self.refreshFrame.hidden = NO;
+  self.isLeftLoaded = NO;
+  self.isRightLoaded = NO;
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
   
 }
@@ -383,8 +385,8 @@
     [self showLeftFaceView];
     [self showRightFaceView];
     self.remashButton.hidden = NO;
-    _refreshSpinner.hidden = YES;
-    _refreshFrame.hidden = YES;
+    self.refreshSpinner.hidden = YES;
+    self.refreshFrame.hidden = YES;
     [self stopRotateRefresh];
   }
   self.isTouchActive = NO;
@@ -478,11 +480,11 @@
   rotationAnimation.repeatCount = INT_MAX;
   rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
   
-  [_refreshSpinner.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+  [self.refreshSpinner.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
 - (void)stopRotateRefresh {
-  [_refreshSpinner.layer removeAllAnimations];
+  [self.refreshSpinner.layer removeAllAnimations];
 }
 
 #pragma mark Server Requests
@@ -566,7 +568,8 @@
   RELEASE_SAFELY(_rightLoadingView);
   RELEASE_SAFELY(_leftThumbsView);
   RELEASE_SAFELY(_rightThumbsView);
-  
+  RELEASE_SAFELY(_refreshSpinner);
+  RELEASE_SAFELY(_refreshFrame);
   RELEASE_SAFELY(_mashCache);
   
   [super dealloc];
