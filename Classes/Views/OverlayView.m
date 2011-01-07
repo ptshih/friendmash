@@ -7,6 +7,7 @@
 //
 
 #import "OverlayView.h"
+#import "Constants.h"
 
 @implementation OverlayView
 
@@ -20,7 +21,7 @@
 }
 
 - (void)dealloc {
-  if(_dismissButton) [_dismissButton release];
+  RELEASE_SAFELY(_dismissButton);
   [super dealloc];
 }
 

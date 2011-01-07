@@ -471,15 +471,16 @@ void uncaughtExceptionHandler(NSException *exception) {
     [_currentUserRequest release];
   }
   
-  if(_loginViewController) [_loginViewController release];
-  if(_loginPopoverController) [_loginPopoverController release];
-  if(_fbAccessToken) [_fbAccessToken release];
-  if(_currentUserId) [_currentUserId release];
-  if(_currentUser) [_currentUser release];
-  if(_launcherViewController) [_launcherViewController release];
-  if(_navigationController) [_navigationController release];
-  if(_hostReach) [_hostReach release];
-  if(_reachabilityAlertView) [_reachabilityAlertView release];
+  RELEASE_SAFELY(_loginViewController);
+  RELEASE_SAFELY(_loginPopoverController);
+  RELEASE_SAFELY(_fbAccessToken);
+  RELEASE_SAFELY(_currentUserId);
+  RELEASE_SAFELY(_currentUser);
+  RELEASE_SAFELY(_launcherViewController);
+  RELEASE_SAFELY(_navigationController);
+  RELEASE_SAFELY(_hostReach);
+  RELEASE_SAFELY(_reachabilityAlertView);
+
   [window release];
   [super dealloc];
 }

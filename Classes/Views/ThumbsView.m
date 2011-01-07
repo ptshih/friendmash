@@ -14,6 +14,8 @@ static UIImage *_thumbDislikeImage = nil;
 
 @implementation ThumbsView
 
+@synthesize thumbImageView = thumbImageView;
+
 + (void)initialize {
   if (isDeviceIPad()) {
     _thumbLikeImage = [[UIImage imageNamed:@"large_like_iPad.png"] retain];
@@ -33,14 +35,14 @@ static UIImage *_thumbDislikeImage = nil;
 
 - (void)setState:(ThumbsType)type {
   if (type == ThumbsLike) {
-    _thumbImageView.image = _thumbLikeImage;
+    self.thumbImageView.image = _thumbLikeImage;
   } else {
-    _thumbImageView.image = _thumbDislikeImage;
+    self.thumbImageView.image = _thumbDislikeImage;
   }
 }
 
 - (void)dealloc {
-  if(_thumbImageView) [_thumbImageView release];
+  RELEASE_SAFELY(_thumbImageView);
   [super dealloc];
 }
 

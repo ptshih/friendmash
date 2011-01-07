@@ -98,9 +98,11 @@
   [self resetCache];
   self.networkQueue.delegate = nil;
   [self.networkQueue cancelAllOperations];
-  [_networkQueue release];
-  [_pendingRequests release];
-  [_imageCache release];
+  
+  RELEASE_SAFELY(_networkQueue);
+  RELEASE_SAFELY(_pendingRequests);
+  RELEASE_SAFELY(_imageCache);
+
   [super dealloc];
 }
 

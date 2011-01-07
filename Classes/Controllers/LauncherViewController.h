@@ -27,7 +27,9 @@
   NSInteger _statsCounter;
 }
 
-@property (nonatomic, assign) UIView *launcherView;
+@property (nonatomic, retain) UIView *launcherView;
+@property (nonatomic, retain) UIButton *modeButton;
+@property (nonatomic, retain) UIScrollView *statsView;
 @property (nonatomic, retain) UILabel *statsLabel;
 @property (nonatomic, retain) UILabel *statsNextLabel;
 @property (nonatomic, retain) ASIHTTPRequest *statsRequest;

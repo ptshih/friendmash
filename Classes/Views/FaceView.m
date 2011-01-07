@@ -263,9 +263,13 @@
 	[UIView commitAnimations];
 }
 
-- (void)dealloc {  
-  if(_facebookId) [_facebookId release];
-  if(_faceImageView) [_faceImageView release];
+- (void)dealloc {
+  // IBOutlets
+  RELEASE_SAFELY(_faceImageView);
+  
+  // IVARS
+  RELEASE_SAFELY(_facebookId);
+  
   [super dealloc];
 }
 

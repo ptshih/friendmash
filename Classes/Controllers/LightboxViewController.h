@@ -21,6 +21,8 @@
   UIAlertView *_networkErrorAlert;
 }
 
+@property (nonatomic, retain) UIImageView *profileImageView;
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) UIImage *cachedImage;
 @property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, retain) ASIHTTPRequest *pictureRequest;

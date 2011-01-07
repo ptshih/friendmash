@@ -22,6 +22,9 @@
 
 @implementation LightboxViewController
 
+@synthesize profileImageView = _profileImageView;
+@synthesize activityIndicator = _activityIndicator;
+
 @synthesize cachedImage = _cachedImage;
 @synthesize facebookId = _facebookId;
 @synthesize pictureRequest = _pictureRequest;
@@ -55,12 +58,12 @@
   
   UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
   pinchGesture.delegate = self;
-  [_profileImageView addGestureRecognizer:pinchGesture];
+  [self.profileImageView addGestureRecognizer:pinchGesture];
   [pinchGesture release];
   
   UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
   panGesture.maximumNumberOfTouches = 2;
-  [_profileImageView addGestureRecognizer:panGesture];
+  [self.profileImageView addGestureRecognizer:panGesture];
   [panGesture release];
 }
 
@@ -121,9 +124,9 @@
 }
 
 - (void)loadCachedImage {
-  _profileImageView.image = self.cachedImage;
-  _profileImageView.backgroundColor = [UIColor clearColor];
-  [_activityIndicator stopAnimating];
+  self.profileImageView.image = self.cachedImage;
+  self.profileImageView.backgroundColor = [UIColor clearColor];
+  [self.activityIndicator stopAnimating];
 }
 
 - (void)getProfilePicture {
@@ -134,12 +137,12 @@
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
   if(faceImage) {
 #ifdef USE_ROUNDED_CORNERS
-    _profileImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
+    self.profileImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
 #else
-    _profileImageView.image = faceImage;
+    self.profileImageView.image = faceImage;
 #endif
-    _profileImageView.backgroundColor = [UIColor clearColor];
-    [_activityIndicator stopAnimating];
+    self.profileImageView.backgroundColor = [UIColor clearColor];
+    [self.activityIndicator stopAnimating];
   }
 }
 
@@ -200,10 +203,14 @@
     [_pictureRequest release];
   }
   
-  if (_cachedImage) [_cachedImage release];  
-  if(_facebookId) [_facebookId release];
-  if(_profileImageView) [_profileImageView release];
-  if(_activityIndicator) [_activityIndicator release];
+  // IBOutlets
+  RELEASE_SAFELY(_profileImageView);
+  RELEASE_SAFELY(_activityIndicator);
+  
+  // IVARS
+  RELEASE_SAFELY(_cachedImage);
+  RELEASE_SAFELY(_facebookId);
+
   [super dealloc];
 }
 

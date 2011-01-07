@@ -19,8 +19,15 @@
 
 @implementation LoginViewController
 
+@synthesize fbWebView = _fbWebView;
+@synthesize splashView = _splashView;
+@synthesize splashLabel = _splashLabel;
+@synthesize ssoButton = _ssoButton;
+@synthesize normalButton = _normalButton;
+@synthesize splashActivity = _splashActivity;
+
 @synthesize authorizeURL = _authorizeURL;
-@synthesize delegate;
+@synthesize delegate = _delegate;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -42,10 +49,10 @@
 }
 
 - (void)resetLoginState {
-  _ssoButton.hidden = NO;
-  _normalButton.hidden = NO;
-  _splashLabel.text = nil;
-  [_splashActivity stopAnimating];
+  self.ssoButton.hidden = NO;
+  self.normalButton.hidden = NO;
+  self.splashLabel.text = nil;
+  [self.splashActivity stopAnimating];
 }
 
 - (void)webViewWithURL:(NSString *)url andTitle:(NSString *)title {
@@ -70,18 +77,18 @@
 }
 
 - (IBAction)ssoLogin {
-  _ssoButton.hidden = YES;
-  _normalButton.hidden = YES;
-  _splashLabel.text = @"Logging in to Facebook";
-  [_splashActivity startAnimating];
+  self.ssoButton.hidden = YES;
+  self.normalButton.hidden = YES;
+  self.splashLabel.text = @"Logging in to Facebook";
+  [self.splashActivity startAnimating];
   [self authorizeWithFBAppAuth:YES safariAuth:YES];
 }
 
 - (IBAction)normalLogin {
-  _ssoButton.hidden = YES;
-  _normalButton.hidden = YES;
-  _splashLabel.text = @"Logging in to Facebook";
-  [_splashActivity startAnimating];
+  self.ssoButton.hidden = YES;
+  self.normalButton.hidden = YES;
+  self.splashLabel.text = @"Logging in to Facebook";
+  [self.splashActivity startAnimating];
   [self authorizeWithFBAppAuth:NO safariAuth:NO];
 }
 
@@ -126,7 +133,7 @@
   if (!didOpenOtherApp) {
     self.authorizeURL = [NSURL URLWithString:[RemoteRequest serializeURL:FB_AUTHORIZE_URL params:params]];
     NSMutableURLRequest *authorizeRequest = [NSMutableURLRequest requestWithURL:self.authorizeURL];
-    [_fbWebView loadRequest:authorizeRequest];
+    [self.fbWebView loadRequest:authorizeRequest];
   }  
 }
 
@@ -171,7 +178,7 @@
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
  navigationType:(UIWebViewNavigationType)navigationType {
-  _splashView.hidden = NO;
+  self.splashView.hidden = NO;
   NSURL *url = request.URL;
   
   if ([url.scheme isEqualToString:@"fbconnect"]) {
@@ -200,8 +207,8 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-  self.title = [_fbWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
-  _splashView.hidden = YES;
+  self.title = [self.fbWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
+  self.splashView.hidden = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -233,14 +240,18 @@
   // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc {
+- (void)dealloc {  
+  // IBOutlets
+  RELEASE_SAFELY(_fbWebView);
+  RELEASE_SAFELY(_splashView);
+  RELEASE_SAFELY(_splashLabel);
+  RELEASE_SAFELY(_ssoButton);
+  RELEASE_SAFELY(_normalButton);
+  RELEASE_SAFELY(_splashActivity);
+  
+  // IVARS
   if(_authorizeURL) [_authorizeURL release];
-  if(_fbWebView) [_fbWebView release];
-  if(_splashView) [_splashView release];
-  if(_splashLabel) [_splashLabel release];
-  if(_ssoButton) [_ssoButton release];
-  if(_normalButton) [_normalButton release];
-  if(_splashActivity) [_splashActivity release];
+
   [super dealloc];
 }
 

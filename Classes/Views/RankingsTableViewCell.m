@@ -10,7 +10,7 @@
 #import "UIView+Additions.h"
 #import "NSObject+ConvenienceMethods.h"
 #import "NSString+ConvenienceMethods.h"
-#import <QuartzCore/QuartzCore.h>
+#import "Constants.h"
 
 #define PROFILE_IMAGE_MARGIN_X 10.0
 #define PROFILE_IMAGE_MARGIN_Y 5.0
@@ -199,14 +199,15 @@ static UIImage *_bulletImage;
 }
 
 - (void)dealloc {
-  [_profileImageView release];
-  [_likeImageView release];
-  [_bulletImageView release];
-  [_nameLabel release];
-  [_rankLabel release];
-  [_likeLabel release];
-  [_streakLabel release];
-  [_rankView release];
+  RELEASE_SAFELY(_profileImageView);
+  RELEASE_SAFELY(_likeImageView);
+  RELEASE_SAFELY(_bulletImageView);
+  RELEASE_SAFELY(_nameLabel);
+  RELEASE_SAFELY(_rankLabel);
+  RELEASE_SAFELY(_likeLabel);
+  RELEASE_SAFELY(_streakLabel);
+  RELEASE_SAFELY(_rankView);
+  
   [super dealloc];
 }
 

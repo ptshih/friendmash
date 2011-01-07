@@ -35,6 +35,16 @@ typedef enum {
   NSInteger _gameMode;
 }
 
+// IBOutlets
+@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) UITabBar *tabBar;
+@property (nonatomic, retain) UITabBarItem *tabBarItemTop;
+@property (nonatomic, retain) UITabBarItem *tabBarItemMale;
+@property (nonatomic, retain) UITabBarItem *tabBarItemFemale;
+@property (nonatomic, retain) UIView *loadingView;
+@property (nonatomic, retain) UINavigationItem *navItem;
+@property (nonatomic, retain) UIBarButtonItem *refreshButton;
+
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
 @property (nonatomic, retain) NSArray *rankingsArray;
 @property (nonatomic, retain) ImageCache *imageCache;

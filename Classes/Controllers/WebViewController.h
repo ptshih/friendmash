@@ -22,6 +22,11 @@
 	UIActivityIndicatorView *_activityView;
 	BOOL _isRefreshState;
 }
+
+@property (nonatomic, retain) UIWebView *myWebView;
+@property (nonatomic, retain) UIToolbar *myToolbar;
+@property (nonatomic, retain) UINavigationItem *navBarItem;
+
 @property (nonatomic, retain) UIBarButtonItem *backButton;
 @property (nonatomic, retain) UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) UIBarButtonItem *stopButton;

@@ -20,6 +20,15 @@ static UIImage *_placeholderImage;
 
 @implementation RankingsViewController
 
+@synthesize tableView = _tableView;
+@synthesize tabBar = _tabBar;
+@synthesize tabBarItemTop = _tabBarItemTop;
+@synthesize tabBarItemMale = _tabBarItemMale;
+@synthesize tabBarItemFemale = _tabBarItemFemale;
+@synthesize loadingView = _loadingView;
+@synthesize navItem = _navItem;
+@synthesize refreshButton = _refreshButton;
+
 @synthesize launcherViewController = _launcherViewController;
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
@@ -63,20 +72,20 @@ static UIImage *_placeholderImage;
     self.selectedMode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"rankingsModeSticky"] integerValue];
     switch (self.selectedMode) {
       case RankingsModeTop:
-        _tabBar.selectedItem = _tabBarItemTop;
+        self.tabBar.selectedItem = self.tabBarItemTop;
         break;
       case RankingsModeMale:
-        _tabBar.selectedItem = _tabBarItemMale;
+        self.tabBar.selectedItem = self.tabBarItemMale;
         break;
       case RankingsModeFemale:
-        _tabBar.selectedItem = _tabBarItemFemale;
+        self.tabBar.selectedItem = self.tabBarItemFemale;
         break;
       default:
         break;
     }
   } else {
     self.selectedMode = RankingsModeTop;
-    _tabBar.selectedItem = _tabBarItemTop;
+    self.tabBar.selectedItem = self.tabBarItemTop;
   }
   
   [self refreshRankings];
@@ -84,13 +93,13 @@ static UIImage *_placeholderImage;
 
 #pragma mark  UITabBarDelegate
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-  if([item isEqual:_tabBarItemTop]) {
+  if([item isEqual:self.tabBarItemTop]) {
     [FlurryAPI logEvent:@"rankingsTabTop"];
     self.selectedMode = RankingsModeTop;    
-  } else if([item isEqual:_tabBarItemMale]) {
+  } else if([item isEqual:self.tabBarItemMale]) {
     [FlurryAPI logEvent:@"rankingsTabMale"];
     self.selectedMode = RankingsModeMale;
-  } else if([item isEqual:_tabBarItemFemale]) {
+  } else if([item isEqual:self.tabBarItemFemale]) {
     [FlurryAPI logEvent:@"rankingsTabFemale"];
     self.selectedMode = RankingsModeFemale;
   }
@@ -102,23 +111,23 @@ static UIImage *_placeholderImage;
 }
 
 - (IBAction)refreshRankings {
-  _refreshButton.enabled = NO;
-  _tabBarItemTop.enabled = NO;
-  _tabBarItemMale.enabled = NO;
-  _tabBarItemFemale.enabled = NO;
-  _tableView.userInteractionEnabled = NO;
+  self.refreshButton.enabled = NO;
+  self.tabBarItemTop.enabled = NO;
+  self.tabBarItemMale.enabled = NO;
+  self.tabBarItemFemale.enabled = NO;
+  self.tableView.userInteractionEnabled = NO;
   if(self.gameMode == 0) {
-    _tabBarItemMale.title = @"Top Male";
-    _tabBarItemFemale.title = @"Top Female";
+    self.tabBarItemMale.title = @"Top Male";
+    self.tabBarItemFemale.title = @"Top Female";
   } else if (self.gameMode == 1) {
-    _tabBarItemMale.title = @"Top Male Friends";
-    _tabBarItemFemale.title = @"Top Female Friends";
+    self.tabBarItemMale.title = @"Top Male Friends";
+    self.tabBarItemFemale.title = @"Top Female Friends";
   } else if (self.gameMode == 2) {
-    _tabBarItemMale.title = @"Top Males in Network";
-    _tabBarItemFemale.title = @"Top Females in Network";
+    self.tabBarItemMale.title = @"Top Males in Network";
+    self.tabBarItemFemale.title = @"Top Females in Network";
   } else {
-    _tabBarItemMale.title = @"Top Male Classmates";
-    _tabBarItemFemale.title = @"Top Female Classmates";
+    self.tabBarItemMale.title = @"Top Male Classmates";
+    self.tabBarItemFemale.title = @"Top Female Classmates";
   }
 
 
@@ -131,8 +140,8 @@ static UIImage *_placeholderImage;
 }
 
 - (void)getTopPlayers {
-  _loadingView.hidden = NO;
-  _navItem.title = @"Top Players";
+  self.loadingView.hidden = NO;
+  self.navItem.title = @"Top Players";
   [self.imageCache resetCache]; // reset the cache
   
   // Mode selection
@@ -144,32 +153,32 @@ static UIImage *_placeholderImage;
 }
 
 - (void)getTopRankings {
-  _loadingView.hidden = NO;
+  self.loadingView.hidden = NO;
   [self.imageCache resetCache]; // reset the cache
 
   // Mode selection
   NSString *selectedGender = nil;
   if(self.selectedMode == RankingsModeMale) {
     if(self.gameMode == 0) {
-      _navItem.title = @"Top Male";
+      self.navItem.title = @"Top Male";
     } else if (self.gameMode == 1) {
-      _navItem.title = @"Top Male Friends";
+      self.navItem.title = @"Top Male Friends";
     } else if (self.gameMode == 2) {
-      _navItem.title = @"Top Males in Network";
+      self.navItem.title = @"Top Males in Network";
     } else {
-      _navItem.title = @"Top Male Classmates";
+      self.navItem.title = @"Top Male Classmates";
     }
 
     selectedGender = @"male";
   } else if(self.selectedMode == RankingsModeFemale) {
     if(self.gameMode == 0) {
-      _navItem.title = @"Top Female";
+      self.navItem.title = @"Top Female";
     } else if (self.gameMode == 1) {
-      _navItem.title = @"Top Female Friends";
+      self.navItem.title = @"Top Female Friends";
     } else if (self.gameMode == 2) {
-      _navItem.title = @"Top Females in Network";
+      self.navItem.title = @"Top Females in Network";
     } else {
-      _navItem.title = @"Top Female Classmates";
+      self.navItem.title = @"Top Female Classmates";
     }
 
     selectedGender = @"female";
@@ -193,15 +202,15 @@ static UIImage *_placeholderImage;
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
   } else {  
-    _refreshButton.enabled = YES;
-    _tabBarItemTop.enabled = YES;
-    _tabBarItemMale.enabled = YES;
-    _tabBarItemFemale.enabled = YES;
-    _tableView.userInteractionEnabled = YES;
+    self.refreshButton.enabled = YES;
+    self.tabBarItemTop.enabled = YES;
+    self.tabBarItemMale.enabled = YES;
+    self.tabBarItemFemale.enabled = YES;
+    self.tableView.userInteractionEnabled = YES;
     self.rankingsArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-    [_tableView reloadData];
+    [self.tableView reloadData];
   }
-  _loadingView.hidden = YES;
+  self.loadingView.hidden = YES;
   DLog(@"rankings request finished successfully");
 }
 
@@ -211,7 +220,7 @@ static UIImage *_placeholderImage;
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
-  _loadingView.hidden = YES;
+  self.loadingView.hidden = YES;
 }
 
 #pragma mark UIAlertViewDelegate
@@ -237,7 +246,7 @@ static UIImage *_placeholderImage;
 
 #pragma mark ImageCacheDelegate
 - (void)imageDidLoad:(NSIndexPath *)indexPath {
-  [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+  [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark UITableViewDelegate
@@ -267,7 +276,7 @@ static UIImage *_placeholderImage;
   
   UIImage *profilePic = [self.imageCache getImageForIndexPath:indexPath];
   if(!profilePic) {
-    if (_tableView.dragging == NO && _tableView.decelerating == NO)
+    if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
     {
       ASIHTTPRequest *pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"] andType:@"square" withDelegate:nil];
       [self.imageCache cacheImageWithRequest:pictureRequest forIndexPath:indexPath];
@@ -318,7 +327,7 @@ static UIImage *_placeholderImage;
 
 - (void)loadImagesForOnscreenRows
 {
-  NSArray *visiblePaths = [_tableView indexPathsForVisibleRows];
+  NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
   for (NSIndexPath *indexPath in visiblePaths)
   {
     if(![self.imageCache getImageForIndexPath:indexPath]) {
@@ -353,16 +362,20 @@ static UIImage *_placeholderImage;
     [_rankingsRequest release];
   }
   
+  // IBOutlets
+  RELEASE_SAFELY(_tableView);
+  RELEASE_SAFELY(_tabBar);
+  RELEASE_SAFELY(_tabBarItemTop);
+  RELEASE_SAFELY(_tabBarItemMale);
+  RELEASE_SAFELY(_tabBarItemFemale);
+  RELEASE_SAFELY(_loadingView);
+  RELEASE_SAFELY(_navItem);
+  RELEASE_SAFELY(_refreshButton);
+  
+  // IVARS
   if(_imageCache) [_imageCache release];
   if(_rankingsArray) [_rankingsArray release];
-  if(_tableView) [_tableView release];
-  if(_tabBar) [_tabBar release];
-  if(_tabBarItemTop) [_tabBarItemTop release];
-  if(_tabBarItemMale) [_tabBarItemMale release];
-  if(_tabBarItemFemale) [_tabBarItemFemale release];
-  if(_loadingView) [_loadingView release];
-  if(_navItem) [_navItem release];
-  if(_refreshButton) [_refreshButton release];
+
   [super dealloc];
 }
 

@@ -41,10 +41,6 @@ typedef enum {
   FaceView *_rightView;
   FaceView *_tmpLeftView;
   FaceView *_tmpRightView;
-  BOOL _isLeftLoaded;
-  BOOL _isRightLoaded;
-  BOOL _isTouchActive;
-  
   
   UIAlertView *_noContentAlert;
   UIAlertView *_networkErrorAlert;
@@ -67,18 +63,24 @@ typedef enum {
   
   MashCache *_mashCache;
   BOOL _isMashLoaded;
+  BOOL _isLeftLoaded;
+  BOOL _isRightLoaded;
+  BOOL _isTouchActive;
 }
 
-@property (nonatomic,retain) FaceView *leftView;
-@property (nonatomic,retain) FaceView *rightView;
-@property (nonatomic,assign) BOOL isLeftLoaded;
-@property (nonatomic,assign) BOOL isRightLoaded;
-@property (nonatomic,assign) BOOL isTouchActive;
-@property (nonatomic,retain) ASIHTTPRequest *resultsRequest;
-@property (nonatomic,retain) NSString *gender;
-@property (nonatomic,retain) NSString *leftUserId;
-@property (nonatomic,retain) NSString *rightUserId;
-@property (nonatomic,assign) NSUInteger gameMode;
+@property (nonatomic, retain) UIToolbar *toolbar;
+@property (nonatomic, retain) UIButton *remashButton;
+
+@property (nonatomic, retain) FaceView *leftView;
+@property (nonatomic, retain) FaceView *rightView;
+@property (nonatomic, assign) BOOL isLeftLoaded;
+@property (nonatomic, assign) BOOL isRightLoaded;
+@property (nonatomic, assign) BOOL isTouchActive;
+@property (nonatomic, retain) ASIHTTPRequest *resultsRequest;
+@property (nonatomic, retain) NSString *gender;
+@property (nonatomic, retain) NSString *leftUserId;
+@property (nonatomic, retain) NSString *rightUserId;
+@property (nonatomic, assign) NSUInteger gameMode;
 
 @property (nonatomic, retain) UIView *leftContainerView;
 @property (nonatomic, retain) UIView *rightContainerView;

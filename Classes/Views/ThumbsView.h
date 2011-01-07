@@ -18,6 +18,8 @@ typedef enum {
   IBOutlet UIImageView *_thumbImageView;
 }
 
+@property (nonatomic, retain) UIImageView *thumbImageView;
+
 - (void)setState:(ThumbsType)type;
 
 @end

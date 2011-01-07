@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface RankingsTableViewCell : UITableViewCell {
   UIImageView *_profileImageView;

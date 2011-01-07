@@ -22,6 +22,8 @@
 
 @implementation ProfileViewController
 
+@synthesize navBarItem = _navBarItem;
+@synthesize tableView = _tableView;
 @synthesize launcherViewController = _launcherViewController;
 @synthesize profileRequest = _profileRequest;
 @synthesize profileDict = _profileDict;
@@ -45,15 +47,15 @@
   // Display logout button if this is current user's profile
   if(self.profileId == APP_DELEGATE.currentUserId) {
     UIBarButtonItem *logoutButton = [[[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStyleBordered target:self action:@selector(logout)] autorelease];
-    _navBarItem.leftBarButtonItem = logoutButton;
+    self.navBarItem.leftBarButtonItem = logoutButton;
   }
   
   UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
-  _navBarItem.rightBarButtonItem = doneButton;  
-  if ([_tableView respondsToSelector:@selector(backgroundView)]) {
-    _tableView.backgroundView = nil;
+  self.navBarItem.rightBarButtonItem = doneButton;  
+  if ([self.tableView respondsToSelector:@selector(backgroundView)]) {
+    self.tableView.backgroundView = nil;
   }
-  _tableView.backgroundColor = [UIColor clearColor];
+  self.tableView.backgroundColor = [UIColor clearColor];
   [self getProfileForCurrentUser];
 }
 
@@ -89,7 +91,7 @@
   
   self.profileDict = [[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil];
   
-  [_tableView reloadData];
+  [self.tableView reloadData];
   DLog(@"rankings request finished successfully");
   DLog(@"profile dict: %@", self.profileDict);
 }
@@ -437,10 +439,14 @@
     [_profileRequest release];
   }
   
-  if(_profileDict) [_profileDict release];
-  if(_profileId) [_profileId release];
-  if(_navBarItem) [_navBarItem release];
-  if(_tableView) [_tableView release];
+  // IBOutlets
+  RELEASE_SAFELY(_navBarItem);
+  RELEASE_SAFELY(_tableView);
+  
+  // IVARS
+  RELEASE_SAFELY(_profileDict);
+  RELEASE_SAFELY(_profileId);
+  
   [super dealloc];
 }
 

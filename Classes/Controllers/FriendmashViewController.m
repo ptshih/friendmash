@@ -53,6 +53,9 @@
 
 @implementation FriendmashViewController
 
+@synthesize toolbar = _toolbar;
+@synthesize remashButton = _remashButton;
+
 @synthesize leftView = _leftView;
 @synthesize rightView = _rightView;
 @synthesize isLeftLoaded = _isLeftLoaded;
@@ -149,14 +152,14 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
-  _toolbar.tintColor = RGBCOLOR(59,89,152);
+  self.toolbar.tintColor = RGBCOLOR(59,89,152);
   
   if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
     [self showHelp];
   }
   
-  _refreshFrame.center = _remashButton.center;
-  _refreshSpinner.center = _remashButton.center;
+  _refreshFrame.center = self.remashButton.center;
+  _refreshSpinner.center = self.remashButton.center;
   _refreshFrame.hidden = YES;
   _refreshSpinner.hidden = YES;
   [self.view addSubview:_refreshFrame];
@@ -221,7 +224,7 @@
 
 - (void)prepareMash {
   [self animateRotateRefresh];
-  _remashButton.hidden = YES;
+  self.remashButton.hidden = YES;
   _refreshSpinner.hidden = NO;
   _refreshFrame.hidden = NO;
   _isLeftLoaded = NO;
@@ -292,7 +295,7 @@
 
   self.leftView.friendmashViewController = self;
   self.leftView.canvas = self.view;
-  self.leftView.toolbar = _toolbar;
+  self.leftView.toolbar = self.toolbar;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
 }
@@ -307,7 +310,7 @@
   
   self.rightView.friendmashViewController = self;
   self.rightView.canvas = self.view;
-  self.rightView.toolbar = _toolbar;
+  self.rightView.toolbar = self.toolbar;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
 }
@@ -380,7 +383,7 @@
   if(_isLeftLoaded && _isRightLoaded) {
     [self showLeftFaceView];
     [self showRightFaceView];
-    _remashButton.hidden = NO;
+    self.remashButton.hidden = NO;
     _refreshSpinner.hidden = YES;
     _refreshFrame.hidden = YES;
     [self stopRotateRefresh];
@@ -546,21 +549,24 @@
   
   [[RemoteOperation sharedInstance] cancelAllRequests];
   
-  if(_gender) [_gender release];
-  if(_leftUserId) [_leftUserId release];
-  if(_rightUserId) [_rightUserId release];
-  if(_toolbar) [_toolbar release];
-  if(_remashButton) [_remashButton release];
-  if(_refreshSpinner) [_refreshSpinner release];
-  if(_refreshFrame) [_refreshFrame release];
-  if(_leftContainerView) [_leftContainerView release];
-  if(_rightContainerView) [_rightContainerView release];
-  if(_leftView) [_leftView release];
-  if(_rightView) [_rightView release];
-  if(_leftLoadingView) [_leftLoadingView release];
-  if(_rightLoadingView) [_rightLoadingView release];
-  if(_leftThumbsView) [_leftThumbsView release];
-  if(_rightThumbsView) [_rightThumbsView release];
+  // IBOutlets
+  RELEASE_SAFELY(_toolbar);
+  RELEASE_SAFELY(_remashButton);
+  
+  // IVARS
+  RELEASE_SAFELY(_gender);
+  RELEASE_SAFELY(_leftUserId);
+  RELEASE_SAFELY(_rightUserId);
+  RELEASE_SAFELY(_refreshSpinner);
+  RELEASE_SAFELY(_refreshFrame);
+  RELEASE_SAFELY(_leftContainerView);
+  RELEASE_SAFELY(_rightContainerView);
+  RELEASE_SAFELY(_leftView);
+  RELEASE_SAFELY(_rightView);
+  RELEASE_SAFELY(_leftLoadingView);
+  RELEASE_SAFELY(_rightLoadingView);
+  RELEASE_SAFELY(_leftThumbsView);
+  RELEASE_SAFELY(_rightThumbsView);
   
   RELEASE_SAFELY(_mashCache);
   

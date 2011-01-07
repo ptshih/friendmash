@@ -39,6 +39,8 @@
 @implementation LauncherViewController
 
 @synthesize launcherView = _launcherView;
+@synthesize modeButton = _modeButton;
+@synthesize statsView = _statsView;
 @synthesize statsLabel = _statsLabel;
 @synthesize statsNextLabel = _statsNextLabel;
 @synthesize statsRequest = _statsRequest;
@@ -129,8 +131,8 @@
     self.statsNextLabel.font = [UIFont systemFontOfSize:14.0];
   }
   
-  [_statsView addSubview:self.statsLabel];
-  [_statsView addSubview:self.statsNextLabel];
+  [self.statsView addSubview:self.statsLabel];
+  [self.statsView addSubview:self.statsNextLabel];
 }
 
 - (void)shouldStartStatsAnimation {
@@ -205,19 +207,19 @@
   switch (index) {
     case 0:
       _gameMode = FriendmashGameModeFriends;
-      [_modeButton setTitle:@"Friends" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Friends" forState:UIControlStateNormal];
       break;
     case 1:
       _gameMode = FriendmashGameModeNetwork;
-      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
       break;
     case 2:
       _gameMode = FriendmashGameModeSchool;
-      [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
       break;
     case 3:
       _gameMode = FriendmashGameModeNormal;
-      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
       break;
     default:
       break;
@@ -227,16 +229,16 @@
 - (void)setupGameMode {
   switch (_gameMode) {
     case FriendmashGameModeFriends:
-      [_modeButton setTitle:@"Friends" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Friends" forState:UIControlStateNormal];
       break;
     case FriendmashGameModeNetwork:
-      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
       break;
     case FriendmashGameModeSchool:
-      [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
       break;
     case FriendmashGameModeNormal:
-      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      [self.modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
       break;
     default:
       break;
@@ -398,12 +400,16 @@
     [_statsRequest release];
   }
   
-  if(_statsArray) [_statsArray release];
-  if(_launcherView) [_launcherView release];
-  if(_modeButton) [_modeButton release];
-  if(_statsView) [_statsView release];
-  if(_statsLabel) [_statsLabel release];
-  if(_statsNextLabel) [_statsNextLabel release];
+  // IBOutlets
+  RELEASE_SAFELY(_launcherView);
+  RELEASE_SAFELY(_modeButton);
+  RELEASE_SAFELY(_statsView);
+  
+  // IVARS
+  RELEASE_SAFELY(_statsArray);
+  RELEASE_SAFELY(_statsLabel);
+  RELEASE_SAFELY(_statsNextLabel);
+  
   [super dealloc];
 }
 

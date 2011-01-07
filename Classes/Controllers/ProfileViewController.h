@@ -26,6 +26,8 @@
   id <ProfileDelegate> delegate;
 }
 
+@property (nonatomic, retain) UINavigationItem *navBarItem;
+@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, assign) LauncherViewController *launcherViewController;
 @property (nonatomic, retain) ASIHTTPRequest *profileRequest;
 @property (nonatomic, retain) NSDictionary *profileDict;

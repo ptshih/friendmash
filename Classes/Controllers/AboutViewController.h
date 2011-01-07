@@ -18,6 +18,9 @@
   NSString *_aboutFriendmash;
 }
 
+@property (nonatomic, retain) UINavigationItem *navBarItem;
+@property (nonatomic, retain) UITableView *tableView;
+
 @property (nonatomic, retain) NSString *howToPlay;
 @property (nonatomic, retain) NSString *profile;
 @property (nonatomic, retain) NSString *leaderboards;

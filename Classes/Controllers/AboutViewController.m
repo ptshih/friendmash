@@ -11,6 +11,9 @@
 
 @implementation AboutViewController
 
+@synthesize navBarItem = _navBarItem;
+@synthesize tableView = _tableView;
+
 @synthesize howToPlay = _howToPlay;
 @synthesize profile = _profile;
 @synthesize leaderboards = _leaderboards;
@@ -37,11 +40,11 @@
   // Display logout button if this is current user's profile
   
   UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
-  _navBarItem.rightBarButtonItem = doneButton;
-  if ([_tableView respondsToSelector:@selector(backgroundView)]) {
-    _tableView.backgroundView = nil;
+  self.navBarItem.rightBarButtonItem = doneButton;
+  if ([self.tableView respondsToSelector:@selector(backgroundView)]) {
+    self.tableView.backgroundView = nil;
   }
-  _tableView.backgroundColor = [UIColor clearColor];
+  self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)done {
@@ -195,12 +198,16 @@
 
 
 - (void)dealloc {
-  if(_howToPlay) [_howToPlay release];
-  if(_profile) [_profile release];
-  if(_leaderboards) [_leaderboards release];
-  if(_aboutFriendmash) [_aboutFriendmash release];
-  if(_navBarItem) [_navBarItem release];
-  if(_tableView) [_tableView release];
+  // IBOutlets
+  RELEASE_SAFELY(_navBarItem);
+  RELEASE_SAFELY(_tableView);
+  
+  // IVARS
+  RELEASE_SAFELY(_howToPlay);
+  RELEASE_SAFELY(_profile);
+  RELEASE_SAFELY(_leaderboards);
+  RELEASE_SAFELY(_aboutFriendmash);
+  
   [super dealloc];
 }
 
