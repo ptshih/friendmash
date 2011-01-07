@@ -32,6 +32,7 @@
 - (void)startStatsAnimation;
 - (void)shouldStartStatsAnimation;
 - (void)setupGameModeAtIndex:(NSInteger)index;
+- (void)setupGameMode;
 
 @end
 
@@ -59,7 +60,9 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [self setupGameModeAtIndex:[[[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"] integerValue]];
+  // Restore previously selected gameMode
+  _gameMode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"] integerValue];
+  [self setupGameMode];
   
   self.navigationController.navigationBar.hidden = YES;
   
@@ -183,7 +186,7 @@
 }
 
 - (IBAction)modeSelect:(UIButton *)modeButton {
-  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Everyone", @"Show Friends", @"Show Social Network", @"Show Classmates", nil];
+  UIActionSheet *modeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose a Game Mode" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show Friends", @"Show Social Network", @"Show Classmates", @"Show Everyone", nil];
   modeActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
   [modeActionSheet showInView:self.view];
   [modeActionSheet autorelease];
@@ -201,26 +204,40 @@
 - (void)setupGameModeAtIndex:(NSInteger)index {
   switch (index) {
     case 0:
-      _gameMode = FriendmashGameModeNormal;
-      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
-      DLog(@"everyone");
-      break;
-    case 1:
       _gameMode = FriendmashGameModeFriends;
       [_modeButton setTitle:@"Friends" forState:UIControlStateNormal];
-      DLog(@"friends");
       break;
-    case 2:
+    case 1:
       _gameMode = FriendmashGameModeNetwork;
       [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
-      DLog(@"network");
       break;
-    case 3:
+    case 2:
       _gameMode = FriendmashGameModeSchool;
       [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
-      DLog(@"school");
       break;
+    case 3:
+      _gameMode = FriendmashGameModeNormal;
+      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      break;
+    default:
+      break;
+  }
+}
 
+- (void)setupGameMode {
+  switch (_gameMode) {
+    case FriendmashGameModeFriends:
+      [_modeButton setTitle:@"Friends" forState:UIControlStateNormal];
+      break;
+    case FriendmashGameModeNetwork:
+      [_modeButton setTitle:@"Social Network" forState:UIControlStateNormal];
+      break;
+    case FriendmashGameModeSchool:
+      [_modeButton setTitle:@"Classmates" forState:UIControlStateNormal];
+      break;
+    case FriendmashGameModeNormal:
+      [_modeButton setTitle:@"Everyone" forState:UIControlStateNormal];
+      break;
     default:
       break;
   }
