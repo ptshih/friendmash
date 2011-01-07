@@ -10,9 +10,9 @@
 #import "LauncherViewController.h"
 #import "NSString+Util.h"
 #import "Constants.h"
-#import "ASINetworkQueue.h"
 #import "ASIHTTPRequest.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "CJSONDeserializer.h"
 
 void uncaughtExceptionHandler(NSException *exception) {
@@ -32,7 +32,6 @@ void uncaughtExceptionHandler(NSException *exception) {
 @synthesize loginViewController =_loginViewController;
 @synthesize loginPopoverController = _loginPopoverController;
 @synthesize launcherViewController = _launcherViewController;
-@synthesize networkQueue = _networkQueue;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize tokenRequest = _tokenRequest;
 @synthesize fbAccessToken = _fbAccessToken;
@@ -164,9 +163,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 #pragma mark HTTP Requests
 - (void)getCurrentUserRequest {
-  self.currentUserRequest = [RemoteRequest getFacebookRequestForMeWithDelegate:nil];
-  [self.networkQueue addOperation:self.currentUserRequest];
-  [self.networkQueue go];
+  self.currentUserRequest = [RemoteRequest getFacebookRequestForMeWithDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.currentUserRequest];
 }
 
 - (void)sendFacebookAccessToken {
@@ -176,9 +174,8 @@ void uncaughtExceptionHandler(NSException *exception) {
   NSString *params = [NSString stringWithFormat:@"access_token=%@", token];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/token/%@", FRIENDMASH_BASE_URL, self.currentUserId];
 //  self.tokenRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser isGzip:NO withDelegate:nil];
-  [self.networkQueue addOperation:self.tokenRequest];
-  [self.networkQueue go];
+  self.tokenRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:params andPostData:self.currentUser isGzip:NO withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.tokenRequest];
 }
 
 
@@ -379,14 +376,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   _tokenRetryCount = 0;
   _isShowingLogin = NO;
   
-  _networkQueue = [[ASINetworkQueue queue] retain];
-  
-  [[self networkQueue] setDelegate:self];
-  [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
-  
   // Create login view controller ivar
   if(isDeviceIPad()) {
     _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
@@ -485,10 +474,6 @@ void uncaughtExceptionHandler(NSException *exception) {
     [_currentUserRequest clearDelegatesAndCancel];
     [_currentUserRequest release];
   }
-  
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
   
   if(_loginViewController) [_loginViewController release];
   if(_loginPopoverController) [_loginPopoverController release];

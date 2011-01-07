@@ -13,10 +13,9 @@
 #import "AboutViewController.h"
 #import "Constants.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "CJSONDeserializer.h"
-#import <QuartzCore/QuartzCore.h>
 #import "MashCache.h"
 
 #define STATS_SCROLL_OFFSET 20.0
@@ -41,7 +40,6 @@
 @synthesize launcherView = _launcherView;
 @synthesize statsLabel = _statsLabel;
 @synthesize statsNextLabel = _statsNextLabel;
-@synthesize networkQueue = _networkQueue;
 @synthesize statsRequest = _statsRequest;
 @synthesize statsArray = _statsArray;
 
@@ -53,13 +51,6 @@
     _statsCounter = 0;
     _gameMode = FriendmashGameModeNormal;
     _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
-    
-    _networkQueue = [[ASINetworkQueue queue] retain];
-    [[self networkQueue] setDelegate:self];
-    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   }
   return self;
 }
@@ -329,9 +320,8 @@
 - (void)sendStatsRequestWithDelegate:(id)delegate {
   DLog(@"sending stats request");
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/globalstats/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
-  self.statsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
-  [self.networkQueue addOperation:self.statsRequest];
-  [self.networkQueue go];
+  self.statsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.statsRequest];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -368,11 +358,6 @@
   DLog(@"Stats Request Failed with Error: %@", [request error]);
 }
 
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"Queue finished");
-}
-
-
 #pragma mark Memory Management
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -395,10 +380,6 @@
     [_statsRequest clearDelegatesAndCancel];
     [_statsRequest release];
   }
-  
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
   
   if(_statsArray) [_statsArray release];
   if(_launcherView) [_launcherView release];

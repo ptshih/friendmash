@@ -43,7 +43,6 @@
   NSUInteger currentAnimationType;
   NSString *_facebookId;
   BOOL _isTouchActive;
-  BOOL _isTouchCancelled;
 }
 
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;

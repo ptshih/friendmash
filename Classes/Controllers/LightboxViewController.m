@@ -9,10 +9,9 @@
 #import "LightboxViewController.h"
 #import "Constants.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "ImageManipulator.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface LightboxViewController (Private)
 - (void)createGestureRecognizers;
@@ -25,21 +24,12 @@
 
 @synthesize cachedImage = _cachedImage;
 @synthesize facebookId = _facebookId;
-@synthesize networkQueue = _networkQueue;
 @synthesize pictureRequest = _pictureRequest;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _facebookId = [[NSString alloc] init];
-    
-    _networkQueue = [[ASINetworkQueue queue] retain];
-    
-    [[self networkQueue] setDelegate:self];
-    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
     
     self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   }
@@ -137,9 +127,8 @@
 }
 
 - (void)getProfilePicture {
-  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
-  [self.networkQueue addOperation:self.pictureRequest];
-  [self.networkQueue go];
+  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.pictureRequest];
 }
 
 - (void)loadNewFaceWithData:(UIImage *)faceImage {
@@ -171,10 +160,6 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
-}
-
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"FaceView Queue finished");
 }
 
 #pragma mark UIAlertViewDelegate
@@ -215,12 +200,7 @@
     [_pictureRequest release];
   }
   
-  if (_cachedImage) [_cachedImage release];
-  
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
-  
+  if (_cachedImage) [_cachedImage release];  
   if(_facebookId) [_facebookId release];
   if(_profileImageView) [_profileImageView release];
   if(_activityIndicator) [_activityIndicator release];

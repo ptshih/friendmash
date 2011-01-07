@@ -12,11 +12,10 @@
 #import "CJSONDeserializer.h"
 #import "ASIHTTPRequest.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "ThumbsView.h"
 #import "OverlayView.h"
 #import "LightboxViewController.h"
-#import <QuartzCore/QuartzCore.h>
-
 #import "MashCache.h"
 
 @interface FriendmashViewController (Private)
@@ -475,7 +474,8 @@
   NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
-  self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:nil];
+  self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.resultsRequest];
 }
 
 #pragma mark ASIHTTPRequestDelegate

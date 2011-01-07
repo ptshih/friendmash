@@ -7,16 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ProfileViewController.h"
 
 @class ASIHTTPRequest;
-@class ASINetworkQueue;
 
 @interface LauncherViewController : UIViewController <ProfileDelegate, UIActionSheetDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIButton *_modeButton;
   IBOutlet UIScrollView *_statsView;
-  ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_statsRequest;
   UILabel *_statsLabel;
   UILabel *_statsNextLabel;
@@ -31,7 +30,6 @@
 @property (nonatomic, assign) UIView *launcherView;
 @property (nonatomic, retain) UILabel *statsLabel;
 @property (nonatomic, retain) UILabel *statsNextLabel;
-@property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic, retain) ASIHTTPRequest *statsRequest;
 @property (nonatomic, retain) NSArray *statsArray;
 

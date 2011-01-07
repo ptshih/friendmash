@@ -62,7 +62,6 @@
   _imageLoaded = NO;
   self.isAnimating = NO;
   _isTouchActive = NO;
-  _isTouchCancelled = NO;
   _facebookId = [[NSString alloc] init];
   
   [self createGestureRecognizers];

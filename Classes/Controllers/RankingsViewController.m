@@ -13,8 +13,8 @@
 #import "Constants.h"
 #import "CJSONDeserializer.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 
 static UIImage *_placeholderImage;
 
@@ -23,7 +23,6 @@ static UIImage *_placeholderImage;
 @synthesize launcherViewController = _launcherViewController;
 @synthesize rankingsArray = _rankingsArray;
 @synthesize imageCache = _imageCache;
-@synthesize networkQueue = _networkQueue;
 @synthesize rankingsRequest = _rankingsRequest;
 @synthesize selectedMode = _selectedMode;
 @synthesize gameMode = _gameMode;
@@ -38,15 +37,7 @@ static UIImage *_placeholderImage;
     _rankingsArray = [[NSArray alloc] init];
     _imageCache = [[ImageCache alloc] init];
     self.imageCache.delegate = self;
-    
-    _networkQueue = [[ASINetworkQueue queue] retain];
-    
-    [[self networkQueue] setDelegate:self];
-    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
-    
+
     _selectedMode = 0;
     _gameMode = 0;
   }
@@ -148,9 +139,8 @@ static UIImage *_placeholderImage;
   NSString *params = [NSString stringWithFormat:@"count=%d", FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/topplayers/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
-  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  [self.networkQueue addOperation:self.rankingsRequest];
-  [self.networkQueue go];
+  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.rankingsRequest];
 }
 
 - (void)getTopRankings {
@@ -188,9 +178,8 @@ static UIImage *_placeholderImage;
   NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", selectedGender, self.gameMode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/rankings/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   
-  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  [self.networkQueue addOperation:self.rankingsRequest];
-  [self.networkQueue go];
+  self.rankingsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.rankingsRequest];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -223,10 +212,6 @@ static UIImage *_placeholderImage;
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
   _loadingView.hidden = YES;
-}
-
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"Queue finished");
 }
 
 #pragma mark UIAlertViewDelegate
@@ -363,10 +348,6 @@ static UIImage *_placeholderImage;
 
 
 - (void)dealloc {
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
-  
   if(_rankingsRequest) {
     [_rankingsRequest clearDelegatesAndCancel];
     [_rankingsRequest release];

@@ -13,7 +13,6 @@
 @class FriendmashViewController;
 @class LauncherViewController;
 @class ASIHTTPRequest;
-@class ASINetworkQueue;
 
 @interface FriendmashAppDelegate : NSObject <UIApplicationDelegate, FacebookLoginDelegate, UIPopoverControllerDelegate> {
   UIWindow *window;
@@ -21,7 +20,6 @@
   LoginViewController *_loginViewController;
   LauncherViewController *_launcherViewController;
   UIPopoverController *_loginPopoverController;
-  ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_tokenRequest;
   NSString *_fbAccessToken;
@@ -45,7 +43,6 @@
 @property (nonatomic, retain) LoginViewController *loginViewController;
 @property (nonatomic, retain) UIPopoverController *loginPopoverController;
 @property (nonatomic, retain) IBOutlet LauncherViewController *launcherViewController;
-@property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic, retain) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic, retain) ASIHTTPRequest *tokenRequest;
 @property (nonatomic, retain) NSString *fbAccessToken;

@@ -9,8 +9,8 @@
 #import "ProfileViewController.h"
 #import "LauncherViewController.h"
 #import "RemoteRequest.h"
+#import "RemoteOperation.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 #import "Constants.h"
 #import "CJSONDeserializer.h"
 #import "NSString+ConvenienceMethods.h"
@@ -23,7 +23,6 @@
 @implementation ProfileViewController
 
 @synthesize launcherViewController = _launcherViewController;
-@synthesize networkQueue = _networkQueue;
 @synthesize profileRequest = _profileRequest;
 @synthesize profileDict = _profileDict;
 @synthesize profileId = _profileId;
@@ -32,13 +31,6 @@
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-      _networkQueue = [[ASINetworkQueue queue] retain];
-      
-      [[self networkQueue] setDelegate:self];
-      [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-      [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-      [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-      [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
     }
     return self;
 }
@@ -78,9 +70,8 @@
 //  NSString *params = [NSString stringWithFormat:@"gender=%@&mode=%d&count=%d", gender, mode, FM_RANKINGS_COUNT];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/profile/%@", FRIENDMASH_BASE_URL, self.profileId];
   
-  self.profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:nil];
-  [self.networkQueue addOperation:self.profileRequest];
-  [self.networkQueue go];
+  self.profileRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.profileRequest];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -109,10 +100,6 @@
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
   [networkErrorAlert autorelease];
-}
-
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"Queue finished");
 }
 
 #pragma mark UIAlertViewDelegate
@@ -449,10 +436,6 @@
     [_profileRequest clearDelegatesAndCancel];
     [_profileRequest release];
   }
-  
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
   
   if(_profileDict) [_profileDict release];
   if(_profileId) [_profileId release];
