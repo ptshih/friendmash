@@ -38,7 +38,6 @@ void uncaughtExceptionHandler(NSException *exception) {
 @synthesize fbAccessToken = _fbAccessToken;
 @synthesize currentUserId = _currentUserId;
 @synthesize currentUser = _currentUser;
-@synthesize touchActive = _touchActive;
 @synthesize hostReach = _hostReach;
 @synthesize netStatus = _netStatus;
 @synthesize reachabilityAlertView = _reachabilityAlertView;
@@ -379,7 +378,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   
   _tokenRetryCount = 0;
   _isShowingLogin = NO;
-  _touchActive = NO; // FaceView state stuff
   
   _networkQueue = [[ASINetworkQueue queue] retain];
   

@@ -28,7 +28,6 @@
   NSString *_currentUserId;
   NSData *_currentUser;
 
-  BOOL _touchActive;
   BOOL _isShowingLogin;
   
   UIAlertView *_networkErrorAlert;
@@ -52,7 +51,6 @@
 @property (nonatomic, retain) NSString *fbAccessToken;
 @property (nonatomic, retain) NSString *currentUserId;
 @property (nonatomic, retain) NSData *currentUser;
-@property (nonatomic, assign) BOOL touchActive;
 
 @property (nonatomic, retain) Reachability *hostReach;
 @property (nonatomic, assign) NetworkStatus netStatus;

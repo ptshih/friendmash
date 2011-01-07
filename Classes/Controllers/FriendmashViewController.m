@@ -371,9 +371,11 @@
     _refreshFrame.hidden = YES;
     [self stopRotateRefresh];
   }
+  self.isTouchActive = NO;
 }
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
+  self.isTouchActive = YES;
   self.leftLoadingView.alpha = 0.0;
   self.rightLoadingView.alpha = 0.0;
   [self animateThumbsAndWinnerIsLeft:isLeft];
@@ -416,7 +418,7 @@
   [UIView setAnimationDidStopSelector:@selector(animateThumbsFade)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.5]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.4]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 1.0;
   self.rightThumbsView.alpha = 1.0;
   [UIView commitAnimations];
@@ -428,7 +430,7 @@
   [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 0.0;
   self.rightThumbsView.alpha = 0.0;
   [UIView commitAnimations];

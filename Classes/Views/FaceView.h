@@ -44,11 +44,6 @@
   NSString *_facebookId;
   BOOL _isTouchActive;
   BOOL _isTouchCancelled;
-  
-  ASIHTTPRequest *_pictureRequest;
-  NSUInteger _retryCount;
-  
-  UIAlertView *_networkErrorAlert;
 }
 
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;
@@ -59,13 +54,6 @@
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
-@property (nonatomic, retain) ASIHTTPRequest *pictureRequest;
-
-/**
- This method prepares the FaceView by setting the local iVar for _facebookId and the default origin for the FaceView
- It then calls getPictureForFacebookId which fires off the request to FB to get the profile picture
- */
-- (void)prepareFaceViewWithFacebookId:(NSString *)facebookId;
 
 - (void)loadNewFaceWithImage:(UIImage *)faceImage;
 

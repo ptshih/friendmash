@@ -56,10 +56,8 @@
 @synthesize isAnimating = _isAnimating;
 @synthesize facebookId = _facebookId;
 @synthesize delegate = _delegate;
-@synthesize pictureRequest = _pictureRequest;
 
 - (void)awakeFromNib {
-  _retryCount = 0;
   currentAnimationType = 0;
   _imageLoaded = NO;
   self.isAnimating = NO;
@@ -70,81 +68,6 @@
   [self createGestureRecognizers];
   
   self.userInteractionEnabled = NO;
-}
-
-- (void)prepareFaceViewWithImage:(UIImage *)faceImage {
-  
-}
-
-- (void)prepareFaceViewWithFacebookId:(NSString *)facebookId {
-  self.facebookId = facebookId;
-  [self getPicture];
-}
-
-- (void)getPicture {
-  DLog(@"getPicture called with facebookId: %@", self.facebookId);
-  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:self];
-  
-  [[RemoteOperation sharedInstance] addRequestToQueue:self.pictureRequest];
-  
-}
-
-#pragma mark ASIHTTPRequestDelegate
-- (void)requestFinished:(ASIHTTPRequest *)request {
-  DLog(@"FaceView picture request finished");
-  // {"error":{"type":"OAuthException","message":"Error validating access token."}}
-  NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200) {
-    DLog(@"FaceView status code not 200 in request finished, response length: %d", [[request responseData] length]);
-    if(statusCode == 400) {
-      [FlurryAPI logEvent:@"errorFaceView400"];
-      DLog(@"FaceView status code is 400 in request finished, response length: %d", [[request responseData] length]);
-      NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
-      [self.delegate faceViewDidFailWithError:errorDict];
-    } else {
-      [FlurryAPI logEvent:@"errorFaceViewFailedPicture"];
-      DLog(@"FaceView status code not 200 or 400 in request finished, response length: %d", [[request responseData] length]);
-      // There is apparently a change where FB will return null response because their CDN is down
-      // For now we're just gonna throw an error and pop out to Launcher
-      if([[request responseData] length] == 0) {
-        [self.delegate faceViewDidFailPictureDoesNotExist];
-      } else {
-        _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-        [_networkErrorAlert show];
-        [_networkErrorAlert autorelease];
-      }
-    }
-  } else {
-    [self performSelectorOnMainThread:@selector(loadNewFaceWithData:) withObject:[UIImage imageWithData:[request responseData]] waitUntilDone:YES];
-  }
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
-  [FlurryAPI logEvent:@"errorFaceViewRequestFailed"];
-  DLog(@"Request Failed with Error: %@", [request error]);
-  _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-  [_networkErrorAlert show];
-  [_networkErrorAlert autorelease];
-}
-
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"FaceView Queue finished");
-}
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if([alertView isEqual:_networkErrorAlert]) {
-    switch (buttonIndex) {
-      case 0:
-        break;
-      case 1: {
-        [self getPicture];
-        break;
-      }
-      default:
-        break;
-    }
-  }
 }
 
 - (void)loadNewFaceWithImage:(UIImage *)faceImage {
@@ -160,7 +83,6 @@
   }
   [self faceViewDidFinishLoading];
   self.userInteractionEnabled = YES;
-  APP_DELEGATE.touchActive = NO;
 }
 
 - (void)faceViewDidFinishLoading {
@@ -342,12 +264,7 @@
 	[UIView commitAnimations];
 }
 
-- (void)dealloc {
-  if(_pictureRequest) {
-    [_pictureRequest clearDelegatesAndCancel];
-    [_pictureRequest release];
-  }
-  
+- (void)dealloc {  
   if(_facebookId) [_facebookId release];
   if(_faceImageView) [_faceImageView release];
   [super dealloc];
