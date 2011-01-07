@@ -78,7 +78,11 @@
       if (statusCode == 501) {
         // No Mashes Error
         _noMashesError = YES;
-        self.state = MashCacheStateNoMashes;
+        if (self.state == MashCacheStateEmpty) {
+          [self errorNoMashes];
+        } else {
+          self.state = MashCacheStateNoMashes;
+        }
       } else {
         // Other Error with Friendmash Server (Just ignore it)
         // Check cache see if we should load more

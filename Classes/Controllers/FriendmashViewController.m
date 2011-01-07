@@ -78,7 +78,6 @@
     // Custom initialization
     _gameMode = FriendmashGameModeNormal; // ALL game mode by default
     _isTouchActive = NO;
-    _faceViewDidError = NO;
     
     [self setupViews];
     
@@ -255,6 +254,9 @@
 }
 
 - (void)mashCacheAuthError {
+  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Your Facebook session has expired. Please login to Facebook again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [_oauthErrorAlert show];
+  [_oauthErrorAlert autorelease];
 }
 
 - (void)mashCacheFacebookError {
@@ -510,11 +512,9 @@
   if([alertView isEqual:_noContentAlert]) {
     [self.navigationController popViewControllerAnimated:YES];
   } else if([alertView isEqual:_oauthErrorAlert]) {
-    _faceViewDidError = NO;
     [self.navigationController popViewControllerAnimated:NO];
     [APP_DELEGATE fbDidLogout];
   } else if([alertView isEqual:_fbPictureErrorAlert]) {
-    _faceViewDidError = NO;
     [self.navigationController popViewControllerAnimated:NO];
   }
 }

@@ -51,8 +51,6 @@ typedef enum {
   UIAlertView *_oauthErrorAlert;
   UIAlertView *_fbPictureErrorAlert;
   
-  BOOL _faceViewDidError;
-  
   OverlayView *_helpView;
   
   UIView *_leftContainerView;
