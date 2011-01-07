@@ -14,15 +14,14 @@
 
 @interface RemoteOperation : NSObject {
   ASINetworkQueue *_networkQueue;
-  NSMutableArray *_pendingRequests;
   id <RemoteOperationDelegate> _delegate;
 }
 
 @property (retain) ASINetworkQueue *networkQueue; // Needs to be atomic, multi-threaded
-@property (nonatomic, retain) NSMutableArray *pendingRequests; // An array of pending ASIHTTPRequest objects
 @property (nonatomic, assign) id <RemoteOperationDelegate> delegate;
 
-- (void)addRequestToQueue:(ASIHTTPRequest *)request;
++ (RemoteOperation *)sharedInstance;
+- (void)addRequestToQueue:(ASIHTTPRequest *)request withDelegate:(id)delegate;
 - (void)cancelAllRequests;
 
 @end

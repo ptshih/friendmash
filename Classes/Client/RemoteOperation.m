@@ -16,7 +16,6 @@ static RemoteOperation *_sharedInstance = nil;
 @implementation RemoteOperation
 
 @synthesize networkQueue = _networkQueue;
-@synthesize pendingRequests = _pendingRequests;
 @synthesize delegate = _delegate;
 
 
@@ -26,11 +25,10 @@ static RemoteOperation *_sharedInstance = nil;
     if (_sharedInstance == nil) {
 			_sharedInstance = [[RemoteOperation alloc] init];
       _sharedInstance.networkQueue = [[ASINetworkQueue queue] retain];
-      _sharedInstance.pendingRequests = [[NSMutableArray alloc] init];
       _sharedInstance.networkQueue.delegate = _sharedInstance;
       [_sharedInstance.networkQueue setShouldCancelAllRequestsOnFailure:NO];
-      [_sharedInstance.networkQueue setRequestDidFinishSelector:@selector(requestFinished:)];
-      [_sharedInstance.networkQueue setRequestDidFailSelector:@selector(requestFailed:)];
+//      [_sharedInstance.networkQueue setRequestDidFinishSelector:@selector(requestFinished:)];
+//      [_sharedInstance.networkQueue setRequestDidFailSelector:@selector(requestFailed:)];
       [_sharedInstance.networkQueue setQueueDidFinishSelector:@selector(queueFinished:)];
 		}
   }
@@ -42,8 +40,8 @@ static RemoteOperation *_sharedInstance = nil;
 }
 
 #pragma mark Class Methods
-- (void)addRequestToQueue:(ASIHTTPRequest *)request {
-  [_sharedInstance.pendingRequests addObject:request];
+- (void)addRequestToQueue:(ASIHTTPRequest *)request withDelegate:(id)delegate {
+  [request setDelegate:delegate];
   [_sharedInstance.networkQueue addOperation:request];
   [_sharedInstance.networkQueue go];
 }
@@ -52,53 +50,9 @@ static RemoteOperation *_sharedInstance = nil;
   [_sharedInstance.networkQueue cancelAllOperations];
 }
 
-#pragma mark ASIHTTPRequestDelegate
-- (void)requestFinished:(ASIHTTPRequest *)request {
-  // This is on the main thread
-  
-  NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200) {
-    if(statusCode == 400) {
-      // FB TOKEN EXPIRED!!!
-      // NOTE: We should technically tell the user to login again, code not complete here
-      // NSDictionary *errorDict = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"error"];
-      // oauth token expired
-    }
-  } else {
-    // Response is 200 HTTP OK
-    [_sharedInstance.pendingRequests removeObject:request];
-    
-    DLog(@"Request finished successfully");
-    // Tell Delegate
-    if (_sharedInstance.delegate) {
-      [_sharedInstance.delegate retain];
-      if ([_sharedInstance.delegate respondsToSelector:@selector(remoteOperation:didFinishRequest:)]) {
-        [_sharedInstance.delegate remoteOperation:_sharedInstance didFinishRequest:request];
-      }
-    }
-  }
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
-  DLog(@"Request Failed with Error: %@", [request error]);
-  // Tell Delegate
-  if (_sharedInstance.delegate) {
-    [_sharedInstance.delegate retain];
-    if ([_sharedInstance.delegate respondsToSelector:@selector(remoteOperation:didFailRequest:)]) {
-      [_sharedInstance.delegate remoteOperation:_sharedInstance didFailRequest:request];
-    }
-  }
-}
-
+#pragma mark ASIHTTPRequest
 - (void)queueFinished:(ASINetworkQueue *)queue {
   DLog(@"Queue finished");
-  // Tell Delegate
-  if (_sharedInstance.delegate) {
-    [_sharedInstance.delegate retain];
-    if ([_sharedInstance.delegate respondsToSelector:@selector(remoteOperation:didFinishQueue:)]) {
-      [_sharedInstance.delegate remoteOperation:_sharedInstance didFinishQueue:queue];
-    }
-  }
 }
 
 #pragma mark Memory Management
