@@ -35,9 +35,9 @@ static UIImage *_thumbDislikeImage = nil;
 
 - (void)setState:(ThumbsType)type {
   if (type == ThumbsLike) {
-    self.thumbImageView.image = _thumbLikeImage;
+    _thumbImageView.image = _thumbLikeImage;
   } else {
-    self.thumbImageView.image = _thumbDislikeImage;
+    _thumbImageView.image = _thumbDislikeImage;
   }
 }
 
