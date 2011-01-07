@@ -234,10 +234,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   }
 }
 
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"Queue finished");
-}
-
 #pragma mark FacebookLoginDelegate
 - (void)fbDidLoginWithToken:(NSString *)token andExpiration:(NSDate *)expiration {
   DLog(@"Received OAuth access token: %@",token);
