@@ -17,6 +17,7 @@
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MashCache.h"
 
 #define STATS_SCROLL_OFFSET 20.0
 
@@ -297,6 +298,8 @@
   }
   fvc.gender = gender;
   fvc.gameMode = _gameMode;
+  fvc.mashCache.gender = gender;
+  fvc.mashCache.gameMode = _gameMode;
   [self.navigationController pushViewController:fvc animated:YES];
   [fvc release];
 }

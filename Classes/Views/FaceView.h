@@ -67,4 +67,6 @@
  */
 - (void)prepareFaceViewWithFacebookId:(NSString *)facebookId;
 
+- (void)loadNewFaceWithImage:(UIImage *)faceImage;
+
 @end

@@ -21,7 +21,7 @@
 @property (nonatomic, assign) id <RemoteOperationDelegate> delegate;
 
 + (RemoteOperation *)sharedInstance;
-- (void)addRequestToQueue:(ASIHTTPRequest *)request withDelegate:(id)delegate;
+- (void)addRequestToQueue:(ASIHTTPRequest *)request;
 - (void)cancelAllRequests;
 
 @end

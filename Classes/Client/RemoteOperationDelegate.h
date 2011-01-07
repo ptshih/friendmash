@@ -12,10 +12,8 @@
 @class ASINetworkQueue;
 
 @protocol RemoteOperationDelegate <NSObject>
-@required
-- (void)remoteOperation:(RemoteOperation *)operation didFinishRequest:(ASIHTTPRequest *)request;
-
 @optional
+- (void)remoteOperation:(RemoteOperation *)operation didFinishRequest:(ASIHTTPRequest *)request;
 - (void)remoteOperation:(RemoteOperation *)operation didFailRequest:(ASIHTTPRequest *)request;
 - (void)remoteOperation:(RemoteOperation *)operation didFinishQueue:(ASINetworkQueue *)queue;
 @end

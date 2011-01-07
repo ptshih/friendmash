@@ -40,8 +40,7 @@ static RemoteOperation *_sharedInstance = nil;
 }
 
 #pragma mark Class Methods
-- (void)addRequestToQueue:(ASIHTTPRequest *)request withDelegate:(id)delegate {
-  [request setDelegate:delegate];
+- (void)addRequestToQueue:(ASIHTTPRequest *)request {
   [_sharedInstance.networkQueue addOperation:request];
   [_sharedInstance.networkQueue go];
 }

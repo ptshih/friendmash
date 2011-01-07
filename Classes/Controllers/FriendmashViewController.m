@@ -11,12 +11,13 @@
 #import "CJSONDataSerializer.h"
 #import "CJSONDeserializer.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
 #import "ThumbsView.h"
 #import "OverlayView.h"
 #import "LightboxViewController.h"
 #import <QuartzCore/QuartzCore.h>
+
+#import "MashCache.h"
 
 @interface FriendmashViewController (Private)
 
@@ -42,9 +43,12 @@
 - (void)animateThumbsFinished;
 - (void)animateShowLoading;
 - (void)animateRotateRefresh;
-- (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate;
 - (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
 - (void)stopRotateRefresh;
+
+- (void)setupViews;
+- (void)loadLeftFaceView;
+- (void)loadRightFaceView;
 
 @end
 
@@ -55,14 +59,11 @@
 @synthesize isLeftLoaded = _isLeftLoaded;
 @synthesize isRightLoaded = _isRightLoaded;
 @synthesize isTouchActive = _isTouchActive;
-@synthesize networkQueue = _networkQueue;
 @synthesize resultsRequest = _resultsRequest;
-@synthesize bothRequest = _bothRequest;
 @synthesize gender = _gender;
 @synthesize leftUserId = _leftUserId;
 @synthesize rightUserId = _rightUserId;
 @synthesize gameMode = _gameMode;
-@synthesize recentOpponentsArray = _recentOpponentsArray;
 @synthesize leftContainerView = _leftContainerView;
 @synthesize rightContainerView = _rightContainerView;
 @synthesize leftLoadingView = _leftLoadingView;
@@ -70,50 +71,91 @@
 @synthesize leftThumbsView = _leftThumbsView;
 @synthesize rightThumbsView = _rightThumbsView;
 
+@synthesize mashCache = _mashCache;
+
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     // Custom initialization
     _gameMode = FriendmashGameModeNormal; // ALL game mode by default
-    _isLeftLoaded = NO;
-    _isRightLoaded = NO;
     _isTouchActive = NO;
-    _recentOpponentsArray = [[NSMutableArray alloc] init];
     _faceViewDidError = NO;
     
-    if (isDeviceIPad()) {
-      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(48, 175, 440, 440)];
-    } else {
-      _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
-    }
+    [self setupViews];
     
-    if (isDeviceIPad()) {
-      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(536, 175, 440, 440)];
-    } else {
-      _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
-    }
-    
-    if (isDeviceIPad()) {
-      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame_iPad.png"]];
-      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
-    } else {
-      _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame.png"]];
-      _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
-    }
-    
-    _networkQueue = [[ASINetworkQueue queue] retain];
-    [[self networkQueue] setDelegate:self];
-    [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-    [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-    [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-    [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
+    _mashCache = [[MashCache alloc] init];
+    self.mashCache.delegate = self;
+    _isMashLoaded = NO;
   }
   return self;
+}
+
+- (void)setupViews {
+  // Faceview containers
+  if (isDeviceIPad()) {
+    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(48, 175, 440, 440)];
+  } else {
+    _leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(25, 75, 200, 200)];
+  }
+  
+  if (isDeviceIPad()) {
+    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(536, 175, 440, 440)];
+  } else {
+    _rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(255, 75, 200, 200)];
+  }
+  
+  // Refresh rotating spinner views in top right
+  if (isDeviceIPad()) {
+    _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame_iPad.png"]];
+    _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner_iPad.png"]];
+  } else {
+    _refreshFrame = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_frame.png"]];
+    _refreshSpinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"refresh_spinner.png"]];
+  }
+  
+  // Loading Views overlayed on top of faceview
+  _leftLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
+  self.leftLoadingView.layer.cornerRadius = 10.0;
+  if (isDeviceIPad()) {
+    self.leftLoadingView.frame = CGRectMake(180, 170, 80, 100);
+  } else {
+    self.leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  }
+  
+  _rightLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
+  self.rightLoadingView.layer.cornerRadius = 10.0;
+  if (isDeviceIPad()) {
+    self.rightLoadingView.frame = CGRectMake(180, 170, 80, 100);
+  } else {
+    self.rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
+  }
+  
+  // Thumbs Up/Down views
+  _leftThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
+  self.leftThumbsView.alpha = 0.0;
+  if (isDeviceIPad()) {
+    self.leftThumbsView.frame = CGRectMake(0, 0, 110, 100);
+  }
+  self.leftThumbsView.center = CGPointMake(self.leftContainerView.frame.size.width / 2, self.leftContainerView.frame.size.height / 2);
+  
+  _rightThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
+  self.rightThumbsView.alpha = 0.0;
+  if (isDeviceIPad()) {
+    self.rightThumbsView.frame = CGRectMake(0, 0, 110, 100);
+  }
+  self.rightThumbsView.center = CGPointMake(self.rightContainerView.frame.size.width / 2, self.rightContainerView.frame.size.height / 2);
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  self.title = NSLocalizedString(@"friendmash", @"friendmash");
+  _toolbar.tintColor = RGBCOLOR(59,89,152);
+  
+  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
+    [self showHelp];
+  }
   
   _refreshFrame.center = _remashButton.center;
   _refreshSpinner.center = _remashButton.center;
@@ -123,53 +165,15 @@
   [self.view addSubview:_refreshSpinner];
   [self.view addSubview:self.leftContainerView];
   [self.view addSubview:self.rightContainerView];
-  
-  _leftLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
-  self.leftLoadingView.layer.cornerRadius = 10.0;
-  if (isDeviceIPad()) {
-    self.leftLoadingView.frame = CGRectMake(180, 170, 80, 100);
-  } else {
-    self.leftLoadingView.frame = CGRectMake(60, 50, 80, 100);
-  }
-
   [self.leftContainerView addSubview:self.leftLoadingView];
-  
-  _rightLoadingView = [[[[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:self options:nil] objectAtIndex:0] retain];
-  self.rightLoadingView.layer.cornerRadius = 10.0;
-  if (isDeviceIPad()) {
-    self.rightLoadingView.frame = CGRectMake(180, 170, 80, 100);
-  } else {
-    self.rightLoadingView.frame = CGRectMake(60, 50, 80, 100);
-  }
   [self.rightContainerView addSubview:self.rightLoadingView];
-  
-  // Thumbs Up/Down views
-  _leftThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
-  self.leftThumbsView.alpha = 0.0;
-  if (isDeviceIPad()) {
-    self.leftThumbsView.frame = CGRectMake(0, 0, 110, 100);
-  }
-  self.leftThumbsView.center = CGPointMake(self.leftContainerView.frame.size.width / 2, self.leftContainerView.frame.size.height / 2);
   [self.leftContainerView addSubview:self.leftThumbsView];
-
-  _rightThumbsView = [[[[NSBundle mainBundle] loadNibNamed:@"ThumbsView" owner:self options:nil] objectAtIndex:0] retain];
-  self.rightThumbsView.alpha = 0.0;
-  if (isDeviceIPad()) {
-    self.rightThumbsView.frame = CGRectMake(0, 0, 110, 100);
-  }
-  self.rightThumbsView.center = CGPointMake(self.rightContainerView.frame.size.width / 2, self.rightContainerView.frame.size.height / 2);
   [self.rightContainerView addSubview:self.rightThumbsView];
   
-  [FlurryAPI logEvent:@"friendmashLoaded" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:self.gender, @"gender", [NSNumber numberWithInteger:self.gameMode], @"gameMode", nil]];
-  
-  self.title = NSLocalizedString(@"friendmash", @"friendmash");
-  _toolbar.tintColor = RGBCOLOR(59,89,152);
-  
+
+  // Start populating the cache
+  [self.mashCache checkMashCache];
   [self prepareMash];
-  
-  if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownHelp"]) {
-    [self showHelp];
-  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -181,6 +185,7 @@
   [super viewWillDisappear:animated];
 }
 
+#pragma mark Help Overlay
 - (IBAction)showHelp {
   if (isDeviceIPad()) {
     _helpView = [[[[NSBundle mainBundle] loadNibNamed:@"OverlayView_iPad" owner:self options:nil] objectAtIndex:0] retain];
@@ -212,7 +217,7 @@
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
   [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
   [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
-  [FlurryAPI logEvent:@"friendmashRemash"];
+//  [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
 }
 
@@ -226,16 +231,41 @@
   [self performSelectorOnMainThread:@selector(loadBothFaceViews) withObject:nil waitUntilDone:YES];
   
 }
+   
+#pragma mark MashCacheDelegate
+- (void)mashCacheNowHasData {
+  if (_isMashLoaded) return; // If a mash is already loaded, don't load another
+  
+  // Retrieve a mash from cache
+  NSDictionary *mash = [self.mashCache retrieveMashFromCache];
+  // If mash is not nil, show it
+  // Otherwise wait for the delegate callback telling us cache has data
+  if (mash) {
+    _isMashLoaded = YES;
+    self.leftUserId = [mash objectForKey:@"leftUserId"];
+    self.rightUserId = [mash objectForKey:@"rightUserId"];
+    [self.leftView loadNewFaceWithImage:[mash objectForKey:@"leftImage"]];
+    [self.rightView loadNewFaceWithImage:[mash objectForKey:@"rightImage"]];
+  }
+}
+   
+- (void)loadBothFaceViews {
+  [self loadLeftFaceView];
+  [self loadRightFaceView];
 
-- (void)prepareBothFaceViews {
-  [FlurryAPI logEvent:@"friendmashPreparedFaceViews" withParameters:[NSDictionary dictionaryWithObject:self.gender forKey:@"gender"]];
-#ifdef FORCE_MASH
-  [self.leftView prepareFaceViewWithFacebookId:FORCE_LEFT];
-  [self.rightView prepareFaceViewWithFacebookId:FORCE_RIGHT];
-#else
-  [self.leftView prepareFaceViewWithFacebookId:self.leftUserId];
-  [self.rightView prepareFaceViewWithFacebookId:self.rightUserId];
-#endif
+  // Retrieve a mash from cache
+  NSDictionary *mash = [self.mashCache retrieveMashFromCache];
+  // If mash is not nil, show it
+  // Otherwise wait for the delegate callback telling us cache has data
+  if (mash) {
+    _isMashLoaded = YES;
+    self.leftUserId = [mash objectForKey:@"leftUserId"];
+    self.rightUserId = [mash objectForKey:@"rightUserId"];
+    [self.leftView loadNewFaceWithImage:[mash objectForKey:@"leftImage"]];
+    [self.rightView loadNewFaceWithImage:[mash objectForKey:@"rightImage"]];
+  } else {
+    _isMashLoaded = NO;
+  }
 }
 
 - (void)loadLeftFaceView {
@@ -303,16 +333,6 @@
   [_tmpRightView release];
 }
 
-- (void)loadBothFaceViews {
-  [self loadLeftFaceView];
-  [self loadRightFaceView];
-
-  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
-  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
-
-  [self sendMashRequestForBothFaceViewsWithDelegate:self];
-}
-
 #pragma mark FaceViewDelegate
 - (BOOL)faceViewIsZoomed {
   if (self.modalViewController) {
@@ -344,7 +364,6 @@
   }
   
   if(_isLeftLoaded && _isRightLoaded) {
-    [self animateThumbsFinished];
     [self showLeftFaceView];
     [self showRightFaceView];
     _remashButton.hidden = NO;
@@ -352,22 +371,6 @@
     _refreshFrame.hidden = YES;
     [self stopRotateRefresh];
   }
-}
-
-- (void)faceViewDidFailWithError:(NSDictionary *)errorDict {
-  if(_faceViewDidError) return;
-  _faceViewDidError = YES;
-  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Your Facebook session has expired. Please login to Facebook again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-  [_oauthErrorAlert show];
-  [_oauthErrorAlert autorelease];
-}
-
-- (void)faceViewDidFailPictureDoesNotExist {
-  if(_faceViewDidError) return;
-  _faceViewDidError = YES;
-  _fbPictureErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Facebook encountered an error, we promise it isn't our fault! Please try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-  [_fbPictureErrorAlert show];
-  [_fbPictureErrorAlert autorelease];  
 }
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
@@ -383,8 +386,6 @@
     [self animateFadeOutWithView:self.rightView withAlpha:1.0];
     if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
   }
-  
-  [self prepareMash];
 }
 
 # pragma mark Animations
@@ -412,24 +413,29 @@
   
   [UIView beginAnimations:@"ThumbsAnimationShow" context:nil];
   [UIView setAnimationDelegate:self];
-  [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
+  [UIView setAnimationDidStopSelector:@selector(animateThumbsFade)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.5]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 1.0;
   self.rightThumbsView.alpha = 1.0;
   [UIView commitAnimations];
 }
 
-- (void)animateThumbsFinished {
+- (void)animateThumbsFade {
   [UIView beginAnimations:@"ThumbsAnimationHide" context:nil];
   [UIView setAnimationDelegate:self];
+  [UIView setAnimationDidStopSelector:@selector(animateThumbsFinished)];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
   [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
   self.leftThumbsView.alpha = 0.0;
   self.rightThumbsView.alpha = 0.0;
   [UIView commitAnimations];
+}
+
+- (void)animateThumbsFinished {
+  [self prepareMash];
 }
 
 - (void)animateShowLoading {
@@ -439,7 +445,7 @@
   [UIView setAnimationDelegate:self];
   [UIView setAnimationBeginsFromCurrentState:YES];
   [UIView setAnimationCurve:UIViewAnimationCurveLinear];  
-  [UIView setAnimationDuration:0.6]; // Fade out is configurable in seconds (FLOAT)
+  [UIView setAnimationDuration:0.3]; // Fade out is configurable in seconds (FLOAT)
   self.leftLoadingView.alpha = 1.0;
   self.rightLoadingView.alpha = 1.0;
   [UIView commitAnimations];
@@ -468,84 +474,20 @@
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:nil];
-  [self.networkQueue addOperation:self.resultsRequest];
-  [self.networkQueue go];
-}
-
-- (void)sendMashRequestForBothFaceViewsWithDelegate:(id)delegate {
-  // Add a 50 size limit to recents before clearing it.
-  if([self.recentOpponentsArray count] >= 50) {
-    [self.recentOpponentsArray removeAllObjects];
-  }
-  
-  DLog(@"sending mash request for both face views");
-  NSString *params = [NSString stringWithFormat:@"gender=%@&recents=%@&mode=%d", self.gender, [self.recentOpponentsArray componentsJoinedByString:@","], self.gameMode];
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/random/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
-  self.bothRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:nil];
-  [self.networkQueue addOperation:self.bothRequest];
-  [self.networkQueue go];
 }
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
-  NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200) {
-    DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
-    // Check for a not-implemented (did not find opponents) response
-    if(statusCode == 501) {
-      [FlurryAPI logEvent:@"errorFriendmashNoOpponents"];
-      DLog(@"FMVC status code is 501 in request finished, response: %@", [request responseString]);
-      _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-      [_noContentAlert show];
-      [_noContentAlert autorelease];
-    } else {
-      [FlurryAPI logEvent:@"errorFriendmashNetworkError"];
-      DLog(@"FMVC status code not 200 or 501 in request finished, response: %@", [request responseString]);
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-      [_networkErrorAlert show];
-      [_networkErrorAlert autorelease];
-    }
-    return;
-  }
-  
   // Use when fetching text data
   DLog(@"Raw response string from request: %@ => %@",request, [request responseString]);
   
   if([request isEqual:self.resultsRequest]) {
     DLog(@"send results request finished");
-    
-  } else if([request isEqual:self.bothRequest]) {
-    DLog(@"both request finished");
-    NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-
-    self.leftUserId = [responseArray objectAtIndex:0];
-    self.rightUserId = [responseArray objectAtIndex:1];
-    
-    DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
-    // protect against null IDs from failed server call
-    if(!self.leftUserId || !self.rightUserId) {
-      DLog(@"FMVC left or right userId is null, left: %@, right: %@, response: %@", self.leftUserId, self.rightUserId, [request responseString]);
-      _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-      [_networkErrorAlert show];
-      [_networkErrorAlert autorelease];
-    } else {
-      [self performSelectorOnMainThread:@selector(prepareBothFaceViews) withObject:nil waitUntilDone:YES];
-    }
   }
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
-  [FlurryAPI logEvent:@"errorFriendmashRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
-  if(![request isEqual:self.resultsRequest]) {
-    _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-    [_networkErrorAlert show];
-    [_networkErrorAlert autorelease];
-  }
-}
-
-- (void)queueFinished:(ASINetworkQueue *)queue {
-  DLog(@"Queue finished");
 }
 
 #pragma mark UIAlertViewDelegate
@@ -559,7 +501,6 @@
         [self stopRotateRefresh];
         break;
       case 1:
-        [self sendMashRequestForBothFaceViewsWithDelegate:self];
         break;
       default:
         break;
@@ -600,16 +541,7 @@
     [_resultsRequest clearDelegatesAndCancel];
     [_resultsRequest release];
   }
-  if(_bothRequest) {
-    [_bothRequest clearDelegatesAndCancel];
-    [_bothRequest release];
-  }
   
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
-  
-  if(_recentOpponentsArray) [_recentOpponentsArray release];
   if(_gender) [_gender release];
   if(_leftUserId) [_leftUserId release];
   if(_rightUserId) [_rightUserId release];
@@ -625,6 +557,9 @@
   if(_rightLoadingView) [_rightLoadingView release];
   if(_leftThumbsView) [_leftThumbsView release];
   if(_rightThumbsView) [_rightThumbsView release];
+  
+  RELEASE_SAFELY(_mashCache);
+  
   [super dealloc];
 }
 

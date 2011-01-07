@@ -455,6 +455,7 @@
 		25E4C6A112D6ABD300F61AAB /* RemoteOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteOperation.h; sourceTree = "<group>"; };
 		25E4C6A212D6ABD300F61AAB /* RemoteOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteOperation.m; sourceTree = "<group>"; };
 		25E4C6F112D6B1CD00F61AAB /* RemoteOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteOperationDelegate.h; sourceTree = "<group>"; };
+		25E4C84112D6FFF000F61AAB /* MashCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MashCacheDelegate.h; sourceTree = "<group>"; };
 		25EB5DD812643DE000619ECE /* ImageManipulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManipulator.h; sourceTree = "<group>"; };
 		25EB5DD912643DE000619ECE /* ImageManipulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManipulator.m; sourceTree = "<group>"; };
 		25F0310D1290216C003155D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -539,6 +540,7 @@
 				25BDF3DC128A8666004F046A /* ImageCache.m */,
 				25E4C66E12D6AA9E00F61AAB /* MashCache.h */,
 				25E4C66F12D6AA9E00F61AAB /* MashCache.m */,
+				25E4C84112D6FFF000F61AAB /* MashCacheDelegate.h */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";

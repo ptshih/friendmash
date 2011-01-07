@@ -11,7 +11,6 @@
 #import "ImageManipulator.h"
 #import "Constants.h"
 #import "ASIHTTPRequest.h"
-#import "ASINetworkQueue.h"
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
@@ -73,6 +72,10 @@
   self.userInteractionEnabled = NO;
 }
 
+- (void)prepareFaceViewWithImage:(UIImage *)faceImage {
+  
+}
+
 - (void)prepareFaceViewWithFacebookId:(NSString *)facebookId {
   self.facebookId = facebookId;
   [self getPicture];
@@ -80,9 +83,9 @@
 
 - (void)getPicture {
   DLog(@"getPicture called with facebookId: %@", self.facebookId);
-  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
+  self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:self];
   
-  [[RemoteOperation sharedInstance] addRequestToQueue:self.pictureRequest withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.pictureRequest];
   
 }
 
@@ -144,7 +147,7 @@
   }
 }
 
-- (void)loadNewFaceWithData:(UIImage *)faceImage {
+- (void)loadNewFaceWithImage:(UIImage *)faceImage {
   if(faceImage) {
 #ifdef USE_ROUNDED_CORNERS
     self.faceImageView.image = [ImageManipulator roundCornerImageWithImage:faceImage withCornerWidth:10 withCornerHeight:10];
