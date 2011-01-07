@@ -10,4 +10,8 @@
 @protocol MashCacheDelegate <NSObject>
 @required
 - (void)mashCacheNowHasData;
+@optional
+- (void)mashCacheNoMashesError;
+- (void)mashCacheFacebookError;
+- (void)mashCacheAuthError;
 @end

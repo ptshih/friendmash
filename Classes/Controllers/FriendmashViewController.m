@@ -247,7 +247,20 @@
     [self.rightView loadNewFaceWithImage:[mash objectForKey:@"rightImage"]];
   }
 }
-   
+
+- (void)mashCacheNoMashesError {
+  _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  [_noContentAlert show];
+  [_noContentAlert autorelease];
+}
+
+- (void)mashCacheAuthError {
+}
+
+- (void)mashCacheFacebookError {
+}
+
+#pragma mark Load and Display FaceViews
 - (void)loadBothFaceViews {
   [self loadLeftFaceView];
   [self loadRightFaceView];
@@ -494,20 +507,7 @@
 
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if([alertView isEqual:_networkErrorAlert]) {
-    switch (buttonIndex) {
-      case 0:
-        _remashButton.hidden = NO;
-        _refreshSpinner.hidden = YES;
-        _refreshFrame.hidden = YES;
-        [self stopRotateRefresh];
-        break;
-      case 1:
-        break;
-      default:
-        break;
-    }
-  } else if([alertView isEqual:_noContentAlert]) {
+  if([alertView isEqual:_noContentAlert]) {
     [self.navigationController popViewControllerAnimated:YES];
   } else if([alertView isEqual:_oauthErrorAlert]) {
     _faceViewDidError = NO;
@@ -543,6 +543,8 @@
     [_resultsRequest clearDelegatesAndCancel];
     [_resultsRequest release];
   }
+  
+  [[RemoteOperation sharedInstance] cancelAllRequests];
   
   if(_gender) [_gender release];
   if(_leftUserId) [_leftUserId release];

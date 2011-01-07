@@ -13,9 +13,16 @@
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 
+#define CACHE_SIZE 10
+#define RECENTS_SIZE 50
+
 @interface MashCache (Private)
 
 - (void)insertMashIntoCache;
+- (void)handleFacebookAndAuthErrorWithStatusCode:(NSInteger)statusCode;
+- (void)errorNoMashes;
+- (void)errorAuth;
+- (void)errorFacebook;
 
 @end
 
@@ -23,6 +30,7 @@
 
 @synthesize mashCache = _mashCache;
 @synthesize recentOpponentsArray = _recentOpponentsArray;
+@synthesize pendingRequests = _pendingRequests;
 @synthesize gender = _gender;
 @synthesize gameMode = _gameMode;
 
@@ -43,9 +51,13 @@
   if ((self = [super init])) {
     _mashCache = [[NSMutableArray alloc] init];
     _recentOpponentsArray = [[NSMutableArray alloc] init];
+    _pendingRequests = [[NSMutableArray alloc] init];
     _gameMode = 0;
     _leftFinished = NO;
     _rightFinished = NO;
+    _noMashesError = NO;
+    _facebookError = NO;
+    _authError = NO;
     
     _state = MashCacheStateEmpty;
   }
@@ -54,95 +66,102 @@
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
-  
+  NSInteger statusCode = [request responseStatusCode];
+
   // Use when fetching text data
   DLog(@"Raw response string from request: %@ => %@",request, [request responseString]);
   
   if ([request isEqual:_mashRequest]) {
-    DLog(@"both request finished");
-    NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-    
-    self.leftUserId = [responseArray objectAtIndex:0];
-    self.rightUserId = [responseArray objectAtIndex:1];
-    
-    self.leftRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.leftUserId andType:@"large" withDelegate:self];
-    self.rightRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.rightUserId andType:@"large" withDelegate:self];
-    
-    [[RemoteOperation sharedInstance] addRequestToQueue:self.leftRequest];
-    [[RemoteOperation sharedInstance] addRequestToQueue:self.rightRequest];
-    
-    DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
+    // Check for Error Codes
+    if (statusCode > 200) {
+      // ERROR
+      if (statusCode == 501) {
+        // No Mashes Error
+        _noMashesError = YES;
+        self.state = MashCacheStateNoMashes;
+      } else {
+        // Other Error with Friendmash Server (Just ignore it)
+        // Check cache see if we should load more
+        [self checkMashCache];
+      }
+    } else {
+      // NO ERROR
+      DLog(@"mash request finished");
+      NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+      
+      self.leftUserId = [responseArray objectAtIndex:0];
+      self.rightUserId = [responseArray objectAtIndex:1];
+      
+      self.leftRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.leftUserId andType:@"large" withDelegate:self];
+      self.rightRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.rightUserId andType:@"large" withDelegate:self];
+      
+      [[RemoteOperation sharedInstance] addRequestToQueue:self.leftRequest];
+      [[RemoteOperation sharedInstance] addRequestToQueue:self.rightRequest];
+      
+      [self.pendingRequests addObject:self.leftRequest];
+      [self.pendingRequests addObject:self.rightRequest];
+      
+      DLog(@"Received matches with leftId: %@ and rightId: %@", self.leftUserId, self.rightUserId);
+    }
   } else if ([request isEqual:_leftRequest]) {
-    _leftFinished = YES;
-    self.leftImage = [UIImage imageWithData:[request responseData]];
+    if (statusCode > 200) {
+      // Facebook Error
+      [self handleFacebookAndAuthErrorWithStatusCode:statusCode];
+    } else {
+      // No Error
+      _leftFinished = YES;
+      self.leftImage = [UIImage imageWithData:[request responseData]];
+    }
     
     // If the other request also finished we are ready to insert into cache
     if (_rightFinished) {
       [self insertMashIntoCache];
     }
-      
   } else if ([request isEqual:_rightRequest]) {
-    _rightFinished = YES;
-    self.rightImage = [UIImage imageWithData:[request responseData]];
+    if (statusCode > 200) {
+      [self handleFacebookAndAuthErrorWithStatusCode:statusCode];
+    } else {
+      // No Error      
+      _rightFinished = YES;
+      self.rightImage = [UIImage imageWithData:[request responseData]];
+    }
     
     // If the other request also finished we are ready to insert into cache
     if (_leftFinished) {
       [self insertMashIntoCache];
     }
   }
+  
+  // Remove request from pending requests array
+  [self.pendingRequests removeObject:request];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
-//  if(![request isEqual:self.resultsRequest]) {
-//    _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-//    [_networkErrorAlert show];
-//    [_networkErrorAlert autorelease];
-//  }
+  
+  // Remove request from pending requests array
+  [self.pendingRequests removeObject:request];
 }
 
-#pragma mark Handle Facebook Errors
-//- (void)faceViewDidFailWithError:(NSDictionary *)errorDict {
-//  if(_faceViewDidError) return;
-//  _faceViewDidError = YES;
-//  _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Your Facebook session has expired. Please login to Facebook again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-//  [_oauthErrorAlert show];
-//  [_oauthErrorAlert autorelease];
-//}
-//
-//- (void)faceViewDidFailPictureDoesNotExist {
-//  if(_faceViewDidError) return;
-//  _faceViewDidError = YES;
-//  _fbPictureErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Facebook encountered an error, we promise it isn't our fault! Please try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-//  [_fbPictureErrorAlert show];
-//  [_fbPictureErrorAlert autorelease];  
-//}
-
-//NSInteger statusCode = [request responseStatusCode];
-//if(statusCode > 200) {
-//  DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
-//  // Check for a not-implemented (did not find opponents) response
-//  if(statusCode == 501) {
-//    [FlurryAPI logEvent:@"errorFriendmashNoOpponents"];
-//    DLog(@"FMVC status code is 501 in request finished, response: %@", [request responseString]);
-//    _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-//    [_noContentAlert show];
-//    [_noContentAlert autorelease];
-//  } else {
-//    [FlurryAPI logEvent:@"errorFriendmashNetworkError"];
-//    DLog(@"FMVC status code not 200 or 501 in request finished, response: %@", [request responseString]);
-//    _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
-//    [_networkErrorAlert show];
-//    [_networkErrorAlert autorelease];
-//  }
-//  return;
-//}
+- (void)handleFacebookAndAuthErrorWithStatusCode:(NSInteger)statusCode {
+  if (statusCode == 400) {
+    // Auth Error
+    // Immediately quit friendmash
+    _authError = YES;
+  } else {
+    // Facebook Error (picture does not exist)
+    // For now just ignore this mash and keep going
+    _facebookError = YES;
+  }
+}
 
 - (void)updateState {
+  if (self.state == MashCacheStateNoMashes) return;
+  
   if ([self.mashCache count] == 0) {
     DLog(@"Cache is empty");
     self.state = MashCacheStateEmpty;
-  } else if ([self.mashCache count] == 5) {
+  } else if ([self.mashCache count] == CACHE_SIZE) {
     DLog(@"Cache is full");
     self.state = MashCacheStateFull;
   } else {
@@ -152,8 +171,8 @@
 }
 
 #pragma mark Populate Cache
-- (void)addMashToCache {  
-  if([self.recentOpponentsArray count] >= 50) {
+- (void)addMashToCache {
+  if([self.recentOpponentsArray count] >= RECENTS_SIZE) {
     [self.recentOpponentsArray removeAllObjects];
   }
   
@@ -163,11 +182,14 @@
   
   self.mashRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:params withDelegate:self];
   [[RemoteOperation sharedInstance] addRequestToQueue:self.mashRequest];
+  [self.pendingRequests addObject:self.mashRequest];
 }
 
 - (void)checkMashCache {
-  // If cache isn't full, we should add more
-  if (self.state != MashCacheStateFull) {
+  if (self.state == MashCacheStateNoMashes) {
+    // No more mashes, stop loading
+  } else if (self.state != MashCacheStateFull) {
+    // If cache isn't full, we should add more
     [self addMashToCache];
   }
 }
@@ -176,26 +198,35 @@
   // Reset left/right finished state
   _leftFinished = NO;
   _rightFinished = NO;
-  
-  // Populate Recents
-  if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
-  if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
-  
-  NSDictionary *cacheDict = [NSDictionary dictionaryWithObjectsAndKeys:self.leftUserId, @"leftUserId", self.rightUserId, @"rightUserId", self.leftImage, @"leftImage", self.rightImage, @"rightImage", nil];
-  [self.mashCache addObject:cacheDict];
-  
-  // Update cache state and fire callback if necessary
-  MashCacheState previousState = self.state;
-  [self updateState];
-  
-  // Notify Delegate that we now have data
-  if (self.state != MashCacheStateEmpty && previousState == MashCacheStateEmpty) {
-    if (self.delegate) {
-      [self.delegate retain];
-      if ([self.delegate respondsToSelector:@selector(mashCacheNowHasData)]) {
-        [self.delegate mashCacheNowHasData];
+
+  if (_authError) {
+    // If Auth error, immediately quit
+    [self errorAuth];
+    return;
+  } else if (_facebookError) {
+    // If facebook error got triggered, ignore this mash and continue
+    _facebookError = NO;
+  } else {
+    // Populate Recents
+    if(self.leftUserId) [self.recentOpponentsArray addObject:self.leftUserId];
+    if(self.rightUserId) [self.recentOpponentsArray addObject:self.rightUserId];
+    
+    NSDictionary *cacheDict = [NSDictionary dictionaryWithObjectsAndKeys:self.leftUserId, @"leftUserId", self.rightUserId, @"rightUserId", self.leftImage, @"leftImage", self.rightImage, @"rightImage", nil];
+    [self.mashCache addObject:cacheDict];
+    
+    // Update cache state and fire callback if necessary
+    MashCacheState previousState = self.state;
+    [self updateState];
+    
+    // Notify Delegate that we now have data
+    if (self.state != MashCacheStateEmpty && previousState == MashCacheStateEmpty) {
+      if (self.delegate) {
+        [self.delegate retain];
+        if ([self.delegate respondsToSelector:@selector(mashCacheNowHasData)]) {
+          [self.delegate mashCacheNowHasData];
+        }
+        [self.delegate release];
       }
-      [self.delegate release];
     }
   }
   
@@ -205,7 +236,11 @@
 
 #pragma mark Read Cache
 - (NSDictionary *)retrieveMashFromCache {
-  if (self.state == MashCacheStateEmpty) {
+  if (self.state == MashCacheStateNoMashes && [self.mashCache count] == 0) {
+    // Throw error showing no mashes
+    [self errorNoMashes];
+    return nil;
+  } else if (self.state == MashCacheStateEmpty) {
     return nil;
   }
   
@@ -226,10 +261,47 @@
   return [mashDict autorelease];
 }
 
+#pragma mark Error Handling
+- (void)errorNoMashes {
+  if (self.delegate) {
+    [self.delegate retain];
+    if ([self.delegate respondsToSelector:@selector(mashCacheNoMashesError)]) {
+      [self.delegate mashCacheNoMashesError];
+    }
+    [self.delegate release];
+  } 
+}
+
+- (void)errorFacebook {
+  if (self.delegate) {
+    [self.delegate retain];
+    if ([self.delegate respondsToSelector:@selector(mashCacheFacebookError)]) {
+      [self.delegate mashCacheFacebookError];
+    }
+    [self.delegate release];
+  } 
+}
+
+- (void)errorAuth {
+  if (self.delegate) {
+    [self.delegate retain];
+    if ([self.delegate respondsToSelector:@selector(mashCacheAuthError)]) {
+      [self.delegate mashCacheAuthError];
+    }
+    [self.delegate release];
+  } 
+}
+
 #pragma mark Memory Management
 - (void)dealloc {
+  for (ASIHTTPRequest *pendingRequest in self.pendingRequests) {
+    [pendingRequest clearDelegatesAndCancel];
+  }
+  [self.pendingRequests removeAllObjects];
+  
   RELEASE_SAFELY(_mashCache);
   RELEASE_SAFELY(_recentOpponentsArray);
+  RELEASE_SAFELY(_pendingRequests);
   RELEASE_SAFELY(_gender);
   RELEASE_SAFELY(_mashRequest);
   RELEASE_SAFELY(_leftRequest);

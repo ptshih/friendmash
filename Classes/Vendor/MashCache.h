@@ -12,7 +12,8 @@
 typedef enum {
   MashCacheStateEmpty = 0,
   MashCacheStateHasData = 1,
-  MashCacheStateFull = 2
+  MashCacheStateFull = 2,
+  MashCacheStateNoMashes = 3
 } MashCacheState;
 
 @class ASIHTTPRequest;
@@ -20,6 +21,7 @@ typedef enum {
 @interface MashCache : NSObject {
   NSMutableArray *_mashCache;
   NSMutableArray *_recentOpponentsArray;
+  NSMutableArray *_pendingRequests;
   NSString *_gender;
   NSInteger _gameMode;
   
@@ -34,6 +36,10 @@ typedef enum {
   BOOL _leftFinished;
   BOOL _rightFinished;
   
+  BOOL _noMashesError;
+  BOOL _facebookError;
+  BOOL _authError;
+  
   MashCacheState _state;
   
   id <MashCacheDelegate> _delegate;
@@ -41,6 +47,7 @@ typedef enum {
 
 @property (retain) NSMutableArray *mashCache; // Needs to be atomic, two threads accessing
 @property (nonatomic,retain) NSMutableArray *recentOpponentsArray;
+@property (nonatomic,retain) NSMutableArray *pendingRequests;
 @property (nonatomic, retain) NSString *gender;
 @property (nonatomic, assign) NSInteger gameMode;
 
