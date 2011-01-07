@@ -19,7 +19,6 @@
 @class FaceView;
 @class FriendmashViewController;
 @class ASIHTTPRequest;
-@class ASINetworkQueue;
 
 @protocol FaceViewDelegate <NSObject>
 @optional
@@ -46,7 +45,6 @@
   BOOL _isTouchActive;
   BOOL _isTouchCancelled;
   
-  ASINetworkQueue *_networkQueue;
   ASIHTTPRequest *_pictureRequest;
   NSUInteger _retryCount;
   
@@ -61,7 +59,6 @@
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, retain) NSString *facebookId;
 @property (nonatomic, assign) id <FaceViewDelegate> delegate;
-@property (retain) ASINetworkQueue *networkQueue;
 @property (nonatomic, retain) ASIHTTPRequest *pictureRequest;
 
 /**

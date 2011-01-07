@@ -15,6 +15,7 @@
 #import "RemoteRequest.h"
 #import "CJSONDeserializer.h"
 #import <QuartzCore/QuartzCore.h>
+#import "RemoteOperation.h"
 
 #define IPAD_FRAME_WIDTH 1024.0
 #define IPHONE_FRAME_WIDTH 480.0
@@ -56,7 +57,6 @@
 @synthesize isAnimating = _isAnimating;
 @synthesize facebookId = _facebookId;
 @synthesize delegate = _delegate;
-@synthesize networkQueue = _networkQueue;
 @synthesize pictureRequest = _pictureRequest;
 
 - (void)awakeFromNib {
@@ -67,13 +67,6 @@
   _isTouchActive = NO;
   _isTouchCancelled = NO;
   _facebookId = [[NSString alloc] init];
-  
-  _networkQueue = [[ASINetworkQueue queue] retain];
-  [[self networkQueue] setDelegate:self];
-  [[self networkQueue] setShouldCancelAllRequestsOnFailure:NO];
-  [[self networkQueue] setRequestDidFinishSelector:@selector(requestFinished:)];
-  [[self networkQueue] setRequestDidFailSelector:@selector(requestFailed:)];
-  [[self networkQueue] setQueueDidFinishSelector:@selector(queueFinished:)];
   
   [self createGestureRecognizers];
   
@@ -88,8 +81,9 @@
 - (void)getPicture {
   DLog(@"getPicture called with facebookId: %@", self.facebookId);
   self.pictureRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.facebookId andType:@"large" withDelegate:nil];
-  [self.networkQueue addOperation:self.pictureRequest];
-  [self.networkQueue go];
+  
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.pictureRequest withDelegate:self];
+  
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -350,10 +344,6 @@
     [_pictureRequest clearDelegatesAndCancel];
     [_pictureRequest release];
   }
-  
-  self.networkQueue.delegate = nil;
-  [self.networkQueue cancelAllOperations];
-  if(_networkQueue) [_networkQueue release];
   
   if(_facebookId) [_facebookId release];
   if(_faceImageView) [_faceImageView release];
