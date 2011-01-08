@@ -332,6 +332,22 @@
 					</object>
 					<int key="connectionID">30</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">_termsButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="542204143"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">_privacyButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="751826653"/>
+					</object>
+					<int key="connectionID">34</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -527,7 +543,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">34</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -587,21 +603,23 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_fbWebView</string>
 							<string>_normalButton</string>
+							<string>_privacyButton</string>
 							<string>_splashActivity</string>
 							<string>_splashLabel</string>
 							<string>_splashView</string>
 							<string>_ssoButton</string>
-							<string>delegate</string>
+							<string>_termsButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIWebView</string>
 							<string>UIButton</string>
+							<string>UIButton</string>
 							<string>UIActivityIndicatorView</string>
 							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UIButton</string>
-							<string>id</string>
+							<string>UIButton</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -610,11 +628,12 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_fbWebView</string>
 							<string>_normalButton</string>
+							<string>_privacyButton</string>
 							<string>_splashActivity</string>
 							<string>_splashLabel</string>
 							<string>_splashView</string>
 							<string>_ssoButton</string>
-							<string>delegate</string>
+							<string>_termsButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -624,6 +643,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_normalButton</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">_privacyButton</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -643,8 +666,8 @@
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">delegate</string>
-								<string key="candidateClassName">id</string>
+								<string key="name">_termsButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 						</object>
 					</object>
