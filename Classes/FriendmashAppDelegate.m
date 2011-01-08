@@ -196,14 +196,8 @@ void uncaughtExceptionHandler(NSException *exception) {
       
       [FlurryAPI setUserID:self.currentUserId];
       
-      // dismiss the login view
-      [self dismissLoginView:YES];
-      
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
-      
-      // Fire a notification to load global stats
-      [[NSNotificationCenter defaultCenter] postNotificationName:kRequestGlobalStats object:nil];
       
       // Fire off the server request to friendmash with auth token and userid
       [self sendFacebookAccessToken];
@@ -215,6 +209,12 @@ void uncaughtExceptionHandler(NSException *exception) {
       _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_tokenFailedAlert show];
       [_tokenFailedAlert autorelease];
+    } else {
+      // Token successfully sent
+      // dismiss the login view
+      [self dismissLoginView:YES];
+      // Fire a notification to load global stats
+      [[NSNotificationCenter defaultCenter] postNotificationName:kRequestGlobalStats object:nil];
     }
   }
 }
@@ -317,6 +317,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownHelp"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownWelcome"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"selectedGameMode"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self authenticateWithFacebook:NO];
 }
