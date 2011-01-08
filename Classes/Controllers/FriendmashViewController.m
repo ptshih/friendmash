@@ -179,10 +179,17 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   self.navigationController.navigationBar.hidden = YES;
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectionLost) name:kConnectionLost object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kConnectionLost object:nil];
+}
+
+- (void)connectionLost {
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark Help Overlay
