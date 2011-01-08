@@ -79,6 +79,7 @@
         // No Mashes Error
         _noMashesError = YES;
         if (self.state == MashCacheStateEmpty) {
+          DLog(@"Error No Mashes Triggered");
           [self errorNoMashes];
         } else {
           self.state = MashCacheStateNoMashes;
