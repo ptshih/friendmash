@@ -129,7 +129,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   // Check if we even have a valid token
   if(![[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
     [self authenticateWithFacebook:NO]; // authenticate
-  } else {
+  } else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"hasLoggedIn"]) {
     self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
     self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
     
@@ -139,28 +139,6 @@ void uncaughtExceptionHandler(NSException *exception) {
     // Fire global stats
     [self sendStatsRequest];
   }
-
-// USER OVERRIDE
-//  self.currentUserId = @"3309147";
-
-//  // Authenticate with Facebook IF it has been more than 24 hours
-//  NSDate *lastExitDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastExitDate"];
-//  
-//  if(lastExitDate) {
-//    NSTimeInterval lastExitInterval = [[NSDate date] timeIntervalSinceDate:lastExitDate];
-//    
-//    // If greater than 24hrs, re-authenticate
-//    // NOTE: DO NOT USE THIS, ALWAYS ASSUME TOKEN VALID
-//    if(lastExitInterval > INT_MAX) {
-//      [self authenticateWithFacebook:NO]; // authenticate
-//    } else {
-//      // Reuse our token from last time
-//      self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
-//      self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
-//    }
-//  } else { // this is the first time we launched the app, or we just logged off and tried to login again
-//    [self authenticateWithFacebook:NO]; // authenticate
-//  }
 }
 
 - (void)dismissLoginView:(BOOL)animated {
@@ -225,9 +203,8 @@ void uncaughtExceptionHandler(NSException *exception) {
       [_tokenFailedAlert autorelease];
     } else {
       // Token successfully sent
-      
-      // Set session start key
-      [self startSession];
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasLoggedIn"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
       
       // dismiss the login view
       [self dismissLoginView:YES];
@@ -277,6 +254,9 @@ void uncaughtExceptionHandler(NSException *exception) {
   self.fbAccessToken = token;
   [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  // Set session start key
+  [self startSession];
   
   // We need to fire off a GET CURRENT USER request to FB GRAPH API
   [self getCurrentUserRequest];
@@ -353,6 +333,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownHelp"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownWelcome"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"selectedGameMode"];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasLoggedIn"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self authenticateWithFacebook:NO];
 }
@@ -397,6 +378,11 @@ void uncaughtExceptionHandler(NSException *exception) {
   // Default new users to Social Network mode
   if (![[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"]) {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2] forKey:@"selectedGameMode"];
+  }
+  
+  // Has Logged In
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasLoggedIn"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasLoggedIn"];
   }
   
   [[NSUserDefaults standardUserDefaults] synchronize];
