@@ -370,6 +370,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   if (![[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersion"]]) {
     [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownHelp"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasLoggedIn"]; // Force logged in for updates from 1.1 -> 1.2
   }
 
   // Uncaught Exception Handler
