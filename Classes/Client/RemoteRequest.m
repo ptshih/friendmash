@@ -25,8 +25,6 @@ static NSString *_secretString = nil;
 }
 
 + (ASIHTTPRequest *)getRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params withDelegate:(id)delegate {
-//  [getRequest addRequestHeader:@"Content-Type" value:@"application/json"];
-  
   NSString *getURLString = params ? [NSString stringWithFormat:@"%@?%@", baseURLString, params] : baseURLString;
   NSURL *getURL = [NSURL URLWithString:getURLString];
   
@@ -53,7 +51,6 @@ static NSString *_secretString = nil;
 }
 
 + (ASIHTTPRequest *)postRequestWithBaseURLString:(NSString *)baseURLString andParams:(NSString *)params andPostData:(NSData *)postData isGzip:(BOOL)isGzip withDelegate:(id)delegate {
-  
   NSString *postURLString = params ? [NSString stringWithFormat:@"%@?%@", baseURLString, params] : baseURLString;
   NSURL *postURL = [NSURL URLWithString:postURLString];
   
