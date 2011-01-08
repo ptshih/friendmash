@@ -25,6 +25,8 @@
 @synthesize ssoButton = _ssoButton;
 @synthesize normalButton = _normalButton;
 @synthesize splashActivity = _splashActivity;
+@synthesize termsButton = _termsButton;
+@synthesize privacyButton = _privacyButton;
 
 @synthesize authorizeURL = _authorizeURL;
 @synthesize delegate = _delegate;
@@ -51,6 +53,8 @@
 - (void)resetLoginState {
   self.ssoButton.hidden = NO;
   self.normalButton.hidden = NO;
+  self.termsButton.hidden = NO;
+  self.privacyButton.hidden = NO;
   self.splashLabel.text = nil;
   [self.splashActivity stopAnimating];
 }
@@ -79,6 +83,8 @@
 - (IBAction)ssoLogin {
   self.ssoButton.hidden = YES;
   self.normalButton.hidden = YES;
+  self.termsButton.hidden = YES;
+  self.privacyButton.hidden = YES;
   self.splashLabel.text = @"Logging in to Facebook";
   [self.splashActivity startAnimating];
   [self authorizeWithFBAppAuth:YES safariAuth:YES];
@@ -87,6 +93,8 @@
 - (IBAction)normalLogin {
   self.ssoButton.hidden = YES;
   self.normalButton.hidden = YES;
+  self.termsButton.hidden = YES;
+  self.privacyButton.hidden = YES;
   self.splashLabel.text = @"Logging in to Facebook";
   [self.splashActivity startAnimating];
   [self authorizeWithFBAppAuth:NO safariAuth:NO];
@@ -248,6 +256,8 @@
   RELEASE_SAFELY(_ssoButton);
   RELEASE_SAFELY(_normalButton);
   RELEASE_SAFELY(_splashActivity);
+  RELEASE_SAFELY(_termsButton);
+  RELEASE_SAFELY(_privacyButton);
   
   // IVARS
   if(_authorizeURL) [_authorizeURL release];

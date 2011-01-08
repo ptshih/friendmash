@@ -21,6 +21,8 @@
   IBOutlet UIButton *_ssoButton;
   IBOutlet UIButton *_normalButton;
   IBOutlet UIActivityIndicatorView *_splashActivity;
+  IBOutlet UIButton *_termsButton;
+  IBOutlet UIButton *_privacyButton;
   NSURL *_authorizeURL;
   id <FacebookLoginDelegate> _delegate;
 }
@@ -31,6 +33,8 @@
 @property (nonatomic, retain) UIButton *ssoButton;
 @property (nonatomic, retain) UIButton *normalButton;
 @property (nonatomic, retain) UIActivityIndicatorView *splashActivity;
+@property (nonatomic, retain) UIButton *termsButton;
+@property (nonatomic, retain) UIButton *privacyButton;
 
 @property (nonatomic, retain) NSURL *authorizeURL;
 @property (nonatomic, assign) id <FacebookLoginDelegate> delegate;
