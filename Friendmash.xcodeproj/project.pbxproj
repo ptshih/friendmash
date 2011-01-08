@@ -147,7 +147,6 @@
 		25D80A1612976E200095154D /* tab_male@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A1412976E200095154D /* tab_male@2x.png */; };
 		25D80A40129772E70095154D /* tab_female.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A3E129772E70095154D /* tab_female.png */; };
 		25D80A41129772E70095154D /* tab_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80A3F129772E70095154D /* tab_male.png */; };
-		25D80AD01297CCB90095154D /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D80ACF1297CCB90095154D /* libFlurry.a */; };
 		25D80C5812988EC50095154D /* apprentice.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2C12988EC50095154D /* apprentice.png */; };
 		25D80C5912988EC50095154D /* apprentice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2D12988EC50095154D /* apprentice@2x.png */; };
 		25D80C5A12988EC50095154D /* brigadier.png in Resources */ = {isa = PBXBuildFile; fileRef = 25D80C2E12988EC50095154D /* brigadier.png */; };
@@ -399,9 +398,6 @@
 		25D80A1412976E200095154D /* tab_male@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_male@2x.png"; sourceTree = "<group>"; };
 		25D80A3E129772E70095154D /* tab_female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_female.png; sourceTree = "<group>"; };
 		25D80A3F129772E70095154D /* tab_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_male.png; sourceTree = "<group>"; };
-		25D80ACD1297CCB80095154D /* FlurryAdDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAdDelegate.h; sourceTree = "<group>"; };
-		25D80ACE1297CCB80095154D /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
-		25D80ACF1297CCB90095154D /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		25D80C2C12988EC50095154D /* apprentice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apprentice.png; sourceTree = "<group>"; };
 		25D80C2D12988EC50095154D /* apprentice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apprentice@2x.png"; sourceTree = "<group>"; };
 		25D80C2E12988EC50095154D /* brigadier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brigadier.png; sourceTree = "<group>"; };
@@ -504,7 +500,6 @@
 				2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */,
 				2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */,
 				2573E50C128585B1004EBEBB /* libz.1.2.3.dylib in Frameworks */,
-				25D80AD01297CCB90095154D /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +533,6 @@
 			isa = PBXGroup;
 			children = (
 				25FAEB4512A71C2E00E2D6E8 /* HashValue */,
-				25D80ACC1297CCB80095154D /* FlurryLib */,
 				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 				2573EA3A12861A08004EBEBB /* TouchJSON */,
 				2573E541128589CF004EBEBB /* Reachability */,
@@ -781,16 +775,6 @@
 				2573EA5012861A08004EBEBB /* CSerializedJSONData.m */,
 			);
 			path = JSON;
-			sourceTree = "<group>";
-		};
-		25D80ACC1297CCB80095154D /* FlurryLib */ = {
-			isa = PBXGroup;
-			children = (
-				25D80ACD1297CCB80095154D /* FlurryAdDelegate.h */,
-				25D80ACE1297CCB80095154D /* FlurryAPI.h */,
-				25D80ACF1297CCB90095154D /* libFlurry.a */,
-			);
-			path = FlurryLib;
 			sourceTree = "<group>";
 		};
 		25D80C2B12988EC50095154D /* fmranks */ = {

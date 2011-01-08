@@ -8,7 +8,6 @@
  */
 
 #import "FriendmashAppDelegate.h"
-#import "FlurryAPI.h"
 
 /*
  tagline:
@@ -28,6 +27,9 @@
   #include "TargetConditionals.h"
 #endif
 
+#define USER_LANGUAGE [[NSLocale preferredLanguages] objectAtIndex:0]
+#define USER_LOCALE [[NSLocale autoupdatingCurrentLocale] localeIdentifier]
+
 //#define FORCE_MASH
 #define FORCE_LEFT @"100000761003581"
 #define FORCE_RIGHT @"100000933803344"
@@ -37,7 +39,7 @@
 
 #if TARGET_IPHONE_SIMULATOR
   #define STAGING
-  #define USE_LOCALHOST
+//  #define USE_LOCALHOST
 #endif
 
 #ifdef STAGING
@@ -73,9 +75,6 @@
 // meeting_for
 
 #define RADIANS(degrees) ((degrees * M_PI) / 180.0)
-
-#define kRequestGlobalStats @"RequestGlobalStatsNotification"
-#define kAppWillEnterForeground @"AppWillEnterForegroundNotification"
 
 #define FM_RANKINGS_COUNT 99
 

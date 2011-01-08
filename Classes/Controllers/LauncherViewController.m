@@ -12,10 +12,6 @@
 #import "RankingsViewController.h"
 #import "AboutViewController.h"
 #import "Constants.h"
-#import "ASIHTTPRequest.h"
-#import "RemoteRequest.h"
-#import "RemoteOperation.h"
-#import "CJSONDeserializer.h"
 #import "MashCache.h"
 
 #define STATS_SCROLL_OFFSET 20.0
@@ -27,7 +23,6 @@
  */
 - (void)launchFriendmashWithGender:(NSString *)gender;
 
-- (void)sendStatsRequestWithDelegate:(id)delegate;
 - (void)setupStatsScroll;
 - (void)startStatsAnimation;
 - (void)shouldStartStatsAnimation;
@@ -43,17 +38,13 @@
 @synthesize statsView = _statsView;
 @synthesize statsLabel = _statsLabel;
 @synthesize statsNextLabel = _statsNextLabel;
-@synthesize statsRequest = _statsRequest;
-@synthesize statsArray = _statsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     _isVisible = NO;
-    _isResume = NO;
     _isAnimating = NO;
     _statsCounter = 0;
     _gameMode = FriendmashGameModeNormal;
-    _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
   }
   return self;
 }
@@ -75,27 +66,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-//  self.navigationController.navigationBar.hidden = YES;
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendStatsRequestWithDelegate:) name:kRequestGlobalStats object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeFromBackground) name:kAppWillEnterForeground object:nil];  
   _isVisible = YES;
   
   // Start Stats Animation
-  // I use userdefaults here because when the app launches, APP_DELEGATE hasn't set it's currentUserId ivar yet
-  // Because LauncherViewController gets shown before we even try to login
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
-    [self sendStatsRequestWithDelegate:self];
-  } else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
-    [self shouldStartStatsAnimation];
-  }
+  [self shouldStartStatsAnimation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kRequestGlobalStats object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kAppWillEnterForeground object:nil];
   
   _isVisible = NO;
   _isAnimating = NO;
@@ -103,13 +82,6 @@
   // Stop Stats Animation
   [self.statsLabel.layer removeAllAnimations];
   [self.statsNextLabel.layer removeAllAnimations];
-}
-
-- (void)resumeFromBackground {
-  if([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
-    _isResume = YES;
-    [self sendStatsRequestWithDelegate:self];
-  }
 }
 
 - (void)setupStatsScroll {
@@ -136,9 +108,7 @@
 }
 
 - (void)shouldStartStatsAnimation {
-  if (_isResume) {
-    _isResume = NO;
-  } else if (!_isAnimating) {
+  if (!_isAnimating) {
     [self startStatsAnimation];
   }
 }
@@ -152,12 +122,12 @@
     self.statsLabel.text = self.statsNextLabel.text;
   } else {
     _statsCounter = 0;
-    self.statsLabel.text = [self.statsArray objectAtIndex:_statsCounter];
+    self.statsLabel.text = [APP_DELEGATE.statsArray objectAtIndex:_statsCounter];
     _statsCounter++;
   }
-  if (_statsCounter == [self.statsArray count]) _statsCounter = 0;
-  self.statsNextLabel.text = [self.statsArray objectAtIndex:_statsCounter];
-  if ([self.statsArray count] > 1) {
+  if (_statsCounter == [APP_DELEGATE.statsArray count]) _statsCounter = 0;
+  self.statsNextLabel.text = [APP_DELEGATE.statsArray objectAtIndex:_statsCounter];
+  if ([APP_DELEGATE.statsArray count] > 1) {
     _statsCounter++;
   }
   self.statsLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, STATS_SCROLL_OFFSET);
@@ -177,7 +147,7 @@
 }
 
 - (void)statsScrollStarted {
-//  DLog(@"start");
+//  DLog(@"start stats scroll");
 }
 
 - (void)statsScrollFinished {
@@ -246,16 +216,13 @@
 }
 
 - (IBAction)male {
-  [FlurryAPI logEvent:@"launcherMale"];
   [self launchFriendmashWithGender:@"male"];
 }
 - (IBAction)female {
-  [FlurryAPI logEvent:@"launcherFemale"];
   [self launchFriendmashWithGender:@"female"];
 }
 
 - (IBAction)about {
-  [FlurryAPI logEvent:@"launcherAbout"];
   AboutViewController *avc;
   if(isDeviceIPad()) {
     avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController_iPad" bundle:nil];
@@ -267,8 +234,7 @@
   [avc release]; 
 }
 
-- (IBAction)profile {  
-  [FlurryAPI logEvent:@"launcherProfile"];
+- (IBAction)profile {
   ProfileViewController *pvc;
   if(isDeviceIPad()) {
     pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController_iPad" bundle:nil];
@@ -284,7 +250,6 @@
 }
 
 - (IBAction)rankings {
-  [FlurryAPI logEvent:@"launcherRankings"];
   RankingsViewController *rvc;
   if(isDeviceIPad()) {
     rvc = [[RankingsViewController alloc] initWithNibName:@"RankingsViewController_iPad" bundle:nil];
@@ -324,57 +289,9 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   // logout
-  switch (buttonIndex) {
-    case 0:
-      break;
-    case 1:
-      [APP_DELEGATE logoutFacebook];
-      break;
-    default:
-      break;
+  if (buttonIndex == 1) {
+    [APP_DELEGATE logoutFacebook];
   }
-}
-
-#pragma mark Server Requests
-- (void)sendStatsRequestWithDelegate:(id)delegate {
-  DLog(@"sending stats request");
-  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/globalstats/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
-  self.statsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:self];
-  [[RemoteOperation sharedInstance] addRequestToQueue:self.statsRequest];
-}
-
-#pragma mark ASIHTTPRequestDelegate
-- (void)requestFinished:(ASIHTTPRequest *)request {
-  NSInteger statusCode = [request responseStatusCode];
-  if(statusCode > 200) {
-    DLog(@"FMVC status code not 200 in request finished, response: %@", [request responseString]);
-    
-    // server error, create an empty stats array
-    if(_statsArray) {
-      [_statsArray release];
-      _statsArray = nil;
-    }
-    _statsArray = [[NSArray arrayWithObject:@"Error Retrieving Server Statistics"] retain];
-  } else {
-    if([request isEqual:self.statsRequest]) {
-      DLog(@"stats request finished");
-      NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-      if(_statsArray) {
-        [_statsArray release];
-        _statsArray = nil;
-      }
-      _statsArray = [responseArray retain];
-      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasDownloadedStats"];
-      [[NSUserDefaults standardUserDefaults] synchronize];
-      [self performSelectorOnMainThread:@selector(shouldStartStatsAnimation) withObject:nil waitUntilDone:YES];
-    }
-  }
-  
-//  [self startStatsAnimation];
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
-  DLog(@"Stats Request Failed with Error: %@", [request error]);
 }
 
 #pragma mark Memory Management
@@ -394,19 +311,13 @@
   [super viewDidUnload];
 }
 
-- (void)dealloc {
-  if(_statsRequest) {
-    [_statsRequest clearDelegatesAndCancel];
-    [_statsRequest release];
-  }
-  
+- (void)dealloc {  
   // IBOutlets
   RELEASE_SAFELY(_launcherView);
   RELEASE_SAFELY(_modeButton);
   RELEASE_SAFELY(_statsView);
   
   // IVARS
-  RELEASE_SAFELY(_statsArray);
   RELEASE_SAFELY(_statsLabel);
   RELEASE_SAFELY(_statsNextLabel);
   

@@ -10,20 +10,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ProfileViewController.h"
 
-@class ASIHTTPRequest;
-
 @interface LauncherViewController : UIViewController <ProfileDelegate, UIActionSheetDelegate> {
   IBOutlet UIView *_launcherView;
   IBOutlet UIButton *_modeButton;
   IBOutlet UIScrollView *_statsView;
-  ASIHTTPRequest *_statsRequest;
   UILabel *_statsLabel;
   UILabel *_statsNextLabel;
   BOOL _isVisible;
-  BOOL _isResume;
   BOOL _isAnimating;
   NSInteger _gameMode;
-  NSArray *_statsArray;
   NSInteger _statsCounter;
 }
 
@@ -32,8 +27,6 @@
 @property (nonatomic, retain) UIScrollView *statsView;
 @property (nonatomic, retain) UILabel *statsLabel;
 @property (nonatomic, retain) UILabel *statsNextLabel;
-@property (nonatomic, retain) ASIHTTPRequest *statsRequest;
-@property (nonatomic, retain) NSArray *statsArray;
 
 
 /**

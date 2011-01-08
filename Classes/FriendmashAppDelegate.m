@@ -16,13 +16,15 @@
 #import "CJSONDeserializer.h"
 
 void uncaughtExceptionHandler(NSException *exception) {
-  [FlurryAPI logError:@"Uncaught" message:@"Crash!" exception:exception];
+
 }
 
 @interface FriendmashAppDelegate (Private)
 - (NSDictionary*)parseURLParams:(NSString *)query;
 - (void)sendFacebookAccessToken;
+- (void)sendStatsRequest;
 - (void)tryLogin;
+- (void)startSession;
 @end
 
 @implementation FriendmashAppDelegate
@@ -34,12 +36,15 @@ void uncaughtExceptionHandler(NSException *exception) {
 @synthesize launcherViewController = _launcherViewController;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize tokenRequest = _tokenRequest;
+@synthesize statsRequest = _statsRequest;
 @synthesize fbAccessToken = _fbAccessToken;
 @synthesize currentUserId = _currentUserId;
 @synthesize currentUser = _currentUser;
 @synthesize hostReach = _hostReach;
 @synthesize netStatus = _netStatus;
 @synthesize reachabilityAlertView = _reachabilityAlertView;
+@synthesize sessionKey = _sessionKey;
+@synthesize statsArray = _statsArray;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -127,6 +132,12 @@ void uncaughtExceptionHandler(NSException *exception) {
   } else {
     self.fbAccessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"];
     self.currentUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"];
+    
+    // Set Session Start Key
+    [self startSession];
+    
+    // Fire global stats
+    [self sendStatsRequest];
   }
 
 // USER OVERRIDE
@@ -178,6 +189,13 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[RemoteOperation sharedInstance] addRequestToQueue:self.tokenRequest];
 }
 
+- (void)sendStatsRequest {
+  DLog(@"sending stats request");
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/globalstats/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  self.statsRequest = [RemoteRequest getRequestWithBaseURLString:baseURLString andParams:nil withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.statsRequest];
+}
+
 
 #pragma mark ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request {
@@ -186,15 +204,12 @@ void uncaughtExceptionHandler(NSException *exception) {
   if([request isEqual:self.currentUserRequest]) {
     DLog(@"current user request finished");
     if(statusCode > 200) {
-      [FlurryAPI logEvent:@"errorCurrentUserRequestError"];
       _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_networkErrorAlert show];
       [_networkErrorAlert autorelease];
     } else {
       self.currentUser = [request responseData];
       self.currentUserId = [[[CJSONDeserializer deserializer] deserializeAsDictionary:[request responseData] error:nil] objectForKey:@"id"];
-      
-      [FlurryAPI setUserID:self.currentUserId];
       
       [[NSUserDefaults standardUserDefaults] setObject:self.currentUserId forKey:@"currentUserId"];
       [[NSUserDefaults standardUserDefaults] synchronize];
@@ -205,16 +220,37 @@ void uncaughtExceptionHandler(NSException *exception) {
   } else if([request isEqual:self.tokenRequest]) {
     DLog(@"token request finished");
     if(statusCode >= 500) {
-      [FlurryAPI logEvent:@"errorTokenRequestError"];
       _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_tokenFailedAlert show];
       [_tokenFailedAlert autorelease];
     } else {
       // Token successfully sent
+      
+      // Set session start key
+      [self startSession];
+      
       // dismiss the login view
       [self dismissLoginView:YES];
-      // Fire a notification to load global stats
-      [[NSNotificationCenter defaultCenter] postNotificationName:kRequestGlobalStats object:nil];
+      
+      // Fire global stats
+      [self sendStatsRequest];
+    }
+  } else if([request isEqual:self.statsRequest]) {
+    DLog(@"stats request finished");
+    if (statusCode > 200) {
+      // server error, create an empty stats array
+      if(_statsArray) {
+        [_statsArray release];
+        _statsArray = nil;
+      }
+      _statsArray = [[NSArray arrayWithObject:@"Error Retrieving Server Statistics"] retain];
+    } else {
+      NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
+      if(_statsArray) {
+        [_statsArray release];
+        _statsArray = nil;
+      }
+      _statsArray = [responseArray retain];
     }
   }
 }
@@ -222,12 +258,10 @@ void uncaughtExceptionHandler(NSException *exception) {
 - (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
   if([request isEqual:self.currentUserRequest]) {
-    [FlurryAPI logEvent:@"errorCurrentUserRequestFailed"];
     _networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [_networkErrorAlert show];
     [_networkErrorAlert autorelease];
   } else if([request isEqual:self.tokenRequest]) {
-    [FlurryAPI logEvent:@"errorTokenRequestFailed"];
     _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
     [_tokenFailedAlert show];
     [_tokenFailedAlert autorelease];
@@ -338,6 +372,14 @@ void uncaughtExceptionHandler(NSException *exception) {
   return NO;
 }
 
+#pragma mark Session
+- (void)startSession {
+  // Set Session Key
+  NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+  NSInteger currentTimestampInteger = floor(currentTimestamp);
+  self.sessionKey = [NSString stringWithFormat:@"%d", currentTimestampInteger]; 
+}
+
 #pragma mark Application resume/suspend/exit stuff
 // Called when app launches fresh NOT backgrounded
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -347,21 +389,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownHelp"];
   }
-      
-  // Flurry
+
+  // Uncaught Exception Handler
   NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-  [FlurryAPI startSession:@"LD5P2EGIERGR2TTEZLCE"];
-  
-  if([[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]) {
-    [FlurryAPI setUserID:[[NSUserDefaults standardUserDefaults] objectForKey:@"currentUserId"]];
-  }
-  
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasDownloadedStats"]) {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
-  } else {
-    // When recovering from a crash, wipe this
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
-  }
   
   // Default new users to Social Network mode
   if (![[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"]) {
@@ -390,10 +420,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   _navigationController = [[UINavigationController alloc] initWithRootViewController:self.launcherViewController];
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
   
-  // Override point for customization after app launch. 
-  [window addSubview:self.navigationController.view];
-  [window makeKeyAndVisible];
-  
   // Reachability
   _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to use Friendmash." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
 	_hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
@@ -401,12 +427,18 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
   [self.hostReach startNotifier];
   
+  _sessionKey = [[NSString alloc] init];
+  _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
+  
+  // Override point for customization after app launch. 
+  [window addSubview:self.navigationController.view];
+  [window makeKeyAndVisible];
+  
 	return YES;
 }
 
 // iOS4 ONLY, resuming from background
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kAppWillEnterForeground object:nil];
 }
 
 // Coming back from a locked phone or call
@@ -416,21 +448,18 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 // Someone received a call or hit the lock button
 - (void)applicationWillResignActive:(UIApplication *)application {
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS4 ONLY
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize]; 
 }
 
 // iOS3 ONLY
 - (void)applicationWillTerminate:(UIApplication *)application {
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasDownloadedStats"];
   [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -472,6 +501,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     [_currentUserRequest release];
   }
   
+  if(_statsRequest) {
+    [_statsRequest clearDelegatesAndCancel];
+    [_statsRequest release];
+  }
+  
   RELEASE_SAFELY(_loginViewController);
   RELEASE_SAFELY(_loginPopoverController);
   RELEASE_SAFELY(_fbAccessToken);
@@ -481,6 +515,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   RELEASE_SAFELY(_navigationController);
   RELEASE_SAFELY(_hostReach);
   RELEASE_SAFELY(_reachabilityAlertView);
+  RELEASE_SAFELY(_sessionKey);
 
   [window release];
   [super dealloc];

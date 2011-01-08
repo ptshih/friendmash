@@ -209,7 +209,6 @@
 }
 
 - (IBAction)back {
-  [FlurryAPI logEvent:@"friendmashBack"];
   [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -219,7 +218,6 @@
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
   [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
   [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
-//  [FlurryAPI logEvent:@"friendmashRemash"];
   [self prepareMash];
 }
 

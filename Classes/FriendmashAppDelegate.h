@@ -22,6 +22,7 @@
   UIPopoverController *_loginPopoverController;
   ASIHTTPRequest *_currentUserRequest;
   ASIHTTPRequest *_tokenRequest;
+  ASIHTTPRequest *_statsRequest;
   NSString *_fbAccessToken;
   NSString *_currentUserId;
   NSData *_currentUser;
@@ -36,6 +37,9 @@
   Reachability *_hostReach;
 	NetworkStatus _netStatus;
   UIAlertView *_reachabilityAlertView;
+  
+  NSString *_sessionKey;
+  NSArray *_statsArray;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -45,6 +49,7 @@
 @property (nonatomic, retain) IBOutlet LauncherViewController *launcherViewController;
 @property (nonatomic, retain) ASIHTTPRequest *currentUserRequest;
 @property (nonatomic, retain) ASIHTTPRequest *tokenRequest;
+@property (nonatomic, retain) ASIHTTPRequest *statsRequest;
 @property (nonatomic, retain) NSString *fbAccessToken;
 @property (nonatomic, retain) NSString *currentUserId;
 @property (nonatomic, retain) NSData *currentUser;
@@ -52,6 +57,9 @@
 @property (nonatomic, retain) Reachability *hostReach;
 @property (nonatomic, assign) NetworkStatus netStatus;
 @property (nonatomic, retain) UIAlertView *reachabilityAlertView;
+
+@property (nonatomic, retain) NSString *sessionKey;
+@property (nonatomic, retain) NSArray *statsArray;
 
 - (void)authenticateWithFacebook:(BOOL)animated;
 - (void)logoutFacebook;

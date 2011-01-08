@@ -94,13 +94,10 @@ static UIImage *_placeholderImage;
 #pragma mark  UITabBarDelegate
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
   if([item isEqual:self.tabBarItemTop]) {
-    [FlurryAPI logEvent:@"rankingsTabTop"];
     self.selectedMode = RankingsModeTop;    
   } else if([item isEqual:self.tabBarItemMale]) {
-    [FlurryAPI logEvent:@"rankingsTabMale"];
     self.selectedMode = RankingsModeMale;
   } else if([item isEqual:self.tabBarItemFemale]) {
-    [FlurryAPI logEvent:@"rankingsTabFemale"];
     self.selectedMode = RankingsModeFemale;
   }
   
@@ -197,7 +194,6 @@ static UIImage *_placeholderImage;
   // {"error":{"type":"OAuthException","message":"Error validating access token."}}
   NSInteger statusCode = [request responseStatusCode];
   if(statusCode > 200) {
-    [FlurryAPI logEvent:@"errorRankingsRequestError"];
     UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
     [networkErrorAlert show];
     [networkErrorAlert autorelease];
@@ -215,7 +211,6 @@ static UIImage *_placeholderImage;
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
-  [FlurryAPI logEvent:@"errorRankingsRequestFailed"];
   DLog(@"Request Failed with Error: %@", [request error]);
   UIAlertView *networkErrorAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil];
   [networkErrorAlert show];
@@ -294,8 +289,6 @@ static UIImage *_placeholderImage;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
-  
-  [FlurryAPI logEvent:@"rankingsTapped" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[self.rankingsArray objectAtIndex:indexPath.row] objectForKey:@"facebook_id"], @"facebookId", [NSNumber numberWithInteger:self.selectedMode], @"selectedMode", nil]];
    
   // Popup a lightbox view with full sized image
   LightboxViewController *lvc;
