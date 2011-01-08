@@ -53,10 +53,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  // Restore previously selected gameMode
-  _gameMode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"] integerValue];
-  [self setupGameMode];
-  
   self.navigationController.navigationBar.hidden = YES;
   
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
@@ -66,6 +62,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
+  // Restore previously selected gameMode
+  _gameMode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGameMode"] integerValue];
+  [self setupGameMode];
   
   _isVisible = YES;
   

@@ -332,8 +332,8 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownHelp"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasShownWelcome"];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"selectedGameMode"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasLoggedIn"];
+  [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2] forKey:@"selectedGameMode"];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [self authenticateWithFacebook:NO];
 }
