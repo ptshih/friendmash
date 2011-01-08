@@ -111,6 +111,7 @@
   } else if ([request isEqual:_leftRequest]) {
     if (statusCode > 200) {
       // Facebook Error
+      _leftFinished = YES;
       [self handleFacebookAndAuthErrorWithStatusCode:statusCode];
     } else {
       // No Error
@@ -124,6 +125,7 @@
     }
   } else if ([request isEqual:_rightRequest]) {
     if (statusCode > 200) {
+      _rightFinished = YES;
       [self handleFacebookAndAuthErrorWithStatusCode:statusCode];
     } else {
       // No Error      
