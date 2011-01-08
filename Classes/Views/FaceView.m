@@ -51,22 +51,18 @@
 @synthesize friendmashViewController = _friendmashViewController;
 @synthesize faceImageView = _faceImageView;
 @synthesize canvas = _canvas;
-@synthesize toolbar = _toolbar;
 @synthesize isLeft = _isLeft;
 @synthesize isAnimating = _isAnimating;
 @synthesize facebookId = _facebookId;
 @synthesize delegate = _delegate;
 
 - (void)awakeFromNib {
-  currentAnimationType = 0;
+  self.userInteractionEnabled = NO;
   _imageLoaded = NO;
   self.isAnimating = NO;
   _isTouchActive = NO;
-  _facebookId = [[NSString alloc] init];
-  
+
   [self createGestureRecognizers];
-  
-  self.userInteractionEnabled = NO;
 }
 
 - (void)loadNewFaceWithImage:(UIImage *)faceImage {

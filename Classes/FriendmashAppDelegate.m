@@ -219,7 +219,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     }
   } else if([request isEqual:self.tokenRequest]) {
     DLog(@"token request finished");
-    if(statusCode >= 500) {
+    if(statusCode > 200) {
       _tokenFailedAlert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:FM_NETWORK_ERROR delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
       [_tokenFailedAlert show];
       [_tokenFailedAlert autorelease];
@@ -346,6 +346,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   self.fbAccessToken = nil;
   self.currentUserId = nil;
   self.currentUser = nil;
+  self.sessionKey = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"fbAccessToken"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentUserId"];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"lastExitDate"];
@@ -400,7 +401,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   
   [[NSUserDefaults standardUserDefaults] synchronize];
   
-  _tokenRetryCount = 0;
   _isShowingLogin = NO;
   
   // Create login view controller ivar
@@ -427,7 +427,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
   [self.hostReach startNotifier];
   
-  _sessionKey = [[NSString alloc] init];
   _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
   
   // Override point for customization after app launch. 
@@ -478,6 +477,7 @@ void uncaughtExceptionHandler(NSException *exception) {
       }
 		} else {
       [self.reachabilityAlertView show];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kConnectionLost object:nil];
     }
 	}
 }

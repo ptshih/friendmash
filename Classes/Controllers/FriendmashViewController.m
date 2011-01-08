@@ -53,7 +53,6 @@
 
 @implementation FriendmashViewController
 
-@synthesize toolbar = _toolbar;
 @synthesize remashButton = _remashButton;
 
 @synthesize leftView = _leftView;
@@ -154,7 +153,6 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"friendmash", @"friendmash");
-  self.toolbar.tintColor = RGBCOLOR(59,89,152);
   
   self.refreshFrame.center = self.remashButton.center;
   self.refreshSpinner.center = self.remashButton.center;
@@ -294,7 +292,6 @@
 
   self.leftView.friendmashViewController = self;
   self.leftView.canvas = self.view;
-  self.leftView.toolbar = self.toolbar;
   self.leftView.isLeft = YES;
   self.leftView.delegate = self;
 }
@@ -309,7 +306,6 @@
   
   self.rightView.friendmashViewController = self;
   self.rightView.canvas = self.view;
-  self.rightView.toolbar = self.toolbar;
   self.rightView.isLeft = NO;
   self.rightView.delegate = self;
 }
@@ -550,7 +546,6 @@
   [[RemoteOperation sharedInstance] cancelAllRequests];
   
   // IBOutlets
-  RELEASE_SAFELY(_toolbar);
   RELEASE_SAFELY(_remashButton);
   
   // IVARS

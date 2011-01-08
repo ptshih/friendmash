@@ -34,13 +34,10 @@
   IBOutlet UIImageView *_faceImageView;
   FriendmashViewController *_friendmashViewController;
   UIView *_canvas;
-  UIToolbar *_toolbar;
-  CGPoint _touchOrigin;
   BOOL _isLeft;
   BOOL _isAnimating;
   BOOL _imageLoaded;
   id <FaceViewDelegate> _delegate;
-  NSUInteger currentAnimationType;
   NSString *_facebookId;
   BOOL _isTouchActive;
 }
@@ -48,7 +45,6 @@
 @property (nonatomic, assign) FriendmashViewController *friendmashViewController;
 @property (nonatomic, retain) UIImageView *faceImageView;
 @property (nonatomic, assign) UIView *canvas;
-@property (nonatomic, assign) UIToolbar *toolbar;
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, retain) NSString *facebookId;

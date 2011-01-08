@@ -25,11 +25,9 @@ typedef enum {
 @class OverlayView;
 @class ThumbsView;
 @class ASIHTTPRequest;
-
 @class MashCache;
 
 @interface FriendmashViewController : UIViewController <FaceViewDelegate, MashCacheDelegate> {
-  IBOutlet UIToolbar *_toolbar;
   IBOutlet UIButton *_remashButton;
   ASIHTTPRequest *_resultsRequest;
   NSString *_gender;
@@ -68,7 +66,6 @@ typedef enum {
   BOOL _isTouchActive;
 }
 
-@property (nonatomic, retain) UIToolbar *toolbar;
 @property (nonatomic, retain) UIButton *remashButton;
 
 @property (nonatomic, retain) FaceView *leftView;

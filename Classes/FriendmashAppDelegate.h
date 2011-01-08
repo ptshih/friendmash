@@ -32,7 +32,6 @@
   UIAlertView *_networkErrorAlert;
   UIAlertView *_loginFailedAlert;
   UIAlertView *_tokenFailedAlert;
-  NSInteger _tokenRetryCount;
   
   Reachability *_hostReach;
 	NetworkStatus _netStatus;
