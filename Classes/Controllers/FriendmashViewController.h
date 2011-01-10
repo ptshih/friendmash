@@ -42,9 +42,7 @@ typedef enum {
   FaceView *_tmpRightView;
   
   UIAlertView *_noContentAlert;
-  UIAlertView *_networkErrorAlert;
   UIAlertView *_oauthErrorAlert;
-  UIAlertView *_fbPictureErrorAlert;
   
   OverlayView *_helpView;
   

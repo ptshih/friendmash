@@ -257,13 +257,13 @@
 - (void)mashCacheNoMashesError {
   _noContentAlert = [[UIAlertView alloc] initWithTitle:@"Oh Noes!" message:@"We ran out of mashes for you. Sending you back to the home screen so you can play again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [_noContentAlert show];
-//  [_noContentAlert autorelease];
+  [_noContentAlert autorelease];
 }
 
 - (void)mashCacheAuthError {
   _oauthErrorAlert = [[UIAlertView alloc] initWithTitle:@"Facebook Error" message:@"Your Facebook session has expired. Please login to Facebook again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
   [_oauthErrorAlert show];
-//  [_oauthErrorAlert autorelease];
+  [_oauthErrorAlert autorelease];
 }
 
 - (void)mashCacheFacebookError {
@@ -517,6 +517,8 @@
   
   if([request isEqual:self.resultsRequest]) {
     DLog(@"send results request finished");
+  } else if ([request isEqual:self.remashRequest]) {
+    DLog(@"send remash request finished");
   }
 }
 
@@ -531,10 +533,7 @@
   } else if([alertView isEqual:_oauthErrorAlert]) {
     [self.navigationController popViewControllerAnimated:NO];
     [APP_DELEGATE fbDidLogout];
-  } else if([alertView isEqual:_fbPictureErrorAlert]) {
-    [self.navigationController popViewControllerAnimated:NO];
   }
-  [alertView release];
 }
 
 // Override to allow orientations other than the default portrait orientation.
