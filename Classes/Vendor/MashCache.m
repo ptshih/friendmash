@@ -45,6 +45,8 @@
 
 @synthesize state = _state;
 
+@synthesize netStatus = _netStatus;
+
 @synthesize delegate = _delegate;
 
 - (id)init {
@@ -58,10 +60,26 @@
     _noMashesError = NO;
     _facebookError = NO;
     _authError = NO;
-    
+    _netStatus = 0; // default netstatus to 0
     _state = MashCacheStateEmpty;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
   }
   return self;
+}
+
+#pragma mark Reachability Notification
+//Called by Reachability whenever status changes.
+- (void)reachabilityChanged:(NSNotification *)note {
+	Reachability *curReach = [note object];
+	self.netStatus = [curReach currentReachabilityStatus];
+	  
+  if(self.netStatus > kNotReachable) {
+    // Has Connection
+    [self checkMashCache];
+  } else {
+    // No Connection
+  }
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -145,6 +163,11 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
   DLog(@"Request Failed with Error: %@", [request error]);
+  
+  // Continue caching if we didn't completely lose network
+  if(self.netStatus > kNotReachable) {
+    [self checkMashCache];
+  }
   
   // Remove request from pending requests array
   [self.pendingRequests removeObject:request];
@@ -301,6 +324,8 @@
 
 #pragma mark Memory Management
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+  
   for (ASIHTTPRequest *pendingRequest in self.pendingRequests) {
     [pendingRequest clearDelegatesAndCancel];
   }

@@ -88,8 +88,27 @@
     _mashCache = [[MashCache alloc] init];
     self.mashCache.delegate = self;
     _isMashLoaded = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
   }
   return self;
+}
+
+#pragma mark Reachability Notification
+//Called by Reachability whenever status changes.
+- (void)reachabilityChanged:(NSNotification *)note {
+	Reachability *curReach = [note object];
+	NetworkStatus netStatus = [curReach currentReachabilityStatus];
+  
+//  if(netStatus > kNotReachable) {
+//    // Has Connection
+//    self.view.userInteractionEnabled = YES;
+//    self.view.alpha = 1.0;
+//  } else {
+//    // No Connection
+//    self.view.userInteractionEnabled = NO;
+//    self.view.alpha = 0.3;
+//  }
 }
 
 - (void)setupViews {
@@ -179,17 +198,10 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   self.navigationController.navigationBar.hidden = YES;
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectionLost) name:kConnectionLost object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kConnectionLost object:nil];
-}
-
-- (void)connectionLost {
-  [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark Help Overlay
@@ -545,6 +557,8 @@
 
 
 - (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+  
   if(_resultsRequest) {
     [_resultsRequest clearDelegatesAndCancel];
     [_resultsRequest release];

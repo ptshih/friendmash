@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MashCacheDelegate.h"
+#import "Reachability.h"
 
 typedef enum {
   MashCacheStateEmpty = 0,
@@ -42,6 +43,8 @@ typedef enum {
   
   MashCacheState _state;
   
+  NetworkStatus _netStatus;
+  
   id <MashCacheDelegate> _delegate;
 }
 
@@ -61,6 +64,8 @@ typedef enum {
 @property (nonatomic, retain) UIImage *rightImage;
 
 @property (nonatomic, assign) MashCacheState state;
+
+@property (nonatomic, assign) NetworkStatus netStatus;
 
 @property (nonatomic, assign) id <MashCacheDelegate> delegate;
 

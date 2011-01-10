@@ -349,6 +349,17 @@ void uncaughtExceptionHandler(NSException *exception) {
   }
 }
 
+- (void)didPresentAlertView:(UIAlertView *)alertView {
+  static BOOL busyAlertHasIndicator = NO;
+  if (alertView != _reachabilityAlertView || busyAlertHasIndicator) return;
+  UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+  indicator.center = CGPointMake(_reachabilityAlertView.bounds.size.width / 2, _reachabilityAlertView.bounds.size.height - 45);
+  [indicator startAnimating];
+  [_reachabilityAlertView addSubview:indicator];
+  [indicator release];
+  busyAlertHasIndicator = YES;
+}
+
 #pragma mark UIPopoverControllerDelegate
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
   return NO;
@@ -408,7 +419,8 @@ void uncaughtExceptionHandler(NSException *exception) {
   self.navigationController.navigationBar.tintColor = RGBCOLOR(59,89,152);
   
   // Reachability
-  _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to use Friendmash." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+  _reachabilityAlertView = [[UIAlertView alloc] initWithTitle:@"No Network Connection" message:@"An active network connection is required to play Friendmash." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+  
 	_hostReach = [[Reachability reachabilityWithHostName: @"www.apple.com"] retain];
   _netStatus = 0; // default netstatus to 0
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
@@ -452,8 +464,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 #pragma mark Reachability
 //Called by Reachability whenever status changes.
-- (void)reachabilityChanged:(NSNotification *)note
-{
+- (void)reachabilityChanged:(NSNotification *)note {
 	Reachability *curReach = [note object];
 	self.netStatus = [curReach currentReachabilityStatus];
 	
@@ -464,7 +475,6 @@ void uncaughtExceptionHandler(NSException *exception) {
       }
 		} else {
       [self.reachabilityAlertView show];
-      [[NSNotificationCenter defaultCenter] postNotificationName:kConnectionLost object:nil];
     }
 	}
 }

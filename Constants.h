@@ -34,8 +34,6 @@
 #define FORCE_LEFT @"100000761003581"
 #define FORCE_RIGHT @"100000933803344"
 
-#define kConnectionLost @"ConnectionLostNotification"
-
 // If this is defined, we will hit the staging server instead of prod
 // #define STAGING
 
