@@ -14,7 +14,7 @@
 #import "CJSONDeserializer.h"
 
 #define CACHE_SIZE 10
-#define RECENTS_SIZE 50
+#define RECENTS_SIZE 40
 
 @interface MashCache (Private)
 
@@ -110,11 +110,14 @@
     } else {
       // NO ERROR
       DLog(@"mash request finished");
+#ifdef FORCE_MASH
+      self.leftUserId = FORCE_LEFT;
+      self.rightUserId = FORCE_RIGHT;
+#else
       NSArray *responseArray = [[CJSONDeserializer deserializer] deserializeAsArray:[request responseData] error:nil];
-      
       self.leftUserId = [responseArray objectAtIndex:0];
       self.rightUserId = [responseArray objectAtIndex:1];
-      
+#endif
       self.leftRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.leftUserId andType:@"large" withDelegate:self];
       self.rightRequest = [RemoteRequest getFacebookRequestForPictureWithFacebookId:self.rightUserId andType:@"large" withDelegate:self];
       
@@ -201,9 +204,11 @@
 }
 
 #pragma mark Populate Cache
-- (void)addMashToCache {
-  if([self.recentOpponentsArray count] >= RECENTS_SIZE) {
-    [self.recentOpponentsArray removeAllObjects];
+- (void)addMashToCache {  
+  // If recents hit the max, then start popping off people from the front
+  if([self.recentOpponentsArray count] > RECENTS_SIZE) {
+    DLog(@"recents count: %d", [self.recentOpponentsArray count]);
+    [self.recentOpponentsArray removeObjectsInRange:NSMakeRange(0, 2)];
   }
   
   DLog(@"sending mash request");
