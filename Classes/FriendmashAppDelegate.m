@@ -14,6 +14,7 @@
 #import "RemoteRequest.h"
 #import "RemoteOperation.h"
 #import "CJSONDeserializer.h"
+#import "Appirater.h"
 
 void uncaughtExceptionHandler(NSException *exception) {
 
@@ -428,6 +429,9 @@ void uncaughtExceptionHandler(NSException *exception) {
   
   _statsArray = [[NSArray arrayWithObject:@"Welcome to Friendmash!"] retain];
   
+  // Appirater
+  [Appirater appLaunched:YES];
+  
   // Override point for customization after app launch. 
   [window addSubview:self.navigationController.view];
   [window makeKeyAndVisible];
@@ -437,6 +441,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 // iOS4 ONLY, resuming from background
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+  // Appirater
+  [Appirater appEnteredForeground:YES];
 }
 
 // Coming back from a locked phone or call

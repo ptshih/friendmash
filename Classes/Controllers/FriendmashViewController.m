@@ -17,6 +17,7 @@
 #import "OverlayView.h"
 #import "LightboxViewController.h"
 #import "MashCache.h"
+#import "Appirater.h"
 
 @interface FriendmashViewController (Private)
 
@@ -213,6 +214,9 @@
 }
 
 - (IBAction)remash {
+  // Appirater
+  [Appirater userDidSignificantEvent:YES];
+  
   [self animateShowLoading];
   [self animateFadeOutWithView:self.leftView withAlpha:0.6];
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
@@ -390,6 +394,9 @@
 }
 
 - (void)faceViewDidSelect:(BOOL)isLeft {
+  // Appirater
+  [Appirater userDidSignificantEvent:YES];
+  
   self.isTouchActive = YES;
   self.leftLoadingView.alpha = 0.0;
   self.rightLoadingView.alpha = 0.0;

@@ -82,6 +82,7 @@
 		256F65D71295F81400B31AC7 /* likes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256F65D61295F81400B31AC7 /* likes@2x.png */; };
 		256F66B9129605B100B31AC7 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256F66B8129605B100B31AC7 /* WebViewController.m */; };
 		256F66BB129605BC00B31AC7 /* WebViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 256F66BA129605BC00B31AC7 /* WebViewController_iPhone.xib */; };
+		2570583812DB076600E4E5DB /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 2570583712DB076600E4E5DB /* Appirater.m */; };
 		2573E5061285858C004EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5051285858C004EBEBB /* CFNetwork.framework */; };
 		2573E5081285859A004EBEBB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E5071285859A004EBEBB /* SystemConfiguration.framework */; };
 		2573E50A128585A4004EBEBB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2573E509128585A4004EBEBB /* MobileCoreServices.framework */; };
@@ -307,6 +308,8 @@
 		256F66B7129605B100B31AC7 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		256F66B8129605B100B31AC7 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		256F66BA129605BC00B31AC7 /* WebViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController_iPhone.xib; sourceTree = "<group>"; };
+		2570583612DB076600E4E5DB /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
+		2570583712DB076600E4E5DB /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		2573E5051285858C004EBEBB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2573E5071285859A004EBEBB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2573E509128585A4004EBEBB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -532,6 +535,7 @@
 		251EA13D1262ABD60055CFD2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				2570583512DB076600E4E5DB /* Appirater */,
 				25FAEB4512A71C2E00E2D6E8 /* HashValue */,
 				2573E51112858874004EBEBB /* ASIHTTPRequest */,
 				2573EA3A12861A08004EBEBB /* TouchJSON */,
@@ -681,6 +685,15 @@
 				25E4C6F112D6B1CD00F61AAB /* RemoteOperationDelegate.h */,
 			);
 			path = Client;
+			sourceTree = "<group>";
+		};
+		2570583512DB076600E4E5DB /* Appirater */ = {
+			isa = PBXGroup;
+			children = (
+				2570583612DB076600E4E5DB /* Appirater.h */,
+				2570583712DB076600E4E5DB /* Appirater.m */,
+			);
+			path = Appirater;
 			sourceTree = "<group>";
 		};
 		2573E51112858874004EBEBB /* ASIHTTPRequest */ = {
@@ -1242,6 +1255,7 @@
 				25F63D6E12AA58F700901A59 /* OverlayView.m in Sources */,
 				25E4C67012D6AA9E00F61AAB /* MashCache.m in Sources */,
 				25E4C6A312D6ABD300F61AAB /* RemoteOperation.m in Sources */,
+				2570583812DB076600E4E5DB /* Appirater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
