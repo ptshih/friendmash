@@ -42,7 +42,8 @@
 - (void)animateThumbsFinished;
 - (void)animateShowLoading;
 - (void)animateRotateRefresh;
-- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate;
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft;
+- (void)sendRemashRequestWithLeftId:(NSString *)leftId andRightId:(NSString *)rightId;
 - (void)stopRotateRefresh;
 
 - (void)setupViews;
@@ -61,6 +62,7 @@
 @synthesize isRightLoaded = _isRightLoaded;
 @synthesize isTouchActive = _isTouchActive;
 @synthesize resultsRequest = _resultsRequest;
+@synthesize remashRequest = _remashRequest;
 @synthesize gender = _gender;
 @synthesize leftUserId = _leftUserId;
 @synthesize rightUserId = _rightUserId;
@@ -216,6 +218,7 @@
   [self animateFadeOutWithView:self.rightView withAlpha:0.6];
   [self.leftContainerView bringSubviewToFront:self.leftLoadingView];
   [self.rightContainerView bringSubviewToFront:self.rightLoadingView];
+  if(self.rightUserId && self.leftUserId) [self sendRemashRequestWithLeftId:self.leftUserId andRightId:self.rightUserId];
   [self prepareMash];
 }
 
@@ -394,11 +397,11 @@
   if(isLeft) {
     [self animateFadeOutWithView:self.leftView withAlpha:1.0];
     [self animateFadeOutWithView:self.rightView withAlpha:0.4];
-    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft withDelegate:self];
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.leftUserId andLoserId:self.rightUserId isLeft:isLeft];
   } else {
     [self animateFadeOutWithView:self.leftView withAlpha:0.4];
     [self animateFadeOutWithView:self.rightView withAlpha:1.0];
-    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft withDelegate:self];
+    if(self.rightUserId && self.leftUserId) [self sendResultsRequestWithWinnerId:self.rightUserId andLoserId:self.leftUserId isLeft:isLeft];
   }
 }
 
@@ -482,13 +485,22 @@
 }
 
 #pragma mark Server Requests
-- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft withDelegate:(id)delegate {
+- (void)sendResultsRequestWithWinnerId:(NSString *)winnerId andLoserId:(NSString *)loserId isLeft:(BOOL)isLeft {
   DLog(@"send results with winnerId: %@, loserId: %@, isLeft: %d",winnerId, loserId, isLeft);
   NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:winnerId, @"w", loserId, @"l", [NSNumber numberWithBool:isLeft], @"left", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
   NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
   NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/result/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
   self.resultsRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:self];
   [[RemoteOperation sharedInstance] addRequestToQueue:self.resultsRequest];
+}
+
+- (void)sendRemashRequestWithLeftId:(NSString *)leftId andRightId:(NSString *)rightId {
+  DLog(@"send remash with leftId: %@, rightId: %@", leftId, rightId);
+  NSDictionary *postJson = [NSDictionary dictionaryWithObjectsAndKeys:leftId, @"leftId", rightId, @"rightId", [NSNumber numberWithInteger:self.gameMode], @"mode", nil];
+  NSData *postData = [[CJSONDataSerializer serializer] serializeDictionary:postJson];
+  NSString *baseURLString = [NSString stringWithFormat:@"%@/mash/remash/%@", FRIENDMASH_BASE_URL, APP_DELEGATE.currentUserId];
+  self.remashRequest = [RemoteRequest postRequestWithBaseURLString:baseURLString andParams:nil andPostData:postData isGzip:NO withDelegate:self];
+  [[RemoteOperation sharedInstance] addRequestToQueue:self.remashRequest];
 }
 
 #pragma mark ASIHTTPRequestDelegate
@@ -541,6 +553,11 @@
   if(_resultsRequest) {
     [_resultsRequest clearDelegatesAndCancel];
     [_resultsRequest release];
+  }
+  
+  if(_remashRequest) {
+    [_remashRequest clearDelegatesAndCancel];
+    [_remashRequest release];
   }
   
   [[RemoteOperation sharedInstance] cancelAllRequests];

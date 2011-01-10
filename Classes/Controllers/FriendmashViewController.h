@@ -30,6 +30,7 @@ typedef enum {
 @interface FriendmashViewController : UIViewController <FaceViewDelegate, MashCacheDelegate> {
   IBOutlet UIButton *_remashButton;
   ASIHTTPRequest *_resultsRequest;
+  ASIHTTPRequest *_remashRequest;  
   NSString *_gender;
   NSString *_leftUserId;
   NSString *_rightUserId;
@@ -74,6 +75,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL isRightLoaded;
 @property (nonatomic, assign) BOOL isTouchActive;
 @property (nonatomic, retain) ASIHTTPRequest *resultsRequest;
+@property (nonatomic, retain) ASIHTTPRequest *remashRequest;
 @property (nonatomic, retain) NSString *gender;
 @property (nonatomic, retain) NSString *leftUserId;
 @property (nonatomic, retain) NSString *rightUserId;
