@@ -379,10 +379,16 @@ void uncaughtExceptionHandler(NSException *exception) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
   // Detect Upgrade
-  if (![[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersion"]]) {
-    [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownHelp"];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasLoggedIn"]; // Force logged in for updates from 1.1 -> 1.2
+  if ([[NSUserDefaults standardUserDefaults] objectForKey:@"appVersion"]) {
+    if (![[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"appVersion"]]) {
+      [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
+      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownHelp"];
+      if ([[NSUserDefaults standardUserDefaults] objectForKey:@"fbAccessToken"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasLoggedIn"]; // Force logged in for updates from 1.1 -> 1.X
+      } else {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasLoggedIn"]; // Force logged in for updates from 1.1 -> 1.X
+      }
+    }
   }
 
   // Uncaught Exception Handler
