@@ -33,7 +33,6 @@ void uncaughtExceptionHandler(NSException *exception) {
 @synthesize window;
 @synthesize navigationController = _navigationController;
 @synthesize loginViewController =_loginViewController;
-@synthesize loginPopoverController = _loginPopoverController;
 @synthesize launcherViewController = _launcherViewController;
 @synthesize currentUserRequest = _currentUserRequest;
 @synthesize tokenRequest = _tokenRequest;
@@ -144,7 +143,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (void)dismissLoginView:(BOOL)animated {
   if(isDeviceIPad()) {
-    [self.loginPopoverController dismissPopoverAnimated:YES];
+    [self.loginViewController dismissModalViewControllerAnimated:NO];
   } else {
     [self.loginViewController dismissModalViewControllerAnimated:NO];
   }
@@ -288,7 +287,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   }
   
   if(isDeviceIPad()) {
-    [self.loginPopoverController presentPopoverFromRect:CGRectMake(self.navigationController.view.center.y, 20, 0, 0) inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+    [self.navigationController presentModalViewController:self.loginViewController animated:animated];
   } else {
     [self.navigationController presentModalViewController:self.loginViewController animated:animated];
   } 
@@ -361,11 +360,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   busyAlertHasIndicator = YES;
 }
 
-#pragma mark UIPopoverControllerDelegate
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
-  return NO;
-}
-
 #pragma mark Session
 - (void)startSession {
   // Set Session Key
@@ -412,9 +406,7 @@ void uncaughtExceptionHandler(NSException *exception) {
   if(isDeviceIPad()) {
     _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPad" bundle:nil];
     _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPad" bundle:nil];
-    self.loginViewController.contentSizeForViewInPopover = CGSizeMake(self.loginViewController.view.frame.size.width, self.loginViewController.view.frame.size.height);
-    _loginPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.loginViewController];
-    self.loginPopoverController.delegate = self;
+    self.loginViewController.modalPresentationStyle = UIModalPresentationFormSheet;
   } else {
     _loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController_iPhone" bundle:nil];
     _launcherViewController = [[LauncherViewController alloc] initWithNibName:@"LauncherViewController_iPhone" bundle:nil];
@@ -516,7 +508,6 @@ void uncaughtExceptionHandler(NSException *exception) {
   }
   
   RELEASE_SAFELY(_loginViewController);
-  RELEASE_SAFELY(_loginPopoverController);
   RELEASE_SAFELY(_fbAccessToken);
   RELEASE_SAFELY(_currentUserId);
   RELEASE_SAFELY(_currentUser);
