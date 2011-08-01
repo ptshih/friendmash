@@ -351,11 +351,11 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (void)didPresentAlertView:(UIAlertView *)alertView {
   static BOOL busyAlertHasIndicator = NO;
-  if (alertView != _reachabilityAlertView || busyAlertHasIndicator) return;
+  if (alertView != self.reachabilityAlertView || busyAlertHasIndicator) return;
   UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-  indicator.center = CGPointMake(_reachabilityAlertView.bounds.size.width / 2, _reachabilityAlertView.bounds.size.height - 45);
+  indicator.center = CGPointMake(self.reachabilityAlertView.bounds.size.width / 2, self.reachabilityAlertView.bounds.size.height - 45);
   [indicator startAnimating];
-  [_reachabilityAlertView addSubview:indicator];
+  [self.reachabilityAlertView addSubview:indicator];
   [indicator release];
   busyAlertHasIndicator = YES;
 }
@@ -383,7 +383,10 @@ void uncaughtExceptionHandler(NSException *exception) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasLoggedIn"]; // Force logged in for updates from 1.1 -> 1.X
       }
     }
+  } else {
+    [[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
   }
+
 
   // Uncaught Exception Handler
   NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
